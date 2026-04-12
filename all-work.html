@@ -108,6 +108,34 @@ footer { padding: 32px 48px; border-top: 1px solid var(--glass-border); display:
 .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.15em; background: var(--chrome); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-faint); }
 
+/* BRAND NAME OVERLAY */
+.brand-name-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.88));
+  z-index: 1;
+  pointer-events: none;
+}
+.brand-name-overlay .bno-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: #fff;
+  display: block;
+  line-height: 1;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+}
+.brand-name-overlay .bno-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  display: block;
+  margin-top: 3px;
+}
+
 @media (max-width: 1024px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) {
   body { cursor: auto; }
@@ -127,8 +155,8 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
 <div id="cursor-trail"></div>
 
 <nav>
-  <a class="nav-logo" href="index.html">BANKS</a>
-  <a class="nav-back" href="index.html">← Back to Portfolio</a>
+  <a class="nav-logo" href="banks-portfolio-v3.html">BANKS</a>
+  <a class="nav-back" href="banks-portfolio-v3.html">← Back to Portfolio</a>
   <div class="nav-right">
     <button class="theme-toggle" id="themeToggle">◑</button>
   </div>
@@ -155,9 +183,13 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
   <!-- 01 -->
   <div class="work-card reveal" data-category="luxury">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1541643600914-78b084683702?w=600&h=400&fit=crop&auto=format" alt="AAURA Perfumery" loading="lazy">
+      <img src="ae7685b3f6993315e423325f7889a7f4.jpg" alt="AAURA Perfumery" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">AAURA</span>
+        <span class="bno-tag">Arabian Luxury Perfumery</span>
+      </div>
       <div class="work-thumb-overlay">
-        <a href="#" class="thumb-preview-link">Live Preview →</a>
+        <a href="https://aaura-perfume.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
       </div>
     </div>
     <div class="work-body">
@@ -172,7 +204,7 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
       </div>
       <div class="work-footer">
         <span class="work-industry">Fragrance</span>
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://aaura-perfume.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
@@ -180,9 +212,13 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
   <!-- 02 -->
   <div class="work-card reveal" data-category="fashion">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format" alt="MALAAK Abayas" loading="lazy">
+      <img src="a3eb67a33eb96ed907adcdd7619cb9d5.jpg" alt="MALAAK Abayas" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">MALAAK</span>
+        <span class="bno-tag">Modest Luxury Abayas</span>
+      </div>
       <div class="work-thumb-overlay">
-        <a href="#" class="thumb-preview-link">Live Preview →</a>
+        <a href="https://malaak-abaya.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
       </div>
     </div>
     <div class="work-body">
@@ -197,7 +233,7 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
       </div>
       <div class="work-footer">
         <span class="work-industry">Modest Fashion</span>
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://malaak-abaya.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
@@ -206,8 +242,12 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
   <div class="work-card reveal" data-category="fashion">
     <div class="work-thumb">
       <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=400&fit=crop&auto=format" alt="NOIR ATELIER" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">NOIR ATELIER</span>
+        <span class="bno-tag">Luxury Ready-to-Wear</span>
+      </div>
       <div class="work-thumb-overlay">
-        <a href="#" class="thumb-preview-link">Live Preview →</a>
+        <a href="https://noir-atelier-clothing.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
       </div>
     </div>
     <div class="work-body">
@@ -222,7 +262,7 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
       </div>
       <div class="work-footer">
         <span class="work-industry">Apparel</span>
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://noir-atelier-clothing.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
@@ -231,8 +271,12 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
   <div class="work-card reveal" data-category="food">
     <div class="work-thumb">
       <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop&auto=format" alt="Ember & Salt" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">EMBER &amp; SALT</span>
+        <span class="bno-tag">Wood-Fired Restaurant</span>
+      </div>
       <div class="work-thumb-overlay">
-        <a href="#" class="thumb-preview-link">Live Preview →</a>
+        <a href="https://ember-salt-restaurant.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
       </div>
     </div>
     <div class="work-body">
@@ -247,7 +291,7 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
       </div>
       <div class="work-footer">
         <span class="work-industry">Food &amp; Drink</span>
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://ember-salt-restaurant.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
@@ -255,9 +299,13 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
   <!-- 05 -->
   <div class="work-card reveal" data-category="beauty">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop&auto=format" alt="Reverie Beauty Salon" loading="lazy">
+      <img src="4c7faa2cf965371c0d8c790e9d5f61a1.jpg" alt="Reverie Beauty Salon" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">REVERIE</span>
+        <span class="bno-tag">Luxury Beauty Salon</span>
+      </div>
       <div class="work-thumb-overlay">
-        <a href="#" class="thumb-preview-link">Live Preview →</a>
+        <a href="https://reverie-salon.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
       </div>
     </div>
     <div class="work-body">
@@ -272,91 +320,119 @@ footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0
       </div>
       <div class="work-footer">
         <span class="work-industry">Beauty</span>
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://reverie-salon.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
 
-  <!-- 06 - Coming Soon -->
-  <div class="work-card coming-soon reveal" data-category="real-estate">
-    <span class="coming-soon-badge">Coming Soon</span>
+  <!-- 06 -->
+  <div class="work-card reveal" data-category="other">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop&auto=format" alt="Real Estate" loading="lazy">
+      <img src="Screenshot_20260412-220250_Chrome.png" alt="Ape Academy" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">APE ACADEMY</span>
+        <span class="bno-tag">Academic Excellence</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://deploy-1-p1ke.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
     </div>
     <div class="work-body">
       <div class="work-num">06</div>
-      <div class="work-title">APEX — Luxury Real Estate</div>
-      <p class="work-desc">Premium property listings site. Full-screen property photography, map integration, and a high-conversion inquiry flow.</p>
+      <div class="work-title">Ape Academy — Academic Excellence</div>
+      <p class="work-desc">Clean, bold educational platform. Strong brand identity, structured content layout, and a no-nonsense conversion flow built for serious learners.</p>
       <div class="work-tags">
-        <span class="work-tag">Real Estate</span>
-        <span class="work-tag">Luxury</span>
-        <span class="work-tag">Listings</span>
+        <span class="work-tag">Education</span>
+        <span class="work-tag">Dark Theme</span>
+        <span class="work-tag">Bold</span>
       </div>
       <div class="work-footer">
-        <span class="work-industry">Property</span>
+        <span class="work-industry">Education</span>
+        <a href="https://deploy-1-p1ke.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
 
-  <!-- 07 - Coming Soon -->
-  <div class="work-card coming-soon reveal" data-category="food">
-    <span class="coming-soon-badge">Coming Soon</span>
+  <!-- 07 -->
+  <div class="work-card reveal" data-category="food">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&auto=format" alt="Fine Dining" loading="lazy">
+      <img src="0aea7622c72fee9765034ae997ccd0de.jpg" alt="Padi" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">PADI</span>
+        <span class="bno-tag">Nigerian Cuisine</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://padi-three.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
     </div>
     <div class="work-body">
       <div class="work-num">07</div>
-      <div class="work-title">CENDRES — Fine Dining Experience</div>
-      <p class="work-desc">Michelin-level restaurant presentation. Tasting menu showcase, chef profile, cinematic hero with parallax scroll.</p>
+      <div class="work-title">Padi — Nigerian Cuisine</div>
+      <p class="work-desc">Warm, inviting restaurant site celebrating authentic Nigerian food culture. Rich visuals, menu showcase, and direct order flow built for a hungry audience.</p>
       <div class="work-tags">
-        <span class="work-tag">Fine Dining</span>
-        <span class="work-tag">Parallax</span>
-        <span class="work-tag">Dark Luxury</span>
+        <span class="work-tag">Restaurant</span>
+        <span class="work-tag">Nigerian</span>
+        <span class="work-tag">Warm Palette</span>
       </div>
       <div class="work-footer">
-        <span class="work-industry">Hospitality</span>
+        <span class="work-industry">Food &amp; Drink</span>
+        <a href="https://padi-three.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
 
-  <!-- 08 - Coming Soon -->
-  <div class="work-card coming-soon reveal" data-category="luxury">
-    <span class="coming-soon-badge">Coming Soon</span>
+  <!-- 08 -->
+  <div class="work-card reveal" data-category="food">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600&h=400&fit=crop&auto=format" alt="Jewelry Brand" loading="lazy">
+      <img src="cb4d26b06d5fb26ff14ad7f5019afa77.jpg" alt="Hot Chef" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">HOT CHEF</span>
+        <span class="bno-tag">Culinary Excellence</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://hot-chef.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
     </div>
     <div class="work-body">
       <div class="work-num">08</div>
-      <div class="work-title">AUREL — Fine Jewellery Brand</div>
-      <p class="work-desc">Elegant jewellery showcase with product zoom, material close-ups, and seamless inquiry flow. Built for the ultra-premium buyer.</p>
+      <div class="work-title">Hot Chef — Culinary Excellence</div>
+      <p class="work-desc">Bold, appetite-driving food site with high-impact photography, dynamic menu presentation, and frictionless booking. Every dish sells itself.</p>
       <div class="work-tags">
-        <span class="work-tag">Jewellery</span>
-        <span class="work-tag">Luxury</span>
-        <span class="work-tag">E-commerce</span>
+        <span class="work-tag">Restaurant</span>
+        <span class="work-tag">Photography</span>
+        <span class="work-tag">Menu</span>
       </div>
       <div class="work-footer">
-        <span class="work-industry">Jewellery</span>
+        <span class="work-industry">Food &amp; Drink</span>
+        <a href="https://hot-chef.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>
 
-  <!-- 09 - Coming Soon -->
-  <div class="work-card coming-soon reveal" data-category="other">
-    <span class="coming-soon-badge">Coming Soon</span>
+  <!-- 09 -->
+  <div class="work-card reveal" data-category="other">
     <div class="work-thumb">
-      <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&h=400&fit=crop&auto=format" alt="Fitness Studio" loading="lazy">
+      <img src="Screenshot_20260412-220325_Chrome.png" alt="Shadowz Map" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">SHADOWZ</span>
+        <span class="bno-tag">Urban Art Intelligence</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://shadow-rho-three.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
     </div>
     <div class="work-body">
       <div class="work-num">09</div>
-      <div class="work-title">FORGE — Premium Fitness Studio</div>
-      <p class="work-desc">Dark bold fitness site. Class schedule, trainer profiles, membership plans, and WhatsApp trial booking. Built to convert.</p>
+      <div class="work-title">Shadowz — Urban Art Intelligence</div>
+      <p class="work-desc">Geo-intelligence platform for street artists. High-contrast dark editorial design, interactive map UI, and data-driven stats. Paint smart. Stay free.</p>
       <div class="work-tags">
-        <span class="work-tag">Fitness</span>
-        <span class="work-tag">Dark Theme</span>
-        <span class="work-tag">Bookings</span>
+        <span class="work-tag">Tech</span>
+        <span class="work-tag">Dark Bold</span>
+        <span class="work-tag">Interactive</span>
       </div>
       <div class="work-footer">
-        <span class="work-industry">Health &amp; Fitness</span>
+        <span class="work-industry">Urban Tech</span>
+        <a href="https://shadow-rho-three.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
       </div>
     </div>
   </div>

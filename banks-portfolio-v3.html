@@ -925,6 +925,34 @@ footer p {
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* BRAND NAME OVERLAY */
+.brand-name-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.88));
+  z-index: 1;
+  pointer-events: none;
+}
+.brand-name-overlay .bno-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: #fff;
+  display: block;
+  line-height: 1;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+}
+.brand-name-overlay .bno-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  display: block;
+  margin-top: 3px;
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
   body { cursor: auto; }
@@ -1137,13 +1165,17 @@ footer p {
         </div>
       </div>
       <div class="project-thumb">
-        <img src="https://images.unsplash.com/photo-1541643600914-78b084683702?w=440&h=260&fit=crop&auto=format" alt="AAURA Perfumery preview" loading="lazy">
+        <img src="ae7685b3f6993315e423325f7889a7f4.jpg" alt="AAURA Perfumery preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">AAURA</span>
+          <span class="bno-tag">Arabian Luxury Perfumery</span>
+        </div>
         <div class="project-thumb-overlay">
-          <a href="#" class="thumb-preview-link">Live Preview →</a>
+          <a href="https://aaura-perfume.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
         </div>
       </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://aaura-perfume.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Fragrance</span>
       </div>
     </div>
@@ -1161,13 +1193,17 @@ footer p {
         </div>
       </div>
       <div class="project-thumb">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=440&h=260&fit=crop&auto=format" alt="MALAAK Abayas preview" loading="lazy">
+        <img src="a3eb67a33eb96ed907adcdd7619cb9d5.jpg" alt="MALAAK Abayas preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">MALAAK</span>
+          <span class="bno-tag">Modest Luxury Abayas</span>
+        </div>
         <div class="project-thumb-overlay">
-          <a href="#" class="thumb-preview-link">Live Preview →</a>
+          <a href="https://malaak-abaya.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
         </div>
       </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://malaak-abaya.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Modest Fashion</span>
       </div>
     </div>
@@ -1186,12 +1222,16 @@ footer p {
       </div>
       <div class="project-thumb">
         <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=440&h=260&fit=crop&auto=format" alt="NOIR ATELIER preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">NOIR ATELIER</span>
+          <span class="bno-tag">Luxury Ready-to-Wear</span>
+        </div>
         <div class="project-thumb-overlay">
-          <a href="#" class="thumb-preview-link">Live Preview →</a>
+          <a href="https://noir-atelier-clothing.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
         </div>
       </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://noir-atelier-clothing.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Apparel</span>
       </div>
     </div>
@@ -1210,12 +1250,16 @@ footer p {
       </div>
       <div class="project-thumb">
         <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=440&h=260&fit=crop&auto=format" alt="Ember & Salt preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">EMBER &amp; SALT</span>
+          <span class="bno-tag">Wood-Fired Restaurant</span>
+        </div>
         <div class="project-thumb-overlay">
-          <a href="#" class="thumb-preview-link">Live Preview →</a>
+          <a href="https://ember-salt-restaurant.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
         </div>
       </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://ember-salt-restaurant.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Food &amp; Drink</span>
       </div>
     </div>
@@ -1233,13 +1277,17 @@ footer p {
         </div>
       </div>
       <div class="project-thumb">
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=440&h=260&fit=crop&auto=format" alt="Reverie Beauty Salon preview" loading="lazy">
+        <img src="4c7faa2cf965371c0d8c790e9d5f61a1.jpg" alt="Reverie Beauty Salon preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">REVERIE</span>
+          <span class="bno-tag">Luxury Beauty Salon</span>
+        </div>
         <div class="project-thumb-overlay">
-          <a href="#" class="thumb-preview-link">Live Preview →</a>
+          <a href="https://reverie-salon.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
         </div>
       </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://reverie-salon.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Beauty</span>
       </div>
     </div>
