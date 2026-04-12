@@ -29,19 +29,6 @@
   --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-[data-theme="light"] {
-  --bg: #f5f5f3;
-  --surface: #eeeeec;
-  --surface2: #e5e5e3;
-  --text: #050505;
-  --text-muted: rgba(5,5,5,0.45);
-  --text-faint: rgba(5,5,5,0.18);
-  --glass-bg: rgba(0,0,0,0.03);
-  --glass-border: rgba(0,0,0,0.10);
-  --glass-border-bright: rgba(0,0,0,0.25);
-  --glow: rgba(0,0,0,0.06);
-}
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -99,7 +86,6 @@ nav {
   border-bottom: 1px solid var(--glass-border);
   transition: background 0.5s;
 }
-[data-theme="light"] nav { background: rgba(245,245,243,0.7); }
 
 .nav-logo {
   font-family: 'Bebas Neue', sans-serif;
@@ -129,16 +115,7 @@ nav {
 }
 .nav-links a:hover { color: var(--text); }
 .nav-right { display: flex; align-items: center; gap: 20px; }
-.theme-toggle {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: var(--text);
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: none; transition: var(--transition); font-size: 14px;
-}
-.theme-toggle:hover { background: var(--glass-border); }
+
 .nav-cta {
   background: var(--text);
   color: var(--bg);
@@ -312,7 +289,6 @@ nav {
   flex-direction: column;
   overflow: hidden;
 }
-[data-theme="light"] .dropdown-menu { background: #ebebea; }
 .dropdown-wrap.open .dropdown-menu { display: flex; }
 .dropdown-item {
   display: flex;
@@ -925,6 +901,53 @@ footer p {
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* AMBIENT VIDEOS */
+.video-hero {
+  position: absolute;
+  right: 48px; top: 50%;
+  transform: translateY(-50%);
+  width: 260px; height: 360px;
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+}
+.video-hero video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-strip {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  opacity: 0.55;
+  margin-top: 36px;
+}
+.video-strip video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-side {
+  width: 220px; height: 148px;
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+.video-side video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-contact {
+  width: 54px; height: 54px;
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  opacity: 0.75;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+.video-contact video { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 768px) {
+  .video-hero { display: none; }
+  .video-strip { height: 80px; }
+  .video-side { display: none; }
+  .video-contact { width: 42px; height: 42px; }
+}
+
 /* BRAND NAME OVERLAY */
 .brand-name-overlay {
   position: absolute;
@@ -1089,7 +1112,6 @@ footer p {
     <li><a href="#process">Process</a></li>
   </ul>
   <div class="nav-right">
-    <button class="theme-toggle" id="themeToggle">◑</button>
     <a href="#contact" class="nav-cta">Let's Talk</a>
   </div>
 </nav>
@@ -1097,6 +1119,11 @@ footer p {
 <!-- HERO -->
 <section id="hero">
   <div class="hero-grid-lines"></div>
+  <div class="video-hero">
+    <video autoplay muted loop playsinline>
+      <source src="3d-broadcast.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="hero-left">
     <div class="hero-tag">
       <div class="hero-tag-dot"></div>
@@ -1180,6 +1207,11 @@ footer p {
   <div class="section-label reveal">01 · What I Bring</div>
   <h2 class="section-h2 reveal">SKILLS &amp; <span class="chrome">CRAFT</span></h2>
   <p class="section-sub reveal">Everything you need to go from idea to live website. Nothing you don't.</p>
+  <div class="video-strip reveal">
+    <video autoplay muted loop playsinline>
+      <source src="3d-react.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="skills-grid">
     <div class="skill-card reveal">
       <div class="skill-card-num">01 / 06</div>
@@ -1434,6 +1466,11 @@ footer p {
     </div>
   </div>
   <div class="about-right">
+    <div class="video-side reveal" style="margin-bottom:24px">
+      <video autoplay muted loop playsinline>
+        <source src="3d-integrate-weekend.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="about-feature-cards reveal">
       <div class="afc">
         <div class="afc-title">Clear Communication</div>
@@ -1460,6 +1497,11 @@ footer p {
   <div class="section-label reveal">04 · How It Works</div>
   <h2 class="section-h2 reveal">SIMPLE. <span class="chrome">FAST.</span></h2>
   <p class="section-sub reveal">Four steps from first message to live website.</p>
+  <div class="video-strip reveal">
+    <video autoplay muted loop playsinline>
+      <source src="3d-control.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="process-grid">
     <div class="process-step reveal">
       <div class="process-step-num">01</div>
@@ -1501,6 +1543,11 @@ footer p {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
         Email
       </a>
+      <div class="video-contact">
+        <video autoplay muted loop playsinline>
+          <source src="cube.mp4" type="video/mp4">
+        </video>
+      </div>
       <a href="https://www.snapchat.com/add/j0shh.b?share_id=yZ3VJ6-qGXQ&locale=en-US" class="contact-link" target="_blank">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.166 3c-2.183 0-4.415 1.188-4.415 4.63v.621c0 .138-.07.266-.183.342l-.913.589c-.152.098-.243.268-.243.45 0 .098.028.194.08.278l.73 1.158c.093.148.1.335.018.489-.254.472-.722.742-1.24.742-.15 0-.305-.024-.452-.07l-.012-.004c-.093-.026-.183-.04-.268-.04-.253 0-.467.131-.544.327-.041.105-.107.38.238.65.572.45 1.475.791 2.782.99.085.012.155.073.18.156l.135.45c.047.155.19.255.348.255.048 0 .097-.009.145-.027.301-.115.618-.173.944-.173.295 0 .584.05.86.148.565.199 1.04.594 1.354.95.315-.356.79-.751 1.354-.95.276-.098.565-.148.86-.148.326 0 .643.058.944.173.048.018.097.027.145.027.158 0 .301-.1.348-.255l.135-.45c.025-.083.095-.144.18-.156 1.307-.199 2.21-.54 2.782-.99.345-.27.279-.545.238-.65-.077-.196-.291-.327-.544-.327-.085 0-.175.014-.268.04l-.012.004c-.147.046-.302.07-.452.07-.518 0-.986-.27-1.24-.742-.082-.154-.075-.341.018-.489l.73-1.158c.052-.084.08-.18.08-.278 0-.182-.091-.352-.243-.45l-.913-.589c-.113-.076-.183-.204-.183-.342v-.621C16.581 4.188 14.349 3 12.166 3Z"/></svg>
         Snapchat
@@ -1534,11 +1581,6 @@ document.addEventListener('mousemove', e => {
   }, 80);
 });
 
-/* THEME TOGGLE */
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const html = document.documentElement;
-  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
 
 /* SCROLL REVEAL */
 const obs = new IntersectionObserver(entries => {
