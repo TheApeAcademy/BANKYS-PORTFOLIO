@@ -10,7 +10,7 @@
 
 <style>
 /* ============================================================
-   BANKS PORTFOLIO — LIQUID METAL CHROME
+   BANKS PORTFOLIO v3
    ============================================================ */
 
 :root {
@@ -53,7 +53,7 @@ body {
   transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* ── CURSOR ─────────────────────────────────────────────── */
+/* CURSOR */
 #cursor {
   position: fixed;
   width: 12px; height: 12px;
@@ -78,7 +78,7 @@ body {
 body:has(a:hover) #cursor, body:has(button:hover) #cursor { transform: translate(-50%,-50%) scale(2.5); }
 body:has(a:hover) #cursor-trail, body:has(button:hover) #cursor-trail { width: 60px; height: 60px; opacity: 0.5; }
 
-/* ── NOISE GRAIN ─────────────────────────────────────────── */
+/* NOISE GRAIN */
 body::after {
   content: '';
   position: fixed; inset: 0;
@@ -88,7 +88,7 @@ body::after {
   z-index: 9990;
 }
 
-/* ── NAV ─────────────────────────────────────────────────── */
+/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: space-between;
@@ -156,11 +156,10 @@ nav {
 }
 .nav-cta:hover { transform: scale(1.03); opacity: 0.9; }
 
-/* ── HERO ─────────────────────────────────────────────────── */
+/* HERO */
 #hero {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   align-items: center;
   padding: 140px 48px 80px;
   position: relative;
@@ -181,9 +180,9 @@ nav {
 .hero-grid-lines::after {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 60% at 70% 50%, transparent 40%, var(--bg) 100%);
+  background: radial-gradient(ellipse 70% 80% at 30% 50%, transparent 50%, var(--bg) 100%);
 }
-.hero-left { position: relative; z-index: 2; }
+.hero-left { position: relative; z-index: 2; max-width: 720px; }
 .hero-tag {
   display: inline-flex;
   align-items: center;
@@ -251,6 +250,7 @@ nav {
   transition: var(--transition);
   clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   text-decoration: none;
+  display: inline-block;
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,255,255,0.15); }
 .btn-ghost {
@@ -265,8 +265,72 @@ nav {
   cursor: none;
   transition: var(--transition);
   text-decoration: none;
+  display: inline-block;
 }
 .btn-ghost:hover { border-color: var(--glass-border-bright); color: var(--text); }
+
+/* DROPDOWN */
+.dropdown-wrap {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--glass-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  padding: 14px 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: var(--transition);
+}
+.dropdown-trigger:hover,
+.dropdown-wrap.open .dropdown-trigger {
+  border-color: var(--glass-border-bright);
+  color: var(--text);
+}
+.dropdown-trigger .arrow {
+  font-size: 9px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+.dropdown-wrap.open .dropdown-trigger .arrow { transform: rotate(180deg); }
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  background: #0d0d0d;
+  border: 1px solid var(--glass-border-bright);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+[data-theme="light"] .dropdown-menu { background: #ebebea; }
+.dropdown-wrap.open .dropdown-menu { display: flex; }
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--glass-border);
+  transition: background 0.2s, color 0.2s;
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: var(--glass-bg); color: var(--text); }
+.dropdown-item svg { flex-shrink: 0; }
 
 .hero-stats {
   display: flex;
@@ -295,22 +359,7 @@ nav {
   margin-top: 4px;
 }
 
-/* Hero Right — liquid metal canvas */
-.hero-right {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 600px;
-}
-#hero-liquid {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* ── SCROLL TICKER ───────────────────────────────────────── */
+/* SCROLL TICKER */
 .ticker {
   overflow: hidden;
   border-top: 1px solid var(--glass-border);
@@ -338,7 +387,7 @@ nav {
 }
 @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-/* ── SECTION SHARED ──────────────────────────────────────── */
+/* SECTION SHARED */
 .section { padding: 100px 48px; }
 .section-label {
   font-family: 'DM Mono', monospace;
@@ -379,7 +428,7 @@ nav {
   letter-spacing: 0.04em;
 }
 
-/* ── SKILLS ──────────────────────────────────────────────── */
+/* SKILLS */
 #skills { background: var(--surface); }
 .skills-grid {
   display: grid;
@@ -441,7 +490,7 @@ nav {
   text-transform: uppercase;
 }
 
-/* ── PROJECTS ────────────────────────────────────────────── */
+/* PROJECTS */
 #projects { background: var(--bg); }
 .projects-list {
   margin-top: 60px;
@@ -451,10 +500,10 @@ nav {
 }
 .project-row {
   display: grid;
-  grid-template-columns: 64px 1fr auto;
+  grid-template-columns: 64px 1fr 220px auto;
   align-items: center;
-  gap: 32px;
-  padding: 36px 40px;
+  gap: 28px;
+  padding: 28px 40px;
   background: var(--surface);
   border: 1px solid var(--glass-border);
   position: relative;
@@ -472,7 +521,7 @@ nav {
   transition: transform 0.4s ease;
   transform-origin: top;
 }
-.project-row:hover { background: var(--surface2); transform: translateX(6px); }
+.project-row:hover { background: var(--surface2); transform: translateX(4px); }
 .project-row:hover::before { transform: scaleY(1); }
 .project-num {
   font-family: 'Bebas Neue', sans-serif;
@@ -483,7 +532,7 @@ nav {
 }
 .project-info h3 {
   font-family: 'Syne', sans-serif;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 6px;
@@ -494,7 +543,7 @@ nav {
   font-size: 12px;
   line-height: 1.7;
   color: var(--text-muted);
-  max-width: 520px;
+  max-width: 480px;
   letter-spacing: 0.03em;
 }
 .project-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
@@ -507,6 +556,58 @@ nav {
   color: var(--text-faint);
   text-transform: uppercase;
 }
+
+/* PROJECT THUMBNAIL */
+.project-thumb {
+  width: 220px;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(50%) brightness(0.75);
+  transition: filter 0.5s ease, transform 0.5s ease;
+  display: block;
+}
+.project-row:hover .project-thumb img {
+  filter: grayscale(10%) brightness(0.9);
+  transform: scale(1.06);
+}
+.project-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  backdrop-filter: blur(3px);
+}
+.project-row:hover .project-thumb-overlay { opacity: 1; }
+.thumb-preview-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  padding: 9px 18px;
+  border: 1px solid rgba(255,255,255,0.5);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.thumb-preview-link:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
 .project-action { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .live-badge {
   display: flex;
@@ -538,7 +639,41 @@ nav {
   color: var(--text-faint);
 }
 
-/* ── ABOUT ───────────────────────────────────────────────── */
+/* MORE BUTTON */
+.projects-more {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+.btn-more {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  padding: 16px 48px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.btn-more:hover {
+  border-color: var(--glass-border-bright);
+  color: var(--text);
+  background: var(--glass-bg);
+  transform: translateY(-2px);
+}
+.btn-more-arrow {
+  transition: transform 0.3s ease;
+}
+.btn-more:hover .btn-more-arrow { transform: translateX(4px); }
+
+/* ABOUT */
 #about {
   background: var(--surface);
   display: grid;
@@ -599,7 +734,6 @@ nav {
   text-transform: uppercase;
   color: var(--text-faint);
 }
-/* About right glass cards */
 .about-feature-cards { display: flex; flex-direction: column; gap: 16px; }
 .afc {
   padding: 28px 32px;
@@ -636,7 +770,7 @@ nav {
   letter-spacing: 0.03em;
 }
 
-/* ── PROCESS ─────────────────────────────────────────────── */
+/* PROCESS */
 #process { background: var(--bg); }
 .process-grid {
   display: grid;
@@ -681,7 +815,7 @@ nav {
   letter-spacing: 0.03em;
 }
 
-/* ── CTA / CONTACT ───────────────────────────────────────── */
+/* CTA / CONTACT */
 #contact {
   position: relative;
   overflow: hidden;
@@ -694,7 +828,7 @@ nav {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: 0.25;
+  opacity: 0.22;
 }
 .contact-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
 .contact-h2 {
@@ -757,7 +891,7 @@ nav {
 }
 .contact-main:hover { transform: scale(1.03); box-shadow: 0 0 40px rgba(255,255,255,0.15); }
 
-/* ── FOOTER ──────────────────────────────────────────────── */
+/* FOOTER */
 footer {
   padding: 36px 48px;
   border-top: 1px solid var(--glass-border);
@@ -783,7 +917,7 @@ footer p {
   color: var(--text-faint);
 }
 
-/* ── REVEAL ──────────────────────────────────────────────── */
+/* REVEAL */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -791,25 +925,53 @@ footer p {
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ── MOBILE ──────────────────────────────────────────────── */
+/* BRAND NAME OVERLAY */
+.brand-name-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.88));
+  z-index: 1;
+  pointer-events: none;
+}
+.brand-name-overlay .bno-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: #fff;
+  display: block;
+  line-height: 1;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+}
+.brand-name-overlay .bno-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  display: block;
+  margin-top: 3px;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
   body { cursor: auto; }
   #cursor, #cursor-trail { display: none; }
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
-  #hero { grid-template-columns: 1fr; padding: 120px 24px 80px; }
-  .hero-right { height: 300px; }
+  #hero { padding: 120px 24px 80px; }
   .hero-stats { gap: 24px; }
   .section { padding: 70px 24px; }
   .skills-grid { grid-template-columns: 1fr; }
-  .project-row { grid-template-columns: 48px 1fr; padding: 28px 20px; gap: 16px; }
-  .project-action { display: none; }
+  .project-row { grid-template-columns: 48px 1fr; padding: 24px 20px; gap: 16px; }
+  .project-thumb, .project-action { display: none; }
   #about { grid-template-columns: 1fr; }
   .about-left { padding: 70px 24px; border-right: none; border-bottom: 1px solid var(--glass-border); }
   .about-right { padding: 70px 24px; }
   .process-grid { grid-template-columns: 1fr 1fr; }
   #contact { padding: 80px 24px; }
   footer { flex-direction: column; gap: 12px; padding: 28px 24px; text-align: center; }
+  .dropdown-menu { min-width: 180px; }
 }
 </style>
 </head>
@@ -839,7 +1001,7 @@ footer p {
   <div class="hero-left">
     <div class="hero-tag">
       <div class="hero-tag-dot"></div>
-      Web Designer & Developer · Available for Projects
+      Web Designer &amp; Developer · Available for Projects
     </div>
     <h1 class="hero-h1">
       <span class="hero-h1-chrome">BEAUTIFUL</span>
@@ -848,17 +1010,36 @@ footer p {
       <span class="hero-h1-white">BUSINESS</span>
     </h1>
     <p class="hero-sub">
-      I build custom websites that make your business look <em>undeniable</em>. 
-      No templates. No agency markup. 
+      I build custom websites that make your business look <em>undeniable</em>.
+      No templates. No agency markup.
       Just clean, fast, hand-coded sites that convert.
     </p>
     <div class="hero-actions">
       <a href="#projects" class="btn-primary">See My Work →</a>
-      <a href="#contact" class="btn-ghost">Start a Project</a>
+      <div class="dropdown-wrap" id="heroDropdown">
+        <button class="dropdown-trigger">
+          Start a Project
+          <span class="arrow">▾</span>
+        </button>
+        <div class="dropdown-menu">
+          <a href="https://wa.me/YOUR_PHONE_NUMBER" class="dropdown-item" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.49"/></svg>
+            WhatsApp
+          </a>
+          <a href="mailto:j0shbankole19@gmail.com" class="dropdown-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+            Email
+          </a>
+          <a href="https://snapchat.com/add/YOUR_SNAPCHAT" class="dropdown-item" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.166 3c-2.183 0-4.415 1.188-4.415 4.63v.621c0 .138-.07.266-.183.342l-.913.589c-.152.098-.243.268-.243.45 0 .098.028.194.08.278l.73 1.158c.093.148.1.335.018.489-.254.472-.722.742-1.24.742-.15 0-.305-.024-.452-.07l-.012-.004c-.093-.026-.183-.04-.268-.04-.253 0-.467.131-.544.327-.041.105-.107.38.238.65.572.45 1.475.791 2.782.99.085.012.155.073.18.156l.135.45c.047.155.19.255.348.255.048 0 .097-.009.145-.027.301-.115.618-.173.944-.173.295 0 .584.05.86.148.565.199 1.04.594 1.354.95.315-.356.79-.751 1.354-.95.276-.098.565-.148.86-.148.326 0 .643.058.944.173.048.018.097.027.145.027.158 0 .301-.1.348-.255l.135-.45c.025-.083.095-.144.18-.156 1.307-.199 2.21-.54 2.782-.99.345-.27.279-.545.238-.65-.077-.196-.291-.327-.544-.327-.085 0-.175.014-.268.04l-.012.004c-.147.046-.302.07-.452.07-.518 0-.986-.27-1.24-.742-.082-.154-.075-.341.018-.489l.73-1.158c.052-.084.08-.18.08-.278 0-.182-.091-.352-.243-.45l-.913-.589c-.113-.076-.183-.204-.183-.342v-.621C16.581 4.188 14.349 3 12.166 3Z"/></svg>
+            Snapchat
+          </a>
+        </div>
+      </div>
     </div>
     <div class="hero-stats">
       <div>
-        <span class="hero-stat-num">5–10</span>
+        <span class="hero-stat-num">5-10</span>
         <div class="hero-stat-label">Days Delivery</div>
       </div>
       <div>
@@ -871,9 +1052,6 @@ footer p {
       </div>
     </div>
   </div>
-  <div class="hero-right">
-    <canvas id="hero-liquid" width="460" height="560"></canvas>
-  </div>
 </section>
 
 <!-- TICKER -->
@@ -882,7 +1060,7 @@ footer p {
     <span class="ticker-item">Custom Design</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Mobile First</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">WhatsApp Integration</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">5–10 Day Delivery</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">5-10 Day Delivery</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Live on Vercel</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Luxury Aesthetic</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Zero Templates</span><span class="ticker-sep">◆</span>
@@ -890,7 +1068,7 @@ footer p {
     <span class="ticker-item">Custom Design</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Mobile First</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">WhatsApp Integration</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">5–10 Day Delivery</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">5-10 Day Delivery</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Live on Vercel</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Luxury Aesthetic</span><span class="ticker-sep">◆</span>
     <span class="ticker-item">Zero Templates</span><span class="ticker-sep">◆</span>
@@ -900,9 +1078,9 @@ footer p {
 
 <!-- SKILLS -->
 <section class="section" id="skills">
-  <div class="section-label reveal">01 — What I Bring</div>
+  <div class="section-label reveal">01 · What I Bring</div>
   <h2 class="section-h2 reveal">SKILLS &amp; <span class="chrome">CRAFT</span></h2>
-  <p class="section-sub reveal">Everything you need to go from idea to live website — nothing you don't.</p>
+  <p class="section-sub reveal">Everything you need to go from idea to live website. Nothing you don't.</p>
   <div class="skills-grid">
     <div class="skill-card reveal">
       <div class="skill-card-num">01 / 06</div>
@@ -926,7 +1104,7 @@ footer p {
     </div>
     <div class="skill-card reveal">
       <div class="skill-card-num">03 / 06</div>
-      <div class="skill-card-name">Animations & Motion</div>
+      <div class="skill-card-name">Animations &amp; Motion</div>
       <p class="skill-card-desc">Scroll reveals, hover effects, smooth transitions. The kind of subtle motion that makes a site feel alive and premium.</p>
       <div class="skill-tags">
         <span class="skill-tag">CSS Animations</span>
@@ -969,10 +1147,11 @@ footer p {
 
 <!-- PROJECTS -->
 <section class="section" id="projects">
-  <div class="section-label reveal">02 — Portfolio</div>
+  <div class="section-label reveal">02 · Portfolio</div>
   <h2 class="section-h2 reveal">SELECTED <span class="chrome">WORK</span></h2>
   <p class="section-sub reveal">Five sites. Five different industries. Each one built to make the client's business look undeniable.</p>
   <div class="projects-list">
+
     <div class="project-row reveal">
       <div class="project-num">01</div>
       <div class="project-info">
@@ -985,11 +1164,22 @@ footer p {
           <span class="project-tag">Arabic</span>
         </div>
       </div>
+      <div class="project-thumb">
+        <img src="ae7685b3f6993315e423325f7889a7f4.jpg" alt="AAURA Perfumery preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">AAURA</span>
+          <span class="bno-tag">Arabian Luxury Perfumery</span>
+        </div>
+        <div class="project-thumb-overlay">
+          <a href="https://aaura-perfume.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+        </div>
+      </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://aaura-perfume.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Fragrance</span>
       </div>
     </div>
+
     <div class="project-row reveal">
       <div class="project-num">02</div>
       <div class="project-info">
@@ -1002,11 +1192,22 @@ footer p {
           <span class="project-tag">Minimal</span>
         </div>
       </div>
+      <div class="project-thumb">
+        <img src="a3eb67a33eb96ed907adcdd7619cb9d5.jpg" alt="MALAAK Abayas preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">MALAAK</span>
+          <span class="bno-tag">Modest Luxury Abayas</span>
+        </div>
+        <div class="project-thumb-overlay">
+          <a href="https://malaak-abaya.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+        </div>
+      </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://malaak-abaya.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Modest Fashion</span>
       </div>
     </div>
+
     <div class="project-row reveal">
       <div class="project-num">03</div>
       <div class="project-info">
@@ -1016,18 +1217,29 @@ footer p {
           <span class="project-tag">High Fashion</span>
           <span class="project-tag">Custom Cursor</span>
           <span class="project-tag">Editorial</span>
-          <span class="project-tag">B&W</span>
+          <span class="project-tag">B&amp;W</span>
+        </div>
+      </div>
+      <div class="project-thumb">
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=440&h=260&fit=crop&auto=format" alt="NOIR ATELIER preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">NOIR ATELIER</span>
+          <span class="bno-tag">Luxury Ready-to-Wear</span>
+        </div>
+        <div class="project-thumb-overlay">
+          <a href="https://noir-atelier-clothing.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
         </div>
       </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://noir-atelier-clothing.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Apparel</span>
       </div>
     </div>
+
     <div class="project-row reveal">
       <div class="project-num">04</div>
       <div class="project-info">
-        <h3>Ember & Salt — Wood-Fired Restaurant</h3>
+        <h3>Ember &amp; Salt — Wood-Fired Restaurant</h3>
         <p>Atmospheric restaurant site with CSS animated flame, warm ember palette, seasonal menu tabs, and table reservation CTA. You can almost smell the smoke.</p>
         <div class="project-tags">
           <span class="project-tag">Restaurant</span>
@@ -1036,11 +1248,22 @@ footer p {
           <span class="project-tag">Warm Dark</span>
         </div>
       </div>
+      <div class="project-thumb">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=440&h=260&fit=crop&auto=format" alt="Ember & Salt preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">EMBER &amp; SALT</span>
+          <span class="bno-tag">Wood-Fired Restaurant</span>
+        </div>
+        <div class="project-thumb-overlay">
+          <a href="https://ember-salt-restaurant.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+        </div>
+      </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
-        <span class="project-industry">Food & Drink</span>
+        <a href="https://ember-salt-restaurant.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+        <span class="project-industry">Food &amp; Drink</span>
       </div>
     </div>
+
     <div class="project-row reveal">
       <div class="project-num">05</div>
       <div class="project-info">
@@ -1053,25 +1276,43 @@ footer p {
           <span class="project-tag">Marble</span>
         </div>
       </div>
+      <div class="project-thumb">
+        <img src="4c7faa2cf965371c0d8c790e9d5f61a1.jpg" alt="Reverie Beauty Salon preview" loading="lazy">
+        <div class="brand-name-overlay">
+          <span class="bno-name">REVERIE</span>
+          <span class="bno-tag">Luxury Beauty Salon</span>
+        </div>
+        <div class="project-thumb-overlay">
+          <a href="https://reverie-salon.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+        </div>
+      </div>
       <div class="project-action">
-        <a href="#" class="live-badge"><div class="live-dot"></div> Live Site</a>
+        <a href="https://reverie-salon.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
         <span class="project-industry">Beauty</span>
       </div>
     </div>
+
+  </div>
+
+  <div class="projects-more reveal">
+    <a href="all-work.html" class="btn-more">
+      View All Work
+      <span class="btn-more-arrow">→</span>
+    </a>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="about-left">
-    <div class="section-label reveal">03 — About</div>
+    <div class="section-label reveal">03 · About</div>
     <h2 class="section-h2 reveal">WHY WORK<br>WITH <span class="chrome">ME</span></h2>
     <p class="about-p reveal">I'm <em>Banks</em> — a web designer and developer building premium websites for businesses that deserve to look the part.</p>
     <p class="about-p reveal">I started because I was tired of seeing good businesses undersell themselves online. Most web agencies are slow, overpriced, and deliver something generic. I'm the opposite — fast, direct, custom, and built around what actually gets you customers.</p>
     <p class="about-p reveal">I'm based in <em>Nigeria</em>. I work with clients worldwide. I deliver in days, not months.</p>
     <div class="about-values reveal">
       <div class="value-card">
-        <span class="value-num">5–10</span>
+        <span class="value-num">5-10</span>
         <div class="value-label">Days to Deliver</div>
       </div>
       <div class="value-card">
@@ -1112,7 +1353,7 @@ footer p {
 
 <!-- PROCESS -->
 <section class="section" id="process">
-  <div class="section-label reveal">04 — How It Works</div>
+  <div class="section-label reveal">04 · How It Works</div>
   <h2 class="section-h2 reveal">SIMPLE. <span class="chrome">FAST.</span></h2>
   <p class="section-sub reveal">Four steps from first message to live website.</p>
   <div class="process-grid">
@@ -1148,26 +1389,36 @@ footer p {
     </h2>
     <p class="contact-sub reveal">Your business deserves a website that does it justice. Message me — no commitment, no pressure, just a conversation about what you need.</p>
     <div class="contact-links reveal">
-      <a href="https://wa.me/1234567890" class="contact-link">
+      <a href="https://wa.me/YOUR_PHONE_NUMBER" class="contact-link" target="_blank">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.49"/></svg>
         WhatsApp
       </a>
-      <a href="mailto:banks@example.com" class="contact-link">✉ Email</a>
-      <a href="https://instagram.com" class="contact-link">◈ Instagram</a>
+      <a href="mailto:j0shbankole19@gmail.com" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+        Email
+      </a>
+      <a href="https://snapchat.com/add/YOUR_SNAPCHAT" class="contact-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.166 3c-2.183 0-4.415 1.188-4.415 4.63v.621c0 .138-.07.266-.183.342l-.913.589c-.152.098-.243.268-.243.45 0 .098.028.194.08.278l.73 1.158c.093.148.1.335.018.489-.254.472-.722.742-1.24.742-.15 0-.305-.024-.452-.07l-.012-.004c-.093-.026-.183-.04-.268-.04-.253 0-.467.131-.544.327-.041.105-.107.38.238.65.572.45 1.475.791 2.782.99.085.012.155.073.18.156l.135.45c.047.155.19.255.348.255.048 0 .097-.009.145-.027.301-.115.618-.173.944-.173.295 0 .584.05.86.148.565.199 1.04.594 1.354.95.315-.356.79-.751 1.354-.95.276-.098.565-.148.86-.148.326 0 .643.058.944.173.048.018.097.027.145.027.158 0 .301-.1.348-.255l.135-.45c.025-.083.095-.144.18-.156 1.307-.199 2.21-.54 2.782-.99.345-.27.279-.545.238-.65-.077-.196-.291-.327-.544-.327-.085 0-.175.014-.268.04l-.012.004c-.147.046-.302.07-.452.07-.518 0-.986-.27-1.24-.742-.082-.154-.075-.341.018-.489l.73-1.158c.052-.084.08-.18.08-.278 0-.182-.091-.352-.243-.45l-.913-.589c-.113-.076-.183-.204-.183-.342v-.621C16.581 4.188 14.349 3 12.166 3Z"/></svg>
+        Snapchat
+      </a>
+      <a href="tel:YOUR_PHONE_NUMBER" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call Me
+      </a>
     </div>
-    <a href="https://wa.me/1234567890" class="contact-main reveal">Start a Project →</a>
+    <a href="https://wa.me/YOUR_PHONE_NUMBER" class="contact-main reveal" target="_blank">Start a Project →</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">BANKS</div>
-  <p>© 2025 · Custom Web Design & Development</p>
+  <p>2025 · Custom Web Design &amp; Development</p>
   <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-faint)">Based in Nigeria · Available Worldwide</p>
 </footer>
 
 <script>
-/* ── CURSOR ───────────────────────────────────────────────── */
+/* CURSOR */
 const cur = document.getElementById('cursor');
 const trail = document.getElementById('cursor-trail');
 document.addEventListener('mousemove', e => {
@@ -1179,13 +1430,13 @@ document.addEventListener('mousemove', e => {
   }, 80);
 });
 
-/* ── THEME TOGGLE ─────────────────────────────────────────── */
+/* THEME TOGGLE */
 document.getElementById('themeToggle').addEventListener('click', () => {
   const html = document.documentElement;
   html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
 
-/* ── SCROLL REVEAL ────────────────────────────────────────── */
+/* SCROLL REVEAL */
 const obs = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
@@ -1193,7 +1444,19 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
 
-/* ── CHROME COLOR HELPER ─────────────────────────────────── */
+/* DROPDOWN */
+document.getElementById('heroDropdown').addEventListener('click', function(e) {
+  // Don't close if clicking a link inside
+  if (e.target.closest('.dropdown-item')) return;
+  this.classList.toggle('open');
+});
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#heroDropdown')) {
+    document.getElementById('heroDropdown').classList.remove('open');
+  }
+});
+
+/* CHROME COLOR HELPER */
 function chromeColor(bright, spec) {
   const base = Math.floor(bright * 180 + 40);
   const s = Math.floor(spec * 220);
@@ -1203,90 +1466,7 @@ function chromeColor(bright, spec) {
   return [r, g, b];
 }
 
-/* ── HERO LIQUID METAL ────────────────────────────────────── */
-(function() {
-  const canvas = document.getElementById('hero-liquid');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  let t = 0;
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    const blobs = [
-      { x: W*0.50 + Math.sin(t*0.5)*4,   y: H*0.05,                        r: 16 },
-      { x: W*0.50 + Math.sin(t*0.4)*6,   y: H*0.10,                        r: 26 },
-      { x: W*0.46 + Math.sin(t*0.3)*10,  y: H*0.18 + Math.cos(t*0.4)*8,   r: 48 },
-      { x: W*0.54 + Math.cos(t*0.28)*8,  y: H*0.24 + Math.sin(t*0.35)*6,  r: 42 },
-      { x: W*0.44 + Math.sin(t*0.22)*12, y: H*0.34 + Math.cos(t*0.3)*6,   r: 78 },
-      { x: W*0.56 + Math.cos(t*0.25)*10, y: H*0.38 + Math.sin(t*0.28)*5,  r: 70 },
-      { x: W*0.48 + Math.sin(t*0.18)*8,  y: H*0.46 + Math.cos(t*0.2)*6,   r: 62 },
-      { x: W*0.50 + Math.sin(t*0.3)*6,   y: H*0.54,                        r: 48 },
-      { x: W*0.50 + Math.cos(t*0.25)*5,  y: H*0.60,                        r: 36 },
-      { x: W*0.38 + Math.sin(t*0.4)*3,   y: H*0.68 + Math.cos(t*0.3)*4,   r: 16 },
-      { x: W*0.38 + Math.sin(t*0.4)*3,   y: H*0.77 + Math.cos(t*0.3)*3,   r: 11 },
-      { x: W*0.38 + Math.sin(t*0.4)*3,   y: H*0.85,                        r: 8  },
-      { x: W*0.38 + Math.sin(t*0.4)*2,   y: H*0.92,                        r: 5  },
-      { x: W*0.50 + Math.sin(t*0.3)*3,   y: H*0.68 + Math.cos(t*0.25)*4,  r: 18 },
-      { x: W*0.50 + Math.sin(t*0.3)*3,   y: H*0.76,                        r: 13 },
-      { x: W*0.50 + Math.sin(t*0.3)*2,   y: H*0.84,                        r: 10 },
-      { x: W*0.50 + Math.sin(t*0.3)*2,   y: H*0.91,                        r: 7  },
-      { x: W*0.50,                         y: H*0.97,                        r: 4  },
-      { x: W*0.62 + Math.cos(t*0.35)*3,  y: H*0.69 + Math.sin(t*0.3)*4,   r: 14 },
-      { x: W*0.62 + Math.cos(t*0.35)*2,  y: H*0.78,                        r: 10 },
-      { x: W*0.62,                         y: H*0.86,                        r: 7  },
-      { x: W*0.63,                         y: H*0.93,                        r: 4  },
-    ];
-
-    const step = 2;
-    const img = ctx.createImageData(W, H);
-    const data = img.data;
-
-    for (let py = 0; py < H; py += step) {
-      for (let px = 0; px < W; px += step) {
-        let sum = 0;
-        for (const b of blobs) {
-          const dx = px - b.x, dy = py - b.y;
-          sum += (b.r * b.r) / (dx*dx + dy*dy + 0.01);
-        }
-        if (sum > 1.0) {
-          const ang = Math.atan2(py - H*0.35, px - W*0.5);
-          const keyL  = (Math.cos(ang - 0.7 + t*0.4) + 1) / 2;
-          const fillL = (Math.cos(ang + 2.2 - t*0.2) + 1) / 2;
-          const bright = keyL * 0.7 + fillL * 0.3;
-          const spec   = Math.pow(Math.max(0, Math.cos(ang - 0.6 + t*0.5)), 6);
-          const edge   = Math.min(1, (sum - 1.0) * 4);
-          const [r,g,b] = chromeColor(bright, spec);
-          for (let sy = 0; sy < step && py+sy < H; sy++) {
-            for (let sx = 0; sx < step && px+sx < W; sx++) {
-              const idx = ((py+sy)*W + (px+sx))*4;
-              data[idx]=r; data[idx+1]=g; data[idx+2]=b;
-              data[idx+3] = Math.floor(edge * 230);
-            }
-          }
-        }
-      }
-    }
-    ctx.putImageData(img, 0, 0);
-
-    // Specular shimmer streaks
-    [{x: W*0.44, y: H*0.28, r:55}, {x: W*0.55, y: H*0.38, r:44}, {x: W*0.50, y: H*0.15, r:22}].forEach(b => {
-      const sg = ctx.createRadialGradient(b.x, b.y - b.r*0.2, 0, b.x, b.y, b.r*1.2);
-      sg.addColorStop(0,   'rgba(255,255,255,0.55)');
-      sg.addColorStop(0.4, 'rgba(200,200,200,0.15)');
-      sg.addColorStop(1,   'rgba(0,0,0,0)');
-      ctx.fillStyle = sg;
-      ctx.fillRect(0, 0, W, H);
-    });
-
-    t += 0.011;
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-/* ── CTA LIQUID METAL SPLASH ─────────────────────────────── */
+/* CTA LIQUID METAL */
 (function() {
   const canvas = document.getElementById('cta-liquid');
   if (!canvas) return;
@@ -1296,7 +1476,7 @@ function chromeColor(bright, spec) {
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    const cx = W*0.5, cy = H*0.6;
+    const cx = W * 0.5, cy = H * 0.6;
 
     const blobs = [
       { x: cx,                              y: cy + 70,                        r: 100 },
@@ -1325,20 +1505,20 @@ function chromeColor(bright, spec) {
         let sum = 0;
         for (const b of blobs) {
           const dx = px - b.x, dy = py - b.y;
-          sum += (b.r*b.r)/(dx*dx + dy*dy + 0.01);
+          sum += (b.r * b.r) / (dx*dx + dy*dy + 0.01);
         }
         if (sum > 1.0) {
           const ang = Math.atan2(py - cy, px - cx);
-          const keyL  = (Math.cos(ang - 0.8 + t*0.4) + 1)/2;
-          const fillL = (Math.cos(ang + 2.1 - t*0.2) + 1)/2;
-          const bright = keyL*0.72 + fillL*0.28;
+          const keyL  = (Math.cos(ang - 0.8 + t*0.4) + 1) / 2;
+          const fillL = (Math.cos(ang + 2.1 - t*0.2) + 1) / 2;
+          const bright = keyL * 0.72 + fillL * 0.28;
           const spec   = Math.pow(Math.max(0, Math.cos(ang - 0.7 + t*0.5)), 7);
-          const edge   = Math.min(1, (sum - 1.0)*4);
+          const edge   = Math.min(1, (sum - 1.0) * 4);
           const [r,g,b] = chromeColor(bright, spec);
           for (let sy = 0; sy < step && py+sy < H; sy++) {
             for (let sx = 0; sx < step && px+sx < W; sx++) {
-              const idx = ((py+sy)*W+(px+sx))*4;
-              data[idx]=r; data[idx+1]=g; data[idx+2]=b;
+              const idx = ((py+sy)*W + (px+sx)) * 4;
+              data[idx] = r; data[idx+1] = g; data[idx+2] = b;
               data[idx+3] = Math.floor(edge * 220);
             }
           }
@@ -1347,16 +1527,16 @@ function chromeColor(bright, spec) {
     }
     ctx.putImageData(img, 0, 0);
 
-    [{x:cx-75,y:cy-140,r:65},{x:cx+88,y:cy-100,r:50},{x:cx,y:cy+25,r:72}].forEach(b=>{
-      const sg = ctx.createRadialGradient(b.x-b.r*0.2, b.y-b.r*0.3, 0, b.x, b.y, b.r);
-      sg.addColorStop(0,   'rgba(255,255,255,0.6)');
-      sg.addColorStop(0.35,'rgba(200,200,200,0.2)');
-      sg.addColorStop(1,   'rgba(0,0,0,0)');
+    [{x:cx-75,y:cy-140,r:65},{x:cx+88,y:cy-100,r:50},{x:cx,y:cy+25,r:72}].forEach(b => {
+      const sg = ctx.createRadialGradient(b.x - b.r*0.2, b.y - b.r*0.3, 0, b.x, b.y, b.r);
+      sg.addColorStop(0,    'rgba(255,255,255,0.6)');
+      sg.addColorStop(0.35, 'rgba(200,200,200,0.2)');
+      sg.addColorStop(1,    'rgba(0,0,0,0)');
       ctx.fillStyle = sg;
-      ctx.fillRect(0,0,W,H);
+      ctx.fillRect(0, 0, W, H);
     });
 
-    t += 0.009;
+    t += 0.011;
     requestAnimationFrame(draw);
   }
   draw();

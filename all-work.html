@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Work — BANKS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface2: #111111;
+  --text: #ffffff;
+  --text-muted: rgba(255,255,255,0.45);
+  --text-faint: rgba(255,255,255,0.18);
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-border-bright: rgba(255,255,255,0.25);
+  --chrome: linear-gradient(135deg, #888 0%, #fff 30%, #aaa 50%, #fff 70%, #666 100%);
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-theme="light"] {
+  --bg: #f5f5f3; --surface: #eeeeec; --surface2: #e5e5e3;
+  --text: #050505; --text-muted: rgba(5,5,5,0.45); --text-faint: rgba(5,5,5,0.18);
+  --glass-bg: rgba(0,0,0,0.03); --glass-border: rgba(0,0,0,0.10); --glass-border-bright: rgba(0,0,0,0.25);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; transition: background 0.5s, color 0.5s; }
+
+#cursor { position: fixed; width: 12px; height: 12px; background: var(--text); border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.15s ease; transform: translate(-50%,-50%); }
+#cursor-trail { position: fixed; width: 36px; height: 36px; border: 1px solid var(--glass-border-bright); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), width 0.4s, height 0.4s, opacity 0.3s; transform: translate(-50%,-50%); }
+body:has(a:hover) #cursor, body:has(button:hover) #cursor { transform: translate(-50%,-50%) scale(2.5); }
+body:has(a:hover) #cursor-trail, body:has(button:hover) #cursor-trail { width: 60px; height: 60px; opacity: 0.5; }
+
+body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); opacity: 0.025; pointer-events: none; z-index: 9990; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; backdrop-filter: blur(20px) saturate(1.5); background: rgba(0,0,0,0.4); border-bottom: 1px solid var(--glass-border); transition: background 0.5s; }
+[data-theme="light"] nav { background: rgba(245,245,243,0.7); }
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.15em; color: var(--text); text-decoration: none; position: relative; }
+.nav-logo::after { content: ''; position: absolute; bottom: 2px; right: -6px; width: 5px; height: 5px; background: var(--text); border-radius: 50%; }
+.nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.25s; }
+.nav-back:hover { color: var(--text); }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.theme-toggle { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: none; transition: var(--transition); font-size: 14px; }
+.theme-toggle:hover { background: var(--glass-border); }
+
+.page-header { padding: 160px 48px 80px; border-bottom: 1px solid var(--glass-border); }
+.page-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-faint); display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.page-label::before { content: ''; width: 32px; height: 1px; background: var(--glass-border-bright); flex-shrink: 0; }
+.page-h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 7vw, 100px); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 20px; }
+.page-h1 .chrome { background: var(--chrome); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.page-sub { font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--text-muted); max-width: 520px; letter-spacing: 0.04em; }
+
+/* FILTER TABS */
+.filter-bar { padding: 32px 48px; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid var(--glass-border); background: var(--surface); }
+.filter-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 18px; background: transparent; border: 1px solid var(--glass-border); color: var(--text-muted); cursor: none; transition: var(--transition); }
+.filter-btn:hover, .filter-btn.active { border-color: var(--glass-border-bright); color: var(--text); background: var(--glass-bg); }
+
+/* PROJECTS GRID */
+.works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 48px; background: var(--bg); }
+
+.work-card { background: var(--surface); border: 1px solid var(--glass-border); position: relative; overflow: hidden; transition: var(--transition); }
+.work-card:hover { background: var(--surface2); transform: translateY(-4px); }
+.work-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--chrome); transform: scaleX(0); transition: transform 0.4s ease; }
+.work-card:hover::before { transform: scaleX(1); }
+
+.work-thumb { width: 100%; height: 200px; position: relative; overflow: hidden; }
+.work-thumb img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(40%) brightness(0.75); transition: filter 0.5s ease, transform 0.5s ease; display: block; }
+.work-card:hover .work-thumb img { filter: grayscale(0%) brightness(0.95); transform: scale(1.05); }
+.work-thumb-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.35s ease; backdrop-filter: blur(3px); }
+.work-card:hover .work-thumb-overlay { opacity: 1; }
+.thumb-preview-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #fff; text-decoration: none; padding: 9px 18px; border: 1px solid rgba(255,255,255,0.5); transition: background 0.2s, color 0.2s; }
+.thumb-preview-link:hover { background: #fff; color: #000; }
+
+.work-body { padding: 28px 32px 32px; }
+.work-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--text-faint); margin-bottom: 10px; }
+.work-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 10px; letter-spacing: 0.02em; line-height: 1.3; }
+.work-desc { font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.8; color: var(--text-muted); margin-bottom: 18px; letter-spacing: 0.03em; }
+.work-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.work-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; padding: 3px 9px; border: 1px solid var(--glass-border); color: var(--text-faint); text-transform: uppercase; }
+.work-footer { display: flex; align-items: center; justify-content: space-between; }
+.work-industry { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-faint); }
+.live-badge { display: flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); padding: 6px 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); text-decoration: none; transition: var(--transition); }
+.live-badge:hover { border-color: var(--glass-border-bright); color: var(--text); }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* COMING SOON CARD */
+.work-card.coming-soon { opacity: 0.4; pointer-events: none; }
+.coming-soon-badge { position: absolute; top: 16px; right: 16px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-muted); z-index: 2; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* CTA */
+.works-cta { padding: 80px 48px; text-align: center; background: var(--surface); border-top: 1px solid var(--glass-border); }
+.works-cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 5vw, 72px); letter-spacing: 0.02em; margin-bottom: 16px; }
+.works-cta h2 .chrome { background: var(--chrome); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.works-cta p { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text-muted); letter-spacing: 0.04em; max-width: 400px; margin: 0 auto 36px; line-height: 1.8; }
+.btn-primary { background: var(--text); color: var(--bg); border: none; padding: 14px 36px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: none; transition: var(--transition); clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px)); text-decoration: none; display: inline-block; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,255,255,0.15); }
+
+footer { padding: 32px 48px; border-top: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.15em; background: var(--chrome); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+footer p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-faint); }
+
+/* BRAND NAME OVERLAY */
+.brand-name-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.88));
+  z-index: 1;
+  pointer-events: none;
+}
+.brand-name-overlay .bno-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: #fff;
+  display: block;
+  line-height: 1;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+}
+.brand-name-overlay .bno-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  display: block;
+  margin-top: 3px;
+}
+
+@media (max-width: 1024px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  #cursor, #cursor-trail { display: none; }
+  nav { padding: 16px 24px; }
+  .page-header { padding: 120px 24px 60px; }
+  .filter-bar { padding: 24px; }
+  .works-grid { grid-template-columns: 1fr; padding: 24px; }
+  .works-cta { padding: 60px 24px; }
+  footer { flex-direction: column; gap: 12px; padding: 28px 24px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html">BANKS</a>
+  <a class="nav-back" href="index.html">← Back to Portfolio</a>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle">◑</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-label reveal">Full Portfolio</div>
+  <h1 class="page-h1 reveal">ALL <span class="chrome">WORK</span></h1>
+  <p class="page-sub reveal">Every site I've built. Different industries, different aesthetics, one standard — premium.</p>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="fashion">Fashion</button>
+  <button class="filter-btn" data-filter="food">Food</button>
+  <button class="filter-btn" data-filter="beauty">Beauty</button>
+  <button class="filter-btn" data-filter="luxury">Luxury</button>
+  <button class="filter-btn" data-filter="real-estate">Real Estate</button>
+  <button class="filter-btn" data-filter="other">Other</button>
+</div>
+
+<div class="works-grid">
+
+  <!-- 01 -->
+  <div class="work-card reveal" data-category="luxury">
+    <div class="work-thumb">
+      <img src="ae7685b3f6993315e423325f7889a7f4.jpg" alt="AAURA Perfumery" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">AAURA</span>
+        <span class="bno-tag">Arabian Luxury Perfumery</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://aaura-perfume.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">01</div>
+      <div class="work-title">AAURA — Arabian Luxury Perfumery</div>
+      <p class="work-desc">Dark luxury perfume brand. Animated gold particle field, arabesque typography, product showcase with WhatsApp ordering. Every pixel drips with money.</p>
+      <div class="work-tags">
+        <span class="work-tag">Luxury</span>
+        <span class="work-tag">Dark Theme</span>
+        <span class="work-tag">Canvas FX</span>
+        <span class="work-tag">Arabic</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Fragrance</span>
+        <a href="https://aaura-perfume.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="work-card reveal" data-category="fashion">
+    <div class="work-thumb">
+      <img src="a3eb67a33eb96ed907adcdd7619cb9d5.jpg" alt="MALAAK Abayas" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">MALAAK</span>
+        <span class="bno-tag">Modest Luxury Abayas</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://malaak-abaya.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">02</div>
+      <div class="work-title">MALAAK — Modest Luxury Abayas</div>
+      <p class="work-desc">Minimal editorial fashion site for Gulf abaya brand. Split-hero layout, hover-reveal product grid, seamless WhatsApp order flow. Built for Snapchat-native buyers.</p>
+      <div class="work-tags">
+        <span class="work-tag">Fashion</span>
+        <span class="work-tag">Editorial</span>
+        <span class="work-tag">WhatsApp</span>
+        <span class="work-tag">Minimal</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Modest Fashion</span>
+        <a href="https://malaak-abaya.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="work-card reveal" data-category="fashion">
+    <div class="work-thumb">
+      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=400&fit=crop&auto=format" alt="NOIR ATELIER" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">NOIR ATELIER</span>
+        <span class="bno-tag">Luxury Ready-to-Wear</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://noir-atelier-clothing.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">03</div>
+      <div class="work-title">NOIR ATELIER — Luxury Ready-to-Wear</div>
+      <p class="work-desc">High-fashion split-screen editorial. Custom magnetic cursor, scrolling text marquee, French-named product grid. Bold. Cold. Unforgettable.</p>
+      <div class="work-tags">
+        <span class="work-tag">High Fashion</span>
+        <span class="work-tag">Custom Cursor</span>
+        <span class="work-tag">Editorial</span>
+        <span class="work-tag">B&amp;W</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Apparel</span>
+        <a href="https://noir-atelier-clothing.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="work-card reveal" data-category="food">
+    <div class="work-thumb">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop&auto=format" alt="Ember & Salt" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">EMBER &amp; SALT</span>
+        <span class="bno-tag">Wood-Fired Restaurant</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://ember-salt-restaurant.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">04</div>
+      <div class="work-title">Ember &amp; Salt — Wood-Fired Restaurant</div>
+      <p class="work-desc">Atmospheric restaurant site with CSS animated flame, warm ember palette, seasonal menu tabs, and table reservation CTA. You can almost smell the smoke.</p>
+      <div class="work-tags">
+        <span class="work-tag">Restaurant</span>
+        <span class="work-tag">Animation</span>
+        <span class="work-tag">Menu</span>
+        <span class="work-tag">Warm Dark</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Food &amp; Drink</span>
+        <a href="https://ember-salt-restaurant.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="work-card reveal" data-category="beauty">
+    <div class="work-thumb">
+      <img src="4c7faa2cf965371c0d8c790e9d5f61a1.jpg" alt="Reverie Beauty Salon" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">REVERIE</span>
+        <span class="bno-tag">Luxury Beauty Salon</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://reverie-salon.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">05</div>
+      <div class="work-title">Reverie — Luxury Beauty Salon</div>
+      <p class="work-desc">Soft marble luxury aesthetic. Services grid, team showcase, stats section, WhatsApp booking integration. Makes every salon look world-class.</p>
+      <div class="work-tags">
+        <span class="work-tag">Beauty</span>
+        <span class="work-tag">Light Theme</span>
+        <span class="work-tag">Bookings</span>
+        <span class="work-tag">Marble</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Beauty</span>
+        <a href="https://reverie-salon.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="work-card reveal" data-category="other">
+    <div class="work-thumb">
+      <img src="Screenshot_20260412-220250_Chrome.png" alt="Ape Academy" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">APE ACADEMY</span>
+        <span class="bno-tag">Academic Excellence</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://deploy-1-p1ke.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">06</div>
+      <div class="work-title">Ape Academy — Academic Excellence</div>
+      <p class="work-desc">Clean, bold educational platform. Strong brand identity, structured content layout, and a no-nonsense conversion flow built for serious learners.</p>
+      <div class="work-tags">
+        <span class="work-tag">Education</span>
+        <span class="work-tag">Dark Theme</span>
+        <span class="work-tag">Bold</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Education</span>
+        <a href="https://deploy-1-p1ke.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="work-card reveal" data-category="food">
+    <div class="work-thumb">
+      <img src="0aea7622c72fee9765034ae997ccd0de.jpg" alt="Padi" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">PADI</span>
+        <span class="bno-tag">Nigerian Cuisine</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://padi-three.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">07</div>
+      <div class="work-title">Padi — Nigerian Cuisine</div>
+      <p class="work-desc">Warm, inviting restaurant site celebrating authentic Nigerian food culture. Rich visuals, menu showcase, and direct order flow built for a hungry audience.</p>
+      <div class="work-tags">
+        <span class="work-tag">Restaurant</span>
+        <span class="work-tag">Nigerian</span>
+        <span class="work-tag">Warm Palette</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Food &amp; Drink</span>
+        <a href="https://padi-three.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 -->
+  <div class="work-card reveal" data-category="food">
+    <div class="work-thumb">
+      <img src="cb4d26b06d5fb26ff14ad7f5019afa77.jpg" alt="Hot Chef" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">HOT CHEF</span>
+        <span class="bno-tag">Culinary Excellence</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://hot-chef.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">08</div>
+      <div class="work-title">Hot Chef — Culinary Excellence</div>
+      <p class="work-desc">Bold, appetite-driving food site with high-impact photography, dynamic menu presentation, and frictionless booking. Every dish sells itself.</p>
+      <div class="work-tags">
+        <span class="work-tag">Restaurant</span>
+        <span class="work-tag">Photography</span>
+        <span class="work-tag">Menu</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Food &amp; Drink</span>
+        <a href="https://hot-chef.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 -->
+  <div class="work-card reveal" data-category="other">
+    <div class="work-thumb">
+      <img src="Screenshot_20260412-220325_Chrome.png" alt="Shadowz Map" loading="lazy">
+      <div class="brand-name-overlay">
+        <span class="bno-name">SHADOWZ</span>
+        <span class="bno-tag">Urban Art Intelligence</span>
+      </div>
+      <div class="work-thumb-overlay">
+        <a href="https://shadow-rho-three.vercel.app/" class="thumb-preview-link" target="_blank">Live Preview →</a>
+      </div>
+    </div>
+    <div class="work-body">
+      <div class="work-num">09</div>
+      <div class="work-title">Shadowz — Urban Art Intelligence</div>
+      <p class="work-desc">Geo-intelligence platform for street artists. High-contrast dark editorial design, interactive map UI, and data-driven stats. Paint smart. Stay free.</p>
+      <div class="work-tags">
+        <span class="work-tag">Tech</span>
+        <span class="work-tag">Dark Bold</span>
+        <span class="work-tag">Interactive</span>
+      </div>
+      <div class="work-footer">
+        <span class="work-industry">Urban Tech</span>
+        <a href="https://shadow-rho-three.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div> Live Site</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="works-cta">
+  <h2 class="reveal">WANT ONE <span class="chrome">LIKE THIS?</span></h2>
+  <p class="reveal">I build premium websites for businesses that want to look undeniable. Message me and we'll make it happen.</p>
+  <a href="https://wa.me/YOUR_PHONE_NUMBER" class="btn-primary reveal" target="_blank">Start a Project →</a>
+</div>
+
+<footer>
+  <div class="footer-logo">BANKS</div>
+  <p>2025 · Custom Web Design &amp; Development</p>
+  <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-faint)">Based in Nigeria · Available Worldwide</p>
+</footer>
+
+<script>
+const cur = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+  setTimeout(() => { trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px'; }, 80);
+});
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const html = document.documentElement;
+  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+/* FILTER */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.work-card').forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
