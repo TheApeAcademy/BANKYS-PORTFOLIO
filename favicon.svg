@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#060608" rx="20"/>
+  <text
+    font-family="'Arial Black', 'Impact', 'Haettenschweiler', Arial, sans-serif"
+    font-weight="900"
+    font-size="54"
+    y="128"
+    x="100"
+    text-anchor="middle"
+    letter-spacing="-1"
+  >
+    <tspan fill="#0A84FF">B</tspan><tspan fill="#BF5AF2">A</tspan><tspan fill="#5AC8FA">N</tspan><tspan fill="#30D158">K</tspan><tspan fill="#FF375F">S</tspan>
+  </text>
+</svg>
