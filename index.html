@@ -10,25 +10,31 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,900;1,600;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#060608;--surface:#0c0c10;--surface2:#111118;
   --text:#f5f5f7;--text-muted:rgba(245,245,247,.55);--text-faint:rgba(245,245,247,.22);
   --green:#30D158;
+  --wine-bg:#3a0a1f;--wine:#e0295f;--emerald-bg:#082a20;--emerald:#17c98d;
+  --font-exotic:'Fraunces',Georgia,serif;
   --glass:rgba(245,245,247,.05);--glass-b:rgba(245,245,247,.09);--glass-bb:rgba(245,245,247,.20);
   --chrome:linear-gradient(135deg,#777 0%,#fff 35%,#aaa 55%,#fff 72%,#555 100%);
   --ease:cubic-bezier(0.16,1,0.3,1);--t:.45s;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:linear-gradient(rgba(6,6,8,.91),rgba(6,6,8,.91)),url('zebra-swirl-soft.jpg') center/cover no-repeat fixed,var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
 
 /* ── STRIPE SYSTEM ── the zebra grammar: irregular, layered, purposeful ── */
 .stripe-mark{position:relative;display:inline-block;color:var(--text)}
 .stripe-mark::after{content:'';position:absolute;left:1%;right:1%;bottom:-.07em;height:.16em;background-image:repeating-linear-gradient(112deg,var(--text) 0 5px,transparent 5px 5px,transparent 5px 12px),repeating-linear-gradient(112deg,rgba(245,245,247,.4) 0 2px,transparent 2px 2px,transparent 2px 20px);opacity:.9}
 .stripe-rule{position:absolute;top:0;left:0;right:0;height:3px;background-image:repeating-linear-gradient(100deg,var(--text) 0 7px,transparent 7px 7px,transparent 7px 15px);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);opacity:.9}
 .stripe-bg{background-image:repeating-linear-gradient(124deg,rgba(245,245,247,.10) 0 2px,transparent 2px 2px,transparent 2px 16px),repeating-linear-gradient(124deg,rgba(245,245,247,.045) 0 5px,transparent 5px 5px,transparent 5px 42px)}
+.exotic{font-family:var(--font-exotic);font-style:italic;font-weight:900;letter-spacing:-.01em}
+.exotic-wine,.exotic.exotic-wine,.stmt-bold.exotic-wine{color:var(--wine)!important}
+.exotic-emerald,.exotic.exotic-emerald,.stmt-bold.exotic-emerald{color:var(--emerald)!important}
+.glass{background:rgba(245,245,247,.045);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
 
 /* ── SCROLL PROGRESS ── */
 #scroll-bar{position:fixed;top:0;left:0;height:3px;background-image:repeating-linear-gradient(90deg,#fff 0 5px,transparent 5px 5px,transparent 5px 9px);z-index:10000;width:0%;transition:width .08s linear}
@@ -74,7 +80,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .hero-name-accent{margin-top:.12em}
 .hero-type-sub{display:block;font-size:clamp(14px,1.8vw,24px);font-weight:300;letter-spacing:.04em;color:var(--text-muted);margin-top:16px}
 
-.hero-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:440px;margin:28px 0 40px;letter-spacing:.01em}
+.hero-sub{font-size:16px;font-weight:400;line-height:1.7;color:var(--text-muted);max-width:460px;margin:28px 0 40px;letter-spacing:.01em}
 .hero-sub em{font-style:normal;color:var(--text);font-weight:600}
 
 .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
@@ -112,7 +118,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── STATEMENT ── */
-#statement{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--surface);padding:100px 48px;overflow:hidden;position:relative}
+#statement{min-height:100vh;display:flex;align-items:center;justify-content:center;background:rgba(12,12,16,.9);padding:100px 48px;overflow:hidden;position:relative}
 #statement::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(245,245,247,.05) 0%,transparent 70%)}
 .stmt-inner{position:relative;z-index:2;text-align:center;max-width:1000px;margin:0 auto}
 .stmt-label{font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--text-faint);margin-bottom:48px;display:flex;align-items:center;justify-content:center;gap:14px}
@@ -123,7 +129,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .stmt-word.vis{opacity:1;transform:translateY(0)}
 .stmt-thin{font-size:clamp(18px,2.5vw,30px);font-weight:200;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase}
 .stmt-bold{font-size:clamp(64px,10vw,140px);font-weight:900;letter-spacing:-.04em;line-height:.9;color:var(--text)}
-.stmt-outline{font-size:clamp(64px,10vw,140px);font-weight:900;letter-spacing:-.04em;line-height:.9;color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.3)}
+.stmt-outline{font-size:clamp(64px,10vw,140px);font-weight:900;letter-spacing:-.04em;line-height:.9;color:transparent;-webkit-text-stroke:2px var(--emerald)}
 .stmt-spacer{height:20px}
 
 /* ── TWO-WAY MARQUEE ── */
@@ -145,10 +151,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .s-h2{font-size:clamp(44px,6vw,88px);font-weight:900;line-height:.94;letter-spacing:-.03em;margin-bottom:18px}
 .s-h2 .thin{font-weight:200;letter-spacing:.02em}
 .s-h2 .outline{color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.35)}
-.s-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:480px;letter-spacing:.01em}
+.s-sub{font-size:17px;font-weight:400;line-height:1.7;color:var(--text-muted);max-width:500px;letter-spacing:.01em}
 
 /* ── WHAT WE BUILD ── */
-#build{background:linear-gradient(to bottom,var(--bg) 0%,var(--surface) 60%)}
+#build{background:linear-gradient(to bottom,rgba(6,6,8,.93) 0%,rgba(12,12,16,.93) 60%)}
 .skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:64px}
 .radar-wrap{display:flex;flex-direction:column;align-items:center;gap:24px}
 #skills-radar{width:100%;max-width:380px;aspect-ratio:1;display:block}
@@ -162,22 +168,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .sk-pct{font-size:22px;font-weight:900;letter-spacing:-.02em;color:var(--text)}
 .sk-bar-bg{height:4px;background:rgba(245,245,247,.07);border-radius:100px;overflow:hidden}
 .sk-bar-fill{height:100%;border-radius:100px;width:0%;background:repeating-linear-gradient(90deg,#fff 0 6px,rgba(245,245,247,.25) 6px 6px,rgba(245,245,247,.25) 6px 10px);transition:width 1.6s cubic-bezier(.4,0,.2,1)}
-.sk-tags{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--text-faint);text-transform:uppercase}
+.sk-tags{font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--text-faint);text-transform:uppercase}
 
 /* ── NUMBERS ── */
-#numbers{background:var(--surface);padding:100px 48px;overflow:hidden;position:relative}
+#numbers{background:rgba(12,12,16,.93);padding:100px 48px;overflow:hidden;position:relative}
 #numbers::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(245,245,247,.05) 0%,transparent 70%)}
-.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:64px}
-.num-card{background:var(--surface2);border:1px solid var(--glass-b);padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:transform var(--t) var(--ease)}
+.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:64px}
+.num-card{background:rgba(245,245,247,.045);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border:1px solid rgba(245,245,247,.14);border-radius:24px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:transform var(--t) var(--ease)}
 .num-card:hover{transform:translateY(-4px)}
 .num-card:hover .stripe-rule{transform:scaleX(1)}
 .num-big{display:block;font-size:clamp(52px,6vw,80px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:10px;color:var(--text)}
 .num-label{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)}
 
 /* ── SELECTED WORK ── */
-#work{background:var(--bg)}
-.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:64px}
-.bento-card{background:var(--surface);border:1px solid var(--glass-b);position:relative;overflow:hidden;border-radius:16px;cursor:none;transform-style:preserve-3d;transition:box-shadow .3s ease}
+#work{background:rgba(6,6,8,.93)}
+.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:64px}
+.bento-card{background:rgba(245,245,247,.045);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border:1px solid rgba(245,245,247,.14);position:relative;overflow:hidden;border-radius:26px;cursor:none;transform-style:preserve-3d;transition:box-shadow .3s ease}
 .bento-card:nth-child(1){grid-column:span 5}
 .bento-card:nth-child(2){grid-column:span 7}
 .bento-card:nth-child(3){grid-column:span 12}
@@ -209,7 +215,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .bento-body{padding:20px 22px 22px}
 .bento-num{font-size:10px;font-weight:600;letter-spacing:.2em;color:var(--text-faint);margin-bottom:6px}
 .bento-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;line-height:1.3}
-.bento-desc{font-size:11px;font-weight:400;line-height:1.75;color:var(--text-muted);margin-bottom:12px}
+.bento-desc{font-size:12px;font-weight:400;line-height:1.75;color:var(--text-muted);margin-bottom:12px}
 .bento-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
 .bento-tag{font-size:9px;font-weight:600;letter-spacing:.1em;padding:3px 9px;border:1px solid var(--glass-b);color:var(--text-faint);text-transform:uppercase;border-radius:4px}
 .bento-footer{display:flex;align-items:center;justify-content:space-between}
@@ -228,7 +234,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .btn-more:hover .btn-more-arrow{transform:translateX(5px)}
 
 /* ── PROCESS ── */
-#process{background:var(--bg);overflow:hidden}
+#process{background:rgba(6,6,8,.93);overflow:hidden}
 .process-timeline{margin-top:60px;position:relative}
 .process-line{position:absolute;top:28px;left:0;right:0;height:1px;background:var(--glass-b)}
 .process-line-fill{position:absolute;top:28px;left:0;height:2px;background-image:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 6px,transparent 6px 12px);width:0%;transition:width 1.5s var(--ease)}
@@ -242,7 +248,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .process-step p{font-size:12px;font-weight:400;line-height:1.75;color:var(--text-muted)}
 
 /* ── APPROACH (ecosystem) ── */
-#approach{background:var(--surface);position:relative;overflow:hidden}
+#approach{background:rgba(8,20,17,.95);position:relative;overflow:hidden}
+#approach::before{content:'';position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(8,20,17,.78),rgba(8,20,17,.82)),repeating-linear-gradient(124deg,rgba(23,201,141,.09) 0 2px,transparent 2px 2px,transparent 2px 16px),url('zebra-interference.jpg');background-size:auto,auto,cover;background-position:center;background-repeat:repeat,repeat,no-repeat}
 .approach-flow{display:flex;align-items:center;gap:0;margin:64px 0 56px;overflow-x:auto;padding-bottom:8px}
 .af-node{flex:1;min-width:130px;text-align:center;padding:20px 10px;position:relative}
 .af-node-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
@@ -250,18 +257,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .af-node.dim{opacity:.45}
 .af-node.dim .af-node-label{color:var(--text-muted)}
 .af-connector{flex-shrink:0;width:48px;height:2px;background-image:repeating-linear-gradient(90deg,rgba(245,245,247,.5) 0 5px,transparent 5px 5px,transparent 5px 10px)}
-.approach-verticals{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:16px}
-.av-card{background:var(--surface2);border:1px solid var(--glass-b);padding:32px 26px;position:relative}
-.av-card.active{border-color:var(--glass-bb)}
+.approach-verticals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.av-card{background:rgba(245,245,247,.045);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border:1px solid rgba(245,245,247,.14);border-radius:22px;padding:32px 26px;position:relative}
+.av-card.active{border-color:rgba(23,201,141,.4)}
 .av-tag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);border:1px solid var(--glass-b);padding:4px 9px;border-radius:5px;display:inline-block;margin-bottom:16px}
 .av-tag.live{color:var(--green);border-color:rgba(48,209,88,.3)}
 .av-title{font-size:19px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px;color:var(--text)}
 .av-title.faint{color:var(--text-muted)}
-.av-desc{font-size:12px;line-height:1.75;color:var(--text-muted)}
+.av-desc{font-size:13px;line-height:1.75;color:var(--text-muted)}
 
 /* ── START A PROJECT ── */
-#start-a-project{background:var(--bg)}
-.sp-card{max-width:680px;margin:64px auto 0;background:var(--surface2);border:1px solid var(--glass-b);border-radius:20px;padding:48px;position:relative;overflow:hidden}
+#start-a-project{background:rgba(6,6,8,.93);position:relative;overflow:hidden}
+#start-a-project::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.08;filter:grayscale(1);background:url('zebra-fur-macro.jpg') center/cover no-repeat}
+.sp-card{max-width:680px;margin:64px auto 0;background:rgba(245,245,247,.05);backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.4);border:1px solid rgba(245,245,247,.15);border-radius:32px;padding:48px;position:relative;overflow:hidden}
 .sp-steps-bar{display:flex;gap:6px;margin-bottom:40px}
 .sp-step-seg{flex:1;height:3px;background:var(--glass-b);border-radius:2px;overflow:hidden}
 .sp-step-seg-fill{height:100%;width:0%;background-image:repeating-linear-gradient(90deg,#fff 0 4px,transparent 4px 4px,transparent 4px 8px);transition:width .4s var(--ease)}
@@ -288,32 +296,35 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .sp-success p{font-size:14px;color:var(--text-muted);line-height:1.8;max-width:420px;margin:0 auto 28px}
 
 /* ── ABOUT ── */
-#about{background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}
+#about{background:rgba(24,8,14,.95);position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}
+#about::before{content:'';position:absolute;inset:0;z-index:-1;background-image:repeating-linear-gradient(124deg,rgba(224,41,95,.10) 0 2px,transparent 2px 2px,transparent 2px 16px),repeating-linear-gradient(124deg,rgba(224,41,95,.05) 0 5px,transparent 5px 5px,transparent 5px 42px)}
+.about-photo{border-radius:26px;overflow:hidden;margin-bottom:28px;max-height:300px;border:1px solid rgba(245,245,247,.14)}
+.about-photo img{width:100%;height:100%;object-fit:cover;display:block;max-height:300px}
 .about-left{padding:100px 64px;border-right:1px solid var(--glass-b)}
 .about-right{padding:100px 64px;display:flex;flex-direction:column;justify-content:center}
 .about-p{font-size:14px;font-weight:400;line-height:1.9;color:var(--text-muted);margin-bottom:22px}
 .about-p em{font-style:normal;color:var(--text);font-weight:600}
 .about-big-quote{font-size:clamp(20px,2.5vw,32px);font-weight:700;line-height:1.3;letter-spacing:-.02em;color:var(--text);margin:36px 0;border-left:3px solid var(--text);padding-left:22px}
 .about-big-quote .aq-thin{display:block;font-weight:200;font-size:.75em;color:var(--text-muted);letter-spacing:.02em}
-.about-values{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:40px}
-.value-card{padding:24px 20px;background:var(--surface2);border:1px solid var(--glass-b);transition:transform var(--t) var(--ease)}
+.about-values{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px}
+.value-card{padding:24px 20px;background:rgba(245,245,247,.045);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border:1px solid rgba(245,245,247,.14);border-radius:20px;transition:transform var(--t) var(--ease)}
 .value-card:hover{transform:translateY(-3px)}
 .value-num{display:block;font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:4px;color:var(--text)}
 .value-label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint)}
-.afc-list{display:flex;flex-direction:column;gap:3px}
-.afc{padding:24px 26px;background:var(--surface2);border:1px solid var(--glass-b);overflow:hidden;transition:transform var(--t) var(--ease),background var(--t)}
-.afc:hover{background:rgba(17,17,24,.95);transform:translateX(4px)}
+.afc-list{display:flex;flex-direction:column;gap:10px}
+.afc{padding:24px 26px;background:rgba(245,245,247,.045);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border:1px solid rgba(245,245,247,.14);border-radius:20px;overflow:hidden;transition:transform var(--t) var(--ease),background var(--t)}
+.afc:hover{background:rgba(245,245,247,.09);transform:translateX(4px)}
 .afc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:10px;background:var(--glass)}
 .afc-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px;letter-spacing:-.01em}
-.afc-desc{font-size:12px;font-weight:400;line-height:1.75;color:var(--text-muted)}
+.afc-desc{font-size:13px;font-weight:400;line-height:1.75;color:var(--text-muted)}
 
 /* ── CONTACT ── */
-#contact{position:relative;overflow:hidden;padding:120px 48px;text-align:center;background:linear-gradient(to bottom,var(--bg) 40%,var(--surface) 100%)}
+#contact{position:relative;overflow:hidden;padding:120px 48px;text-align:center;background:linear-gradient(to bottom,rgba(6,6,8,.9) 40%,rgba(12,12,16,.93) 100%)}
 #cta-liquid{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:.22}
 .contact-inner{position:relative;z-index:2;max-width:720px;margin:0 auto}
 .contact-h2{font-size:clamp(52px,8vw,110px);font-weight:900;line-height:.9;letter-spacing:-.04em;margin-bottom:28px}
 .contact-h2 .thin{font-weight:200}
-.contact-sub{font-size:15px;font-weight:400;line-height:1.8;color:var(--text-muted);max-width:500px;margin:0 auto 48px}
+.contact-sub{font-size:17px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:520px;margin:0 auto 48px}
 .contact-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:40px}
 .contact-link{display:inline-flex;align-items:center;gap:9px;padding:12px 24px;background:var(--glass);border:1px solid var(--glass-b);color:var(--text-muted);font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:all var(--t) var(--ease)}
 .contact-link:hover{border-color:var(--glass-bb);color:var(--text);transform:translateY(-3px);background:rgba(245,245,247,.08)}
@@ -331,7 +342,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 .dropdown-trigger:hover,.dropdown-wrap.open .dropdown-trigger{border-color:var(--glass-bb);color:var(--text);background:rgba(245,245,247,.08)}
 .arrow{font-size:9px;transition:transform .3s ease;display:inline-block}
 .dropdown-wrap.open .arrow{transform:rotate(180deg)}
-.dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;min-width:210px;background:#111118;border:1px solid var(--glass-bb);z-index:500;display:none;flex-direction:column;overflow:hidden;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;min-width:210px;background:rgba(17,17,24,.72);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(245,245,247,.18);z-index:500;display:none;flex-direction:column;overflow:hidden;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 .dropdown-wrap.open .dropdown-menu{display:flex}
 .dropdown-item{display:flex;align-items:center;gap:12px;padding:13px 18px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;border-bottom:1px solid var(--glass-b);transition:background .2s,color .2s}
 .dropdown-item:last-child{border-bottom:none}
@@ -493,8 +504,8 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   <div class="stmt-inner">
     <div class="stmt-label reveal">The Philosophy</div>
     <div style="overflow:hidden"><span class="stmt-thin stmt-word">every idea deserves to become</span></div>
-    <div style="overflow:hidden;margin:8px 0"><span class="stmt-bold stmt-word" style="transition-delay:.15s">SOMETHING</span></div>
-    <div style="overflow:hidden"><span class="stmt-bold stmt-outline stmt-word" style="transition-delay:.3s">REAL.</span></div>
+    <div style="overflow:hidden;margin:8px 0"><span class="stmt-bold stmt-word exotic exotic-wine" style="transition-delay:.15s">SOMETHING</span></div>
+    <div style="overflow:hidden"><span class="stmt-bold stmt-outline stmt-word exotic" style="transition-delay:.3s">REAL.</span></div>
     <div class="stmt-spacer"></div>
     <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">no two businesses are the same —</span></div>
     <div style="overflow:hidden;margin-top:8px"><span class="stmt-bold stmt-word stripe-mark" style="transition-delay:.6s">NEITHER ARE WE.</span></div>
@@ -793,7 +804,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 <!-- THE ZEBRAISH APPROACH -->
 <section class="section" id="approach">
   <div class="s-label reveal">04 · The Bigger Picture</div>
-  <h2 class="s-h2 reveal">STUDIO IS THE <span class="stripe-mark">FIRST STEP.</span></h2>
+  <h2 class="s-h2 reveal">STUDIO IS THE <span class="exotic exotic-emerald">FIRST STEP.</span></h2>
   <p class="s-sub reveal">Zebraish Studio is the build layer of a larger ecosystem — one that's still being built, on purpose, in the open.</p>
 
   <div class="approach-flow reveal">
@@ -900,7 +911,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   <div class="about-left">
     <div class="sec-vid reveal"><video autoplay muted loop playsinline style="width:160px;height:160px;border-radius:24px"><source src="3d-integrate-weekend.mp4" type="video/mp4"></video></div>
     <div class="s-label reveal">06 · About</div>
-    <h2 class="s-h2 reveal">ABOUT <span class="stripe-mark">ZEBRAISH STUDIO</span></h2>
+    <h2 class="s-h2 reveal">ABOUT <span class="exotic exotic-wine">ZEBRAISH STUDIO</span></h2>
     <p class="about-p reveal">I'm the founder behind <em>Zebraish Studio</em> — the build layer of the wider Zebraish ecosystem. Today, that means one person, hand-building real digital products for real businesses.</p>
     <p class="about-p reveal">Most agencies are slow, overpriced, and generic. I started building because good ideas kept getting undersold online. Zebraish Studio is the opposite — <em>fast, direct, custom</em>, and built around what a business actually needs to become real.</p>
     <div class="about-big-quote reveal">
@@ -916,6 +927,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
     </div>
   </div>
   <div class="about-right">
+    <div class="about-photo reveal-scale"><img src="zebra-confidence.jpg" alt="Confidence, without ego." loading="lazy"></div>
     <div class="afc-list reveal">
       <div class="afc"><div class="afc-icon">💬</div><div class="afc-title">Clear Communication</div><p class="afc-desc">You'll always know exactly what's being worked on. No chasing, no going dark, no surprises.</p></div>
       <div class="afc"><div class="afc-icon">🎯</div><div class="afc-title">Purpose-Built Design</div><p class="afc-desc">Every font, colour, layout, and interaction serves one goal: making your idea look and work undeniable.</p></div>

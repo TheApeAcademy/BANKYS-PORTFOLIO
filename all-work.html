@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,900;1,600;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #060608;
@@ -19,6 +19,8 @@
   --text-muted: rgba(245,245,247,.55);
   --text-faint: rgba(245,245,247,.22);
   --green: #30D158;
+  --wine-bg:#3a0a1f;--wine:#e0295f;--emerald-bg:#082a20;--emerald:#17c98d;
+  --font-exotic:'Fraunces',Georgia,serif;
   --glass: rgba(245,245,247,.05);
   --glass-b: rgba(245,245,247,.09);
   --glass-bb: rgba(245,245,247,.20);
@@ -28,11 +30,14 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:linear-gradient(rgba(6,6,8,.91),rgba(6,6,8,.91)),url('zebra-swirl-soft.jpg') center/cover no-repeat fixed,var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
 
 .stripe-mark{position:relative;display:inline-block;color:var(--text)}
 .stripe-mark::after{content:'';position:absolute;left:1%;right:1%;bottom:-.07em;height:.16em;background-image:repeating-linear-gradient(112deg,var(--text) 0 5px,transparent 5px 5px,transparent 5px 12px),repeating-linear-gradient(112deg,rgba(245,245,247,.4) 0 2px,transparent 2px 2px,transparent 2px 20px);opacity:.9}
 .stripe-bg{background-image:repeating-linear-gradient(124deg,rgba(245,245,247,.10) 0 2px,transparent 2px 2px,transparent 2px 16px),repeating-linear-gradient(124deg,rgba(245,245,247,.045) 0 5px,transparent 5px 5px,transparent 5px 42px)}
+.exotic{font-family:var(--font-exotic);font-style:italic;font-weight:900;letter-spacing:-.01em}
+.exotic-wine,.exotic.exotic-wine{color:var(--wine)!important}
+.exotic-emerald,.exotic.exotic-emerald{color:var(--emerald)!important}
 
 #scroll-bar{position:fixed;top:0;left:0;height:3px;background-image:repeating-linear-gradient(90deg,#fff 0 5px,transparent 5px 5px,transparent 5px 9px);z-index:10000;width:0%;transition:width .1s linear}
 #cur{position:fixed;width:10px;height:10px;background:var(--text);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:transform .15s ease}
@@ -60,15 +65,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .page-label::before{content:'';width:28px;height:1px;background:var(--glass-bb);flex-shrink:0}
 .page-h1{font-size:clamp(56px,8vw,110px);font-weight:900;line-height:.92;letter-spacing:-.04em;margin-bottom:20px}
 .page-h1 .thin{font-weight:200}
-.page-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:560px;letter-spacing:.01em}
+.page-sub{font-size:17px;font-weight:400;line-height:1.7;color:var(--text-muted);max-width:560px;letter-spacing:.01em}
 .page-honesty{font-size:12px;color:var(--text-faint);letter-spacing:.02em;max-width:560px;margin-top:16px}
 
-.filter-bar{padding:28px 48px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--glass-b);background:var(--surface);position:sticky;top:57px;z-index:100;backdrop-filter:blur(16px)}
+.filter-bar{padding:28px 48px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--glass-b);background:rgba(12,12,16,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:sticky;top:57px;z-index:100}
 .filter-btn{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;background:transparent;border:1px solid var(--glass-b);color:var(--text-muted);cursor:none;transition:all var(--t) var(--ease);border-radius:100px}
 .filter-btn:hover,.filter-btn.active{border-color:var(--glass-bb);color:var(--text);background:rgba(245,245,247,.08)}
 
-.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:48px;background:var(--bg)}
-.work-card{background:var(--surface);border:1px solid var(--glass-b);position:relative;overflow:hidden;border-radius:16px;cursor:none;transition:transform .3s ease,box-shadow .3s ease}
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:48px;background:rgba(6,6,8,.93)}
+.work-card{background:rgba(245,245,247,.045);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border:1px solid rgba(245,245,247,.14);position:relative;overflow:hidden;border-radius:24px;cursor:none;transition:transform .3s ease,box-shadow .3s ease}
 .work-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.6)}
 .work-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background-image:repeating-linear-gradient(100deg,#fff 0 7px,transparent 7px 7px,transparent 7px 15px);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);z-index:2}
 .work-card:hover::before{transform:scaleX(1)}
@@ -101,7 +106,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-.works-cta{padding:80px 48px;text-align:center;background:var(--surface);border-top:1px solid var(--glass-b);position:relative;overflow:hidden}
+.works-cta{padding:80px 48px;text-align:center;background:rgba(12,12,16,.93);border-top:1px solid var(--glass-b);position:relative;overflow:hidden}
 .works-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(245,245,247,.05) 0%,transparent 70%)}
 .works-cta>*{position:relative;z-index:2}
 .works-cta h2{font-size:clamp(36px,5vw,72px);font-weight:900;letter-spacing:-.03em;margin-bottom:16px}
@@ -341,7 +346,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   <div class="sec-vid reveal">
     <video autoplay muted loop playsinline><source src="cube.mp4" type="video/mp4"></video>
   </div>
-  <h2 class="reveal">WANT ONE <span class="stripe-mark">LIKE THIS?</span></h2>
+  <h2 class="reveal">WANT ONE <span class="exotic exotic-wine">LIKE THIS?</span></h2>
   <p class="reveal">Zebraish Studio builds premium, hand-coded products for founders and businesses that want to look undeniable. Tell us what you're building and we'll take it from there.</p>
   <a href="index.html#start-a-project" class="btn-primary reveal">Start a Project →</a>
 </div>
