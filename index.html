@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZEBRAISH STUDIO — Build Layer of the Zebraish Ecosystem</title>
 <meta name="description" content="Zebraish Studio helps founders and businesses turn ideas into real, hand-built digital products — websites, software, brand, automation. The build layer of the Zebraish ecosystem.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,7 @@
   --text:#f5f5f7;--text-muted:rgba(245,245,247,.55);--text-faint:rgba(245,245,247,.22);
   --green:#30D158;
   --wine-bg:#3a0a1f;--wine:#e0295f;--emerald-bg:#082a20;--emerald:#17c98d;
+  --sapphire:#3d7ef0;--gold:#e8a93c;
   --font-exotic:'Fraunces',Georgia,serif;
   --glass:rgba(245,245,247,.05);--glass-b:rgba(245,245,247,.09);--glass-bb:rgba(245,245,247,.20);
   --chrome:linear-gradient(135deg,#777 0%,#fff 35%,#aaa 55%,#fff 72%,#555 100%);
@@ -48,9 +49,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);background:rgba(6,6,8,.55);border-bottom:1px solid var(--glass-b)}
-.nav-logo{font-size:19px;font-weight:800;letter-spacing:.06em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:9px}
-.logo-mark{width:22px;height:22px;border-radius:5px;background:#000;border:1px solid rgba(245,245,247,.3);position:relative;overflow:hidden;flex-shrink:0}
-.logo-mark::before{content:'';position:absolute;inset:-6px;background-image:repeating-linear-gradient(128deg,#fff 0 2px,transparent 2px 2px,transparent 2px 5px)}
+.nav-logo{font-size:19px;font-weight:800;letter-spacing:.06em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-mark{height:30px;width:auto;flex-shrink:0;display:block}
 .nav-logo-tag{font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--text-faint);border:1px solid var(--glass-b);padding:3px 7px;border-radius:5px;text-transform:uppercase;margin-left:1px}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color .25s}
@@ -178,6 +178,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .num-card:hover{transform:translateY(-4px)}
 .num-card:hover .stripe-rule{transform:scaleX(1)}
 .num-big{display:block;font-size:clamp(52px,6vw,80px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:10px;color:var(--text)}
+.num-card:nth-child(1){background:linear-gradient(160deg,rgba(224,41,95,.12),rgba(245,245,247,.04))}
+.num-card:nth-child(1) .num-big{color:var(--wine)}
+.num-card:nth-child(1) .stripe-rule{background-image:repeating-linear-gradient(100deg,var(--wine) 0 7px,transparent 7px 7px,transparent 7px 15px)}
+.num-card:nth-child(2){background:linear-gradient(160deg,rgba(232,169,60,.12),rgba(245,245,247,.04))}
+.num-card:nth-child(2) .num-big{color:var(--gold)}
+.num-card:nth-child(2) .stripe-rule{background-image:repeating-linear-gradient(100deg,var(--gold) 0 7px,transparent 7px 7px,transparent 7px 15px)}
+.num-card:nth-child(3){background:linear-gradient(160deg,rgba(23,201,141,.12),rgba(245,245,247,.04))}
+.num-card:nth-child(3) .num-big{color:var(--emerald)}
+.num-card:nth-child(3) .stripe-rule{background-image:repeating-linear-gradient(100deg,var(--emerald) 0 7px,transparent 7px 7px,transparent 7px 15px)}
+.num-card:nth-child(4){background:linear-gradient(160deg,rgba(61,126,240,.12),rgba(245,245,247,.04))}
+.num-card:nth-child(4) .num-big{color:var(--sapphire)}
+.num-card:nth-child(4) .stripe-rule{background-image:repeating-linear-gradient(100deg,var(--sapphire) 0 7px,transparent 7px 7px,transparent 7px 15px)}
 .num-label{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)}
 
 /* ── SELECTED WORK ── */
@@ -298,8 +310,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 /* ── ABOUT ── */
 #about{background:rgba(24,8,14,.95);position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}
 #about::before{content:'';position:absolute;inset:0;z-index:-1;background-image:repeating-linear-gradient(124deg,rgba(224,41,95,.10) 0 2px,transparent 2px 2px,transparent 2px 16px),repeating-linear-gradient(124deg,rgba(224,41,95,.05) 0 5px,transparent 5px 5px,transparent 5px 42px)}
-.about-photo{border-radius:26px;overflow:hidden;margin-bottom:28px;max-height:300px;border:1px solid rgba(245,245,247,.14)}
-.about-photo img{width:100%;height:100%;object-fit:cover;display:block;max-height:300px}
 .about-left{padding:100px 64px;border-right:1px solid var(--glass-b)}
 .about-right{padding:100px 64px;display:flex;flex-direction:column;justify-content:center}
 .about-p{font-size:14px;font-weight:400;line-height:1.9;color:var(--text-muted);margin-bottom:22px}
@@ -332,8 +342,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .contact-main:hover{transform:scale(1.04) translateY(-2px);box-shadow:0 20px 50px rgba(245,245,247,.3)}
 
 /* ── FOOTER ── */
-footer{padding:36px 48px;border-top:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;background:var(--bg);flex-wrap:wrap;gap:12px}
-.footer-logo{font-size:20px;font-weight:900;letter-spacing:.05em;background:var(--chrome);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+footer{padding:44px 48px;border-top:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;background:var(--bg);flex-wrap:wrap;gap:16px}
+.footer-logo{display:flex;align-items:center;gap:12px;font-size:26px;font-weight:900;letter-spacing:.04em;color:var(--text)}
+.footer-logo img{height:44px;width:auto;display:block}
 footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
 
 /* ── DROPDOWN ── */
@@ -413,7 +424,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#hero"><span class="logo-mark"></span>ZEBRAISH<span class="nav-logo-tag">Studio</span></a>
+  <a class="nav-logo" href="#hero"><img class="logo-mark" src="zebraish-mark.png" alt="Zebraish">ZEBRAISH<span class="nav-logo-tag">Studio</span></a>
   <ul class="nav-links">
     <li><a href="#build">Build</a></li>
     <li><a href="#work">Work</a></li>
@@ -522,43 +533,43 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
     <div class="radar-wrap reveal-left">
       <canvas id="skills-radar"></canvas>
       <div class="radar-legend">
-        <div class="rl-item"><span class="rl-dot" style="background:#ffffff"></span>Build</div>
-        <div class="rl-item"><span class="rl-dot" style="background:#d4d4d8"></span>Brand</div>
-        <div class="rl-item"><span class="rl-dot" style="background:#a8a8b0"></span>Automate</div>
-        <div class="rl-item"><span class="rl-dot" style="background:#84848c"></span>Intelligence</div>
-        <div class="rl-item"><span class="rl-dot" style="background:#5c5c64"></span>Speed</div>
-        <div class="rl-item"><span class="rl-dot" style="background:#f0f0f2"></span>Delivery</div>
+        <div class="rl-item"><span class="rl-dot" style="background:var(--wine)"></span>Build</div>
+        <div class="rl-item"><span class="rl-dot" style="background:var(--gold)"></span>Brand</div>
+        <div class="rl-item"><span class="rl-dot" style="background:var(--emerald)"></span>Automate</div>
+        <div class="rl-item"><span class="rl-dot" style="background:var(--sapphire)"></span>Intelligence</div>
+        <div class="rl-item"><span class="rl-dot" style="background:var(--emerald)"></span>Speed</div>
+        <div class="rl-item"><span class="rl-dot" style="background:var(--gold)"></span>Delivery</div>
       </div>
     </div>
     <div class="skill-list reveal-right">
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Build</span><span class="sk-pct">97%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="97"></div></div>
+        <div class="sk-top"><span class="sk-name">Build</span><span class="sk-pct" style="color:var(--wine)">97%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="97" style="background:repeating-linear-gradient(90deg,var(--wine) 0 6px,rgba(224,41,95,.25) 6px 6px,rgba(224,41,95,.25) 6px 10px)"></div></div>
         <div class="sk-tags">Websites · Web Apps · Software</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Brand</span><span class="sk-pct">94%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="94"></div></div>
+        <div class="sk-top"><span class="sk-name">Brand</span><span class="sk-pct" style="color:var(--gold)">94%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="94" style="background:repeating-linear-gradient(90deg,var(--gold) 0 6px,rgba(232,169,60,.25) 6px 6px,rgba(232,169,60,.25) 6px 10px)"></div></div>
         <div class="sk-tags">Identity · Typography · Design Systems</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Automate</span><span class="sk-pct">88%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="88"></div></div>
+        <div class="sk-top"><span class="sk-name">Automate</span><span class="sk-pct" style="color:var(--emerald)">88%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="88" style="background:repeating-linear-gradient(90deg,var(--emerald) 0 6px,rgba(23,201,141,.25) 6px 6px,rgba(23,201,141,.25) 6px 10px)"></div></div>
         <div class="sk-tags">Workflows · Integrations · CRM</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Intelligence</span><span class="sk-pct">60%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="60"></div></div>
+        <div class="sk-top"><span class="sk-name">Intelligence</span><span class="sk-pct" style="color:var(--sapphire)">60%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="60" style="background:repeating-linear-gradient(90deg,var(--sapphire) 0 6px,rgba(61,126,240,.25) 6px 6px,rgba(61,126,240,.25) 6px 10px)"></div></div>
         <div class="sk-tags">AI &amp; Analytics · Available on Request</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Grow</span><span class="sk-pct">82%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="82"></div></div>
+        <div class="sk-top"><span class="sk-name">Grow</span><span class="sk-pct" style="color:var(--emerald)">82%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="82" style="background:repeating-linear-gradient(90deg,var(--emerald) 0 6px,rgba(23,201,141,.25) 6px 6px,rgba(23,201,141,.25) 6px 10px)"></div></div>
         <div class="sk-tags">Launch Strategy · The Board (Coming)</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Live Deployment</span><span class="sk-pct">100%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="100"></div></div>
+        <div class="sk-top"><span class="sk-name">Live Deployment</span><span class="sk-pct" style="color:var(--gold)">100%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="100" style="background:repeating-linear-gradient(90deg,var(--gold) 0 6px,rgba(232,169,60,.25) 6px 6px,rgba(232,169,60,.25) 6px 10px)"></div></div>
         <div class="sk-tags">Vercel · Custom Domain · SSL</div>
       </div>
     </div>
@@ -927,7 +938,6 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
     </div>
   </div>
   <div class="about-right">
-    <div class="about-photo reveal-scale"><img src="zebra-confidence.jpg" alt="Confidence, without ego." loading="lazy"></div>
     <div class="afc-list reveal">
       <div class="afc"><div class="afc-icon">💬</div><div class="afc-title">Clear Communication</div><p class="afc-desc">You'll always know exactly what's being worked on. No chasing, no going dark, no surprises.</p></div>
       <div class="afc"><div class="afc-icon">🎯</div><div class="afc-title">Purpose-Built Design</div><p class="afc-desc">Every font, colour, layout, and interaction serves one goal: making your idea look and work undeniable.</p></div>
@@ -956,7 +966,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">ZEBRAISH STUDIO</div>
+  <div class="footer-logo"><img src="zebraish-mark.png" alt="Zebraish">ZEBRAISH STUDIO</div>
   <p>Part of the Zebraish Ecosystem</p>
   <p>Based in Nigeria · Available Worldwide</p>
 </footer>
@@ -1054,7 +1064,7 @@ if (sl) barObs.observe(sl);
   const ctx = canvas.getContext('2d');
   const labels = ['Build','Brand','Automate','Intelligence','Speed','Delivery'];
   const values = [0.97, 0.94, 0.88, 0.60, 0.96, 1.0];
-  const colors = ['#ffffff','#d4d4d8','#a8a8b0','#84848c','#5c5c64','#f0f0f2'];
+  const colors = ['#e0295f','#e8a93c','#17c98d','#3d7ef0','#17c98d','#e8a93c'];
   const n = labels.length;
   const step = (Math.PI*2)/n;
   let prog = 0;
@@ -1089,9 +1099,9 @@ if (sl) barObs.observe(sl);
     }
     /* filled area */
     const grad=ctx.createLinearGradient(cx-R,cy-R,cx+R,cy+R);
-    grad.addColorStop(0,'rgba(245,245,247,.28)');
-    grad.addColorStop(.5,'rgba(245,245,247,.14)');
-    grad.addColorStop(1,'rgba(245,245,247,.26)');
+    grad.addColorStop(0,'rgba(224,41,95,.20)');
+    grad.addColorStop(.5,'rgba(245,245,247,.10)');
+    grad.addColorStop(1,'rgba(61,126,240,.20)');
     ctx.beginPath();
     for (let i=0;i<n;i++) {
       const a=i*step-Math.PI/2, r=values[i]*p*R;
