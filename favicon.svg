@@ -1,14 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <rect width="200" height="200" fill="#060608" rx="20"/>
-  <text
-    font-family="'Arial Black', 'Impact', 'Haettenschweiler', Arial, sans-serif"
-    font-weight="900"
-    font-size="54"
-    y="128"
-    x="100"
-    text-anchor="middle"
-    letter-spacing="-1"
-  >
-    <tspan fill="#0A84FF">B</tspan><tspan fill="#BF5AF2">A</tspan><tspan fill="#5AC8FA">N</tspan><tspan fill="#30D158">K</tspan><tspan fill="#FF375F">S</tspan>
-  </text>
+  <defs>
+    <clipPath id="zsRound"><rect width="200" height="200" rx="42"/></clipPath>
+  </defs>
+  <g clip-path="url(#zsRound)">
+    <rect width="200" height="200" fill="#060608"/>
+    <g stroke="#f5f5f7">
+      <line x1="-234" y1="240" x2="6" y2="0" stroke-width="37"/>
+      <line x1="-150" y1="240" x2="90" y2="0" stroke-width="17"/>
+      <line x1="-78" y1="240" x2="162" y2="0" stroke-width="46"/>
+      <line x1="-15" y1="240" x2="225" y2="0" stroke-width="14"/>
+      <line x1="58" y1="240" x2="298" y2="0" stroke-width="30"/>
+      <line x1="131" y1="240" x2="371" y2="0" stroke-width="22"/>
+    </g>
+  </g>
 </svg>
