@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Work — BANKS</title>
+<title>Selected Work — Zebraish Studio</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
@@ -18,12 +18,7 @@
   --text: #f5f5f7;
   --text-muted: rgba(245,245,247,.55);
   --text-faint: rgba(245,245,247,.22);
-  --blue: #0A84FF;
-  --purple: #BF5AF2;
-  --teal: #5AC8FA;
   --green: #30D158;
-  --orange: #FF9F0A;
-  --pink: #FF375F;
   --glass: rgba(245,245,247,.05);
   --glass-b: rgba(245,245,247,.09);
   --glass-bb: rgba(245,245,247,.20);
@@ -35,42 +30,47 @@
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
 
-#scroll-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));z-index:10000;width:0%;transition:width .1s linear}
+.stripe-mark{position:relative;display:inline-block;color:var(--text)}
+.stripe-mark::after{content:'';position:absolute;left:1%;right:1%;bottom:-.07em;height:.16em;background-image:repeating-linear-gradient(112deg,var(--text) 0 5px,transparent 5px 5px,transparent 5px 12px),repeating-linear-gradient(112deg,rgba(245,245,247,.4) 0 2px,transparent 2px 2px,transparent 2px 20px);opacity:.9}
+.stripe-bg{background-image:repeating-linear-gradient(124deg,rgba(245,245,247,.10) 0 2px,transparent 2px 2px,transparent 2px 16px),repeating-linear-gradient(124deg,rgba(245,245,247,.045) 0 5px,transparent 5px 5px,transparent 5px 42px)}
+
+#scroll-bar{position:fixed;top:0;left:0;height:3px;background-image:repeating-linear-gradient(90deg,#fff 0 5px,transparent 5px 5px,transparent 5px 9px);z-index:10000;width:0%;transition:width .1s linear}
 #cur{position:fixed;width:10px;height:10px;background:var(--text);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:transform .15s ease}
 #cur-r{position:fixed;width:34px;height:34px;border:1px solid var(--glass-bb);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .5s var(--ease),width .4s,height .4s,opacity .3s,border-color .3s}
 body:has(a:hover) #cur,body:has(button:hover) #cur{transform:translate(-50%,-50%) scale(3)}
-body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:58px;height:58px;opacity:.5;border-color:var(--blue)}
+body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:58px;height:58px;opacity:.6;border-color:var(--text)}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.022;pointer-events:none;z-index:9990}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);background:rgba(6,6,8,.55);border-bottom:1px solid var(--glass-b)}
-.nav-logo{font-size:22px;font-weight:800;letter-spacing:.08em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:6px}
-.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:pulse 2.5s ease infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(10,132,255,.6)}50%{box-shadow:0 0 0 6px rgba(10,132,255,0)}}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);background:rgba(6,6,8,.55);border-bottom:1px solid var(--glass-b)}
+.nav-logo{font-size:19px;font-weight:800;letter-spacing:.06em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo-mark{width:22px;height:22px;border-radius:5px;background:#000;border:1px solid rgba(245,245,247,.3);position:relative;overflow:hidden;flex-shrink:0}
+.logo-mark::before{content:'';position:absolute;inset:-6px;background-image:repeating-linear-gradient(128deg,#fff 0 2px,transparent 2px 2px,transparent 2px 5px)}
+.nav-logo-tag{font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--text-faint);border:1px solid var(--glass-b);padding:3px 7px;border-radius:5px;text-transform:uppercase;margin-left:1px}
 .nav-back{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .25s}
-.nav-back:hover{color:var(--blue)}
-.nav-cta{background:var(--blue);color:#fff;border:none;padding:9px 20px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:none;border-radius:20px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
-.nav-cta:hover{transform:scale(1.04);box-shadow:0 0 24px rgba(10,132,255,.45)}
+.nav-back:hover{color:var(--text)}
+.nav-cta{background:#fff;color:#000;border:none;padding:9px 20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:none;border-radius:20px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.nav-cta:hover{transform:scale(1.04);box-shadow:0 0 24px rgba(245,245,247,.35)}
 
 .page-header{padding:160px 48px 80px;position:relative;overflow:hidden}
-.page-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
-.page-orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(10,132,255,.14) 0%,transparent 70%);top:-10%;right:0}
-.page-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(191,90,242,.12) 0%,transparent 70%);bottom:0;left:20%}
+.page-stripes{position:absolute;pointer-events:none;opacity:.4}
+.ps-1{width:60%;height:130%;top:-14%;right:-6%;mask-image:radial-gradient(ellipse 55% 55% at 68% 42%,#000 0%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 55% 55% at 68% 42%,#000 0%,transparent 78%)}
+.ps-2{width:45%;height:100%;bottom:-10%;left:10%;opacity:.6;transform:scaleX(-1);mask-image:radial-gradient(ellipse 50% 60% at 40% 55%,#000 0%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 50% 60% at 40% 55%,#000 0%,transparent 78%)}
 .page-header-inner{position:relative;z-index:2}
 .page-label{font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--text-faint);display:flex;align-items:center;gap:14px;margin-bottom:20px}
 .page-label::before{content:'';width:28px;height:1px;background:var(--glass-bb);flex-shrink:0}
 .page-h1{font-size:clamp(56px,8vw,110px);font-weight:900;line-height:.92;letter-spacing:-.04em;margin-bottom:20px}
-.page-h1 .grad{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .page-h1 .thin{font-weight:200}
-.page-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:520px;letter-spacing:.01em}
+.page-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:560px;letter-spacing:.01em}
+.page-honesty{font-size:12px;color:var(--text-faint);letter-spacing:.02em;max-width:560px;margin-top:16px}
 
 .filter-bar{padding:28px 48px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--glass-b);background:var(--surface);position:sticky;top:57px;z-index:100;backdrop-filter:blur(16px)}
 .filter-btn{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;background:transparent;border:1px solid var(--glass-b);color:var(--text-muted);cursor:none;transition:all var(--t) var(--ease);border-radius:100px}
-.filter-btn:hover,.filter-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(10,132,255,.08)}
+.filter-btn:hover,.filter-btn.active{border-color:var(--glass-bb);color:var(--text);background:rgba(245,245,247,.08)}
 
 .works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:48px;background:var(--bg)}
 .work-card{background:var(--surface);border:1px solid var(--glass-b);position:relative;overflow:hidden;border-radius:16px;cursor:none;transition:transform .3s ease,box-shadow .3s ease}
 .work-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.6)}
-.work-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple));transform:scaleX(0);transition:transform .5s var(--ease);z-index:2}
+.work-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background-image:repeating-linear-gradient(100deg,#fff 0 7px,transparent 7px 7px,transparent 7px 15px);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);z-index:2}
 .work-card:hover::before{transform:scaleX(1)}
 
 .work-thumb{width:100%;height:210px;position:relative;overflow:hidden}
@@ -102,18 +102,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .reveal.visible{opacity:1;transform:translateY(0)}
 
 .works-cta{padding:80px 48px;text-align:center;background:var(--surface);border-top:1px solid var(--glass-b);position:relative;overflow:hidden}
-.works-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(10,132,255,.07) 0%,transparent 70%)}
+.works-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(245,245,247,.05) 0%,transparent 70%)}
 .works-cta>*{position:relative;z-index:2}
 .works-cta h2{font-size:clamp(36px,5vw,72px);font-weight:900;letter-spacing:-.03em;margin-bottom:16px}
-.works-cta h2 .grad{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .works-cta p{font-size:14px;font-weight:400;color:var(--text-muted);letter-spacing:.01em;max-width:420px;margin:0 auto 36px;line-height:1.8}
-.btn-primary{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;padding:15px 40px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:none;border-radius:100px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
-.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 40px rgba(10,132,255,.45)}
+.btn-primary{background:#fff;color:#000;border:none;padding:15px 40px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:none;border-radius:100px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 40px rgba(245,245,247,.3)}
 
 .sec-vid{display:flex;justify-content:center;margin-bottom:48px}
 .sec-vid video{width:190px;height:190px;border-radius:28px;object-fit:cover;display:block;background:#080810;border:1px solid var(--glass-b)}
 
-footer{padding:36px 48px;border-top:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;background:var(--bg)}
+footer{padding:36px 48px;border-top:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;background:var(--bg);flex-wrap:wrap;gap:12px}
 .footer-logo{font-size:20px;font-weight:900;letter-spacing:.05em;background:var(--chrome);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
 
@@ -121,7 +120,10 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 @media(max-width:768px){
   body{cursor:auto}
   #cur,#cur-r{display:none}
-  nav{padding:16px 24px}
+  nav{padding:16px 20px;gap:8px}
+  .nav-cta{padding:9px 14px;font-size:10px;white-space:nowrap}
+  .nav-logo-tag{display:none}
+  .nav-back{display:none}
   .page-header{padding:120px 24px 60px}
   .filter-bar{padding:20px 24px}
   .works-grid{grid-template-columns:1fr;padding:24px}
@@ -137,21 +139,22 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 <div id="cur-r"></div>
 
 <nav>
-  <a class="nav-logo" href="index.html">BANKS <span class="nav-logo-dot"></span></a>
-  <a class="nav-back" href="index.html">← Back to Portfolio</a>
-  <a href="https://wa.me/2348165320780" class="nav-cta" target="_blank">Let's Talk</a>
+  <a class="nav-logo" href="index.html"><span class="logo-mark"></span>ZEBRAISH<span class="nav-logo-tag">Studio</span></a>
+  <a class="nav-back" href="index.html">← Back to Zebraish Studio</a>
+  <a href="index.html#start-a-project" class="nav-cta">Start a Project</a>
 </nav>
 
 <div class="page-header">
-  <div class="page-orb page-orb-1"></div>
-  <div class="page-orb page-orb-2"></div>
+  <div class="page-stripes stripe-bg ps-1"></div>
+  <div class="page-stripes stripe-bg ps-2"></div>
   <div class="page-header-inner">
     <div class="sec-vid reveal">
       <video autoplay muted loop playsinline><source src="3d-broadcast.mp4" type="video/mp4"></video>
     </div>
-    <div class="page-label reveal">Full Portfolio</div>
-    <h1 class="page-h1 reveal">ALL <span class="grad">WORK</span></h1>
-    <p class="page-sub reveal">Every site I've built. Different industries, different aesthetics, one standard — premium.</p>
+    <div class="page-label reveal">Full Archive</div>
+    <h1 class="page-h1 reveal">SELECTED <span class="stripe-mark">WORK</span></h1>
+    <p class="page-sub reveal">Every site the founder has built. Different industries, different aesthetics, one standard — premium, hand-coded, live.</p>
+    <p class="page-honesty reveal">These projects were built by the founder — some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, the foundation Zebraish Studio is built on.</p>
   </div>
 </div>
 
@@ -338,14 +341,14 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   <div class="sec-vid reveal">
     <video autoplay muted loop playsinline><source src="cube.mp4" type="video/mp4"></video>
   </div>
-  <h2 class="reveal">WANT ONE <span class="grad">LIKE THIS?</span></h2>
-  <p class="reveal">I build premium websites for businesses that want to look undeniable. Message me and we'll make it happen.</p>
-  <a href="https://wa.me/2348165320780" class="btn-primary reveal" target="_blank">Start a Project →</a>
+  <h2 class="reveal">WANT ONE <span class="stripe-mark">LIKE THIS?</span></h2>
+  <p class="reveal">Zebraish Studio builds premium, hand-coded products for founders and businesses that want to look undeniable. Tell us what you're building and we'll take it from there.</p>
+  <a href="index.html#start-a-project" class="btn-primary reveal">Start a Project →</a>
 </div>
 
 <footer>
-  <div class="footer-logo">BANKS</div>
-  <p>2025 · Custom Web Design &amp; Development</p>
+  <div class="footer-logo">ZEBRAISH STUDIO</div>
+  <p>Part of the Zebraish Ecosystem</p>
   <p>Based in Nigeria · Available Worldwide</p>
 </footer>
 

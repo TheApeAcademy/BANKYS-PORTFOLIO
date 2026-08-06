@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BANKS — Web Designer & Developer</title>
+<title>ZEBRAISH STUDIO — Build Layer of the Zebraish Ecosystem</title>
+<meta name="description" content="Zebraish Studio helps founders and businesses turn ideas into real, hand-built digital products — websites, software, brand, automation. The build layer of the Zebraish ecosystem.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
@@ -14,7 +15,7 @@
 :root{
   --bg:#060608;--surface:#0c0c10;--surface2:#111118;
   --text:#f5f5f7;--text-muted:rgba(245,245,247,.55);--text-faint:rgba(245,245,247,.22);
-  --blue:#0A84FF;--purple:#BF5AF2;--teal:#5AC8FA;--green:#30D158;--orange:#FF9F0A;--pink:#FF375F;
+  --green:#30D158;
   --glass:rgba(245,245,247,.05);--glass-b:rgba(245,245,247,.09);--glass-bb:rgba(245,245,247,.20);
   --chrome:linear-gradient(135deg,#777 0%,#fff 35%,#aaa 55%,#fff 72%,#555 100%);
   --ease:cubic-bezier(0.16,1,0.3,1);--t:.45s;
@@ -23,35 +24,41 @@
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
 
+/* ── STRIPE SYSTEM ── the zebra grammar: irregular, layered, purposeful ── */
+.stripe-mark{position:relative;display:inline-block;color:var(--text)}
+.stripe-mark::after{content:'';position:absolute;left:1%;right:1%;bottom:-.07em;height:.16em;background-image:repeating-linear-gradient(112deg,var(--text) 0 5px,transparent 5px 5px,transparent 5px 12px),repeating-linear-gradient(112deg,rgba(245,245,247,.4) 0 2px,transparent 2px 2px,transparent 2px 20px);opacity:.9}
+.stripe-rule{position:absolute;top:0;left:0;right:0;height:3px;background-image:repeating-linear-gradient(100deg,var(--text) 0 7px,transparent 7px 7px,transparent 7px 15px);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);opacity:.9}
+.stripe-bg{background-image:repeating-linear-gradient(124deg,rgba(245,245,247,.10) 0 2px,transparent 2px 2px,transparent 2px 16px),repeating-linear-gradient(124deg,rgba(245,245,247,.045) 0 5px,transparent 5px 5px,transparent 5px 42px)}
+
 /* ── SCROLL PROGRESS ── */
-#scroll-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));z-index:10000;width:0%;transition:width .08s linear}
+#scroll-bar{position:fixed;top:0;left:0;height:3px;background-image:repeating-linear-gradient(90deg,#fff 0 5px,transparent 5px 5px,transparent 5px 9px);z-index:10000;width:0%;transition:width .08s linear}
 
 /* ── CURSOR ── */
 #cur{position:fixed;width:10px;height:10px;background:var(--text);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:transform .15s ease,width .3s,height .3s}
 #cur-r{position:fixed;width:34px;height:34px;border:1px solid var(--glass-bb);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .5s var(--ease),width .4s,height .4s,opacity .3s,border-color .3s}
 body:has(a:hover) #cur,body:has(button:hover) #cur{transform:translate(-50%,-50%) scale(3)}
-body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:58px;height:58px;opacity:.5;border-color:var(--blue)}
+body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:58px;height:58px;opacity:.6;border-color:var(--text)}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.022;pointer-events:none;z-index:9990}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);background:rgba(6,6,8,.55);border-bottom:1px solid var(--glass-b)}
-.nav-logo{font-size:22px;font-weight:800;letter-spacing:.08em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:7px}
-.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:pulse-b 2.5s ease infinite}
-@keyframes pulse-b{0%,100%{box-shadow:0 0 0 0 rgba(10,132,255,.6)}50%{box-shadow:0 0 0 6px rgba(10,132,255,0)}}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);background:rgba(6,6,8,.55);border-bottom:1px solid var(--glass-b)}
+.nav-logo{font-size:19px;font-weight:800;letter-spacing:.06em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo-mark{width:22px;height:22px;border-radius:5px;background:#000;border:1px solid rgba(245,245,247,.3);position:relative;overflow:hidden;flex-shrink:0}
+.logo-mark::before{content:'';position:absolute;inset:-6px;background-image:repeating-linear-gradient(128deg,#fff 0 2px,transparent 2px 2px,transparent 2px 5px)}
+.nav-logo-tag{font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--text-faint);border:1px solid var(--glass-b);padding:3px 7px;border-radius:5px;text-transform:uppercase;margin-left:1px}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color .25s}
 .nav-links a:hover{color:var(--text)}
 .nav-right{display:flex;gap:14px;align-items:center}
-.nav-cta{background:var(--blue);color:#fff;border:none;padding:9px 20px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:none;border-radius:20px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
-.nav-cta:hover{transform:scale(1.04);box-shadow:0 0 24px rgba(10,132,255,.45)}
+.nav-cta{background:#fff;color:#000;border:none;padding:9px 20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:none;border-radius:20px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.nav-cta:hover{transform:scale(1.04);box-shadow:0 0 24px rgba(245,245,247,.35)}
 
 /* ── HERO ── */
 #hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden;gap:60px}
-.orb{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;will-change:transform}
-.orb-1{width:560px;height:560px;background:radial-gradient(circle,rgba(10,132,255,.20) 0%,transparent 70%);top:-8%;left:-4%}
-.orb-2{width:480px;height:480px;background:radial-gradient(circle,rgba(191,90,242,.16) 0%,transparent 70%);top:15%;right:3%}
-.orb-3{width:380px;height:380px;background:radial-gradient(circle,rgba(48,209,88,.11) 0%,transparent 70%);bottom:-5%;left:32%}
-.hero-bg-name{position:absolute;right:-2%;bottom:-8%;font-size:clamp(160px,28vw,480px);font-weight:900;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1px rgba(245,245,247,.04);pointer-events:none;z-index:1;line-height:1;user-select:none;will-change:transform}
+.hero-stripes{position:absolute;pointer-events:none}
+.hs-1{width:75%;height:130%;top:-14%;left:-8%;opacity:.55;mask-image:radial-gradient(ellipse 55% 55% at 28% 42%,#000 0%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 55% 55% at 28% 42%,#000 0%,transparent 78%)}
+.hs-2{width:60%;height:110%;top:-4%;right:-10%;opacity:.35;transform:scaleX(-1);mask-image:radial-gradient(ellipse 50% 60% at 60% 45%,#000 0%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 50% 60% at 60% 45%,#000 0%,transparent 78%)}
+.hero-bg-name{position:absolute;right:-2%;bottom:-8%;font-size:clamp(160px,26vw,460px);font-weight:900;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1px rgba(245,245,247,.05);pointer-events:none;z-index:1;line-height:1;user-select:none;will-change:transform}
 .hero-grid-lines{position:absolute;inset:0;pointer-events:none}
 .hero-grid-lines::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--glass-b) 1px,transparent 1px),linear-gradient(90deg,var(--glass-b) 1px,transparent 1px);background-size:80px 80px;opacity:.3}
 .hero-grid-lines::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 25% 50%,transparent 40%,var(--bg) 100%)}
@@ -61,20 +68,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse-g 2s ease infinite}
 @keyframes pulse-g{0%,100%{box-shadow:0 0 0 0 rgba(48,209,88,.6)}50%{box-shadow:0 0 0 5px rgba(48,209,88,0)}}
 
-/* dramatic mixed weight heading */
 .hero-type{margin-bottom:32px;line-height:1}
 .hero-type-thin{display:block;font-size:clamp(16px,2.2vw,30px);font-weight:200;letter-spacing:.08em;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase}
-.hero-name{display:block;font-size:clamp(52px,9.5vw,148px);font-weight:900;letter-spacing:-.04em;line-height:.88;color:var(--text)}
-.hero-name-accent{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-name-outline{color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.35)}
-.hero-type-sub{display:block;font-size:clamp(14px,1.8vw,24px);font-weight:300;letter-spacing:.04em;color:var(--text-muted);margin-top:10px}
+.hero-name{display:block;font-size:clamp(48px,8.6vw,132px);font-weight:900;letter-spacing:-.04em;line-height:.92;color:var(--text)}
+.hero-name-accent{margin-top:.12em}
+.hero-type-sub{display:block;font-size:clamp(14px,1.8vw,24px);font-weight:300;letter-spacing:.04em;color:var(--text-muted);margin-top:16px}
 
-.hero-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:420px;margin:28px 0 40px;letter-spacing:.01em}
+.hero-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:440px;margin:28px 0 40px;letter-spacing:.01em}
 .hero-sub em{font-style:normal;color:var(--text);font-weight:600}
 
 .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.btn-primary{background:var(--blue);color:#fff;border:none;padding:14px 30px;font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;cursor:none;border-radius:100px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(10,132,255,.4)}
+.btn-primary{background:#fff;color:#000;border:none;padding:14px 30px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;cursor:none;border-radius:100px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(245,245,247,.3)}
 .btn-ghost{background:var(--glass);color:var(--text-muted);border:1px solid var(--glass-b);padding:14px 30px;font-size:13px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;cursor:none;border-radius:100px;text-decoration:none;display:inline-block;transition:transform var(--t) var(--ease),border-color .3s,color .3s,background .3s}
 .btn-ghost:hover{border-color:var(--glass-bb);color:var(--text);background:rgba(245,245,247,.09);transform:translateY(-2px)}
 
@@ -102,13 +107,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .ticker::after{right:0;background:linear-gradient(-90deg,var(--surface),transparent)}
 .ticker-track{display:flex;animation:ticker 22s linear infinite;white-space:nowrap}
 .ticker-item{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--text-faint);padding:0 32px}
-.ticker-item.hi{background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ticker-sep{color:var(--blue);font-size:8px;align-self:center;opacity:.7}
+.ticker-item.hi{color:var(--text);font-weight:800}
+.ticker-sep{color:var(--text-faint);font-size:8px;align-self:center;opacity:.7}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── STATEMENT ── */
 #statement{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--surface);padding:100px 48px;overflow:hidden;position:relative}
-#statement::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(10,132,255,.07) 0%,transparent 70%)}
+#statement::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(245,245,247,.05) 0%,transparent 70%)}
 .stmt-inner{position:relative;z-index:2;text-align:center;max-width:1000px;margin:0 auto}
 .stmt-label{font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--text-faint);margin-bottom:48px;display:flex;align-items:center;justify-content:center;gap:14px}
 .stmt-label::before{content:'';width:28px;height:1px;background:var(--glass-bb)}
@@ -119,7 +124,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .stmt-thin{font-size:clamp(18px,2.5vw,30px);font-weight:200;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase}
 .stmt-bold{font-size:clamp(64px,10vw,140px);font-weight:900;letter-spacing:-.04em;line-height:.9;color:var(--text)}
 .stmt-outline{font-size:clamp(64px,10vw,140px);font-weight:900;letter-spacing:-.04em;line-height:.9;color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.3)}
-.stmt-grad{background:linear-gradient(135deg,var(--blue),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .stmt-spacer{height:20px}
 
 /* ── TWO-WAY MARQUEE ── */
@@ -129,7 +133,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .mq-row-2 .mq-inner{animation:mq-right 20s linear infinite}
 .mq-inner{display:flex;gap:0;white-space:nowrap}
 .mq-chip{display:inline-flex;align-items:center;gap:8px;margin:0 8px;padding:8px 18px;border:1px solid var(--glass-b);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);background:var(--surface);white-space:nowrap;transition:border-color .3s,color .3s}
-.mq-chip:hover{border-color:var(--blue);color:var(--blue)}
+.mq-chip:hover{border-color:var(--glass-bb);color:var(--text)}
 .mq-chip-dot{width:6px;height:6px;border-radius:50%}
 @keyframes mq-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes mq-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
@@ -141,52 +145,39 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .s-h2{font-size:clamp(44px,6vw,88px);font-weight:900;line-height:.94;letter-spacing:-.03em;margin-bottom:18px}
 .s-h2 .thin{font-weight:200;letter-spacing:.02em}
 .s-h2 .outline{color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.35)}
-.s-h2 .grad{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .s-sub{font-size:15px;font-weight:400;line-height:1.75;color:var(--text-muted);max-width:480px;letter-spacing:.01em}
 
-/* ── SKILLS ── */
-#skills{background:linear-gradient(to bottom,var(--bg) 0%,var(--surface) 60%)}
+/* ── WHAT WE BUILD ── */
+#build{background:linear-gradient(to bottom,var(--bg) 0%,var(--surface) 60%)}
 .skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:64px}
-/* radar */
 .radar-wrap{display:flex;flex-direction:column;align-items:center;gap:24px}
 #skills-radar{width:100%;max-width:380px;aspect-ratio:1;display:block}
 .radar-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
 .rl-item{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:500;color:var(--text-muted);letter-spacing:.04em}
 .rl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-/* skill bars list */
 .skill-list{display:flex;flex-direction:column;gap:28px}
 .sk{display:flex;flex-direction:column;gap:8px}
 .sk-top{display:flex;justify-content:space-between;align-items:baseline}
 .sk-name{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em}
-.sk-pct{font-size:22px;font-weight:900;letter-spacing:-.02em}
+.sk-pct{font-size:22px;font-weight:900;letter-spacing:-.02em;color:var(--text)}
 .sk-bar-bg{height:4px;background:rgba(245,245,247,.07);border-radius:100px;overflow:hidden}
-.sk-bar-fill{height:100%;border-radius:100px;width:0%;transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+.sk-bar-fill{height:100%;border-radius:100px;width:0%;background:repeating-linear-gradient(90deg,#fff 0 6px,rgba(245,245,247,.25) 6px 6px,rgba(245,245,247,.25) 6px 10px);transition:width 1.6s cubic-bezier(.4,0,.2,1)}
 .sk-tags{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--text-faint);text-transform:uppercase}
 
 /* ── NUMBERS ── */
 #numbers{background:var(--surface);padding:100px 48px;overflow:hidden;position:relative}
-#numbers::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(10,132,255,.07) 0%,transparent 70%)}
+#numbers::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(245,245,247,.05) 0%,transparent 70%)}
 .numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:64px}
 .num-card{background:var(--surface2);border:1px solid var(--glass-b);padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:transform var(--t) var(--ease)}
 .num-card:hover{transform:translateY(-4px)}
-.num-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad,linear-gradient(90deg,var(--blue),var(--purple)));transform:scaleX(0);transition:transform .5s var(--ease)}
-.num-card:hover::before{transform:scaleX(1)}
-.num-card:nth-child(1){--grad:linear-gradient(90deg,var(--blue),var(--teal))}
-.num-card:nth-child(2){--grad:linear-gradient(90deg,var(--purple),var(--pink))}
-.num-card:nth-child(3){--grad:linear-gradient(90deg,var(--green),var(--teal))}
-.num-card:nth-child(4){--grad:linear-gradient(90deg,var(--orange),var(--pink))}
-.num-big{display:block;font-size:clamp(52px,6vw,80px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:10px}
-.num-card:nth-child(1) .num-big{background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.num-card:nth-child(2) .num-big{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.num-card:nth-child(3) .num-big{background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.num-card:nth-child(4) .num-big{background:linear-gradient(135deg,var(--orange),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.num-card:hover .stripe-rule{transform:scaleX(1)}
+.num-big{display:block;font-size:clamp(52px,6vw,80px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:10px;color:var(--text)}
 .num-label{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)}
 
-/* ── PROJECTS ── */
-#projects{background:var(--bg)}
+/* ── SELECTED WORK ── */
+#work{background:var(--bg)}
 .bento-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:64px}
 .bento-card{background:var(--surface);border:1px solid var(--glass-b);position:relative;overflow:hidden;border-radius:16px;cursor:none;transform-style:preserve-3d;transition:box-shadow .3s ease}
-/* layout */
 .bento-card:nth-child(1){grid-column:span 5}
 .bento-card:nth-child(2){grid-column:span 7}
 .bento-card:nth-child(3){grid-column:span 12}
@@ -212,7 +203,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .bno-name{font-size:17px;font-weight:800;letter-spacing:.1em;color:#fff;display:block;line-height:1}
 .bno-tag{font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:block;margin-top:3px}
 
-/* full-width card (DOBERMAN) special layout */
 .bento-card:nth-child(3) .bento-body{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:28px 32px}
 .bento-card:nth-child(3) .bento-meta{display:flex;flex-direction:column;gap:12px}
 
@@ -229,11 +219,73 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
+.work-honesty{margin-top:20px;font-size:12px;color:var(--text-faint);letter-spacing:.02em;max-width:560px}
+
 .projects-more{margin-top:40px;display:flex;justify-content:center}
 .btn-more{background:transparent;color:var(--text-muted);border:1px solid var(--glass-b);padding:15px 44px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:none;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all var(--t) var(--ease)}
-.btn-more:hover{border-color:var(--blue);color:var(--blue);background:rgba(10,132,255,.07);transform:translateY(-2px)}
+.btn-more:hover{border-color:var(--glass-bb);color:var(--text);background:rgba(245,245,247,.07);transform:translateY(-2px)}
 .btn-more-arrow{transition:transform .3s ease}
 .btn-more:hover .btn-more-arrow{transform:translateX(5px)}
+
+/* ── PROCESS ── */
+#process{background:var(--bg);overflow:hidden}
+.process-timeline{margin-top:60px;position:relative}
+.process-line{position:absolute;top:28px;left:0;right:0;height:1px;background:var(--glass-b)}
+.process-line-fill{position:absolute;top:28px;left:0;height:2px;background-image:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 6px,transparent 6px 12px);width:0%;transition:width 1.5s var(--ease)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative;z-index:2}
+.process-step{padding:0 24px 40px;text-align:center}
+.process-dot{width:56px;height:56px;border-radius:50%;background:var(--surface2);border:1px solid var(--glass-b);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;transition:background var(--t),border-color var(--t),box-shadow var(--t)}
+.process-step.lit .process-dot{background:#fff;border-color:transparent;box-shadow:0 0 24px rgba(245,245,247,.35)}
+.process-dot-num{font-size:15px;font-weight:800;color:var(--text-faint)}
+.process-step.lit .process-dot-num{color:#000}
+.process-step h4{font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
+.process-step p{font-size:12px;font-weight:400;line-height:1.75;color:var(--text-muted)}
+
+/* ── APPROACH (ecosystem) ── */
+#approach{background:var(--surface);position:relative;overflow:hidden}
+.approach-flow{display:flex;align-items:center;gap:0;margin:64px 0 56px;overflow-x:auto;padding-bottom:8px}
+.af-node{flex:1;min-width:130px;text-align:center;padding:20px 10px;position:relative}
+.af-node-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
+.af-node-sub{font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-top:4px}
+.af-node.dim{opacity:.45}
+.af-node.dim .af-node-label{color:var(--text-muted)}
+.af-connector{flex-shrink:0;width:48px;height:2px;background-image:repeating-linear-gradient(90deg,rgba(245,245,247,.5) 0 5px,transparent 5px 5px,transparent 5px 10px)}
+.approach-verticals{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:16px}
+.av-card{background:var(--surface2);border:1px solid var(--glass-b);padding:32px 26px;position:relative}
+.av-card.active{border-color:var(--glass-bb)}
+.av-tag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);border:1px solid var(--glass-b);padding:4px 9px;border-radius:5px;display:inline-block;margin-bottom:16px}
+.av-tag.live{color:var(--green);border-color:rgba(48,209,88,.3)}
+.av-title{font-size:19px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px;color:var(--text)}
+.av-title.faint{color:var(--text-muted)}
+.av-desc{font-size:12px;line-height:1.75;color:var(--text-muted)}
+
+/* ── START A PROJECT ── */
+#start-a-project{background:var(--bg)}
+.sp-card{max-width:680px;margin:64px auto 0;background:var(--surface2);border:1px solid var(--glass-b);border-radius:20px;padding:48px;position:relative;overflow:hidden}
+.sp-steps-bar{display:flex;gap:6px;margin-bottom:40px}
+.sp-step-seg{flex:1;height:3px;background:var(--glass-b);border-radius:2px;overflow:hidden}
+.sp-step-seg-fill{height:100%;width:0%;background-image:repeating-linear-gradient(90deg,#fff 0 4px,transparent 4px 4px,transparent 4px 8px);transition:width .4s var(--ease)}
+.sp-step-label{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px}
+.sp-panel{display:none}
+.sp-panel.active{display:block}
+.sp-q{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:24px}
+.sp-input,.sp-textarea{width:100%;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;padding:16px 18px;color:var(--text);font-size:14px;font-family:inherit;transition:border-color .25s}
+.sp-input:focus,.sp-textarea:focus{outline:none;border-color:var(--glass-bb)}
+.sp-textarea{resize:vertical;min-height:110px}
+.sp-chips{display:flex;flex-wrap:wrap;gap:10px}
+.sp-chip{background:var(--glass);border:1px solid var(--glass-b);color:var(--text-muted);padding:12px 20px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.04em;cursor:none;transition:all .25s}
+.sp-chip:hover{border-color:var(--glass-bb);color:var(--text)}
+.sp-chip.selected{background:#fff;color:#000;border-color:#fff}
+.sp-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px}
+.sp-btn-back{background:transparent;border:none;color:var(--text-faint);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:none;padding:10px 4px;visibility:hidden}
+.sp-btn-back.show{visibility:visible}
+.sp-btn-next{background:#fff;color:#000;border:none;padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:100px;cursor:none;transition:transform var(--t) var(--ease)}
+.sp-btn-next:hover{transform:translateY(-2px)}
+.sp-btn-next:disabled{opacity:.35;pointer-events:none}
+.sp-success{display:none;text-align:center;padding:20px 0}
+.sp-success.active{display:block}
+.sp-success h3{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.02em;margin-bottom:16px}
+.sp-success p{font-size:14px;color:var(--text-muted);line-height:1.8;max-width:420px;margin:0 auto 28px}
 
 /* ── ABOUT ── */
 #about{background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}
@@ -241,54 +293,35 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .about-right{padding:100px 64px;display:flex;flex-direction:column;justify-content:center}
 .about-p{font-size:14px;font-weight:400;line-height:1.9;color:var(--text-muted);margin-bottom:22px}
 .about-p em{font-style:normal;color:var(--text);font-weight:600}
-.about-big-quote{font-size:clamp(20px,2.5vw,32px);font-weight:700;line-height:1.3;letter-spacing:-.02em;color:var(--text);margin:36px 0;border-left:3px solid var(--blue);padding-left:22px}
+.about-big-quote{font-size:clamp(20px,2.5vw,32px);font-weight:700;line-height:1.3;letter-spacing:-.02em;color:var(--text);margin:36px 0;border-left:3px solid var(--text);padding-left:22px}
 .about-big-quote .aq-thin{display:block;font-weight:200;font-size:.75em;color:var(--text-muted);letter-spacing:.02em}
 .about-values{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:40px}
 .value-card{padding:24px 20px;background:var(--surface2);border:1px solid var(--glass-b);transition:transform var(--t) var(--ease)}
 .value-card:hover{transform:translateY(-3px)}
-.value-num{display:block;font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
-.vc-1 .value-num{background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.vc-2 .value-num{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.vc-3 .value-num{background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.vc-4 .value-num{background:linear-gradient(135deg,var(--orange),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.value-num{display:block;font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:4px;color:var(--text)}
 .value-label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint)}
 .afc-list{display:flex;flex-direction:column;gap:3px}
 .afc{padding:24px 26px;background:var(--surface2);border:1px solid var(--glass-b);overflow:hidden;transition:transform var(--t) var(--ease),background var(--t)}
 .afc:hover{background:rgba(17,17,24,.95);transform:translateX(4px)}
-.afc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:10px}
+.afc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:10px;background:var(--glass)}
 .afc-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px;letter-spacing:-.01em}
 .afc-desc{font-size:12px;font-weight:400;line-height:1.75;color:var(--text-muted)}
-
-/* ── PROCESS ── */
-#process{background:var(--bg);overflow:hidden}
-.process-timeline{margin-top:60px;position:relative}
-.process-line{position:absolute;top:28px;left:0;right:0;height:1px;background:var(--glass-b)}
-.process-line-fill{position:absolute;top:28px;left:0;height:1px;background:linear-gradient(90deg,var(--blue),var(--purple));width:0%;transition:width 1.5s var(--ease)}
-.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative;z-index:2}
-.process-step{padding:0 24px 40px;text-align:center}
-.process-dot{width:56px;height:56px;border-radius:50%;background:var(--surface2);border:1px solid var(--glass-b);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;transition:background var(--t),border-color var(--t),box-shadow var(--t)}
-.process-step.lit .process-dot{background:linear-gradient(135deg,var(--blue),var(--purple));border-color:transparent;box-shadow:0 0 24px rgba(10,132,255,.4)}
-.process-dot-num{font-size:15px;font-weight:800;color:var(--text-faint)}
-.process-step.lit .process-dot-num{color:#fff}
-.process-step h4{font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
-.process-step p{font-size:12px;font-weight:400;line-height:1.75;color:var(--text-muted)}
 
 /* ── CONTACT ── */
 #contact{position:relative;overflow:hidden;padding:120px 48px;text-align:center;background:linear-gradient(to bottom,var(--bg) 40%,var(--surface) 100%)}
 #cta-liquid{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:.22}
 .contact-inner{position:relative;z-index:2;max-width:720px;margin:0 auto}
 .contact-h2{font-size:clamp(52px,8vw,110px);font-weight:900;line-height:.9;letter-spacing:-.04em;margin-bottom:28px}
-.contact-h2 .grad{background:linear-gradient(135deg,var(--blue),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .contact-h2 .thin{font-weight:200}
 .contact-sub{font-size:15px;font-weight:400;line-height:1.8;color:var(--text-muted);max-width:500px;margin:0 auto 48px}
 .contact-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:40px}
 .contact-link{display:inline-flex;align-items:center;gap:9px;padding:12px 24px;background:var(--glass);border:1px solid var(--glass-b);color:var(--text-muted);font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:all var(--t) var(--ease)}
 .contact-link:hover{border-color:var(--glass-bb);color:var(--text);transform:translateY(-3px);background:rgba(245,245,247,.08)}
-.contact-main{display:inline-block;padding:16px 48px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
-.contact-main:hover{transform:scale(1.04) translateY(-2px);box-shadow:0 20px 50px rgba(10,132,255,.45)}
+.contact-main{display:inline-block;padding:16px 48px;background:#fff;color:#000;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.contact-main:hover{transform:scale(1.04) translateY(-2px);box-shadow:0 20px 50px rgba(245,245,247,.3)}
 
 /* ── FOOTER ── */
-footer{padding:36px 48px;border-top:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;background:var(--bg)}
+footer{padding:36px 48px;border-top:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;background:var(--bg);flex-wrap:wrap;gap:12px}
 .footer-logo{font-size:20px;font-weight:900;letter-spacing:.05em;background:var(--chrome);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
 
@@ -326,12 +359,15 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   .bento-card:nth-child(3) .bento-body{grid-template-columns:1fr;display:block}
   .numbers-grid{grid-template-columns:1fr 1fr}
   .skills-layout{grid-template-columns:1fr;gap:48px}
+  .approach-verticals{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   body{cursor:auto}
   #cur,#cur-r{display:none}
   nav{padding:16px 20px}
   .nav-links{display:none}
+  .nav-cta{padding:9px 14px;font-size:10px;white-space:nowrap}
+  .nav-logo-tag{display:none}
   #hero{padding:110px 24px 72px;flex-direction:column;gap:40px;overflow:hidden}
   .hero-bg-name{display:none}
   .hero-name{font-size:clamp(44px,14vw,88px)}
@@ -353,6 +389,9 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   #statement{padding:80px 24px;min-height:auto}
   .stmt-bold,.stmt-outline{font-size:clamp(52px,14vw,100px)}
   .mq-section{padding:32px 0}
+  .sp-card{padding:32px 22px;margin-top:40px;border-radius:16px}
+  .approach-flow{gap:0}
+  .af-connector{width:20px}
 }
 </style>
 </head>
@@ -363,37 +402,36 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">BANKS<span class="nav-logo-dot"></span></a>
+  <a class="nav-logo" href="#hero"><span class="logo-mark"></span>ZEBRAISH<span class="nav-logo-tag">Studio</span></a>
   <ul class="nav-links">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Work</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a href="#build">Build</a></li>
+    <li><a href="#work">Work</a></li>
     <li><a href="#process">Process</a></li>
+    <li><a href="#approach">Approach</a></li>
   </ul>
   <div class="nav-right">
-    <a href="#contact" class="nav-cta">Let's Talk</a>
+    <a href="#start-a-project" class="nav-cta">Start a Project</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="hero-bg-name" id="heroBgName">BANKS</div>
+  <div class="hero-stripes stripe-bg hs-1"></div>
+  <div class="hero-stripes stripe-bg hs-2"></div>
+  <div class="hero-bg-name" id="heroBgName">STUDIO</div>
   <div class="hero-grid-lines"></div>
   <div class="hero-left" id="heroLeft">
-    <div class="hero-badge"><span class="badge-dot"></span>Web Designer &amp; Developer · Available Now</div>
+    <div class="hero-badge"><span class="badge-dot"></span>Zebraish Studio · Founder-Led · Building Now</div>
     <div class="hero-type">
-      <span class="hero-type-thin">I build websites that are</span>
-      <span class="hero-name">ACTUALLY <span class="hero-name-accent">GOOD</span></span>
-      <span class="hero-type-sub">Custom &nbsp;·&nbsp; <span style="font-weight:900;color:var(--text)">Fast</span> &nbsp;·&nbsp; Unforgettable</span>
+      <span class="hero-type-thin">you have the idea.</span>
+      <span class="hero-name">WE BUILD <span class="stripe-mark hero-name-accent">WHAT'S NEXT</span></span>
+      <span class="hero-type-sub">Idea &nbsp;·&nbsp; <span style="font-weight:900;color:var(--text)">Build</span> &nbsp;·&nbsp; Launch</span>
     </div>
-    <p class="hero-sub">I'm <em>Banks</em> — I hand-code premium websites for businesses that deserve to look <em>undeniable</em>. No templates. No Wix. No agency markup.</p>
+    <p class="hero-sub">I'm the founder behind <em>Zebraish Studio</em> — the build layer of the Zebraish ecosystem. I turn ideas into real, hand-built digital products. No templates. No agency bloat.</p>
     <div class="hero-actions">
-      <a href="#projects" class="btn-primary">See My Work →</a>
+      <a href="#start-a-project" class="btn-primary">Tell Us What You're Building →</a>
       <div class="dropdown-wrap" id="heroDropdown">
-        <button class="dropdown-trigger">Start a Project <span class="arrow">▾</span></button>
+        <button class="dropdown-trigger">Message Directly <span class="arrow">▾</span></button>
         <div class="dropdown-menu">
           <a href="https://wa.me/2348165320780" class="dropdown-item" target="_blank">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.49"/></svg>
@@ -411,7 +449,7 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
       </div>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="stat-n" data-count="10" data-suffix="+">0+</span><span class="stat-l">Sites Built</span></div>
+      <div class="hero-stat"><span class="stat-n" data-count="10" data-suffix="+">0+</span><span class="stat-l">Sites Shipped</span></div>
       <div class="stat-divider"></div>
       <div class="hero-stat"><span class="stat-n" data-count="5">0</span><span class="stat-l">Industries</span></div>
       <div class="stat-divider"></div>
@@ -424,29 +462,29 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
       <div class="hero-device-shine"></div>
     </div>
     <div class="hero-float-1"><span class="float-dot" style="background:var(--green)"></span>5–10 Day Delivery</div>
-    <div class="hero-float-2"><span class="float-dot" style="background:var(--blue)"></span>100% Hand-Coded</div>
+    <div class="hero-float-2"><span class="float-dot" style="background:#fff"></span>100% Hand-Built</div>
   </div>
 </section>
 
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-track">
-    <span class="ticker-item hi">Custom Design</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">Mobile First</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">WhatsApp Integration</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">5-10 Day Delivery</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">Live on Vercel</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">Luxury Aesthetic</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">Zero Templates</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">You Own Everything</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">Custom Design</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">Mobile First</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">WhatsApp Integration</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">5-10 Day Delivery</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">Live on Vercel</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">Luxury Aesthetic</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item hi">Zero Templates</span><span class="ticker-sep">◆</span>
-    <span class="ticker-item">You Own Everything</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Build</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Intelligence</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Automate</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Brand</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Grow</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Idea → Product</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Zebraish Ecosystem</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Founder-Led</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Build</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Intelligence</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Automate</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Brand</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Grow</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Idea → Product</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item hi">Zebraish Ecosystem</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Founder-Led</span><span class="ticker-sep">◆</span>
   </div>
 </div>
 
@@ -454,62 +492,62 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 <section id="statement">
   <div class="stmt-inner">
     <div class="stmt-label reveal">The Philosophy</div>
-    <div style="overflow:hidden"><span class="stmt-thin stmt-word">your website is your brand's</span></div>
-    <div style="overflow:hidden;margin:8px 0"><span class="stmt-bold stmt-word" style="transition-delay:.15s">LOUDEST</span></div>
-    <div style="overflow:hidden"><span class="stmt-bold stmt-outline stmt-word" style="transition-delay:.3s">VOICE.</span></div>
+    <div style="overflow:hidden"><span class="stmt-thin stmt-word">every idea deserves to become</span></div>
+    <div style="overflow:hidden;margin:8px 0"><span class="stmt-bold stmt-word" style="transition-delay:.15s">SOMETHING</span></div>
+    <div style="overflow:hidden"><span class="stmt-bold stmt-outline stmt-word" style="transition-delay:.3s">REAL.</span></div>
     <div class="stmt-spacer"></div>
-    <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">don't let it whisper when it should</span></div>
-    <div style="overflow:hidden;margin-top:8px"><span class="stmt-bold stmt-grad stmt-word" style="transition-delay:.6s">SCREAM.</span></div>
+    <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">no two businesses are the same —</span></div>
+    <div style="overflow:hidden;margin-top:8px"><span class="stmt-bold stmt-word stripe-mark" style="transition-delay:.6s">NEITHER ARE WE.</span></div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section class="section" id="skills">
+<!-- WHAT WE BUILD -->
+<section class="section" id="build">
   <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-react.mp4" type="video/mp4"></video></div>
-  <div class="s-label reveal">01 · What I Bring</div>
-  <h2 class="s-h2 reveal">SKILLS &amp; <span class="grad">CRAFT</span></h2>
-  <p class="s-sub reveal">Everything you need to go from idea to live website. Nothing you don't.</p>
+  <div class="s-label reveal">01 · What We Build</div>
+  <h2 class="s-h2 reveal">IDEAS BECOME <span class="stripe-mark">INFRASTRUCTURE</span></h2>
+  <p class="s-sub reveal">Website or full software system — Zebraish Studio figures out what your idea actually needs to become real.</p>
   <div class="skills-layout">
     <div class="radar-wrap reveal-left">
       <canvas id="skills-radar"></canvas>
       <div class="radar-legend">
-        <div class="rl-item"><span class="rl-dot" style="background:var(--blue)"></span>Design</div>
-        <div class="rl-item"><span class="rl-dot" style="background:var(--purple)"></span>Code</div>
-        <div class="rl-item"><span class="rl-dot" style="background:var(--green)"></span>Mobile</div>
-        <div class="rl-item"><span class="rl-dot" style="background:var(--teal)"></span>Animation</div>
-        <div class="rl-item"><span class="rl-dot" style="background:var(--orange)"></span>Speed</div>
-        <div class="rl-item"><span class="rl-dot" style="background:var(--pink)"></span>Conversion</div>
+        <div class="rl-item"><span class="rl-dot" style="background:#ffffff"></span>Build</div>
+        <div class="rl-item"><span class="rl-dot" style="background:#d4d4d8"></span>Brand</div>
+        <div class="rl-item"><span class="rl-dot" style="background:#a8a8b0"></span>Automate</div>
+        <div class="rl-item"><span class="rl-dot" style="background:#84848c"></span>Intelligence</div>
+        <div class="rl-item"><span class="rl-dot" style="background:#5c5c64"></span>Speed</div>
+        <div class="rl-item"><span class="rl-dot" style="background:#f0f0f2"></span>Delivery</div>
       </div>
     </div>
     <div class="skill-list reveal-right">
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Custom Web Design</span><span class="sk-pct" style="background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">97%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="97" style="background:linear-gradient(90deg,var(--blue),var(--teal))"></div></div>
-        <div class="sk-tags">HTML · CSS · JavaScript</div>
+        <div class="sk-top"><span class="sk-name">Build</span><span class="sk-pct">97%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="97"></div></div>
+        <div class="sk-tags">Websites · Web Apps · Software</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Mobile-First</span><span class="sk-pct" style="background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">95%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="95" style="background:linear-gradient(90deg,var(--purple),var(--pink))"></div></div>
-        <div class="sk-tags">Responsive · Touch UI · Fast Load</div>
+        <div class="sk-top"><span class="sk-name">Brand</span><span class="sk-pct">94%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="94"></div></div>
+        <div class="sk-tags">Identity · Typography · Design Systems</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Animations &amp; Motion</span><span class="sk-pct" style="background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">92%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="92" style="background:linear-gradient(90deg,var(--green),var(--teal))"></div></div>
-        <div class="sk-tags">CSS Animations · Canvas · Micro-interactions</div>
+        <div class="sk-top"><span class="sk-name">Automate</span><span class="sk-pct">88%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="88"></div></div>
+        <div class="sk-tags">Workflows · Integrations · CRM</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">WhatsApp Integration</span><span class="sk-pct" style="background:linear-gradient(135deg,#25D366,#128C7E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">99%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="99" style="background:linear-gradient(90deg,#25D366,#128C7E)"></div></div>
-        <div class="sk-tags">WhatsApp · CTAs · Conversions</div>
+        <div class="sk-top"><span class="sk-name">Intelligence</span><span class="sk-pct">60%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="60"></div></div>
+        <div class="sk-tags">AI &amp; Analytics · Available on Request</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Brand Aesthetics</span><span class="sk-pct" style="background:linear-gradient(135deg,var(--orange),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">94%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="94" style="background:linear-gradient(90deg,var(--orange),var(--pink))"></div></div>
-        <div class="sk-tags">Typography · Colour · Identity</div>
+        <div class="sk-top"><span class="sk-name">Grow</span><span class="sk-pct">82%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="82"></div></div>
+        <div class="sk-tags">Launch Strategy · The Board (Coming)</div>
       </div>
       <div class="sk">
-        <div class="sk-top"><span class="sk-name">Live Deployment</span><span class="sk-pct" style="background:linear-gradient(135deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">100%</span></div>
-        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="100" style="background:linear-gradient(90deg,var(--teal),var(--blue))"></div></div>
+        <div class="sk-top"><span class="sk-name">Live Deployment</span><span class="sk-pct">100%</span></div>
+        <div class="sk-bar-bg"><div class="sk-bar-fill" data-pct="100"></div></div>
         <div class="sk-tags">Vercel · Custom Domain · SSL</div>
       </div>
     </div>
@@ -520,42 +558,42 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 <div class="mq-section">
   <div class="mq-row mq-row-1">
     <div class="mq-inner">
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--blue)"></span>HTML5</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--purple)"></span>CSS3</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--green)"></span>JavaScript</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--orange)"></span>Canvas API</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--pink)"></span>WhatsApp</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--teal)"></span>Vercel</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--blue)"></span>Custom Cursor</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--purple)"></span>Animations</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--green)"></span>HTML5</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--orange)"></span>CSS3</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--pink)"></span>JavaScript</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--teal)"></span>Canvas API</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--blue)"></span>WhatsApp</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--purple)"></span>Vercel</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--green)"></span>Custom Cursor</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--orange)"></span>Animations</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>HTML5</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#d4d4d8"></span>CSS3</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>JavaScript</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#84848c"></span>Canvas API</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#f0f0f2"></span>WhatsApp</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#c2c2c8"></span>Vercel</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>Automation</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>Zebraish Ecosystem</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>HTML5</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#d4d4d8"></span>CSS3</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>JavaScript</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#84848c"></span>Canvas API</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#f0f0f2"></span>WhatsApp</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#c2c2c8"></span>Vercel</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>Automation</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>Zebraish Ecosystem</span>
     </div>
   </div>
   <div class="mq-row mq-row-2" style="margin-top:8px">
     <div class="mq-inner">
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--pink)"></span>Typography</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--teal)"></span>Brand Design</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--blue)"></span>Dark Luxury</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--purple)"></span>Editorial</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--green)"></span>Mobile-First</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--orange)"></span>Marble</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--pink)"></span>Glassmorphism</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--teal)"></span>3D Effects</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--blue)"></span>Typography</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--purple)"></span>Brand Design</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--green)"></span>Dark Luxury</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--orange)"></span>Editorial</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--pink)"></span>Mobile-First</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--teal)"></span>Marble</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--blue)"></span>Glassmorphism</span>
-      <span class="mq-chip"><span class="mq-chip-dot" style="background:var(--purple)"></span>3D Effects</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#f0f0f2"></span>Typography</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#c2c2c8"></span>Brand Systems</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>Dark Editorial</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>Motion Design</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#84848c"></span>Mobile-First</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#d4d4d8"></span>Custom Cursor</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#f0f0f2"></span>Glassmorphism</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>Founder-Led</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#c2c2c8"></span>Typography</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>Brand Systems</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>Dark Editorial</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#84848c"></span>Motion Design</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#f0f0f2"></span>Mobile-First</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#d4d4d8"></span>Custom Cursor</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#ffffff"></span>Glassmorphism</span>
+      <span class="mq-chip"><span class="mq-chip-dot" style="background:#a8a8b0"></span>Founder-Led</span>
     </div>
   </div>
 </div>
@@ -564,21 +602,21 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 <section id="numbers">
   <div style="position:relative;z-index:2">
     <div class="s-label reveal" style="justify-content:center">The Proof</div>
-    <h2 class="s-h2 reveal" style="text-align:center;margin-bottom:0">NUMBERS THAT<br><span class="thin">speak</span> <span class="grad">LOUDER</span></h2>
+    <h2 class="s-h2 reveal" style="text-align:center;margin-bottom:0">NUMBERS THAT<br><span class="thin">speak</span> <span class="stripe-mark">LOUDER</span></h2>
   </div>
   <div class="numbers-grid">
-    <div class="num-card reveal"><span class="num-big" data-count="10" data-suffix="+">0</span><div class="num-label">Sites Built &amp; Live</div></div>
-    <div class="num-card reveal"><span class="num-big" data-count="5">0</span><div class="num-label">Industries Served</div></div>
-    <div class="num-card reveal"><span class="num-big">∞</span><div class="num-label">Revisions Included</div></div>
-    <div class="num-card reveal"><span class="num-big">5★</span><div class="num-label">Client Satisfaction</div></div>
+    <div class="num-card reveal"><div class="stripe-rule"></div><span class="num-big" data-count="10" data-suffix="+">0</span><div class="num-label">Sites Built &amp; Live</div></div>
+    <div class="num-card reveal"><div class="stripe-rule"></div><span class="num-big" data-count="5">0</span><div class="num-label">Industries Served</div></div>
+    <div class="num-card reveal"><div class="stripe-rule"></div><span class="num-big">∞</span><div class="num-label">Revisions Included</div></div>
+    <div class="num-card reveal"><div class="stripe-rule"></div><span class="num-big">5★</span><div class="num-label">Client Satisfaction</div></div>
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section class="section" id="projects">
-  <div class="s-label reveal">02 · Portfolio</div>
-  <h2 class="s-h2 reveal">SELECTED <span class="grad">WORK</span></h2>
-  <p class="s-sub reveal">Eight sites. Eight different worlds. Each one built to make the client look undeniable.</p>
+<!-- SELECTED WORK -->
+<section class="section" id="work">
+  <div class="s-label reveal">02 · Selected Work</div>
+  <h2 class="s-h2 reveal">REAL WORK. <span class="stripe-mark">REAL PROOF.</span></h2>
+  <p class="s-sub reveal">Nine live sites, nine different worlds — built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on.</p>
   <div class="bento-grid">
 
     <!-- 01 PM PORTFOLIO -->
@@ -728,8 +766,132 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
     </div>
 
   </div>
+  <p class="work-honesty reveal">These projects were built by the founder — some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work.</p>
   <div class="projects-more reveal">
     <a href="all-work.html" class="btn-more">View All Work <span class="btn-more-arrow">→</span></a>
+  </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section class="section" id="process">
+  <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-control.mp4" type="video/mp4"></video></div>
+  <div class="s-label reveal">03 · How We Work</div>
+  <h2 class="s-h2 reveal">FROM IDEA<br><span class="stripe-mark thin">TO LIVE.</span></h2>
+  <p class="s-sub reveal">Four steps. No bloat, no bureaucracy — just a founder who ships.</p>
+  <div class="process-timeline">
+    <div class="process-line"></div>
+    <div class="process-line-fill" id="processLineFill"></div>
+    <div class="process-steps">
+      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">01</span></div><h4>Tell Us What You're Building</h4><p>Fill out the Start a Project flow or message directly. Tell us what your idea or business needs. Takes 5 minutes.</p></div>
+      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">02</span></div><h4>We Shape a Direction</h4><p>Within 48 hours you get a visual direction, structure, and a flat project price.</p></div>
+      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">03</span></div><h4>We Build It</h4><p>The full product gets built and sent to you as a live preview link. You review, we refine until it's exactly right.</p></div>
+      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">04</span></div><h4>You Launch</h4><p>Once you're happy, it goes live. From there, the wider Zebraish ecosystem is there to help you keep growing.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE ZEBRAISH APPROACH -->
+<section class="section" id="approach">
+  <div class="s-label reveal">04 · The Bigger Picture</div>
+  <h2 class="s-h2 reveal">STUDIO IS THE <span class="stripe-mark">FIRST STEP.</span></h2>
+  <p class="s-sub reveal">Zebraish Studio is the build layer of a larger ecosystem — one that's still being built, on purpose, in the open.</p>
+
+  <div class="approach-flow reveal">
+    <div class="af-node"><div class="af-node-label">Idea</div><div class="af-node-sub">You</div></div>
+    <div class="af-connector"></div>
+    <div class="af-node"><div class="af-node-label">Zebraish Studio</div><div class="af-node-sub">Build</div></div>
+    <div class="af-connector"></div>
+    <div class="af-node"><div class="af-node-label">Launch</div><div class="af-node-sub">Live Product</div></div>
+    <div class="af-connector"></div>
+    <div class="af-node dim"><div class="af-node-label">The Board</div><div class="af-node-sub">In Development</div></div>
+    <div class="af-connector"></div>
+    <div class="af-node dim"><div class="af-node-label">Grow</div><div class="af-node-sub">Discover · Learn</div></div>
+  </div>
+
+  <div class="approach-verticals reveal">
+    <div class="av-card active">
+      <div class="av-tag live">Live Today</div>
+      <div class="av-title">Zebraish Studio</div>
+      <p class="av-desc">The build layer. Turns ideas and businesses into real websites, software, brand and automation — what this page is.</p>
+    </div>
+    <div class="av-card">
+      <div class="av-tag">In Development</div>
+      <div class="av-title faint">The Board</div>
+      <p class="av-desc">Where businesses built with Studio can eventually launch, gather feedback, and be discovered. Not built yet — part of the roadmap.</p>
+    </div>
+    <div class="av-card">
+      <div class="av-tag">In Development</div>
+      <div class="av-title faint">Zebraish Fashion</div>
+      <p class="av-desc">The cultural and creative arm of Zebraish — an animal-inspired fashion universe. Also part of the roadmap, not this build.</p>
+    </div>
+  </div>
+</section>
+
+<!-- START A PROJECT -->
+<section class="section" id="start-a-project">
+  <div class="s-label reveal">05 · Start a Project</div>
+  <h2 class="s-h2 reveal">TELL US <span class="stripe-mark">WHAT YOU'RE BUILDING.</span></h2>
+  <p class="s-sub reveal">Four quick questions. We'll take it from there.</p>
+
+  <div class="sp-card reveal-scale">
+    <div class="sp-steps-bar">
+      <div class="sp-step-seg"><div class="sp-step-seg-fill" data-seg="1"></div></div>
+      <div class="sp-step-seg"><div class="sp-step-seg-fill" data-seg="2"></div></div>
+      <div class="sp-step-seg"><div class="sp-step-seg-fill" data-seg="3"></div></div>
+      <div class="sp-step-seg"><div class="sp-step-seg-fill" data-seg="4"></div></div>
+    </div>
+
+    <form id="spForm">
+      <div class="sp-panel active" data-panel="1">
+        <div class="sp-step-label">Step 1 of 4</div>
+        <div class="sp-q">What are you building?</div>
+        <input class="sp-input" id="spWhat" type="text" placeholder="e.g. A platform connecting local designers with buyers..." autocomplete="off">
+      </div>
+
+      <div class="sp-panel" data-panel="2">
+        <div class="sp-step-label">Step 2 of 4</div>
+        <div class="sp-q">What stage are you at?</div>
+        <div class="sp-chips" id="spStage">
+          <button type="button" class="sp-chip" data-value="Idea">Idea</button>
+          <button type="button" class="sp-chip" data-value="Early business">Early business</button>
+          <button type="button" class="sp-chip" data-value="Existing business">Existing business</button>
+          <button type="button" class="sp-chip" data-value="Growing company">Growing company</button>
+          <button type="button" class="sp-chip" data-value="Not sure yet">Not sure yet</button>
+        </div>
+      </div>
+
+      <div class="sp-panel" data-panel="3">
+        <div class="sp-step-label">Step 3 of 4</div>
+        <div class="sp-q">What do you need?</div>
+        <div class="sp-chips" id="spNeeds">
+          <button type="button" class="sp-chip" data-value="Website">Website</button>
+          <button type="button" class="sp-chip" data-value="Web App">Web App</button>
+          <button type="button" class="sp-chip" data-value="Software">Software</button>
+          <button type="button" class="sp-chip" data-value="Branding">Branding</button>
+          <button type="button" class="sp-chip" data-value="Automation">Automation</button>
+          <button type="button" class="sp-chip" data-value="AI">AI</button>
+          <button type="button" class="sp-chip" data-value="Marketing">Marketing</button>
+          <button type="button" class="sp-chip" data-value="Not sure yet">Not sure yet</button>
+        </div>
+      </div>
+
+      <div class="sp-panel" data-panel="4">
+        <div class="sp-step-label">Step 4 of 4</div>
+        <div class="sp-q">Tell us more.</div>
+        <textarea class="sp-textarea" id="spMore" placeholder="Anything else we should know? (optional)"></textarea>
+      </div>
+
+      <div class="sp-nav">
+        <button type="button" class="sp-btn-back" id="spBack">← Back</button>
+        <button type="button" class="sp-btn-next" id="spNext">Next →</button>
+      </div>
+    </form>
+
+    <div class="sp-success" id="spSuccess">
+      <h3>WE HAVE YOUR IDEA.</h3>
+      <p>WhatsApp should have opened with your answers pre-filled — send it across and we'll pick up the conversation there. If it didn't open automatically, use the button below.</p>
+      <a href="#" id="spWaLink" class="btn-primary" target="_blank">Open WhatsApp →</a>
+    </div>
   </div>
 </section>
 
@@ -737,15 +899,15 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 <section id="about">
   <div class="about-left">
     <div class="sec-vid reveal"><video autoplay muted loop playsinline style="width:160px;height:160px;border-radius:24px"><source src="3d-integrate-weekend.mp4" type="video/mp4"></video></div>
-    <div class="s-label reveal">03 · About</div>
-    <h2 class="s-h2 reveal">WHY WORK<br>WITH <span class="grad">ME</span></h2>
-    <p class="about-p reveal">I'm <em>Banks</em> — a web designer and developer building premium websites for businesses that deserve to look the part.</p>
-    <p class="about-p reveal">I started because I was tired of seeing good businesses undersell themselves online. Most web agencies are slow, overpriced, and deliver something generic. I'm the opposite — <em>fast, direct, custom</em>, and built around what actually gets you customers.</p>
+    <div class="s-label reveal">06 · About</div>
+    <h2 class="s-h2 reveal">ABOUT <span class="stripe-mark">ZEBRAISH STUDIO</span></h2>
+    <p class="about-p reveal">I'm the founder behind <em>Zebraish Studio</em> — the build layer of the wider Zebraish ecosystem. Today, that means one person, hand-building real digital products for real businesses.</p>
+    <p class="about-p reveal">Most agencies are slow, overpriced, and generic. I started building because good ideas kept getting undersold online. Zebraish Studio is the opposite — <em>fast, direct, custom</em>, and built around what a business actually needs to become real.</p>
     <div class="about-big-quote reveal">
       <span class="aq-thin">the difference is simple:</span>
       "I deliver in days,<br>not months."
     </div>
-    <p class="about-p reveal">Based in <em>Nigeria</em>. Working with clients worldwide.</p>
+    <p class="about-p reveal">Based in <em>Nigeria</em>. Building for founders and businesses worldwide.</p>
     <div class="about-values reveal">
       <div class="value-card vc-1"><span class="value-num" data-count="10" data-suffix="+">0</span><div class="value-label">Days Max</div></div>
       <div class="value-card vc-2"><span class="value-num">100%</span><div class="value-label">Custom Built</div></div>
@@ -755,28 +917,10 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   </div>
   <div class="about-right">
     <div class="afc-list reveal">
-      <div class="afc"><div class="afc-icon" style="background:rgba(10,132,255,.15)">💬</div><div class="afc-title">Clear Communication</div><p class="afc-desc">You'll always know exactly what I'm working on. No chasing, no going dark, no surprises.</p></div>
-      <div class="afc"><div class="afc-icon" style="background:rgba(191,90,242,.15)">🎯</div><div class="afc-title">Purpose-Built Design</div><p class="afc-desc">Every font, colour, layout, animation serves one goal: making your business look undeniable.</p></div>
-      <div class="afc"><div class="afc-icon" style="background:rgba(48,209,88,.15)">🔑</div><div class="afc-title">You Own Everything</div><p class="afc-desc">All code, all files, all assets are yours forever. No subscriptions, no lock-in.</p></div>
-      <div class="afc"><div class="afc-icon" style="background:rgba(255,159,10,.15)">🌍</div><div class="afc-title">Worldwide Delivery</div><p class="afc-desc">Clients in Nigeria, the Gulf, the UK, Europe. Wherever your business is, I deliver.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS -->
-<section class="section" id="process">
-  <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-control.mp4" type="video/mp4"></video></div>
-  <div class="s-label reveal">04 · How It Works</div>
-  <h2 class="s-h2 reveal">SIMPLE.<br><span class="grad thin">FAST.</span></h2>
-  <p class="s-sub reveal">Four steps from first message to live website.</p>
-  <div class="process-timeline">
-    <div class="process-line"></div>
-    <div class="process-line-fill" id="processLineFill"></div>
-    <div class="process-steps">
-      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">01</span></div><h4>You Reach Out</h4><p>Message me on WhatsApp. Tell me what your business does and what you need. Takes 5 minutes.</p></div>
-      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">02</span></div><h4>I Share a Direction</h4><p>Within 48 hours I come back with a visual direction, colour palette, and a flat project price.</p></div>
-      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">03</span></div><h4>I Build It</h4><p>I build the full site and send you a live preview link. You review it, I refine until it's exactly right.</p></div>
-      <div class="process-step reveal"><div class="process-dot"><span class="process-dot-num">04</span></div><h4>We Go Live</h4><p>Once you're happy I deploy to Vercel. You have a real live website the world can see that day.</p></div>
+      <div class="afc"><div class="afc-icon">💬</div><div class="afc-title">Clear Communication</div><p class="afc-desc">You'll always know exactly what's being worked on. No chasing, no going dark, no surprises.</p></div>
+      <div class="afc"><div class="afc-icon">🎯</div><div class="afc-title">Purpose-Built Design</div><p class="afc-desc">Every font, colour, layout, and interaction serves one goal: making your idea look and work undeniable.</p></div>
+      <div class="afc"><div class="afc-icon">🔑</div><div class="afc-title">You Own Everything</div><p class="afc-desc">All code, all files, all assets are yours forever. No subscriptions, no lock-in.</p></div>
+      <div class="afc"><div class="afc-icon">🌍</div><div class="afc-title">Worldwide Delivery</div><p class="afc-desc">Founders and businesses in Nigeria, the Gulf, the UK, Europe. Wherever you are, we deliver.</p></div>
     </div>
   </div>
 </section>
@@ -786,22 +930,22 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   <canvas id="cta-liquid" width="900" height="500"></canvas>
   <div class="contact-inner">
     <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="cube.mp4" type="video/mp4"></video></div>
-    <h2 class="contact-h2 reveal">LET'S<br><span class="grad">BUILD</span><br><span class="thin">SOMETHING</span></h2>
-    <p class="contact-sub reveal">Your business deserves a website that does it justice. Message me — no commitment, no pressure, just a conversation.</p>
+    <h2 class="contact-h2 reveal">LET'S <span class="stripe-mark">BUILD</span><br><span class="thin">SOMETHING REAL.</span></h2>
+    <p class="contact-sub reveal">Every idea deserves infrastructure that does it justice. Start the project flow above, or message directly — no commitment, no pressure.</p>
     <div class="contact-links reveal">
       <a href="https://wa.me/2348165320780" class="contact-link" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.49"/></svg>WhatsApp</a>
       <a href="mailto:j0shbankole19@gmail.com" class="contact-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>Email</a>
       <a href="https://www.snapchat.com/add/j0shh.b?share_id=yZ3VJ6-qGXQ&locale=en-US" class="contact-link" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.166 3c-2.183 0-4.415 1.188-4.415 4.63v.621c0 .138-.07.266-.183.342l-.913.589c-.152.098-.243.268-.243.45 0 .098.028.194.08.278l.73 1.158c.093.148.1.335.018.489-.254.472-.722.742-1.24.742-.15 0-.305-.024-.452-.07l-.012-.004c-.093-.026-.183-.04-.268-.04-.253 0-.467.131-.544.327-.041.105-.107.38.238.65.572.45 1.475.791 2.782.99.085.012.155.073.18.156l.135.45c.047.155.19.255.348.255.048 0 .097-.009.145-.027.301-.115.618-.173.944-.173.295 0 .584.05.86.148.565.199 1.04.594 1.354.95.315-.356.79-.751 1.354-.95.276-.098.565-.148.86-.148.326 0 .643.058.944.173.048.018.097.027.145.027.158 0 .301-.1.348-.255l.135-.45c.025-.083.095-.144.18-.156 1.307-.199 2.21-.54 2.782-.99.345-.27.279-.545.238-.65-.077-.196-.291-.327-.544-.327-.085 0-.175.014-.268.04l-.012.004c-.147.046-.302.07-.452.07-.518 0-.986-.27-1.24-.742-.082-.154-.075-.341.018-.489l.73-1.158c.052-.084.08-.18.08-.278 0-.182-.091-.352-.243-.45l-.913-.589c-.113-.076-.183-.204-.183-.342v-.621C16.581 4.188 14.349 3 12.166 3Z"/></svg>Snapchat</a>
       <a href="tel:+2348165320780" class="contact-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call Me</a>
     </div>
-    <a href="https://wa.me/2348165320780" class="contact-main reveal" target="_blank">Start a Project →</a>
+    <a href="#start-a-project" class="contact-main reveal">Start a Project →</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">BANKS</div>
-  <p>2025 · Custom Web Design &amp; Development</p>
+  <div class="footer-logo">ZEBRAISH STUDIO</div>
+  <p>Part of the Zebraish Ecosystem</p>
   <p>Based in Nigeria · Available Worldwide</p>
 </footer>
 
@@ -821,12 +965,10 @@ function onScroll() {
   const heroL = document.getElementById('heroLeft');
   if (bgN) bgN.style.transform = `translateY(${y * 0.35}px)`;
   if (heroL) heroL.style.transform = `translateY(${y * 0.1}px)`;
-  const o1 = document.querySelector('.orb-1');
-  const o2 = document.querySelector('.orb-2');
-  const o3 = document.querySelector('.orb-3');
-  if (o1) o1.style.transform = `translateY(${y * 0.22}px)`;
-  if (o2) o2.style.transform = `translateY(${y * 0.14}px)`;
-  if (o3) o3.style.transform = `translateY(${y * 0.08}px)`;
+  const hs1 = document.querySelector('.hs-1');
+  const hs2 = document.querySelector('.hs-2');
+  if (hs1) hs1.style.transform = `translateY(${y * 0.18}px)`;
+  if (hs2) hs2.style.transform = `translateY(${y * 0.1}px) scaleX(-1)`;
 }
 
 /* CURSOR */
@@ -887,7 +1029,7 @@ const barObs = new IntersectionObserver(entries => {
 const sl = document.querySelector('.skill-list');
 if (sl) barObs.observe(sl);
 
-/* RADAR CHART */
+/* RADAR CHART — grayscale */
 (function initRadar() {
   const canvas = document.getElementById('skills-radar');
   if (!canvas) return;
@@ -898,9 +1040,9 @@ if (sl) barObs.observe(sl);
   }
   resize();
   const ctx = canvas.getContext('2d');
-  const labels = ['Design','Code','Mobile','Animation','Speed','Conversion'];
-  const values = [0.97, 0.95, 0.94, 0.92, 0.96, 0.93];
-  const colors = ['#0A84FF','#BF5AF2','#30D158','#5AC8FA','#FF9F0A','#FF375F'];
+  const labels = ['Build','Brand','Automate','Intelligence','Speed','Delivery'];
+  const values = [0.97, 0.94, 0.88, 0.60, 0.96, 1.0];
+  const colors = ['#ffffff','#d4d4d8','#a8a8b0','#84848c','#5c5c64','#f0f0f2'];
   const n = labels.length;
   const step = (Math.PI*2)/n;
   let prog = 0;
@@ -935,9 +1077,9 @@ if (sl) barObs.observe(sl);
     }
     /* filled area */
     const grad=ctx.createLinearGradient(cx-R,cy-R,cx+R,cy+R);
-    grad.addColorStop(0,'rgba(10,132,255,.32)');
-    grad.addColorStop(.5,'rgba(191,90,242,.28)');
-    grad.addColorStop(1,'rgba(90,200,250,.32)');
+    grad.addColorStop(0,'rgba(245,245,247,.28)');
+    grad.addColorStop(.5,'rgba(245,245,247,.14)');
+    grad.addColorStop(1,'rgba(245,245,247,.26)');
     ctx.beginPath();
     for (let i=0;i<n;i++) {
       const a=i*step-Math.PI/2, r=values[i]*p*R;
@@ -946,7 +1088,7 @@ if (sl) barObs.observe(sl);
     }
     ctx.closePath();
     ctx.fillStyle=grad; ctx.fill();
-    ctx.strokeStyle='rgba(10,132,255,.7)'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.strokeStyle='rgba(245,245,247,.7)'; ctx.lineWidth=1.5; ctx.stroke();
     /* vertex dots */
     for (let i=0;i<n;i++) {
       const a=i*step-Math.PI/2, r=values[i]*p*R;
@@ -1012,7 +1154,7 @@ document.querySelectorAll('.bento-card').forEach(card=>{
     const r=this.getBoundingClientRect();
     const x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2;
     this.style.transform=`perspective(1000px) rotateX(${-(y/r.height)*6}deg) rotateY(${(x/r.width)*6}deg) scale(1.01)`;
-    this.style.boxShadow=`0 30px 80px rgba(0,0,0,.6),${(x/r.width)*-12}px ${(y/r.height)*-12}px 30px rgba(10,132,255,.15)`;
+    this.style.boxShadow=`0 30px 80px rgba(0,0,0,.6),${(x/r.width)*-12}px ${(y/r.height)*-12}px 30px rgba(245,245,247,.12)`;
   });
   card.addEventListener('mouseleave',function(){this.style.transform='';this.style.boxShadow='';});
 });
@@ -1062,6 +1204,78 @@ document.addEventListener('click',e=>{
     t+=.011; requestAnimationFrame(draw);
   }
   draw();
+})();
+
+/* START A PROJECT — multi-step flow */
+(function(){
+  const form = document.getElementById('spForm');
+  if (!form) return;
+  const panels = [...document.querySelectorAll('.sp-panel')];
+  const segs = [...document.querySelectorAll('.sp-step-seg-fill')];
+  const backBtn = document.getElementById('spBack');
+  const nextBtn = document.getElementById('spNext');
+  const successEl = document.getElementById('spSuccess');
+  const waLink = document.getElementById('spWaLink');
+  const whatInput = document.getElementById('spWhat');
+  const moreInput = document.getElementById('spMore');
+  let step = 1;
+  const total = panels.length;
+  let stage = null;
+  const needs = new Set();
+
+  function updateSegs(){
+    segs.forEach((s,i)=>{ s.style.width = (i < step) ? '100%' : '0%'; });
+  }
+  function updateNav(){
+    backBtn.classList.toggle('show', step > 1);
+    if (step === 1) nextBtn.disabled = whatInput.value.trim().length === 0;
+    else if (step === 2) nextBtn.disabled = !stage;
+    else nextBtn.disabled = false;
+    nextBtn.textContent = step === total ? 'Submit →' : 'Next →';
+  }
+  function showStep(n){
+    step = n;
+    panels.forEach(p => p.classList.toggle('active', parseInt(p.dataset.panel,10) === step));
+    updateSegs();
+    updateNav();
+  }
+  whatInput.addEventListener('input', updateNav);
+
+  document.getElementById('spStage').addEventListener('click', e => {
+    const btn = e.target.closest('.sp-chip'); if (!btn) return;
+    document.querySelectorAll('#spStage .sp-chip').forEach(c=>c.classList.remove('selected'));
+    btn.classList.add('selected');
+    stage = btn.dataset.value;
+    updateNav();
+  });
+
+  document.getElementById('spNeeds').addEventListener('click', e => {
+    const btn = e.target.closest('.sp-chip'); if (!btn) return;
+    btn.classList.toggle('selected');
+    if (btn.classList.contains('selected')) needs.add(btn.dataset.value);
+    else needs.delete(btn.dataset.value);
+  });
+
+  backBtn.addEventListener('click', () => { if (step > 1) showStep(step - 1); });
+
+  nextBtn.addEventListener('click', () => {
+    if (nextBtn.disabled) return;
+    if (step < total) { showStep(step + 1); return; }
+    /* submit */
+    const what = whatInput.value.trim();
+    const needsList = [...needs].join(', ') || 'Not specified';
+    const more = moreInput.value.trim() || 'N/A';
+    const msg = `Hi Zebraish Studio! Here's what I'm building:\n\n*What:* ${what}\n*Stage:* ${stage}\n*Needs:* ${needsList}\n*More:* ${more}`;
+    const url = 'https://wa.me/2348165320780?text=' + encodeURIComponent(msg);
+    waLink.href = url;
+    form.style.display = 'none';
+    document.querySelector('.sp-steps-bar').style.display = 'none';
+    successEl.classList.add('active');
+    window.open(url, '_blank');
+  });
+
+  updateSegs();
+  updateNav();
 })();
 </script>
 </body>
