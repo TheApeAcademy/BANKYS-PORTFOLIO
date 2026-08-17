@@ -21,19 +21,41 @@ export type SaveConfigurationResult =
 export async function saveProjectConfiguration(
   input: SaveConfigurationInput,
 ): Promise<SaveConfigurationResult> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    return {
+      ok: false,
+      error: `Server is missing Supabase config (NEXT_PUBLIC_SUPABASE_URL ${url ? "set" : "MISSING"}, NEXT_PUBLIC_SUPABASE_ANON_KEY ${key ? "set" : "MISSING"}) — check Vercel env vars.`,
+    };
+  }
+
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .rpc("save_project_configuration", {
-      p_access_token: input.accessToken,
-      p_client_name: input.clientName,
-      p_client_contact: input.clientContact,
-      p_project_type: input.projectType,
-      p_configuration: input.answers,
-      p_quoted_price: input.quotedPrice,
-      p_currency: input.currency,
-    })
-    .single();
+  let data: unknown;
+  let error: { message: string } | null;
+  try {
+    const result = await supabase
+      .rpc("save_project_configuration", {
+        p_access_token: input.accessToken,
+        p_client_name: input.clientName,
+        p_client_contact: input.clientContact,
+        p_project_type: input.projectType,
+        p_configuration: input.answers,
+        p_quoted_price: input.quotedPrice,
+        p_currency: input.currency,
+      })
+      .single();
+    data = result.data;
+    error = result.error;
+  } catch (err) {
+    const cause = err instanceof Error && "cause" in err ? String((err as Error & { cause?: unknown }).cause) : null;
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      ok: false,
+      error: `Network error reaching Supabase at ${url}: ${message}${cause ? ` (cause: ${cause})` : ""}`,
+    };
+  }
 
   if (error || !data) {
     return { ok: false, error: error?.message ?? "Could not save your project." };
