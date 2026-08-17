@@ -12,17 +12,28 @@ import { sendClientPaymentConfirmation, sendAdminPaymentNotification } from "@/l
 export async function verifyAndRecordFlutterwavePayment(transactionId: string | number, expectedTxRef: string) {
   const verification = await verifyFlutterwaveTransaction(transactionId);
   const txn = verification.data;
+  const supabase = createServiceClient();
 
   if (verification.status !== "success" || !txn || txn.status !== "successful" || txn.tx_ref !== expectedTxRef) {
+    await supabase.rpc("log_system_event", {
+      p_severity: "warning",
+      p_source: "flutterwave-webhook",
+      p_message: "Transaction not verified as successful",
+      p_context: { transactionId, expectedTxRef, verificationStatus: verification.status, txnStatus: txn?.status },
+    });
     return { ok: false as const, reason: "Transaction not verified as successful." };
   }
 
   const accessToken = extractAccessToken(expectedTxRef);
   if (!accessToken) {
+    await supabase.rpc("log_system_event", {
+      p_severity: "error",
+      p_source: "flutterwave-webhook",
+      p_message: "Malformed transaction reference",
+      p_context: { transactionId, expectedTxRef },
+    });
     return { ok: false as const, reason: "Malformed transaction reference." };
   }
-
-  const supabase = createServiceClient();
 
   const { data: project, error: projectError } = await supabase
     .from("projects")
@@ -31,10 +42,28 @@ export async function verifyAndRecordFlutterwavePayment(transactionId: string | 
     .maybeSingle();
 
   if (projectError || !project) {
+    await supabase.rpc("log_system_event", {
+      p_severity: "error",
+      p_source: "flutterwave-webhook",
+      p_message: "No matching project for a verified payment",
+      p_context: { transactionId, expectedTxRef },
+    });
     return { ok: false as const, reason: "Could not find the matching project for this payment." };
   }
 
   if (txn.amount < Number(project.quoted_price) || txn.currency !== project.quoted_currency) {
+    // Worth flagging above "warning": either a pricing-desync bug or a
+    // deliberate underpayment attempt against a real project.
+    await supabase.rpc("log_system_event", {
+      p_severity: "critical",
+      p_source: "flutterwave-webhook",
+      p_message: "Paid amount/currency does not match the quoted project price",
+      p_context: {
+        projectId: project.id,
+        paid: { amount: txn.amount, currency: txn.currency },
+        quoted: { amount: project.quoted_price, currency: project.quoted_currency },
+      },
+    });
     return { ok: false as const, reason: "Paid amount/currency does not match the quoted project price." };
   }
 
@@ -50,6 +79,12 @@ export async function verifyAndRecordFlutterwavePayment(transactionId: string | 
     .single();
 
   if (error || !data) {
+    await supabase.rpc("log_system_event", {
+      p_severity: "error",
+      p_source: "flutterwave-webhook",
+      p_message: "record_gateway_payment RPC failed",
+      p_context: { projectId: project.id, error: error?.message ?? null },
+    });
     return { ok: false as const, reason: error?.message ?? "Could not record payment." };
   }
 

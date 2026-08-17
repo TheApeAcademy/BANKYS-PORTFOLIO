@@ -72,7 +72,7 @@ export async function saveProjectConfiguration(
 }
 
 export type ResumedProject = {
-  id: string;
+  id: string; // present on the underlying `projects` row the RPC returns
   project_code: string;
   client_name: string;
   client_contact: string | null;

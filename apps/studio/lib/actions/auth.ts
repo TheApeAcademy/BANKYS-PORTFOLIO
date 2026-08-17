@@ -18,6 +18,12 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error || !data.user) {
+    await supabase.rpc("log_system_event", {
+      p_severity: "warning",
+      p_source: "auth",
+      p_message: "Failed login attempt on studio",
+      p_context: { email },
+    });
     return { error: "Invalid email or password." };
   }
 
@@ -37,9 +43,21 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   // the same generic error as any other non-collaborator credential, not a
   // hint that it's an admin account.
   if (profile.role !== "collaborator") {
+    await supabase.rpc("log_system_event", {
+      p_severity: "warning",
+      p_source: "auth",
+      p_message: "Non-collaborator account attempted studio login",
+      p_context: { email, role: profile.role },
+    });
     await supabase.auth.signOut();
     return { error: "Invalid email or password." };
   }
+
+  await supabase.rpc("log_activity_event", {
+    p_event_type: "login",
+    p_session_id: null,
+    p_metadata: { app: "studio" },
+  });
 
   if (next && next.startsWith("/")) {
     redirect(next);

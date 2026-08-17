@@ -6,6 +6,7 @@ import { PROJECT_TYPES } from "@/lib/catalogue/catalogue";
 import { calculateProject, getVisibleSteps } from "@/lib/catalogue/engine";
 import type { Answers } from "@zebraish/lib/catalogue/types";
 import { saveProjectConfiguration } from "@/lib/actions/configurator";
+import { logActivityEvent } from "@/lib/actions/activity";
 import { StepRenderer } from "./StepRenderer";
 import { formatMoney } from "@zebraish/lib/format";
 import { COUNTRY_CODES } from "@/lib/countries";
@@ -42,6 +43,12 @@ export function Configurator({
   } | null;
 }) {
   const router = useRouter();
+
+  // Correlates this configurator session's funnel events (started → steps →
+  // submitted → checkout initiated) before a project/access_token exists.
+  // Not persisted across reloads — good enough for funnel analysis, not
+  // meant to be a durable visitor identity.
+  const [sessionId] = useState(() => crypto.randomUUID());
 
   const [phase, setPhase] = useState<Phase>(initial ? "details" : "type");
   const [projectType, setProjectType] = useState<string | null>(initial?.projectType ?? null);
@@ -83,6 +90,7 @@ export function Configurator({
     setAnswers({});
     setStepPos(0);
     setPhase("steps");
+    void logActivityEvent("configurator_started", { sessionId, metadata: { project_type: id } });
   }
 
   function setAnswer(stepId: string, value: Answers[string]) {
@@ -92,8 +100,13 @@ export function Configurator({
   function next() {
     if (stepPos < visibleSteps.length - 1) {
       setStepPos((p) => p + 1);
+      void logActivityEvent("configurator_step", {
+        sessionId,
+        metadata: { project_type: projectType, step_id: currentStep?.id, step_index: stepPos + 1 },
+      });
     } else {
       setPhase("details");
+      void logActivityEvent("configurator_details_reached", { sessionId, metadata: { project_type: projectType } });
     }
   }
 
@@ -139,6 +152,11 @@ export function Configurator({
     setAccessToken(result.accessToken);
     setProjectCode(result.projectCode);
     setPhase("done");
+    void logActivityEvent("configurator_submitted", {
+      sessionId,
+      projectId: result.projectId,
+      metadata: { project_type: projectType, quoted_price: quote.total },
+    });
 
     const summary = buildWhatsAppMessage(result.projectCode, projectType, answers, quote.total);
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(summary)}`;

@@ -1,6 +1,7 @@
 "use server";
 
 import { getProjectByToken } from "./configurator";
+import { logActivityEvent } from "./activity";
 import { buildTxRef, initiateFlutterwavePayment } from "@/lib/flutterwave";
 import { headers } from "next/headers";
 
@@ -28,6 +29,10 @@ export async function initiatePayment(accessToken: string): Promise<InitiatePaym
       customerEmail: project.client_contact?.includes("@") ? project.client_contact : "",
       customerName: project.client_name,
       projectCode: project.project_code,
+    });
+    await logActivityEvent("checkout_initiated", {
+      projectId: project.id,
+      metadata: { quoted_price: project.quoted_price, currency: project.quoted_currency },
     });
     return { ok: true, link };
   } catch (err) {

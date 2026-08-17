@@ -17,6 +17,17 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error || !data.user) {
+    // "critical" not "warning": this is the single-admin control center —
+    // a failed login here is either the founder mistyping a password or
+    // someone probing the one account that has full write access to every
+    // table in the schema. Worth standing out from studio's collaborator
+    // login failures.
+    await supabase.rpc("log_system_event", {
+      p_severity: "critical",
+      p_source: "auth",
+      p_message: "Failed login attempt on admin control center",
+      p_context: { email },
+    });
     return { error: "Invalid email or password." };
   }
 
@@ -30,9 +41,21 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   // same generic error as any other non-admin login, not a hint that
   // their account exists or what it's for.
   if (!profile || profile.role !== "admin") {
+    await supabase.rpc("log_system_event", {
+      p_severity: "critical",
+      p_source: "auth",
+      p_message: "Non-admin account attempted admin control center login",
+      p_context: { email, role: profile?.role ?? null },
+    });
     await supabase.auth.signOut();
     return { error: "Invalid email or password." };
   }
+
+  await supabase.rpc("log_activity_event", {
+    p_event_type: "login",
+    p_session_id: null,
+    p_metadata: { app: "admin" },
+  });
 
   redirect("/");
 }

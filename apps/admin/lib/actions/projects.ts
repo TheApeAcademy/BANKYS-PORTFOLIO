@@ -19,25 +19,12 @@ export async function createProjectByAdmin(formData: FormData) {
     p_contact: clientContact.includes("@") ? null : clientContact || null,
   });
 
-  const { data: project, error } = await supabase
-    .from("projects")
-    .insert({
-      client_name: clientName,
-      client_contact: clientContact || null,
-      customer_id: customerId ?? null,
-    })
-    .select()
-    .single();
-
-  if (!error && project) {
-    await supabase.from("audit_log").insert({
-      actor,
-      action: "PROJECT_CREATED",
-      entity_type: "project",
-      entity_id: project.id,
-      details: { project_code: project.project_code, source: "admin" },
-    });
-  }
+  await supabase.rpc("create_project_by_admin", {
+    p_client_name: clientName,
+    p_client_contact: clientContact || null,
+    p_customer_id: customerId ?? null,
+    p_actor: actor,
+  });
 
   revalidatePath("/projects");
 }
@@ -49,13 +36,10 @@ export async function updateProjectStatus(projectId: string, formData: FormData)
   const status = String(formData.get("status") ?? "");
   if (!status) return;
 
-  await supabase.from("projects").update({ status }).eq("id", projectId);
-  await supabase.from("audit_log").insert({
-    actor,
-    action: "PROJECT_STATUS_CHANGED",
-    entity_type: "project",
-    entity_id: projectId,
-    details: { status },
+  await supabase.rpc("update_project_status", {
+    p_project_id: projectId,
+    p_status: status,
+    p_actor: actor,
   });
 
   revalidatePath("/projects");

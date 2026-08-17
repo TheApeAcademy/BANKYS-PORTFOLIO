@@ -42,30 +42,19 @@ export async function createCollaborator(
     account_number: accountNumber || null,
   };
 
-  const { data: collaborator, error: insertError } = await supabase
-    .from("collaborators")
-    .insert({
-      name,
-      email: email || null,
-      term_start: termStart,
-      term_end: termEndRaw || null,
-      commission_rate: commissionRate,
-      bank_details: bankDetails,
-    })
-    .select()
-    .single();
+  const { data: collaborator, error: insertError } = await supabase.rpc("create_collaborator_record", {
+    p_name: name,
+    p_email: email || null,
+    p_term_start: termStart,
+    p_commission_rate: commissionRate,
+    p_actor: actor,
+    p_term_end: termEndRaw || null,
+    p_bank_details: bankDetails,
+  });
 
   if (insertError || !collaborator) {
     return { error: insertError?.message ?? "Could not create collaborator.", success: null };
   }
-
-  await supabase.from("audit_log").insert({
-    actor,
-    action: "COLLABORATOR_CREATED",
-    entity_type: "collaborator",
-    entity_id: collaborator.id,
-    details: { name, term_start: termStart, term_end: termEndRaw || null, commission_rate: commissionRate },
-  });
 
   revalidatePath("/collaborators");
 
@@ -87,27 +76,20 @@ export async function createCollaborator(
     };
   }
 
-  const { error: profileError } = await supabase.from("profiles").insert({
-    id: signUpData.user.id,
-    role: "collaborator",
-    collaborator_id: collaborator.id,
-    full_name: name,
+  const { error: linkError } = await supabase.rpc("link_collaborator_login", {
+    p_collaborator_id: collaborator.id,
+    p_profile_id: signUpData.user.id,
+    p_full_name: name,
+    p_email: email,
+    p_actor: actor,
   });
 
-  if (profileError) {
+  if (linkError) {
     return {
-      error: `Collaborator saved and login account created, but linking the role failed: ${profileError.message}. Contact support.`,
+      error: `Collaborator saved and login account created, but linking the role failed: ${linkError.message}. Contact support.`,
       success: null,
     };
   }
-
-  await supabase.from("audit_log").insert({
-    actor,
-    action: "COLLABORATOR_LOGIN_CREATED",
-    entity_type: "collaborator",
-    entity_id: collaborator.id,
-    details: { email },
-  });
 
   return { error: null, success: { email, tempPassword } };
 }
@@ -125,20 +107,13 @@ export async function updateCollaborator(formData: FormData) {
 
   if (!id || !termStart) return;
 
-  const update = {
-    term_start: termStart,
-    term_end: termEndRaw || null,
-    commission_rate: commissionRateRaw ? Number(commissionRateRaw) / 100 : undefined,
-    active,
-  };
-
-  await supabase.from("collaborators").update(update).eq("id", id);
-  await supabase.from("audit_log").insert({
-    actor,
-    action: "COLLABORATOR_UPDATED",
-    entity_type: "collaborator",
-    entity_id: id,
-    details: update,
+  await supabase.rpc("update_collaborator_record", {
+    p_id: id,
+    p_term_start: termStart,
+    p_active: active,
+    p_actor: actor,
+    p_term_end: termEndRaw || null,
+    p_commission_rate: commissionRateRaw ? Number(commissionRateRaw) / 100 : null,
   });
 
   revalidatePath("/collaborators");
