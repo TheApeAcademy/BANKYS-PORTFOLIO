@@ -1,0 +1,62 @@
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
+import type { Answers } from "@/lib/catalogue/types";
+
+export type SaveConfigurationInput = {
+  accessToken: string | null;
+  clientName: string;
+  clientContact: string;
+  projectType: string;
+  answers: Answers;
+  quotedPrice: number;
+  currency: string;
+};
+
+export type SaveConfigurationResult =
+  | { ok: true; projectId: string; projectCode: string; accessToken: string }
+  | { ok: false; error: string };
+
+export async function saveProjectConfiguration(
+  input: SaveConfigurationInput,
+): Promise<SaveConfigurationResult> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .rpc("save_project_configuration", {
+      p_access_token: input.accessToken,
+      p_client_name: input.clientName,
+      p_client_contact: input.clientContact,
+      p_project_type: input.projectType,
+      p_configuration: input.answers,
+      p_quoted_price: input.quotedPrice,
+      p_currency: input.currency,
+    })
+    .single();
+
+  if (error || !data) {
+    return { ok: false, error: error?.message ?? "Could not save your project." };
+  }
+
+  const row = data as { project_id: string; project_code: string; access_token: string };
+  return { ok: true, projectId: row.project_id, projectCode: row.project_code, accessToken: row.access_token };
+}
+
+export type ResumedProject = {
+  id: string;
+  project_code: string;
+  client_name: string;
+  client_contact: string | null;
+  project_type: string | null;
+  configuration: Answers | null;
+  quoted_price: number | null;
+  quoted_currency: string | null;
+  status: string;
+};
+
+export async function getProjectByToken(token: string): Promise<ResumedProject | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_project_by_token", { p_access_token: token }).single();
+  if (error || !data) return null;
+  return data as ResumedProject;
+}
