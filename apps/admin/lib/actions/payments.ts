@@ -35,9 +35,9 @@ export async function recordPayment(_prev: ActionState, formData: FormData): Pro
 
   if (error) return { error: error.message };
 
-  revalidatePath(`/admin/projects/${projectId}`);
-  revalidatePath("/admin/payments");
-  revalidatePath("/admin");
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/payments");
+  revalidatePath("/");
   return ok;
 }
 
@@ -64,9 +64,9 @@ export async function excludePayment(_prev: ActionState, formData: FormData): Pr
 
   if (error) return { error: error.message };
 
-  if (projectId) revalidatePath(`/admin/projects/${projectId}`);
-  revalidatePath("/admin/payments");
-  revalidatePath("/admin/payouts");
+  if (projectId) revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/payments");
+  revalidatePath("/payouts");
   return ok;
 }
 
@@ -93,8 +93,8 @@ export async function recordPartialRefund(_prev: ActionState, formData: FormData
 
   if (error) return { error: error.message };
 
-  if (projectId) revalidatePath(`/admin/projects/${projectId}`);
-  revalidatePath("/admin/payments");
-  revalidatePath("/admin/payouts");
+  if (projectId) revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/payments");
+  revalidatePath("/payouts");
   return ok;
 }

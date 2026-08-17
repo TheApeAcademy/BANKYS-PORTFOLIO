@@ -67,7 +67,7 @@ export async function createCollaborator(
     details: { name, term_start: termStart, term_end: termEndRaw || null, commission_rate: commissionRate },
   });
 
-  revalidatePath("/admin/collaborators");
+  revalidatePath("/collaborators");
 
   if (!email) {
     return { error: null, success: null };
@@ -141,6 +141,6 @@ export async function updateCollaborator(formData: FormData) {
     details: update,
   });
 
-  revalidatePath("/admin/collaborators");
-  revalidatePath(`/admin/collaborators/${id}`);
+  revalidatePath("/collaborators");
+  revalidatePath(`/collaborators/${id}`);
 }

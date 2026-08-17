@@ -28,6 +28,6 @@ export async function markPayoutPaid(formData: FormData) {
     throw new Error(error.message);
   }
 
-  revalidatePath("/admin/payouts");
-  revalidatePath("/admin/collaborators");
+  revalidatePath("/payouts");
+  revalidatePath("/collaborators");
 }

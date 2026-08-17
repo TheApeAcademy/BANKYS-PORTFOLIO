@@ -13,9 +13,19 @@ export async function createProjectByAdmin(formData: FormData) {
   const supabase = await createClient();
   const actor = await getActorLabel();
 
+  const { data: customerId } = await supabase.rpc("find_or_create_customer", {
+    p_email: clientContact.includes("@") ? clientContact : null,
+    p_name: clientName,
+    p_contact: clientContact.includes("@") ? null : clientContact || null,
+  });
+
   const { data: project, error } = await supabase
     .from("projects")
-    .insert({ client_name: clientName, client_contact: clientContact || null })
+    .insert({
+      client_name: clientName,
+      client_contact: clientContact || null,
+      customer_id: customerId ?? null,
+    })
     .select()
     .single();
 
@@ -29,7 +39,7 @@ export async function createProjectByAdmin(formData: FormData) {
     });
   }
 
-  revalidatePath("/admin/projects");
+  revalidatePath("/projects");
 }
 
 export async function updateProjectStatus(projectId: string, formData: FormData) {
@@ -48,6 +58,6 @@ export async function updateProjectStatus(projectId: string, formData: FormData)
     details: { status },
   });
 
-  revalidatePath("/admin/projects");
-  revalidatePath(`/admin/projects/${projectId}`);
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${projectId}`);
 }
