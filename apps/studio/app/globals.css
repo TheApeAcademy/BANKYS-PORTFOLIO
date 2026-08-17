@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #050506;
+  --bg-raised: #111114;
+  --bg-card: #17171b;
+  --border: #2a2a30;
+  --fg: #f2f2f4;
+  --fg-muted: #9a9aa4;
+  --accent: #1d68c0;
+  --accent-hover: #2878d6;
+  --pending: #caa53a;
+  --paid: #2ea86a;
+  --excluded: #b0455a;
+  --font-system:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-bg-card: var(--bg-card);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-pending: var(--pending);
+  --color-paid: var(--paid);
+  --color-excluded: var(--excluded);
+  --font-sans: var(--font-system);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-system);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.pill-paid {
+  color: var(--paid);
+  background: color-mix(in srgb, var(--paid) 16%, transparent);
+}
+
+.pill-pending {
+  color: var(--pending);
+  background: color-mix(in srgb, var(--pending) 16%, transparent);
+}
+
+.pill-excluded {
+  color: var(--excluded);
+  background: color-mix(in srgb, var(--excluded) 16%, transparent);
+}
+
+.pill-neutral {
+  color: var(--fg-muted);
+  background: color-mix(in srgb, var(--fg-muted) 14%, transparent);
+}
