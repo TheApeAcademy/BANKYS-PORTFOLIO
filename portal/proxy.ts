@@ -27,15 +27,37 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isProtected =
-    request.nextUrl.pathname.startsWith("/admin") ||
-    request.nextUrl.pathname.startsWith("/dashboard");
+  const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
+  const isDashboardRoute = request.nextUrl.pathname.startsWith("/dashboard");
 
-  if (isProtected && !user) {
+  if ((isAdminRoute || isDashboardRoute) && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(url);
+  }
+
+  // Session presence alone isn't enough: a logged-in collaborator hitting
+  // /admin (or an admin hitting /dashboard) must be bounced here, at the
+  // middleware layer, rather than reaching the layout/page first and relying
+  // solely on requireAdmin()/requireCollaborator() downstream.
+  if ((isAdminRoute || isDashboardRoute) && user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    const role = profile?.role;
+    const roleMismatch =
+      (isAdminRoute && role !== "admin") || (isDashboardRoute && role !== "collaborator");
+
+    if (!role || roleMismatch) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.delete("next");
+      return NextResponse.redirect(url);
+    }
   }
 
   return response;
