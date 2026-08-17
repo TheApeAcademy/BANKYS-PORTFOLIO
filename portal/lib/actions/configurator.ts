@@ -18,6 +18,15 @@ export type SaveConfigurationResult =
   | { ok: true; projectId: string; projectCode: string; accessToken: string }
   | { ok: false; error: string };
 
+/**
+ * If the network path to Supabase hangs (rather than erroring outright), the request
+ * would otherwise sit until the Vercel function itself is killed by the platform —
+ * which surfaces to the client as a bare, unlabeled "fetch failed" with no diagnostic
+ * detail, because our own code never got control back to report anything. Aborting
+ * on our own clock first guarantees we always get to return a clear, specific error.
+ */
+const SUPABASE_TIMEOUT_MS = 8000;
+
 export async function saveProjectConfiguration(
   input: SaveConfigurationInput,
 ): Promise<SaveConfigurationResult> {
@@ -31,6 +40,8 @@ export async function saveProjectConfiguration(
   }
 
   const supabase = await createClient();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), SUPABASE_TIMEOUT_MS);
 
   let data: unknown;
   let error: { message: string } | null;
@@ -45,16 +56,26 @@ export async function saveProjectConfiguration(
         p_quoted_price: input.quotedPrice,
         p_currency: input.currency,
       })
+      .abortSignal(controller.signal)
       .single();
     data = result.data;
     error = result.error;
   } catch (err) {
+    const isAbort = err instanceof Error && err.name === "AbortError";
+    if (isAbort) {
+      return {
+        ok: false,
+        error: `Timed out after ${SUPABASE_TIMEOUT_MS / 1000}s reaching Supabase at ${url}. This means the server can start a connection but never gets a response — check Supabase project status and Vercel's outbound network settings.`,
+      };
+    }
     const cause = err instanceof Error && "cause" in err ? String((err as Error & { cause?: unknown }).cause) : null;
     const message = err instanceof Error ? err.message : String(err);
     return {
       ok: false,
       error: `Network error reaching Supabase at ${url}: ${message}${cause ? ` (cause: ${cause})` : ""}`,
     };
+  } finally {
+    clearTimeout(timer);
   }
 
   if (error || !data) {
@@ -85,7 +106,18 @@ export type ResumedProject = {
 
 export async function getProjectByToken(token: string): Promise<ResumedProject | null> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_project_by_token", { p_access_token: token }).single();
-  if (error || !data) return null;
-  return data as ResumedProject;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), SUPABASE_TIMEOUT_MS);
+  try {
+    const { data, error } = await supabase
+      .rpc("get_project_by_token", { p_access_token: token })
+      .abortSignal(controller.signal)
+      .single();
+    if (error || !data) return null;
+    return data as ResumedProject;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
 }

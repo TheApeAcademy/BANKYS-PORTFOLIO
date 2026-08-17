@@ -122,15 +122,24 @@ export function Configurator({
     }
     setSaving(true);
     setError(null);
-    const result = await saveProjectConfiguration({
-      accessToken,
-      clientName,
-      clientContact,
-      projectType,
-      answers,
-      quotedPrice: quote.total,
-      currency: "EUR",
-    });
+    let result;
+    try {
+      result = await saveProjectConfiguration({
+        accessToken,
+        clientName,
+        clientContact,
+        projectType,
+        answers,
+        quotedPrice: quote.total,
+        currency: "EUR",
+      });
+    } catch (err) {
+      setSaving(false);
+      setError(
+        `Couldn't reach the server to save your project (${err instanceof Error ? err.message : String(err)}). Check your connection and try again — nothing was lost.`,
+      );
+      return;
+    }
     setSaving(false);
     if (!result.ok) {
       setError(result.error);
