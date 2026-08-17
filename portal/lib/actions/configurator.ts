@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Answers } from "@/lib/catalogue/types";
+import { sendAdminIntakeNotification } from "@/lib/email";
 
 export type SaveConfigurationInput = {
   accessToken: string | null;
@@ -39,6 +40,12 @@ export async function saveProjectConfiguration(
   }
 
   const row = data as { project_id: string; project_code: string; access_token: string };
+
+  if (!input.accessToken) {
+    // Only notify on first creation, not on every edit/resave of an existing draft.
+    await sendAdminIntakeNotification({ projectCode: row.project_code, clientName: input.clientName });
+  }
+
   return { ok: true, projectId: row.project_id, projectCode: row.project_code, accessToken: row.access_token };
 }
 
