@@ -3,8 +3,6 @@
 // original design pixel-for-pixel; site.css/site.js (in /public) provide styling + behavior.
 export const SITE_BODY_HTML = `
 <div id="scroll-bar"></div>
-<div id="cur"></div>
-<div id="cur-r"></div>
 
 <!-- NAV -->
 <nav>

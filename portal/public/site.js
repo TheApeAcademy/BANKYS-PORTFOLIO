@@ -19,17 +19,6 @@ function onScroll() {
   if (hs2) hs2.style.transform = `translateY(${y * 0.1}px) scaleX(-1)`;
 }
 
-/* CURSOR */
-const cur = document.getElementById('cur'), curR = document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-(function animCur(){
-  rx+=(mx-rx)*.18; ry+=(my-ry)*.18;
-  cur.style.left=mx+'px'; cur.style.top=my+'px';
-  curR.style.left=rx+'px'; curR.style.top=ry+'px';
-  requestAnimationFrame(animCur);
-})();
-
 /* HERO DEVICE TILT */
 const dev = document.getElementById('heroDevice');
 if (dev) {
@@ -249,9 +238,16 @@ document.addEventListener('click',e=>{
       sg.addColorStop(0,'rgba(255,255,255,.6)');sg.addColorStop(.35,'rgba(200,200,200,.2)');sg.addColorStop(1,'rgba(0,0,0,0)');
       ctx.fillStyle=sg;ctx.fillRect(0,0,W,H);
     });
-    t+=.011; requestAnimationFrame(draw);
+    t+=.011;
+    if (visible) rafId = requestAnimationFrame(draw);
   }
-  draw();
+  let visible = false, rafId = null;
+  const io = new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible && !rafId) rafId = requestAnimationFrame(draw);
+    else if (!visible && rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }, {threshold: 0});
+  io.observe(canvas);
 })();
 
 /* START A PROJECT — multi-step flow */
