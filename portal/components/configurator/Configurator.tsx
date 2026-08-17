@@ -8,8 +8,24 @@ import type { Answers } from "@/lib/catalogue/types";
 import { saveProjectConfiguration } from "@/lib/actions/configurator";
 import { StepRenderer } from "./StepRenderer";
 import { formatMoney } from "@/lib/format";
+import { COUNTRY_CODES } from "@/lib/countries";
 
 const WHATSAPP_NUMBER = "2348165320780";
+
+type ContactMethod = "email" | "phone";
+
+/** Best-effort split of a previously-saved contact string, so a resumed draft
+ * doesn't lose what the client already entered. */
+function parseContact(contact: string): { method: ContactMethod; email: string; dial: string; phoneNumber: string } {
+  if (contact.includes("@")) {
+    return { method: "email", email: contact, dial: "+234", phoneNumber: "" };
+  }
+  const match = COUNTRY_CODES.filter((c) => c.dial).find((c) => contact.startsWith(c.dial));
+  if (match) {
+    return { method: "phone", email: "", dial: match.dial, phoneNumber: contact.slice(match.dial.length).trim() };
+  }
+  return { method: "phone", email: "", dial: "+234", phoneNumber: contact };
+}
 
 type Phase = "type" | "steps" | "details" | "done";
 
@@ -32,7 +48,13 @@ export function Configurator({
   const [answers, setAnswers] = useState<Answers>(initial?.answers ?? {});
   const [stepPos, setStepPos] = useState(0);
   const [clientName, setClientName] = useState(initial?.clientName ?? "");
-  const [clientContact, setClientContact] = useState(initial?.clientContact ?? "");
+  const parsedInitialContact = useMemo(() => parseContact(initial?.clientContact ?? ""), [initial]);
+  const [contactMethod, setContactMethod] = useState<ContactMethod>(parsedInitialContact.method);
+  const [email, setEmail] = useState(parsedInitialContact.email);
+  const [phoneDial, setPhoneDial] = useState(parsedInitialContact.dial);
+  const [phoneNumber, setPhoneNumber] = useState(parsedInitialContact.phoneNumber);
+  const clientContact =
+    contactMethod === "email" ? email.trim() : phoneNumber.trim() ? `${phoneDial} ${phoneNumber.replace(/^0+/, "").trim()}` : "";
   const [accessToken, setAccessToken] = useState<string | null>(initial?.accessToken ?? null);
   const [projectCode, setProjectCode] = useState<string | null>(initial?.projectCode ?? null);
   const [saving, setSaving] = useState(false);
@@ -232,12 +254,62 @@ export function Configurator({
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm text-fg-muted">Email or phone</label>
-              <input
-                value={clientContact}
-                onChange={(e) => setClientContact(e.target.value)}
-                className="rounded-lg border border-border bg-bg-raised px-3.5 py-2.5 text-fg outline-none focus:border-accent"
-              />
+              <label className="text-sm text-fg-muted">How should we reach you?</label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setContactMethod("email")}
+                  className={`flex-1 rounded-lg border px-3.5 py-2.5 text-sm font-medium transition ${
+                    contactMethod === "email"
+                      ? "border-accent bg-accent/10 text-fg"
+                      : "border-border bg-bg-raised text-fg-muted hover:text-fg"
+                  }`}
+                >
+                  Email
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setContactMethod("phone")}
+                  className={`flex-1 rounded-lg border px-3.5 py-2.5 text-sm font-medium transition ${
+                    contactMethod === "phone"
+                      ? "border-accent bg-accent/10 text-fg"
+                      : "border-border bg-bg-raised text-fg-muted hover:text-fg"
+                  }`}
+                >
+                  Phone
+                </button>
+              </div>
+
+              {contactMethod === "email" ? (
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="mt-1 rounded-lg border border-border bg-bg-raised px-3.5 py-2.5 text-fg outline-none focus:border-accent"
+                />
+              ) : (
+                <div className="mt-1 flex gap-2">
+                  <select
+                    value={phoneDial}
+                    onChange={(e) => setPhoneDial(e.target.value)}
+                    className="w-36 rounded-lg border border-border bg-bg-raised px-2 py-2.5 text-fg outline-none focus:border-accent"
+                  >
+                    {COUNTRY_CODES.filter((c) => c.dial).map((c) => (
+                      <option key={c.name} value={c.dial}>
+                        {c.name} ({c.dial})
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="8021234567"
+                    className="flex-1 rounded-lg border border-border bg-bg-raised px-3.5 py-2.5 text-fg outline-none focus:border-accent"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
