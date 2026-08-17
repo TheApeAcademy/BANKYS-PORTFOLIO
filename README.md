@@ -13,8 +13,12 @@ Supabase backend:
   construction, the `profiles`/role auth helpers, currency/date formatting, and the
   pricing-catalogue TypeScript types. UI components are deliberately **not** shared —
   each app has its own `components/ui.tsx` tuned for its own audience.
+- **`supabase/migrations`** — the schema both apps read/write, source-controlled here
+  (not inside either app — it belongs to neither app specifically, it's the shared
+  backend). Apply with `mcp__Supabase__apply_migration` against project
+  `rxyqoaucuwdgpbzgfjqp`, or the Supabase CLI once one's wired up locally.
 
-Everything at the repo root outside `apps/`, `packages/`, and this file is leftover
+Everything at the repo root outside `apps/`, `packages/`, `supabase/`, and this file is leftover
 source from the original static brochure site, superseded by `apps/studio/public/` —
 safe to ignore.
 
