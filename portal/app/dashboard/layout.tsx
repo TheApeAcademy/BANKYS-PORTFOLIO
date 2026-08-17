@@ -5,7 +5,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   await requireCollaborator();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-bg text-fg">
       <CollaboratorNav />
       <main className="mx-auto max-w-4xl px-6 py-8">{children}</main>
     </div>

@@ -9,7 +9,7 @@ export default async function LoginPage({
   const { next } = await searchParams;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-6">
+    <div className="flex min-h-screen flex-col items-center justify-center px-6 bg-bg text-fg">
       <div className="mb-8">
         <Logo />
       </div>

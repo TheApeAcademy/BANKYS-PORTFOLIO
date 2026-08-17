@@ -14,7 +14,7 @@ export default async function StartPage({
   if (resumed && !["draft", "awaiting_payment"].includes(resumed.status)) {
     const justPaid = payment === "success";
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center">
+      <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
         <Logo />
         <div className="mt-8 w-full max-w-md rounded-2xl border border-border bg-bg-card p-8">
           <h1 className="mb-2 text-lg font-semibold">{resumed.project_code}</h1>
@@ -34,7 +34,7 @@ export default async function StartPage({
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center px-6 py-16">
+    <div className="flex min-h-screen flex-col items-center px-6 py-16 bg-bg text-fg">
       <div className="mb-10">
         <Logo label="Start a Project" />
       </div>

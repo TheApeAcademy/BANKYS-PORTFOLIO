@@ -9,7 +9,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full">
-      <body className="min-h-full flex flex-col bg-bg text-fg">{children}</body>
+      {/* No bg/text classes here — the homepage brings its own (site.css) and would
+          lose to Tailwind utility classes on body regardless of stylesheet order, since
+          a class selector always beats site.css's plain `body{}` rule. Each Tailwind
+          page sets bg-bg/text-fg on its own wrapper instead. */}
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

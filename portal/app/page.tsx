@@ -1,24 +1,19 @@
-import Link from "next/link";
-import Image from "next/image";
+import type { Metadata } from "next";
+import Script from "next/script";
+import { SITE_BODY_HTML } from "./_site-body";
+
+export const metadata: Metadata = {
+  title: "ZEBRAISH STUDIO — Build Layer of the Zebraish Ecosystem",
+  description:
+    "Zebraish Studio helps founders and businesses turn ideas into real, hand-built digital products — websites, software, brand, automation. The build layer of the Zebraish ecosystem.",
+};
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-10 px-6 text-center">
-      <Image src="/zebraish-lockup.png" alt="Zebraish" width={220} height={64} priority />
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Link
-          href="/portal"
-          className="rounded-lg bg-accent px-5 py-2.5 font-medium text-white transition hover:bg-accent-hover"
-        >
-          Start a project
-        </Link>
-        <Link
-          href="/login"
-          className="rounded-lg border border-border px-5 py-2.5 font-medium text-fg transition hover:bg-bg-raised"
-        >
-          Sign in
-        </Link>
-      </div>
-    </div>
+    <>
+      <link rel="stylesheet" href="/site.css" />
+      <div dangerouslySetInnerHTML={{ __html: SITE_BODY_HTML }} />
+      <Script src="/site.js" strategy="afterInteractive" />
+    </>
   );
 }

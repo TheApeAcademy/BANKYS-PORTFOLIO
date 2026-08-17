@@ -1,36 +1,8 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin, getActorLabel } from "@/lib/auth";
-
-export type IntakeState = { error: string | null };
-
-export async function submitIntake(_prev: IntakeState, formData: FormData): Promise<IntakeState> {
-  const clientName = String(formData.get("client_name") ?? "").trim();
-  const clientContact = String(formData.get("client_contact") ?? "").trim();
-
-  if (!clientName) {
-    return { error: "Please tell us your name." };
-  }
-  if (!clientContact) {
-    return { error: "Please leave an email or phone number so we can reach you." };
-  }
-
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("submit_project_intake", {
-    p_client_name: clientName,
-    p_client_contact: clientContact,
-    p_introduced_by: null,
-  });
-
-  if (error) {
-    return { error: "Something went wrong submitting your project. Please try again." };
-  }
-
-  redirect(`/portal/thank-you?code=${encodeURIComponent(data as string)}`);
-}
 
 export async function createProjectByAdmin(formData: FormData) {
   await requireAdmin();
