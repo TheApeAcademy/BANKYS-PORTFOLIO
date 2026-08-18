@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { signOut } from "@/lib/actions/auth";
 import { getUnreadNotificationCount } from "@/lib/actions/notifications";
+import { GlobalSearch } from "./GlobalSearch";
 
 const links = [
   { href: "/", label: "Overview" },
@@ -33,6 +34,7 @@ export async function AdminNav() {
             </Link>
           ))}
         </nav>
+        <GlobalSearch />
         <Link
           href="/notifications"
           className="relative rounded-md px-3 py-1.5 text-fg-muted transition hover:bg-bg-raised hover:text-fg"

@@ -1,51 +1,94 @@
 import Link from "next/link";
-import { createClient } from "@zebraish/lib/supabase/server";
-import { PageHeader, StatCard, Card, EmptyState } from "@/components/ui";
-import { formatMoney, formatDateTime, mondayOf } from "@zebraish/lib/format";
+import { PageHeader, Card, EmptyState } from "@/components/ui";
+import { formatMoney, formatDateTime } from "@zebraish/lib/format";
+import { getKpiSummary, getRevenueTrend, getActivityFeed } from "@/lib/actions/dashboard";
+import { CountUp } from "@/components/CountUp";
+import { RevenueChart } from "@/components/RevenueChart";
+import { LivePoller } from "@/components/LivePoller";
+
+function moneyByCurrency(amounts: Record<string, number>): string {
+  const entries = Object.entries(amounts);
+  if (entries.length === 0) return formatMoney(0);
+  return entries.map(([currency, amount]) => formatMoney(amount, currency)).join(" · ");
+}
 
 export default async function AdminOverviewPage() {
-  const supabase = await createClient();
-  const thisWeek = mondayOf();
+  const [summary, trend, activity] = await Promise.all([
+    getKpiSummary(),
+    getRevenueTrend("week", 12),
+    getActivityFeed(),
+  ]);
 
-  const [{ count: projectCount }, { count: pendingCount }, pendingSumRes, recentAuditRes] =
-    await Promise.all([
-      supabase.from("projects").select("*", { count: "exact", head: true }),
-      supabase
-        .from("commission_entries")
-        .select("*", { count: "exact", head: true })
-        .eq("status", "PENDING"),
-      supabase.from("commission_entries").select("amount, currency").eq("status", "PENDING"),
-      supabase
-        .from("audit_log")
-        .select("id, occurred_at, actor, action, entity_type, reason")
-        .order("occurred_at", { ascending: false })
-        .limit(8),
-    ]);
-
-  const pendingByCurrency = new Map<string, number>();
-  for (const row of pendingSumRes.data ?? []) {
-    pendingByCurrency.set(row.currency, (pendingByCurrency.get(row.currency) ?? 0) + Number(row.amount));
-  }
+  const trendCurrencies = [...new Set(trend.map((p) => p.currency))];
+  const primaryCurrency = trendCurrencies[0] ?? "NGN";
 
   return (
     <div>
+      <LivePoller intervalSeconds={45} />
+
       <PageHeader
         title="Overview"
-        description="Zebraish projects, payments, and collaborator commissions at a glance."
+        description="Zebraish projects, payments, and collaborator commissions at a glance — refreshes automatically."
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Total projects" value={String(projectCount ?? 0)} />
-        <StatCard label="Pending commission entries" value={String(pendingCount ?? 0)} />
-        <StatCard
-          label="Pending commission total"
-          value={
-            pendingByCurrency.size
-              ? [...pendingByCurrency.entries()].map(([c, a]) => formatMoney(a, c)).join(" · ")
-              : formatMoney(0)
-          }
-          sub={`Open week ${thisWeek}`}
-        />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <Link href="/payments">
+          <Card className="h-full transition hover:border-accent">
+            <p className="text-xs uppercase tracking-wide text-fg-muted">Revenue this month</p>
+            <p className="tabular-nums mt-2 text-2xl font-semibold">
+              {summary && Object.keys(summary.revenue_this_month).length
+                ? Object.entries(summary.revenue_this_month).map(([currency, amount]) => (
+                    <span key={currency} className="mr-3 inline-block">
+                      <CountUp value={amount} format={(n) => formatMoney(n, currency)} />
+                    </span>
+                  ))
+                : formatMoney(0)}
+            </p>
+          </Card>
+        </Link>
+
+        <Link href="/projects">
+          <Card className="h-full transition hover:border-accent">
+            <p className="text-xs uppercase tracking-wide text-fg-muted">Active projects</p>
+            <p className="tabular-nums mt-2 text-2xl font-semibold">
+              <CountUp value={summary?.active_projects ?? 0} format={(n) => String(Math.round(n))} />
+            </p>
+          </Card>
+        </Link>
+
+        <Link href="/payouts">
+          <Card className="h-full transition hover:border-accent">
+            <p className="text-xs uppercase tracking-wide text-fg-muted">Pending commission</p>
+            <p className="tabular-nums mt-2 text-2xl font-semibold">
+              {summary ? moneyByCurrency(summary.pending_commission_total) : formatMoney(0)}
+            </p>
+          </Card>
+        </Link>
+
+        <Link href="/payments">
+          <Card className="h-full transition hover:border-accent">
+            <p className="text-xs uppercase tracking-wide text-fg-muted">Open disputes</p>
+            <p className="tabular-nums mt-2 text-2xl font-semibold">
+              <CountUp value={summary?.open_disputes ?? 0} format={(n) => String(Math.round(n))} />
+            </p>
+          </Card>
+        </Link>
+
+        <Link href="/projects">
+          <Card className="h-full transition hover:border-accent">
+            <p className="text-xs uppercase tracking-wide text-fg-muted">Overdue projects</p>
+            <p className="tabular-nums mt-2 text-2xl font-semibold">
+              <CountUp value={summary?.overdue_projects ?? 0} format={(n) => String(Math.round(n))} />
+            </p>
+          </Card>
+        </Link>
+      </div>
+
+      <div className="mt-8">
+        <h2 className="mb-3 text-sm font-medium text-fg-muted">Revenue — trailing 12 weeks ({primaryCurrency})</h2>
+        <Card>
+          <RevenueChart points={trend} currency={primaryCurrency} />
+        </Card>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -70,22 +113,32 @@ export default async function AdminOverviewPage() {
       </div>
 
       <div className="mt-8">
-        <h2 className="mb-3 text-sm font-medium text-fg-muted">Recent activity</h2>
+        <h2 className="mb-3 text-sm font-medium text-fg-muted">Live activity</h2>
         <Card className="p-0">
-          {recentAuditRes.data?.length ? (
+          {activity.length ? (
             <ul className="divide-y divide-border">
-              {recentAuditRes.data.map((row) => (
-                <li key={row.id} className="flex items-center justify-between gap-4 px-5 py-3 text-sm">
-                  <div>
-                    <span className="font-medium">{row.action}</span>
-                    <span className="text-fg-muted"> · {row.entity_type}</span>
-                    {row.reason ? <span className="text-fg-muted"> — {row.reason}</span> : null}
+              {activity.map((row) => {
+                const content = (
+                  <div className="flex items-center justify-between gap-4 px-5 py-3 text-sm">
+                    <div>
+                      <span className="font-medium capitalize">{row.label}</span>
+                      {row.detail ? <span className="text-fg-muted"> — {row.detail}</span> : null}
+                    </div>
+                    <div className="shrink-0 text-xs text-fg-muted">{formatDateTime(row.occurred_at)}</div>
                   </div>
-                  <div className="shrink-0 text-xs text-fg-muted">
-                    {row.actor} · {formatDateTime(row.occurred_at)}
-                  </div>
-                </li>
-              ))}
+                );
+                return (
+                  <li key={row.id}>
+                    {row.href ? (
+                      <Link href={row.href} className="block transition hover:bg-bg-raised">
+                        {content}
+                      </Link>
+                    ) : (
+                      content
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <EmptyState>No activity yet.</EmptyState>
