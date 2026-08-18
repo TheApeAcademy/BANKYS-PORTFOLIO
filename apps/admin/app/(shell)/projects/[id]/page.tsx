@@ -7,6 +7,9 @@ import { PaymentActions } from "@/components/PaymentActions";
 import { ProjectTypePicker } from "@/components/ProjectTypePicker";
 import { StageChecklist } from "@/components/StageChecklist";
 import { HoldControl } from "@/components/HoldControl";
+import { DocumentsPanel } from "@/components/DocumentsPanel";
+import { MessagesPanel } from "@/components/MessagesPanel";
+import { InvoicesPanel } from "@/components/InvoicesPanel";
 import { formatMoney, formatDate, formatDateTime } from "@zebraish/lib/format";
 import { PROJECT_STATUSES, formatStatus } from "@/lib/statuses";
 
@@ -56,6 +59,29 @@ export default async function ProjectDetailPage({
     .select("*")
     .eq("project_id", id)
     .maybeSingle();
+
+  const { data: documents } = await supabase
+    .from("project_documents")
+    .select("id, category, storage_path, file_name, file_size, uploaded_at, uploaded_by")
+    .eq("project_id", id)
+    .order("uploaded_at", { ascending: false });
+
+  const { data: messages } = await supabase
+    .from("project_messages")
+    .select("id, sender_type, sender_label, body, created_at, read_at")
+    .eq("project_id", id)
+    .order("created_at", { ascending: true });
+
+  const { data: invoices } = await supabase
+    .from("invoices")
+    .select("id, invoice_number, total, currency, issued_at, pdf_storage_path")
+    .eq("project_id", id)
+    .order("issued_at", { ascending: false });
+
+  const paymentOptions = (payments ?? []).map((p) => ({
+    id: p.id,
+    label: `${formatMoney(p.amount, p.currency)} — ${formatDate(p.received_at)}`,
+  }));
 
   let projectTypeOptions: { id: string; label: string }[] = [];
   if (!project.project_type) {
@@ -233,6 +259,21 @@ export default async function ProjectDetailPage({
             ) : (
               <EmptyState>No payments recorded yet.</EmptyState>
             )}
+          </Card>
+
+          <Card className="mb-6 mt-6">
+            <p className="mb-4 text-sm font-medium">Messages</p>
+            <MessagesPanel projectId={project.id} messages={messages ?? []} />
+          </Card>
+
+          <Card className="mb-6">
+            <p className="mb-4 text-sm font-medium">Documents</p>
+            <DocumentsPanel projectId={project.id} documents={documents ?? []} />
+          </Card>
+
+          <Card>
+            <p className="mb-4 text-sm font-medium">Invoices</p>
+            <InvoicesPanel projectId={project.id} paymentOptions={paymentOptions} invoices={invoices ?? []} />
           </Card>
         </div>
       </div>

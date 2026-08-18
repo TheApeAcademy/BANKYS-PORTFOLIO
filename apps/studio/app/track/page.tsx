@@ -1,5 +1,7 @@
 import { Logo } from "@/components/Logo";
 import { getProjectTracker } from "@/lib/actions/tracker";
+import { getProjectMessages } from "@/lib/actions/messages";
+import { MessageBox } from "@/components/MessageBox";
 import { formatDate } from "@zebraish/lib/format";
 
 function formatLabel(value: string) {
@@ -18,6 +20,7 @@ export default async function TrackPage({
 }) {
   const { token } = await searchParams;
   const project = token ? await getProjectTracker(token) : null;
+  const messages = token && project ? await getProjectMessages(token) : [];
 
   return (
     <div className="flex min-h-screen flex-col items-center px-6 py-16 bg-bg text-fg">
@@ -103,6 +106,11 @@ export default async function TrackPage({
                 Your project is being set up — a detailed stage checklist will appear here shortly.
               </p>
             )}
+
+            <div className="mt-6 border-t border-border pt-6">
+              <p className="mb-3 text-sm font-medium">Messages</p>
+              <MessageBox token={token!} initialMessages={messages} />
+            </div>
           </div>
         ) : null}
       </div>
