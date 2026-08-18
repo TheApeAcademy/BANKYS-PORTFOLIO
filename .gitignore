@@ -1,0 +1,22 @@
+# npm workspaces hoist most dependencies to the root node_modules; each
+# app/package may also have its own if npm couldn't hoist a version conflict.
+node_modules/
+
+# next.js build output, wherever it lands
+.next/
+out/
+build/
+
+# vercel
+.vercel
+
+# env files (opt-in per file if needed)
+.env*
+!.env.example
+
+# misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*

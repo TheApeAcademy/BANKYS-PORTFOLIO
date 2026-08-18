@@ -1,0 +1,8 @@
+{
+  "name": "zebraish",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
