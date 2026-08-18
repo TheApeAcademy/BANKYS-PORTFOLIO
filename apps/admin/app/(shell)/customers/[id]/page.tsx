@@ -35,10 +35,10 @@ export default async function CustomerDetailPage({
   let successfulCount = 0;
   let failedCount = 0;
   for (const p of payments ?? []) {
-    if (p.payment_status === "normal") {
+    if (p.payment_status === "successful" || p.payment_status === "partially_refunded") {
       spentByCurrency.set(p.currency, (spentByCurrency.get(p.currency) ?? 0) + Number(p.amount));
       successfulCount += 1;
-    } else if (["cancelled", "fraudulent", "chargeback"].includes(p.payment_status)) {
+    } else if (["cancelled", "fraudulent", "chargeback", "disputed", "failed"].includes(p.payment_status)) {
       failedCount += 1;
     }
   }

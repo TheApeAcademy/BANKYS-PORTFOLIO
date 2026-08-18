@@ -1,8 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
-import { excludePayment, recordPartialRefund, type ActionState } from "@/lib/actions/payments";
-import { inputCls, buttonCls, buttonDangerCls } from "@/components/ui";
+import { excludePayment, recordPartialRefund, openDispute, setPaymentFees, type ActionState } from "@/lib/actions/payments";
+import { inputCls, buttonCls, buttonGhostCls, buttonDangerCls } from "@/components/ui";
 
 const initialState: ActionState = { error: null };
 
@@ -17,8 +17,10 @@ export function PaymentActions({
 }) {
   const [excludeState, excludeAction, excludePending] = useActionState(excludePayment, initialState);
   const [refundState, refundAction, refundPending] = useActionState(recordPartialRefund, initialState);
+  const [disputeState, disputeAction, disputePending] = useActionState(openDispute, initialState);
+  const [feesState, feesAction, feesPending] = useActionState(setPaymentFees, initialState);
 
-  if (paymentStatus !== "normal" && paymentStatus !== "partial_refund") {
+  if (paymentStatus !== "successful" && paymentStatus !== "partially_refunded") {
     return <span className="text-xs text-fg-muted capitalize">{paymentStatus.replaceAll("_", " ")}</span>;
   }
 
@@ -63,6 +65,31 @@ export function PaymentActions({
             {excludePending ? "Saving…" : "Exclude payment"}
           </button>
           {excludeState.error ? <p className="text-excluded">{excludeState.error}</p> : null}
+        </form>
+
+        <form action={disputeAction} className="flex flex-col gap-2 border-t border-border pt-3">
+          <input type="hidden" name="payment_id" value={paymentId} />
+          <input type="hidden" name="project_id" value={projectId} />
+          <p className="font-medium text-fg">Open dispute</p>
+          <input name="reason" placeholder="Reason (required, logged)" required className={inputCls} />
+          <input name="gateway_dispute_id" placeholder="Gateway dispute ID (optional)" className={inputCls} />
+          <button type="submit" disabled={disputePending} className={buttonDangerCls}>
+            {disputePending ? "Saving…" : "Open dispute"}
+          </button>
+          {disputeState.error ? <p className="text-excluded">{disputeState.error}</p> : null}
+        </form>
+
+        <form action={feesAction} className="flex flex-col gap-2 border-t border-border pt-3">
+          <input type="hidden" name="payment_id" value={paymentId} />
+          <input type="hidden" name="project_id" value={projectId} />
+          <p className="font-medium text-fg">Fee / net breakdown</p>
+          <input name="gross_amount" type="number" step="0.01" placeholder="Gross amount" className={inputCls} />
+          <input name="gateway_fee" type="number" step="0.01" placeholder="Gateway fee" className={inputCls} />
+          <input name="net_amount" type="number" step="0.01" placeholder="Net amount" className={inputCls} />
+          <button type="submit" disabled={feesPending} className={buttonGhostCls}>
+            {feesPending ? "Saving…" : "Save fees"}
+          </button>
+          {feesState.error ? <p className="text-excluded">{feesState.error}</p> : null}
         </form>
       </div>
     </details>

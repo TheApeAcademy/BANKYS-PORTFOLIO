@@ -98,3 +98,87 @@ export async function recordPartialRefund(_prev: ActionState, formData: FormData
   revalidatePath("/payouts");
   return ok;
 }
+
+export async function openDispute(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const actor = await getActorLabel();
+  const supabase = await createClient();
+
+  const paymentId = String(formData.get("payment_id") ?? "");
+  const reason = String(formData.get("reason") ?? "").trim();
+  const gatewayDisputeId = String(formData.get("gateway_dispute_id") ?? "").trim() || null;
+  const projectId = String(formData.get("project_id") ?? "");
+
+  if (!paymentId || !reason) {
+    return { error: "A reason is required to open a dispute." };
+  }
+
+  const { error } = await supabase.rpc("open_dispute", {
+    p_payment_id: paymentId,
+    p_reason: reason,
+    p_gateway_dispute_id: gatewayDisputeId,
+    p_actor: actor,
+  });
+
+  if (error) return { error: error.message };
+
+  if (projectId) revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/payments");
+  revalidatePath("/payouts");
+  return ok;
+}
+
+export async function resolveDispute(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const actor = await getActorLabel();
+  const supabase = await createClient();
+
+  const disputeId = String(formData.get("dispute_id") ?? "");
+  const outcome = String(formData.get("outcome") ?? "");
+  const resolution = String(formData.get("resolution") ?? "").trim() || null;
+
+  if (!disputeId || (outcome !== "won" && outcome !== "lost")) {
+    return { error: "Choose an outcome." };
+  }
+
+  const { error } = await supabase.rpc("resolve_dispute", {
+    p_dispute_id: disputeId,
+    p_outcome: outcome,
+    p_resolution: resolution,
+    p_actor: actor,
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/payments");
+  revalidatePath("/payouts");
+  return ok;
+}
+
+export async function setPaymentFees(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const actor = await getActorLabel();
+  const supabase = await createClient();
+
+  const paymentId = String(formData.get("payment_id") ?? "");
+  const grossRaw = String(formData.get("gross_amount") ?? "").trim();
+  const feeRaw = String(formData.get("gateway_fee") ?? "").trim();
+  const netRaw = String(formData.get("net_amount") ?? "").trim();
+  const projectId = String(formData.get("project_id") ?? "");
+
+  if (!paymentId) return { error: "Missing payment." };
+
+  const { error } = await supabase.rpc("set_payment_fees", {
+    p_payment_id: paymentId,
+    p_gross_amount: grossRaw === "" ? null : Number(grossRaw),
+    p_gateway_fee: feeRaw === "" ? null : Number(feeRaw),
+    p_net_amount: netRaw === "" ? null : Number(netRaw),
+    p_actor: actor,
+  });
+
+  if (error) return { error: error.message };
+
+  if (projectId) revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/payments");
+  return ok;
+}
