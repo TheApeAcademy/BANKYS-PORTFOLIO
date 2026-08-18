@@ -4,9 +4,8 @@ import { updateProjectStatus } from "@/lib/actions/projects";
 import { Card, PageHeader, EmptyState, inputCls, buttonGhostCls } from "@/components/ui";
 import { RecordPaymentForm } from "@/components/RecordPaymentForm";
 import { PaymentActions } from "@/components/PaymentActions";
-import { formatMoney, formatDate } from "@zebraish/lib/format";
-
-const STATUSES = ["new", "in_progress", "completed", "cancelled"];
+import { formatMoney, formatDate, formatDateTime } from "@zebraish/lib/format";
+import { PROJECT_STATUSES, formatStatus } from "@/lib/statuses";
 
 export default async function ProjectDetailPage({
   params,
@@ -28,6 +27,16 @@ export default async function ProjectDetailPage({
   const { data: introducer } = project.introduced_by
     ? await supabase.from("collaborators").select("name").eq("id", project.introduced_by).single()
     : { data: null };
+
+  // Snapshots are append-only — a project can accumulate one per save (each
+  // configurator resave re-quotes and re-snapshots), so the latest one is
+  // "price at purchase"; earlier ones are the price-change history.
+  const { data: snapshots } = await supabase
+    .from("project_price_snapshots")
+    .select("*")
+    .eq("project_id", id)
+    .order("captured_at", { ascending: false });
+  const latestSnapshot = snapshots?.[0] ?? null;
 
   return (
     <div>
@@ -57,9 +66,9 @@ export default async function ProjectDetailPage({
               <dd>
                 <form action={updateProjectStatus.bind(null, project.id)} className="mt-1 flex gap-2">
                   <select name="status" defaultValue={project.status} className={inputCls}>
-                    {STATUSES.map((s) => (
+                    {PROJECT_STATUSES.map((s) => (
                       <option key={s} value={s}>
-                        {s.replace("_", " ")}
+                        {formatStatus(s)}
                       </option>
                     ))}
                   </select>
@@ -73,6 +82,53 @@ export default async function ProjectDetailPage({
         </Card>
 
         <div className="lg:col-span-2">
+          <Card className="mb-6">
+            <p className="mb-4 text-sm font-medium">Price at purchase</p>
+            {latestSnapshot ? (
+              <div>
+                <div className="mb-3 flex flex-col divide-y divide-border rounded-lg border border-border">
+                  {Array.isArray(latestSnapshot.lines) && latestSnapshot.lines.length ? (
+                    (latestSnapshot.lines as { label: string; price: number }[]).map((line, i) => (
+                      <div key={i} className="flex justify-between px-3 py-2 text-sm">
+                        <span className="text-fg-muted">{line.label}</span>
+                        <span className="tabular-nums">{formatMoney(line.price, latestSnapshot.currency)}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="px-3 py-2 text-sm text-fg-muted">
+                      No itemized breakdown for this snapshot ({latestSnapshot.catalogue_source}).
+                    </div>
+                  )}
+                  {latestSnapshot.complexity_multiplier !== 1 ? (
+                    <div className="flex justify-between px-3 py-2 text-sm">
+                      <span className="text-fg-muted">Complexity adjustment</span>
+                      <span className="tabular-nums">×{latestSnapshot.complexity_multiplier}</span>
+                    </div>
+                  ) : null}
+                  {latestSnapshot.delivery_multiplier !== 1 ? (
+                    <div className="flex justify-between px-3 py-2 text-sm">
+                      <span className="text-fg-muted">Delivery speed adjustment</span>
+                      <span className="tabular-nums">×{latestSnapshot.delivery_multiplier}</span>
+                    </div>
+                  ) : null}
+                  <div className="flex justify-between px-3 py-2.5 text-sm font-semibold">
+                    <span>Total</span>
+                    <span className="tabular-nums text-accent">
+                      {formatMoney(latestSnapshot.total, latestSnapshot.currency)}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-fg-muted">
+                  Captured {formatDateTime(latestSnapshot.captured_at)} — immutable, never recomputed even if
+                  today&apos;s catalogue prices change.
+                  {snapshots && snapshots.length > 1 ? ` ${snapshots.length - 1} earlier snapshot(s) exist.` : ""}
+                </p>
+              </div>
+            ) : (
+              <EmptyState>No price snapshot recorded for this project yet.</EmptyState>
+            )}
+          </Card>
+
           <Card className="mb-6">
             <p className="mb-4 text-sm font-medium">Record a payment</p>
             <RecordPaymentForm projectId={project.id} />
@@ -106,7 +162,7 @@ export default async function ProjectDetailPage({
                         <td className="px-5 py-3 capitalize">{p.type}</td>
                         <td className="px-5 py-3 text-fg-muted">{p.method ?? "—"}</td>
                         <td className="px-5 py-3 text-fg-muted">{formatDate(p.received_at)}</td>
-                        <td className="px-5 py-3 capitalize">{p.payment_status.replace("_", " ")}</td>
+                        <td className="px-5 py-3 capitalize">{p.payment_status.replaceAll("_", " ")}</td>
                         <td className="px-5 py-3">
                           <PaymentActions paymentId={p.id} projectId={project.id} paymentStatus={p.payment_status} />
                         </td>

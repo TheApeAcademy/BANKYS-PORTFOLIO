@@ -3,8 +3,7 @@ import { createClient } from "@zebraish/lib/supabase/server";
 import { createProjectByAdmin } from "@/lib/actions/projects";
 import { PageHeader, Card, EmptyState, inputCls, buttonCls } from "@/components/ui";
 import { formatDate } from "@zebraish/lib/format";
-
-const STATUSES = ["new", "in_progress", "completed", "cancelled"];
+import { PROJECT_STATUSES, formatStatus } from "@/lib/statuses";
 
 export default async function AdminProjectsPage({
   searchParams,
@@ -58,9 +57,9 @@ export default async function AdminProjectsPage({
             <label className="text-fg-muted">Status</label>
             <select name="status" defaultValue={status ?? ""} className={inputCls}>
               <option value="">All</option>
-              {STATUSES.map((s) => (
+              {PROJECT_STATUSES.map((s) => (
                 <option key={s} value={s}>
-                  {s.replace("_", " ")}
+                  {formatStatus(s)}
                 </option>
               ))}
             </select>
@@ -117,7 +116,7 @@ export default async function AdminProjectsPage({
                     <td className="px-5 py-3 text-fg-muted">
                       {p.introduced_by ? collaboratorNames.get(p.introduced_by) ?? "—" : "—"}
                     </td>
-                    <td className="px-5 py-3 capitalize">{p.status.replace("_", " ")}</td>
+                    <td className="px-5 py-3 capitalize">{p.status.replaceAll("_", " ")}</td>
                     <td className="px-5 py-3 text-fg-muted">{formatDate(p.created_at)}</td>
                   </tr>
                 ))}

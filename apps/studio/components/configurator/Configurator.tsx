@@ -143,6 +143,7 @@ export function Configurator({
       answers,
       quotedPrice: quote.total,
       currency: "EUR",
+      quote,
     });
     setSaving(false);
     if (!result.ok) {

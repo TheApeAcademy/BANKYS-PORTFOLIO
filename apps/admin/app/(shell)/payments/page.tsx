@@ -52,7 +52,7 @@ export default async function AdminPaymentsPage() {
                       </td>
                       <td className="px-5 py-3 capitalize">{p.type}</td>
                       <td className="px-5 py-3 text-fg-muted">{formatDate(p.received_at)}</td>
-                      <td className="px-5 py-3 capitalize">{p.payment_status.replace("_", " ")}</td>
+                      <td className="px-5 py-3 capitalize">{p.payment_status.replaceAll("_", " ")}</td>
                       <td className="px-5 py-3">
                         <PaymentActions paymentId={p.id} projectId={p.project_id} paymentStatus={p.payment_status} />
                       </td>

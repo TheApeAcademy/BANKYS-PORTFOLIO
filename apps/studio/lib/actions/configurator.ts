@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@zebraish/lib/supabase/server";
-import type { Answers } from "@zebraish/lib/catalogue/types";
+import type { Answers, QuoteResult } from "@zebraish/lib/catalogue/types";
 import { sendAdminIntakeNotification } from "@/lib/email";
 
 export type SaveConfigurationInput = {
@@ -12,7 +12,34 @@ export type SaveConfigurationInput = {
   answers: Answers;
   quotedPrice: number;
   currency: string;
+  quote: QuoteResult;
 };
+
+/**
+ * Records an immutable price-at-purchase snapshot after a project save has
+ * already succeeded. Deliberately isolated from saveProjectConfiguration's
+ * own try/catch: a bug here must never surface as a failure of the save
+ * itself, since that RPC call already has a documented intermittent
+ * production issue and doesn't need a new, unexercised failure mode added
+ * to its blast radius.
+ */
+async function recordPriceSnapshot(projectId: string, quote: QuoteResult, currency: string) {
+  try {
+    const supabase = await createClient();
+    await supabase.rpc("record_price_snapshot", {
+      p_project_id: projectId,
+      p_catalogue_source: "configurator-v1",
+      p_lines: quote.lines,
+      p_subtotal: quote.subtotal,
+      p_complexity_multiplier: quote.complexityMultiplier,
+      p_delivery_multiplier: quote.deliveryMultiplier,
+      p_total: quote.total,
+      p_currency: currency,
+    });
+  } catch {
+    // Best-effort — never block or fail the save over this.
+  }
+}
 
 export type SaveConfigurationResult =
   | { ok: true; projectId: string; projectCode: string; accessToken: string }
@@ -62,6 +89,8 @@ export async function saveProjectConfiguration(
   }
 
   const row = data as { project_id: string; project_code: string; access_token: string };
+
+  await recordPriceSnapshot(row.project_id, input.quote, input.currency);
 
   if (!input.accessToken) {
     // Only notify on first creation, not on every edit/resave of an existing draft.

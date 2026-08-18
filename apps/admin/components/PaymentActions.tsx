@@ -19,7 +19,7 @@ export function PaymentActions({
   const [refundState, refundAction, refundPending] = useActionState(recordPartialRefund, initialState);
 
   if (paymentStatus !== "normal" && paymentStatus !== "partial_refund") {
-    return <span className="text-xs text-fg-muted capitalize">{paymentStatus.replace("_", " ")}</span>;
+    return <span className="text-xs text-fg-muted capitalize">{paymentStatus.replaceAll("_", " ")}</span>;
   }
 
   return (

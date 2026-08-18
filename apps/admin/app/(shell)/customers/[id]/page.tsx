@@ -123,7 +123,7 @@ export default async function CustomerDetailPage({
                           </Link>
                         </td>
                         <td className="px-5 py-3 text-fg-muted">{p.project_type ?? "—"}</td>
-                        <td className="px-5 py-3 capitalize">{p.status.replace("_", " ")}</td>
+                        <td className="px-5 py-3 capitalize">{p.status.replaceAll("_", " ")}</td>
                         <td className="tabular-nums px-5 py-3">
                           {p.quoted_price ? formatMoney(p.quoted_price, p.quoted_currency ?? "EUR") : "—"}
                         </td>
@@ -165,7 +165,7 @@ export default async function CustomerDetailPage({
                           <td className="tabular-nums px-5 py-3">{formatMoney(p.amount, p.currency)}</td>
                           <td className="px-5 py-3 capitalize">{p.type}</td>
                           <td className="px-5 py-3 text-fg-muted">{formatDateTime(p.received_at)}</td>
-                          <td className="px-5 py-3 capitalize">{p.payment_status.replace("_", " ")}</td>
+                          <td className="px-5 py-3 capitalize">{p.payment_status.replaceAll("_", " ")}</td>
                         </tr>
                       );
                     })}
