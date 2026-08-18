@@ -130,6 +130,7 @@ create policy catalogue_options_admin_delete on public.catalogue_options for del
 create or replace function public.catalogue_version_locked_guard()
 returns trigger
 language plpgsql
+set search_path to 'public'
 as $function$
 declare
   v_version_id uuid;
@@ -157,6 +158,7 @@ create trigger trg_catalogue_steps_locked
 create or replace function public.catalogue_option_version_locked_guard()
 returns trigger
 language plpgsql
+set search_path to 'public'
 as $function$
 declare
   v_step_id uuid;
