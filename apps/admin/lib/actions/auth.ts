@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
+import { checkRateLimit } from "@zebraish/lib/rate-limit";
 
 export type SignInState = { error: string | null };
 
@@ -11,6 +12,13 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
 
   if (!email || !password) {
     return { error: "Enter your email and password." };
+  }
+
+  // This app is the single admin's full-access control center — a brute-force
+  // attempt here is worth stopping before it even reaches Supabase Auth.
+  const withinLimit = await checkRateLimit("admin-login", 8, 300);
+  if (!withinLimit) {
+    return { error: "Too many attempts. Wait a few minutes and try again." };
   }
 
   const supabase = await createClient();
@@ -56,6 +64,15 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
     p_session_id: null,
     p_metadata: { app: "admin" },
   });
+
+  // If MFA is enrolled but this session hasn't verified a second factor yet,
+  // send the password-only session to the challenge screen before granting
+  // access — proxy.ts enforces this too, but redirecting straight there
+  // avoids a bounce through "/" first.
+  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aal && aal.nextLevel === "aal2" && aal.nextLevel !== aal.currentLevel) {
+    redirect("/login/mfa");
+  }
 
   redirect("/");
 }

@@ -3,6 +3,7 @@ import { getProjectTracker } from "@/lib/actions/tracker";
 import { getProjectMessages } from "@/lib/actions/messages";
 import { MessageBox } from "@/components/MessageBox";
 import { formatDate } from "@zebraish/lib/format";
+import { checkRateLimit } from "@zebraish/lib/rate-limit";
 
 function formatLabel(value: string) {
   return value.replaceAll("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -19,8 +20,10 @@ export default async function TrackPage({
   searchParams: Promise<{ token?: string }>;
 }) {
   const { token } = await searchParams;
-  const project = token ? await getProjectTracker(token) : null;
+  const withinLimit = token ? await checkRateLimit("track-token", 30, 300) : true;
+  const project = token && withinLimit ? await getProjectTracker(token) : null;
   const messages = token && project ? await getProjectMessages(token) : [];
+  const rateLimited = Boolean(token) && !withinLimit;
 
   return (
     <div className="flex min-h-screen flex-col items-center px-6 py-16 bg-bg text-fg">
@@ -44,7 +47,9 @@ export default async function TrackPage({
           </button>
         </form>
 
-        {token && !project ? (
+        {rateLimited ? (
+          <p className="text-sm text-fg-muted">Too many attempts — wait a few minutes and try again.</p>
+        ) : token && !project ? (
           <p className="text-sm text-fg-muted">
             We couldn&apos;t find a project for that link. Double-check the link we sent you, or reach out if you
             think this is a mistake.

@@ -12,6 +12,7 @@ const links = [
   { href: "/payouts", label: "Payouts" },
   { href: "/catalogue", label: "Catalogue" },
   { href: "/audit-log", label: "Audit log" },
+  { href: "/settings/security", label: "Security" },
 ];
 
 export async function AdminNav() {

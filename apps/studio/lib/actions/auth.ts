@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
+import { checkRateLimit } from "@zebraish/lib/rate-limit";
 
 export type SignInState = { error: string | null };
 
@@ -12,6 +13,11 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
 
   if (!email || !password) {
     return { error: "Enter your email and password." };
+  }
+
+  const withinLimit = await checkRateLimit("studio-login", 8, 300);
+  if (!withinLimit) {
+    return { error: "Too many attempts. Wait a few minutes and try again." };
   }
 
   const supabase = await createClient();

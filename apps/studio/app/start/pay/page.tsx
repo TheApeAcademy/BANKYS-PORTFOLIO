@@ -3,6 +3,7 @@ import { Logo } from "@/components/Logo";
 import { PayButton } from "@/components/configurator/PayButton";
 import { getProjectByToken } from "@/lib/actions/configurator";
 import { formatMoney } from "@zebraish/lib/format";
+import { checkRateLimit } from "@zebraish/lib/rate-limit";
 
 export default async function PayPage({
   searchParams,
@@ -10,6 +11,18 @@ export default async function PayPage({
   searchParams: Promise<{ token?: string }>;
 }) {
   const { token } = await searchParams;
+
+  // access_token is a UUID (already unguessable), but this still bounds
+  // repeated token-guessing attempts against this lookup per source IP.
+  if (token && !(await checkRateLimit("pay-token", 30, 300))) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
+        <Logo />
+        <p className="mt-8 text-sm text-fg-muted">Too many attempts — wait a few minutes and try again.</p>
+      </div>
+    );
+  }
+
   const project = token ? await getProjectByToken(token) : null;
   if (!project) notFound();
 
