@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { updateCollaborator } from "@/lib/actions/collaborators";
-import { Card, PageHeader, EmptyState, inputCls, buttonCls } from "@/components/ui";
+import { Card, PageHeader, StatCard, EmptyState, inputCls, buttonCls } from "@/components/ui";
 import { StatusPill } from "@/components/StatusPill";
 import { formatMoney, formatDate, firstOf } from "@zebraish/lib/format";
 
@@ -18,7 +18,9 @@ export default async function CollaboratorDetailPage({
 
   const { data: entries } = await supabase
     .from("commission_entries")
-    .select("id, amount, currency, status, week_of, payments(amount, currency, received_at, projects(project_code))")
+    .select(
+      "id, amount, currency, status, week_of, adjustment_for, payments(amount, currency, received_at, projects(project_code))",
+    )
     .eq("collaborator_id", id)
     .order("week_of", { ascending: false })
     .limit(100);
@@ -31,9 +33,32 @@ export default async function CollaboratorDetailPage({
 
   const bank = collaborator.bank_details as Record<string, string | null>;
 
+  // Lifetime totals by currency, across every status — the entries list is
+  // already fetched, so these are derived here rather than a second query.
+  // Refund/dispute-driven adjustment rows (adjustment_for set, Phase 8) are
+  // ordinary signed commission_entries rows, so they net out correctly
+  // just by being summed like everything else.
+  const lifetimeByCurrency = new Map<string, number>();
+  const pendingByCurrency = new Map<string, number>();
+  const paidByCurrency = new Map<string, number>();
+  for (const e of entries ?? []) {
+    if (e.status === "EXCLUDED") continue;
+    const bucket = e.status === "PAID" ? paidByCurrency : e.status === "PENDING" ? pendingByCurrency : null;
+    lifetimeByCurrency.set(e.currency, (lifetimeByCurrency.get(e.currency) ?? 0) + Number(e.amount));
+    if (bucket) bucket.set(e.currency, (bucket.get(e.currency) ?? 0) + Number(e.amount));
+  }
+  const formatByCurrency = (m: Map<string, number>) =>
+    m.size ? [...m.entries()].map(([c, a]) => formatMoney(a, c)).join(" · ") : formatMoney(0);
+
   return (
     <div>
       <PageHeader title={collaborator.name} description="Collaborator detail, term, and commission history." />
+
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <StatCard label="Lifetime net commission" value={formatByCurrency(lifetimeByCurrency)} sub="Excludes EXCLUDED entries" />
+        <StatCard label="Pending" value={formatByCurrency(pendingByCurrency)} />
+        <StatCard label="Paid" value={formatByCurrency(paidByCurrency)} />
+      </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-6 lg:col-span-1">
@@ -121,6 +146,7 @@ export default async function CollaboratorDetailPage({
                   {entries.map((e) => {
                     const payment = firstOf(e.payments);
                     const project = firstOf(payment?.projects);
+                    const isAdjustment = e.adjustment_for !== null;
                     return (
                       <tr key={e.id}>
                         <td className="px-5 py-3 text-fg-muted">{formatDate(e.week_of)}</td>
@@ -128,7 +154,17 @@ export default async function CollaboratorDetailPage({
                         <td className="tabular-nums px-5 py-3">
                           {payment ? formatMoney(payment.amount, payment.currency) : "—"}
                         </td>
-                        <td className="tabular-nums px-5 py-3">{formatMoney(e.amount, e.currency)}</td>
+                        <td className="tabular-nums px-5 py-3">
+                          {formatMoney(e.amount, e.currency)}
+                          {isAdjustment ? (
+                            <span
+                              className="ml-2 rounded-full border border-border px-2 py-0.5 text-xs font-normal text-fg-muted"
+                              title="Correction from a refund or dispute on the original payment"
+                            >
+                              Adjustment
+                            </span>
+                          ) : null}
+                        </td>
                         <td className="px-5 py-3">
                           <StatusPill status={e.status} />
                         </td>
