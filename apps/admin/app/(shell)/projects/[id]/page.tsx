@@ -4,8 +4,15 @@ import { updateProjectStatus } from "@/lib/actions/projects";
 import { Card, PageHeader, EmptyState, inputCls, buttonGhostCls } from "@/components/ui";
 import { RecordPaymentForm } from "@/components/RecordPaymentForm";
 import { PaymentActions } from "@/components/PaymentActions";
+import { ProjectTypePicker } from "@/components/ProjectTypePicker";
+import { StageChecklist } from "@/components/StageChecklist";
+import { HoldControl } from "@/components/HoldControl";
 import { formatMoney, formatDate, formatDateTime } from "@zebraish/lib/format";
 import { PROJECT_STATUSES, formatStatus } from "@/lib/statuses";
+
+function titleCaseType(id: string) {
+  return id.replaceAll("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
 export default async function ProjectDetailPage({
   params,
@@ -37,6 +44,31 @@ export default async function ProjectDetailPage({
     .eq("project_id", id)
     .order("captured_at", { ascending: false });
   const latestSnapshot = snapshots?.[0] ?? null;
+
+  const { data: stages } = await supabase
+    .from("project_stages")
+    .select("*")
+    .eq("project_id", id)
+    .order("stage_order");
+
+  const { data: progress } = await supabase
+    .from("project_progress")
+    .select("*")
+    .eq("project_id", id)
+    .maybeSingle();
+
+  let projectTypeOptions: { id: string; label: string }[] = [];
+  if (!project.project_type) {
+    const { data: templateTypes } = await supabase
+      .from("project_stage_templates")
+      .select("project_type")
+      .order("project_type");
+    const seen = new Set<string>();
+    for (const t of templateTypes ?? []) {
+      if (!seen.has(t.project_type)) seen.add(t.project_type);
+    }
+    projectTypeOptions = [...seen].map((id) => ({ id, label: titleCaseType(id) }));
+  }
 
   return (
     <div>
@@ -126,6 +158,33 @@ export default async function ProjectDetailPage({
               </div>
             ) : (
               <EmptyState>No price snapshot recorded for this project yet.</EmptyState>
+            )}
+          </Card>
+
+          <Card className="mb-6">
+            <p className="mb-4 text-sm font-medium">Project stages</p>
+            {!project.project_type ? (
+              <div>
+                <p className="mb-3 text-sm text-fg-muted">
+                  No project type set yet — choose one to generate this project&apos;s stage checklist.
+                </p>
+                <ProjectTypePicker projectId={project.id} options={projectTypeOptions} />
+              </div>
+            ) : stages && stages.length > 0 ? (
+              <div>
+                {progress ? (
+                  <p className="mb-3 text-sm text-fg-muted">
+                    {progress.percent_complete ?? 0}% complete
+                    {progress.current_stage_label ? ` — currently: ${progress.current_stage_label}` : ""}
+                  </p>
+                ) : null}
+                <StageChecklist projectId={project.id} stages={stages} />
+                <div className="mt-4 border-t border-border pt-4">
+                  <HoldControl projectId={project.id} holdState={project.hold_state} />
+                </div>
+              </div>
+            ) : (
+              <EmptyState>No stages generated for this project type yet.</EmptyState>
             )}
           </Card>
 
