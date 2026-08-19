@@ -106,7 +106,18 @@ export async function saveProjectConfiguration(
   }
 
   if (error || !data) {
-    return { ok: false, error: error?.message ?? "Could not save your project." };
+    // Some Supabase client failures (notably fetch-level network errors) come back
+    // as a normal, non-throwing `error` result rather than a thrown exception, so
+    // neither `catch` block above ever sees them — this branch is what actually
+    // catches those. Without the same context-prefixing the catch blocks do, this
+    // used to surface a bare, unhelpful message straight from the client library
+    // (e.g. "TypeError: fetch failed") with no indication of what failed or where.
+    return {
+      ok: false,
+      error: error
+        ? `Could not reach Supabase at ${url} to save your project: ${error.message}`
+        : "Could not save your project — no data returned.",
+    };
   }
 
   const row = data as { project_id: string; project_code: string; access_token: string };
