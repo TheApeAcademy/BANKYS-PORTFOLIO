@@ -3,6 +3,7 @@ import { Logo } from "./Logo";
 import { signOut } from "@/lib/actions/auth";
 import { getUnreadNotificationCount } from "@/lib/actions/notifications";
 import { GlobalSearch } from "./GlobalSearch";
+import { AdminNavMobile } from "./AdminNavMobile";
 
 const links = [
   { href: "/", label: "Overview" },
@@ -22,9 +23,10 @@ export async function AdminNav() {
 
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-bg/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-4">
-        <Logo href="/" label="Admin" />
-        <nav className="flex flex-1 flex-wrap gap-1 text-sm">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-4">
+        <Logo href="/" name="ZEBRAISH BEREAU OF STATISTICS ANALYSIS AND CRITICAL MOTION" />
+        <AdminNavMobile links={links} />
+        <nav className="hidden flex-1 flex-wrap gap-1 text-sm md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
