@@ -1,15 +1,17 @@
 import type { NextConfig } from "next";
 
-// This app has no ported-static-site markup (unlike apps/studio) — every
-// page is authored Tailwind/JSX, so scripts stay strict ('self' only).
-// style-src still needs 'unsafe-inline' because next/image sets inline
-// style attributes on its own <img>/wrapper elements (e.g. Logo.tsx) —
-// not something app code controls without a nonce-based CSP.
+// script-src needs 'unsafe-inline' too: Next.js's own inline hydration
+// bootstrap script requires it, with no nonce set up here (same trade-off
+// already accepted below for style-src, and the same bug already found and
+// fixed once on apps/studio — see "Fix CSP blocking Next.js hydration on
+// the studio homepage"). Without it, no client-side JS executes at all —
+// only Server Action forms (which have a no-JS fallback) still function;
+// plain React state/onClick components (this app has several) go dead.
 const SUPABASE_URL = "https://rxyqoaucuwdgpbzgfjqp.supabase.co";
 
 const csp = [
   "default-src 'self'",
-  "script-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self' data:",
