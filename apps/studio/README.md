@@ -36,10 +36,13 @@ service-role key. Every RPC call also writes an append-only `audit_log` row; the
 has a trigger that rejects `UPDATE`/`DELETE` outright — corrections always insert a new row
 referencing the original (`corrects_entry_id` / `adjustment_for`).
 
-The Collaborator Dashboard reads through two Postgres views
-(`collaborator_ledger`, `collaborator_payouts`) that expose only Project ID / amounts /
-status — never client name, email, phone, or address — and are row-scoped to the
-logged-in collaborator via `current_collaborator_id()`.
+The Collaborator Dashboard has no accounts — each collaborator gets a private access code
+(shared by the admin, e.g. over WhatsApp) instead of an email/password login, which avoids
+Supabase's signup/email-confirmation flow entirely. The code is stored in an httpOnly
+cookie and passed to two SECURITY DEFINER RPCs (`get_collaborator_ledger_by_code`,
+`get_collaborator_payouts_by_code`) that expose only Project ID / amounts / status — never
+client name, email, phone, or address — scoped to whichever collaborator the code belongs
+to.
 
 Public project intake/configuration (`/start`) is token-gated, not auth-gated: submitting
 returns an unguessable `access_token` embedded in the URL, which is how a client can

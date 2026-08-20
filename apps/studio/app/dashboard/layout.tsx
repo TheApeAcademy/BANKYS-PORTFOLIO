@@ -1,4 +1,4 @@
-import { requireCollaborator } from "@zebraish/lib/auth";
+import { requireCollaborator } from "@/lib/actions/collaborator-auth";
 import { CollaboratorNav } from "@/components/CollaboratorNav";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {

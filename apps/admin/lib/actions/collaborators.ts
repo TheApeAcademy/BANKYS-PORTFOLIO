@@ -1,18 +1,13 @@
 "use server";
 
-import { randomBytes } from "crypto";
 import { revalidatePath } from "next/cache";
-import { createClient, createAnonClient } from "@zebraish/lib/supabase/server";
+import { createClient } from "@zebraish/lib/supabase/server";
 import { requireAdmin, getActorLabel } from "@zebraish/lib/auth";
 
 export type CreateCollaboratorState = {
   error: string | null;
-  success: { email: string; tempPassword: string } | null;
+  success: { accessCode: string } | null;
 };
-
-function generateTempPassword() {
-  return randomBytes(9).toString("base64url");
-}
 
 export async function createCollaborator(
   _prev: CreateCollaboratorState,
@@ -58,40 +53,10 @@ export async function createCollaborator(
 
   revalidatePath("/collaborators");
 
-  if (!email) {
-    return { error: null, success: null };
-  }
-
-  const tempPassword = generateTempPassword();
-  const anon = createAnonClient();
-  const { data: signUpData, error: signUpError } = await anon.auth.signUp({
-    email,
-    password: tempPassword,
-  });
-
-  if (signUpError || !signUpData.user) {
-    return {
-      error: `Collaborator saved, but login creation failed: ${signUpError?.message ?? "unknown error"}. You can invite them separately from the Supabase dashboard.`,
-      success: null,
-    };
-  }
-
-  const { error: linkError } = await supabase.rpc("link_collaborator_login", {
-    p_collaborator_id: collaborator.id,
-    p_profile_id: signUpData.user.id,
-    p_full_name: name,
-    p_email: email,
-    p_actor: actor,
-  });
-
-  if (linkError) {
-    return {
-      error: `Collaborator saved and login account created, but linking the role failed: ${linkError.message}. Contact support.`,
-      success: null,
-    };
-  }
-
-  return { error: null, success: { email, tempPassword } };
+  // Collaborators get dashboard access via a private code instead of an email/password
+  // account — no signup, no email confirmation. Share this with them once; it isn't
+  // shown again (though you can look it up anytime from their detail page).
+  return { error: null, success: { accessCode: (collaborator as { access_code: string }).access_code } };
 }
 
 export async function updateCollaborator(formData: FormData) {

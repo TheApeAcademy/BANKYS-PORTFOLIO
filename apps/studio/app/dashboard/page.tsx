@@ -1,26 +1,42 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
+import { getAccessCode } from "@/lib/actions/collaborator-auth";
 import { Card, PageHeader, StatCard, EmptyState } from "@/components/ui";
 import { StatusPill } from "@/components/StatusPill";
 import { formatMoney, formatDate, mondayOf } from "@zebraish/lib/format";
 
+type LedgerRow = {
+  entry_id: string;
+  project_code: string;
+  payment_amount: number;
+  payment_currency: string;
+  commission_amount: number;
+  commission_currency: string;
+  status: string;
+  week_of: string;
+};
+
 export default async function CollaboratorDashboardPage() {
+  const code = await getAccessCode();
+  if (!code) redirect("/login");
+
   const supabase = await createClient();
   const currentWeek = mondayOf();
 
-  const { data: rows } = await supabase
-    .from("collaborator_ledger")
-    .select("*")
+  const { data: rowsRaw } = await supabase
+    .rpc("get_collaborator_ledger_by_code", { p_code: code })
     .order("week_of", { ascending: false })
     .order("received_at", { ascending: false });
+  const rows = (rowsRaw ?? []) as LedgerRow[];
 
-  const currentWeekRows = (rows ?? []).filter((r) => r.week_of === currentWeek);
+  const currentWeekRows = rows.filter((r) => r.week_of === currentWeek);
   const currentWeekTotal = currentWeekRows
     .filter((r) => r.status !== "EXCLUDED")
     .reduce((sum, r) => sum + Number(r.commission_amount), 0);
-  const termToDateTotal = (rows ?? [])
+  const termToDateTotal = rows
     .filter((r) => r.status !== "EXCLUDED")
     .reduce((sum, r) => sum + Number(r.commission_amount), 0);
-  const currency = rows?.[0]?.commission_currency ?? "NGN";
+  const currency = rows[0]?.commission_currency ?? "NGN";
 
   return (
     <div>

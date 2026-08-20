@@ -95,6 +95,15 @@ export default async function CollaboratorDetailPage({
           </Card>
 
           <Card>
+            <p className="mb-3 text-sm font-medium">Access code</p>
+            <p className="tabular-nums text-sm">{collaborator.access_code}</p>
+            <p className="mt-2 text-xs text-fg-muted">
+              What they enter to sign in to the collaborator dashboard — no account, no email
+              confirmation. Share it with them directly if they&apos;ve lost it.
+            </p>
+          </Card>
+
+          <Card>
             <p className="mb-3 text-sm font-medium">Bank details</p>
             <dl className="flex flex-col gap-2 text-sm">
               <div>

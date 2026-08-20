@@ -1,20 +1,33 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
+import { getAccessCode } from "@/lib/actions/collaborator-auth";
 import { Card, PageHeader, EmptyState } from "@/components/ui";
 import { formatMoney, formatDate } from "@zebraish/lib/format";
 
+type PayoutRow = {
+  payout_id: string;
+  week_of: string;
+  total_amount: number;
+  currency: string;
+  paid_at: string;
+};
+
 export default async function CollaboratorPayoutsPage() {
+  const code = await getAccessCode();
+  if (!code) redirect("/login");
+
   const supabase = await createClient();
 
-  const { data: payouts } = await supabase
-    .from("collaborator_payouts")
-    .select("*")
+  const { data: payoutsRaw } = await supabase
+    .rpc("get_collaborator_payouts_by_code", { p_code: code })
     .order("week_of", { ascending: false });
+  const payouts = (payoutsRaw ?? []) as PayoutRow[];
 
   return (
     <div>
       <PageHeader title="Payout history" description="Every payout marked paid, by week." />
       <Card className="p-0">
-        {payouts?.length ? (
+        {payouts.length ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

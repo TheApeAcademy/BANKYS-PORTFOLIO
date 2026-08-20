@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
-import { signOut } from "@/lib/actions/auth";
+import { collaboratorSignOut as signOut } from "@/lib/actions/collaborator-auth";
 
 const links = [
   { href: "/dashboard", label: "This week" },

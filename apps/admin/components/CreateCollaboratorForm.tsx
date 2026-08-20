@@ -12,17 +12,14 @@ export function CreateCollaboratorForm() {
   if (state.success) {
     return (
       <div className="rounded-lg border border-paid bg-bg-raised p-4 text-sm">
-        <p className="font-medium text-paid">Collaborator + login created.</p>
+        <p className="font-medium text-paid">Collaborator created.</p>
         <p className="mt-2 text-fg-muted">
-          Email: <span className="text-fg">{state.success.email}</span>
-        </p>
-        <p className="text-fg-muted">
-          Temporary password: <span className="tabular-nums text-fg">{state.success.tempPassword}</span>
+          Access code: <span className="tabular-nums text-fg">{state.success.accessCode}</span>
         </p>
         <p className="mt-2 text-fg-muted">
-          Share this with them securely — it won&apos;t be shown again. They&apos;ll need to confirm
-          their email (check their inbox for a Supabase confirmation link, or confirm manually
-          from the Supabase dashboard → Authentication → Users) before they can sign in.
+          Share this with them (WhatsApp, etc.) — no account, no email confirmation. They enter it
+          once on the collaborator dashboard&apos;s sign-in page and stay signed in. You can look this
+          code up again anytime from their detail page if you lose it.
         </p>
       </div>
     );
@@ -35,7 +32,7 @@ export function CreateCollaboratorForm() {
         <input name="name" required className={inputCls} />
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-sm text-fg-muted">Login email (optional)</label>
+        <label className="text-sm text-fg-muted">Email (optional, for records only)</label>
         <input name="email" type="email" className={inputCls} />
       </div>
       <div className="flex flex-col gap-1">
