@@ -39,7 +39,7 @@ export default async function AdminOverviewPage() {
               {summary && Object.keys(summary.revenue_this_month).length
                 ? Object.entries(summary.revenue_this_month).map(([currency, amount]) => (
                     <span key={currency} className="mr-3 inline-block">
-                      <CountUp value={amount} format={(n) => formatMoney(n, currency)} />
+                      <CountUp value={amount} format="money" currency={currency} />
                     </span>
                   ))
                 : formatMoney(0)}
@@ -51,7 +51,7 @@ export default async function AdminOverviewPage() {
           <Card className="h-full transition hover:border-accent">
             <p className="text-xs uppercase tracking-wide text-fg-muted">Active projects</p>
             <p className="tabular-nums mt-2 text-2xl font-semibold">
-              <CountUp value={summary?.active_projects ?? 0} format={(n) => String(Math.round(n))} />
+              <CountUp value={summary?.active_projects ?? 0} format="integer" />
             </p>
           </Card>
         </Link>
@@ -69,7 +69,7 @@ export default async function AdminOverviewPage() {
           <Card className="h-full transition hover:border-accent">
             <p className="text-xs uppercase tracking-wide text-fg-muted">Open disputes</p>
             <p className="tabular-nums mt-2 text-2xl font-semibold">
-              <CountUp value={summary?.open_disputes ?? 0} format={(n) => String(Math.round(n))} />
+              <CountUp value={summary?.open_disputes ?? 0} format="integer" />
             </p>
           </Card>
         </Link>
@@ -78,7 +78,7 @@ export default async function AdminOverviewPage() {
           <Card className="h-full transition hover:border-accent">
             <p className="text-xs uppercase tracking-wide text-fg-muted">Overdue projects</p>
             <p className="tabular-nums mt-2 text-2xl font-semibold">
-              <CountUp value={summary?.overdue_projects ?? 0} format={(n) => String(Math.round(n))} />
+              <CountUp value={summary?.overdue_projects ?? 0} format="integer" />
             </p>
           </Card>
         </Link>
