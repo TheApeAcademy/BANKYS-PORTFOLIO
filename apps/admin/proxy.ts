@@ -34,8 +34,15 @@ export async function proxy(request: NextRequest) {
 
   // "/login" and "/login/mfa" both count as login routes — a session that's
   // only aal1 must be able to reach the MFA challenge screen itself without
-  // being redirected right back to it.
-  const isLoginRoute = request.nextUrl.pathname.startsWith("/login");
+  // being redirected right back to it. "/forgot-password" and
+  // "/reset-password" must also stay reachable without an existing session:
+  // the recovery link's session is established client-side from a URL
+  // fragment, which never reaches this server-side check, so gating them
+  // here would redirect the recovery flow straight back to /login.
+  const isLoginRoute =
+    request.nextUrl.pathname.startsWith("/login") ||
+    request.nextUrl.pathname === "/forgot-password" ||
+    request.nextUrl.pathname === "/reset-password";
 
   if (!isLoginRoute && !user) {
     const url = request.nextUrl.clone();

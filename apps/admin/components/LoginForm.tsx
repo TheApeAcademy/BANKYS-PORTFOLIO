@@ -44,6 +44,9 @@ export function LoginForm() {
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>
+      <a href="/forgot-password" className="text-center text-sm text-fg-muted hover:text-fg">
+        Forgot password?
+      </a>
     </form>
   );
 }
