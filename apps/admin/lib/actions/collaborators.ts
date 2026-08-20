@@ -59,6 +59,63 @@ export async function createCollaborator(
   return { error: null, success: { accessCode: (collaborator as { access_code: string }).access_code } };
 }
 
+export async function approveApplication(formData: FormData) {
+  await requireAdmin();
+  const actor = await getActorLabel();
+  const supabase = await createClient();
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  const { data: application } = await supabase
+    .from("collaborator_applications")
+    .select("*")
+    .eq("id", id)
+    .eq("status", "pending")
+    .single();
+  if (!application) return;
+
+  const { data: collaborator, error: insertError } = await supabase.rpc("create_collaborator_record", {
+    p_name: application.name,
+    p_email: application.email,
+    p_term_start: new Date().toISOString().slice(0, 10),
+    p_commission_rate: 0.1,
+    p_actor: actor,
+    p_term_end: null,
+    p_bank_details: {},
+  });
+  if (insertError || !collaborator) return;
+
+  await supabase
+    .from("collaborator_applications")
+    .update({
+      status: "approved",
+      reviewed_by: actor,
+      reviewed_at: new Date().toISOString(),
+      collaborator_id: (collaborator as { id: string }).id,
+    })
+    .eq("id", id);
+
+  revalidatePath("/collaborators");
+}
+
+export async function rejectApplication(formData: FormData) {
+  await requireAdmin();
+  const actor = await getActorLabel();
+  const supabase = await createClient();
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  await supabase
+    .from("collaborator_applications")
+    .update({ status: "rejected", reviewed_by: actor, reviewed_at: new Date().toISOString() })
+    .eq("id", id)
+    .eq("status", "pending");
+
+  revalidatePath("/collaborators");
+}
+
 export async function updateCollaborator(formData: FormData) {
   await requireAdmin();
   const actor = await getActorLabel();

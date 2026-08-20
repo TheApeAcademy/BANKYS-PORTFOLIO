@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { createClient } from "@zebraish/lib/supabase/server";
-import { PageHeader, Card, EmptyState } from "@/components/ui";
+import { PageHeader, Card, EmptyState, buttonCls, buttonGhostCls } from "@/components/ui";
 import { CreateCollaboratorForm } from "@/components/CreateCollaboratorForm";
+import { approveApplication, rejectApplication } from "@/lib/actions/collaborators";
 import { formatMoney, formatDate } from "@zebraish/lib/format";
 
 export default async function AdminCollaboratorsPage() {
   const supabase = await createClient();
+
+  const { data: applications } = await supabase
+    .from("collaborator_applications")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
 
   const { data: collaborators } = await supabase
     .from("collaborators")
@@ -27,6 +34,45 @@ export default async function AdminCollaboratorsPage() {
   return (
     <div>
       <PageHeader title="Collaborators" description="Official Collaboration Partners, terms, and running totals." />
+
+      {applications?.length ? (
+        <Card className="mb-6">
+          <p className="mb-4 text-sm font-medium">Pending applications ({applications.length})</p>
+          <div className="flex flex-col gap-4">
+            {applications.map((a) => (
+              <div key={a.id} className="rounded-lg border border-border p-4 text-sm">
+                <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+                  <p className="font-medium">{a.name}</p>
+                  <p className="text-xs text-fg-muted">{formatDate(a.created_at)}</p>
+                </div>
+                <p className="text-xs text-fg-muted">
+                  {[a.email, a.phone].filter(Boolean).join(" · ") || "No contact info given"}
+                </p>
+                <p className="mt-3 text-fg-muted">
+                  <span className="text-fg">Would bring:</span> {a.pitch}
+                </p>
+                <p className="mt-2 text-fg-muted">
+                  <span className="text-fg">Why / experience:</span> {a.experience}
+                </p>
+                <div className="mt-4 flex gap-2">
+                  <form action={approveApplication}>
+                    <input type="hidden" name="id" value={a.id} />
+                    <button type="submit" className={buttonCls}>
+                      Approve
+                    </button>
+                  </form>
+                  <form action={rejectApplication}>
+                    <input type="hidden" name="id" value={a.id} />
+                    <button type="submit" className={buttonGhostCls}>
+                      Reject
+                    </button>
+                  </form>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      ) : null}
 
       <Card className="mb-6">
         <p className="mb-4 text-sm font-medium">Add a collaborator</p>

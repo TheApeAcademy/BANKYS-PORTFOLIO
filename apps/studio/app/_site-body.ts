@@ -12,6 +12,7 @@ export const SITE_BODY_HTML = `
     <li><a href="#work">Work</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#approach">Approach</a></li>
+    <li><a href="#collaborate">Collaborate</a></li>
   </ul>
   <div class="nav-right">
     <a href="#start-a-project" class="nav-cta">Start a Project</a>
@@ -446,11 +447,37 @@ export const SITE_BODY_HTML = `
   </div>
 </section>
 
+<!-- COLLABORATE -->
+<section class="section" id="collaborate">
+  <div class="s-label reveal">06 · Collaborate</div>
+  <h2 class="s-h2 reveal">BRING US <span class="exotic exotic-emerald">CLIENTS.</span></h2>
+  <p class="s-sub reveal">Refer businesses to Zebraish Studio and earn a commission on every project you bring in.</p>
+
+  <div class="sp-card reveal-scale" style="padding:48px 40px">
+    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;text-align:center">
+      <div style="flex:1;min-width:240px">
+        <h3 style="font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px">New Collaborator?</h3>
+        <p style="font-size:14px;line-height:1.7;color:var(--text-muted);max-width:320px;margin:0 auto 24px">
+          Apply to become an official Zebraish collaborator. Tell us a bit about yourself — we'll follow up.
+        </p>
+        <a href="/collaborate" class="btn-primary" style="display:inline-block">Apply to Collaborate →</a>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <h3 style="font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px">Already a Collaborator?</h3>
+        <p style="font-size:14px;line-height:1.7;color:var(--text-muted);max-width:320px;margin:0 auto 24px">
+          Enter your access code to check your dashboard — commissions, payouts, everything.
+        </p>
+        <a href="/login" class="btn-more">Enter Your Code <span class="btn-more-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
   <div class="about-left">
     <div class="sec-vid reveal"><video autoplay muted loop playsinline style="width:160px;height:160px;border-radius:24px"><source src="3d-integrate-weekend.mp4" type="video/mp4"></video></div>
-    <div class="s-label reveal">06 · About</div>
+    <div class="s-label reveal">07 · About</div>
     <h2 class="s-h2 reveal">ABOUT <span class="exotic exotic-wine">ZEBRAISH STUDIO</span></h2>
     <p class="about-p reveal">I'm the founder behind <em>Zebraish Studio</em> — the build layer of the wider Zebraish ecosystem. Today, that means one person, hand-building real digital products for real businesses.</p>
     <p class="about-p reveal">Most agencies are slow, overpriced, and generic. I started building because good ideas kept getting undersold online. Zebraish Studio is the opposite — <em>fast, direct, custom</em>, and built around what a business actually needs to become real.</p>
