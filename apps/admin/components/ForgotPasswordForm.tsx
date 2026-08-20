@@ -20,17 +20,18 @@ export function ForgotPasswordForm() {
     });
     setPending(false);
 
-    // Always show the same success message, whether or not the email exists —
-    // otherwise this becomes a way to enumerate whether an admin account exists.
-    if (!resetError) setSent(true);
+    // This is a single-founder account, not a public signup flow, so there's
+    // no meaningful account to enumerate — showing the real error (e.g. a
+    // rate limit) is more useful here than a generic message that hides it.
+    if (resetError) {
+      setError(resetError.message || "Could not send the reset email — try again.");
+      return;
+    }
+    setSent(true);
   }
 
   if (sent) {
-    return (
-      <p className="text-sm text-fg-muted">
-        If that email has an admin account, a reset link is on its way. Check your inbox.
-      </p>
-    );
+    return <p className="text-sm text-fg-muted">Reset link sent — check your inbox.</p>;
   }
 
   return (
