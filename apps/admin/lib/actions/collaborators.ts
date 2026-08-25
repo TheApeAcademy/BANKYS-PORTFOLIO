@@ -99,6 +99,15 @@ export async function approveApplication(formData: FormData) {
   revalidatePath("/collaborators");
 }
 
+export async function getApplicationAttachmentUrl(storagePath: string): Promise<string | null> {
+  await requireAdmin();
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.storage.from("collaborator-applications").createSignedUrl(storagePath, 300);
+  if (error || !data) return null;
+  return data.signedUrl;
+}
+
 export async function rejectApplication(formData: FormData) {
   await requireAdmin();
   const actor = await getActorLabel();

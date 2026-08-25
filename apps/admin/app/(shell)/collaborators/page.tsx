@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { PageHeader, Card, EmptyState, buttonCls, buttonGhostCls } from "@/components/ui";
 import { CreateCollaboratorForm } from "@/components/CreateCollaboratorForm";
+import { ApplicationAttachments } from "@/components/ApplicationAttachments";
 import { approveApplication, rejectApplication } from "@/lib/actions/collaborators";
 import { formatMoney, formatDate } from "@zebraish/lib/format";
 
@@ -48,12 +49,21 @@ export default async function AdminCollaboratorsPage() {
                 <p className="text-xs text-fg-muted">
                   {[a.email, a.phone].filter(Boolean).join(" · ") || "No contact info given"}
                 </p>
-                <p className="mt-3 text-fg-muted">
-                  <span className="text-fg">Would bring:</span> {a.pitch}
+                {a.portfolio_url ? (
+                  <p className="mt-2 text-fg-muted">
+                    <span className="text-fg">Portfolio:</span>{" "}
+                    <a href={a.portfolio_url} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+                      {a.portfolio_url}
+                    </a>
+                  </p>
+                ) : null}
+                <p className="mt-3 whitespace-pre-wrap text-fg-muted">
+                  <span className="text-fg">About:</span> {a.experience}
                 </p>
                 <p className="mt-2 text-fg-muted">
-                  <span className="text-fg">Why / experience:</span> {a.experience}
+                  <span className="text-fg">Would bring:</span> {a.pitch}
                 </p>
+                <ApplicationAttachments attachments={a.attachments ?? []} />
                 <div className="mt-4 flex gap-2">
                   <form action={approveApplication}>
                     <input type="hidden" name="id" value={a.id} />

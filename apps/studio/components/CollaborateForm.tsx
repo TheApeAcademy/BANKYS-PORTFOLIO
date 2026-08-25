@@ -12,10 +12,10 @@ export function CollaborateForm() {
   if (state.success) {
     return (
       <div className="rounded-lg border border-paid bg-bg-raised p-4 text-sm">
-        <p className="font-medium text-paid">Application sent.</p>
+        <p className="font-medium text-paid">Submitted — your application is under review.</p>
         <p className="mt-2 text-fg-muted">
-          We&apos;ll review it and follow up. If you&apos;re approved, you&apos;ll get a private access code to sign
-          in to the collaborator dashboard — no account needed.
+          We&apos;ll go through it and follow up. If you&apos;re approved, you&apos;ll get a private access code to
+          sign in to the collaborator dashboard — no account needed.
         </p>
       </div>
     );
@@ -42,6 +42,20 @@ export function CollaborateForm() {
           </label>
           <input id="phone" name="phone" type="tel" className={inputCls} />
         </div>
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label htmlFor="portfolio_url" className="text-sm text-fg-muted">
+            Portfolio, LinkedIn, or website <span className="text-fg-muted/70">(optional)</span>
+          </label>
+          <input id="portfolio_url" name="portfolio_url" type="url" placeholder="https://…" className={inputCls} />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="about" className="text-sm text-fg-muted">
+          Tell us about yourself — your background, what you do, and why you&apos;d be a good fit to collaborate
+          with Zebraish
+        </label>
+        <textarea id="about" name="experience" required rows={6} className={inputCls} />
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -52,10 +66,17 @@ export function CollaborateForm() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="experience" className="text-sm text-fg-muted">
-          Why do you want to collaborate with Zebraish, and what relevant experience or network do you have?
+        <label htmlFor="attachments" className="text-sm text-fg-muted">
+          Attach anything relevant — resume, portfolio, ID <span className="text-fg-muted/70">(optional, up to 5 files, 10MB each)</span>
         </label>
-        <textarea id="experience" name="experience" required rows={3} className={inputCls} />
+        <input
+          id="attachments"
+          name="attachments"
+          type="file"
+          multiple
+          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+          className="text-sm text-fg-muted file:mr-3 file:rounded-lg file:border file:border-border file:bg-bg-raised file:px-3 file:py-1.5 file:text-sm file:text-fg file:transition hover:file:bg-bg-card"
+        />
       </div>
 
       {state.error ? <p className="text-sm text-excluded">{state.error}</p> : null}

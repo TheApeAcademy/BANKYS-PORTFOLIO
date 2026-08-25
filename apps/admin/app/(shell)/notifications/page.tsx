@@ -9,6 +9,7 @@ function entityHref(entityType: string | null, entityId: string | null): string 
   if (entityType === "project") return `/projects/${entityId}`;
   if (entityType === "collaborator") return `/collaborators/${entityId}`;
   if (entityType === "payment") return "/payments";
+  if (entityType === "collaborator_application") return "/collaborators";
   return null;
 }
 
@@ -22,6 +23,7 @@ const TYPE_LABELS: Record<string, string> = {
   chargeback: "Chargeback",
   commission_due: "Commission due",
   system_error: "System error",
+  collaborator_application: "New collaborator",
 };
 
 export default async function NotificationsPage({
