@@ -66,6 +66,20 @@ export function Configurator({
   const [projectCode, setProjectCode] = useState<string | null>(initial?.projectCode ?? null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const trackLink = accessToken && typeof window !== "undefined" ? `${window.location.origin}/track?token=${accessToken}` : "";
+
+  async function copyTrackLink() {
+    if (!trackLink) return;
+    try {
+      await navigator.clipboard.writeText(trackLink);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 1500);
+    } catch {
+      // Clipboard API unavailable — the link is still visible/selectable as text.
+    }
+  }
 
   const visibleSteps = useMemo(
     () => (projectType ? getVisibleSteps(projectType, answers) : []),
@@ -168,7 +182,8 @@ export function Configurator({
       metadata: { project_type: projectType, quoted_price: quote.total },
     });
 
-    const summary = buildWhatsAppMessage(result.projectCode, projectType, answers, quote.total);
+    const link = `${window.location.origin}/track?token=${result.accessToken}`;
+    const summary = buildWhatsAppMessage(result.projectCode, projectType, answers, quote.total, link);
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(summary)}`;
     window.open(waUrl, "_blank");
   }
@@ -366,9 +381,33 @@ export function Configurator({
           <p className="tabular-nums mb-6 rounded-lg border border-border bg-bg-raised px-4 py-3 text-2xl font-semibold tracking-wide text-accent">
             {projectCode}
           </p>
+
+          <div className="mb-6 rounded-lg border border-border bg-bg-raised p-4 text-left">
+            <p className="mb-2 text-sm font-medium">Save your tracking link</p>
+            <p className="mb-3 text-xs text-fg-muted">
+              This is the only way back into your project — use it to check progress, pay, or message us. We&apos;ve
+              also included it in the WhatsApp message below.
+            </p>
+            <div className="flex items-center gap-2">
+              <input
+                readOnly
+                value={trackLink}
+                onFocus={(e) => e.currentTarget.select()}
+                className="min-w-0 flex-1 truncate rounded-md border border-border bg-bg px-3 py-2 text-xs text-fg-muted outline-none"
+              />
+              <button
+                type="button"
+                onClick={copyTrackLink}
+                className="shrink-0 rounded-md border border-border px-3 py-2 text-xs font-medium text-fg transition hover:bg-bg-raised"
+              >
+                {linkCopied ? "Copied" : "Copy"}
+              </button>
+            </div>
+          </div>
+
           <p className="mb-6 text-sm text-fg-muted">
-            WhatsApp should have opened with your project details — send it across and we&apos;ll pick up the
-            conversation. Ready to lock it in?
+            WhatsApp should have opened with your project details and this link — send it across and we&apos;ll pick
+            up the conversation. Ready to lock it in?
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <button
@@ -396,7 +435,13 @@ export function Configurator({
   );
 }
 
-function buildWhatsAppMessage(projectCode: string, projectType: string, answers: Answers, total: number): string {
+function buildWhatsAppMessage(
+  projectCode: string,
+  projectType: string,
+  answers: Answers,
+  total: number,
+  trackLink: string,
+): string {
   const label = PROJECT_TYPES.find((p) => p.id === projectType)?.label ?? projectType;
   const lines: string[] = [
     `Hi Zebraish! I just configured a project.`,
@@ -404,6 +449,8 @@ function buildWhatsAppMessage(projectCode: string, projectType: string, answers:
     `*Reference:* ${projectCode}`,
     `*Building:* ${label}`,
     `*Total:* €${total.toFixed(2)}`,
+    ``,
+    `My tracking link: ${trackLink}`,
   ];
   return lines.join("\n");
 }
