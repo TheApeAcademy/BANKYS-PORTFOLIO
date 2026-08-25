@@ -525,6 +525,7 @@ export const SITE_BODY_HTML = `
   <div class="footer-logo"><img src="zebraish-mark.png" alt="Zebraish">ZEBRAISH STUDIO</div>
   <p>Part of the Zebraish Ecosystem</p>
   <p>Based in Nigeria · Available Worldwide</p>
+  <div class="footer-legal"><a href="/terms">Terms of Service</a><a href="/privacy">Privacy Policy</a></div>
 </footer>
 
 `;
