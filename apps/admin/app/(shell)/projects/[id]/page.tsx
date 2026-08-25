@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { updateProjectStatus } from "@/lib/actions/projects";
 import { Card, PageHeader, EmptyState, inputCls, buttonGhostCls } from "@/components/ui";
+import { CopyLinkButton } from "@/components/CopyLinkButton";
 import { RecordPaymentForm } from "@/components/RecordPaymentForm";
 import { PaymentActions } from "@/components/PaymentActions";
 import { ProjectTypePicker } from "@/components/ProjectTypePicker";
@@ -16,6 +17,11 @@ import { PROJECT_STATUSES, formatStatus } from "@/lib/statuses";
 function titleCaseType(id: string) {
   return id.replaceAll("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
+// The studio site's public origin — override via NEXT_PUBLIC_STUDIO_URL once
+// a custom domain is attached; falls back to the current deployment so this
+// works out of the box either way.
+const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
 
 export default async function ProjectDetailPage({
   params,
@@ -119,6 +125,30 @@ export default async function ProjectDetailPage({
               <dt className="text-fg-muted">Introduced by</dt>
               <dd>{introducer?.name ?? "—"} <span className="text-fg-muted">(informational only)</span></dd>
             </div>
+            {project.access_token ? (
+              <div>
+                <dt className="mb-1.5 text-fg-muted">Client links</dt>
+                <dd className="flex flex-col gap-2">
+                  {(
+                    [
+                      ["Track", `${STUDIO_URL}/track?token=${project.access_token}`],
+                      ["Pay", `${STUDIO_URL}/start/pay?token=${project.access_token}`],
+                    ] as const
+                  ).map(([label, url]) => (
+                    <div key={label} className="flex items-center gap-2">
+                      <span className="w-10 shrink-0 text-xs text-fg-muted">{label}</span>
+                      <span className="truncate text-xs text-fg-muted" title={url}>
+                        {url}
+                      </span>
+                      <CopyLinkButton value={url} />
+                    </div>
+                  ))}
+                </dd>
+                <p className="mt-1.5 text-xs text-fg-muted">
+                  Resend either of these if a client says they&apos;ve lost their link.
+                </p>
+              </div>
+            ) : null}
             <div>
               <dt className="text-fg-muted">Status</dt>
               <dd>
