@@ -19,6 +19,9 @@ export default async function SessionsSettingsPage() {
             <Link href="/settings/sessions" className={buttonCls}>
               Sessions
             </Link>
+            <Link href="/settings/bank-transfer" className={buttonGhostCls}>
+              Bank Transfer
+            </Link>
           </div>
         }
       />

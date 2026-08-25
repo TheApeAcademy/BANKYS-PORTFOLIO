@@ -24,6 +24,10 @@ export async function initiateFlutterwavePayment(params: {
   customerEmail: string;
   customerName: string;
   projectCode: string;
+  /** Restricts which methods Flutterwave's hosted checkout shows — e.g. "card"
+   * for a card-only button. Omit to let Flutterwave show its full default set
+   * for the currency. https://developer.flutterwave.com/v3.0/docs/payment-methods */
+  paymentOptions?: string;
 }): Promise<string> {
   const res = await fetch(`${FLW_BASE}/payments`, {
     method: "POST",
@@ -33,6 +37,7 @@ export async function initiateFlutterwavePayment(params: {
       amount: params.amount,
       currency: params.currency,
       redirect_url: params.redirectUrl,
+      payment_options: params.paymentOptions || undefined,
       customer: { email: params.customerEmail || undefined, name: params.customerName },
       customizations: { title: "Zebraish", description: `Project ${params.projectCode}` },
     }),

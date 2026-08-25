@@ -23,6 +23,9 @@ export default async function SecuritySettingsPage() {
             <Link href="/settings/sessions" className={buttonGhostCls}>
               Sessions
             </Link>
+            <Link href="/settings/bank-transfer" className={buttonGhostCls}>
+              Bank Transfer
+            </Link>
           </div>
         }
       />

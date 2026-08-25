@@ -1,5 +1,6 @@
 "use server";
 
+import { createClient } from "@zebraish/lib/supabase/server";
 import { getProjectByToken } from "./configurator";
 import { logActivityEvent } from "./activity";
 import { buildTxRef, initiateFlutterwavePayment } from "@/lib/flutterwave";
@@ -29,13 +30,63 @@ export async function initiatePayment(accessToken: string): Promise<InitiatePaym
       customerEmail: project.client_contact?.includes("@") ? project.client_contact : "",
       customerName: project.client_name,
       projectCode: project.project_code,
+      // Card-only — "Bank Transfer" on this site is the separate Payoneer
+      // manual rail below, not Flutterwave's own bank-transfer methods.
+      paymentOptions: "card",
     });
     await logActivityEvent("checkout_initiated", {
       projectId: project.id,
-      metadata: { quoted_price: project.quoted_price, currency: project.quoted_currency },
+      metadata: { quoted_price: project.quoted_price, currency: project.quoted_currency, method: "card" },
     });
     return { ok: true, link };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Could not start payment." };
   }
+}
+
+export type BankTransferIntent = {
+  paymentId: string;
+  projectCode: string;
+  amount: number;
+  currency: string;
+};
+
+export type InitiateBankTransferResult = { ok: true; intent: BankTransferIntent } | { ok: false; error: string };
+
+export async function initiateBankTransfer(accessToken: string): Promise<InitiateBankTransferResult> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .rpc("create_bank_transfer_intent", { p_access_token: accessToken })
+    .single();
+
+  if (error || !data) {
+    return { ok: false, error: error?.message ?? "Could not start a bank transfer for this project." };
+  }
+
+  const row = data as { payment_id: string; project_code: string; amount: number; currency: string };
+  await logActivityEvent("checkout_initiated", {
+    metadata: { project_code: row.project_code, amount: row.amount, currency: row.currency, method: "bank_transfer" },
+  });
+
+  return {
+    ok: true,
+    intent: { paymentId: row.payment_id, projectCode: row.project_code, amount: row.amount, currency: row.currency },
+  };
+}
+
+export type BankTransferInstructions = {
+  beneficiaryName: string;
+  details: Record<string, string>;
+  provider: string;
+} | null;
+
+export async function getBankTransferInstructions(currency: string): Promise<BankTransferInstructions> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .rpc("get_bank_transfer_instructions", { p_currency: currency })
+    .maybeSingle();
+
+  if (error || !data) return null;
+  const row = data as { beneficiary_name: string; details: Record<string, string>; provider: string };
+  return { beneficiaryName: row.beneficiary_name, details: row.details ?? {}, provider: row.provider };
 }

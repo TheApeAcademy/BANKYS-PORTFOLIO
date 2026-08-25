@@ -1,12 +1,19 @@
 import Link from "next/link";
 import { createClient } from "@zebraish/lib/supabase/server";
-import { PageHeader, Card, EmptyState } from "@/components/ui";
+import { PageHeader, Card, EmptyState, buttonGhostCls } from "@/components/ui";
 import { PaymentActions } from "@/components/PaymentActions";
 import { DisputeActions } from "@/components/DisputeActions";
+import { BankTransferReconcileActions } from "@/components/BankTransferReconcileActions";
 import { formatMoney, formatDate, formatDateTime, firstOf } from "@zebraish/lib/format";
 
 export default async function AdminPaymentsPage() {
   const supabase = await createClient();
+
+  const { data: pendingTransfers } = await supabase
+    .from("payments")
+    .select("id, amount, currency, created_at, project_id, projects(project_code, client_name)")
+    .in("payment_status", ["pending_transfer", "requires_review"])
+    .order("created_at", { ascending: true });
 
   const { data: payments } = await supabase
     .from("payments")
@@ -22,7 +29,57 @@ export default async function AdminPaymentsPage() {
 
   return (
     <div>
-      <PageHeader title="Payments" description="Every payment recorded across all client projects." />
+      <PageHeader
+        title="Payments"
+        description="Every payment recorded across all client projects."
+        action={
+          <Link href="/settings/bank-transfer" className={buttonGhostCls}>
+            Manage receiving accounts
+          </Link>
+        }
+      />
+
+      <Card className="mb-6 p-0">
+        <p className="p-5 pb-0 text-sm font-medium">Pending bank transfers</p>
+        {pendingTransfers?.length ? (
+          <div className="overflow-x-auto">
+            <table className="mt-3 w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-fg-muted">
+                  <th className="px-5 py-3">Project</th>
+                  <th className="px-5 py-3">Expected amount</th>
+                  <th className="px-5 py-3">Initiated</th>
+                  <th className="px-5 py-3"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {pendingTransfers.map((t) => {
+                  const project = firstOf(t.projects);
+                  return (
+                    <tr key={t.id}>
+                      <td className="px-5 py-3">
+                        <Link href={`/projects/${t.project_id}`} className="font-medium text-accent">
+                          {project?.project_code}
+                        </Link>
+                        <span className="ml-1 text-fg-muted">{project?.client_name}</span>
+                      </td>
+                      <td className="tabular-nums px-5 py-3">{formatMoney(t.amount, t.currency)}</td>
+                      <td className="px-5 py-3 text-fg-muted">{formatDateTime(t.created_at)}</td>
+                      <td className="px-5 py-3">
+                        <BankTransferReconcileActions paymentId={t.id} projectId={t.project_id} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="p-5">
+            <EmptyState>No bank transfers awaiting confirmation.</EmptyState>
+          </div>
+        )}
+      </Card>
 
       <Card className="mb-6 p-0">
         <p className="p-5 pb-0 text-sm font-medium">Open disputes</p>

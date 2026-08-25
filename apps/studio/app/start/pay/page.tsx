@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
-import { PayButton } from "@/components/configurator/PayButton";
+import { PaymentMethodSelector } from "@/components/configurator/PaymentMethodSelector";
 import { getProjectByToken } from "@/lib/actions/configurator";
 import { formatMoney } from "@zebraish/lib/format";
 import { checkRateLimit } from "@zebraish/lib/rate-limit";
@@ -40,7 +40,7 @@ export default async function PayPage({
         {alreadyPaid ? (
           <p className="text-sm text-paid">This project has already been paid — thank you.</p>
         ) : (
-          <PayButton accessToken={token!} label="Proceed to payment →" />
+          <PaymentMethodSelector accessToken={token!} />
         )}
       </div>
     </div>
