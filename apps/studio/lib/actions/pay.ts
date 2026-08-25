@@ -6,14 +6,24 @@ import { logActivityEvent } from "./activity";
 import { buildTxRef, initiateFlutterwavePayment } from "@/lib/flutterwave";
 import { headers } from "next/headers";
 
-export type InitiatePaymentResult = { ok: true; link: string } | { ok: false; error: string };
+export type InitiatePaymentResult =
+  | { ok: true; link: string }
+  | { ok: false; error: string; needsEmail?: boolean };
 
-export async function initiatePayment(accessToken: string): Promise<InitiatePaymentResult> {
+export async function initiatePayment(accessToken: string, email?: string): Promise<InitiatePaymentResult> {
   const project = await getProjectByToken(accessToken);
   if (!project) return { ok: false, error: "Project not found." };
   if (!project.quoted_price) return { ok: false, error: "This project doesn't have a price yet." };
   if (!["draft", "awaiting_payment"].includes(project.status)) {
     return { ok: false, error: "This project has already been paid or is no longer awaiting payment." };
+  }
+
+  // Flutterwave's card checkout requires a customer email — no exceptions —
+  // but the configurator lets a client give a phone number instead. Fall
+  // back to whatever email the payment screen collected for this case.
+  const customerEmail = project.client_contact?.includes("@") ? project.client_contact : email?.trim();
+  if (!customerEmail || !customerEmail.includes("@")) {
+    return { ok: false, error: "An email is required to pay by card.", needsEmail: true };
   }
 
   const hdrs = await headers();
@@ -27,7 +37,7 @@ export async function initiatePayment(accessToken: string): Promise<InitiatePaym
       amount: Number(project.quoted_price),
       currency: project.quoted_currency ?? "EUR",
       redirectUrl: `${origin}/start/pay/callback`,
-      customerEmail: project.client_contact?.includes("@") ? project.client_contact : "",
+      customerEmail,
       customerName: project.client_name,
       projectCode: project.project_code,
       // Card-only — "Bank Transfer" on this site is the separate Payoneer
