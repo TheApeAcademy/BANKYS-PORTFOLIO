@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { PaymentMethodSelector } from "@/components/configurator/PaymentMethodSelector";
 import { getProjectByToken } from "@/lib/actions/configurator";
 import { formatMoney } from "@zebraish/lib/format";
@@ -19,7 +20,10 @@ export default async function PayPage({
   if (token && !(await checkRateLimit("pay-token", 30, 300))) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
-        <Logo />
+        <div className="flex w-full max-w-md items-center justify-between">
+          <Logo />
+          <LanguageToggle />
+        </div>
         <p className="mt-8 text-sm text-fg-muted">{t("track.rateLimited")}</p>
       </div>
     );
@@ -32,7 +36,10 @@ export default async function PayPage({
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
-      <Logo />
+      <div className="flex w-full max-w-md items-center justify-between">
+        <Logo />
+        <LanguageToggle />
+      </div>
       <div className="mt-8 w-full max-w-md rounded-2xl border border-border bg-bg-card p-8">
         <h1 className="mb-1 text-lg font-semibold">{project.project_code}</h1>
         <p className="mb-6 text-sm text-fg-muted">{project.client_name}</p>

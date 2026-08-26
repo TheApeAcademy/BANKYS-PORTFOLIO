@@ -1,4 +1,5 @@
 import { Logo } from "@/components/Logo";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { getProjectTracker } from "@/lib/actions/tracker";
 import { getProjectMessages } from "@/lib/actions/messages";
 import { MessageBox } from "@/components/MessageBox";
@@ -26,7 +27,10 @@ export default async function TrackPage({
 
   return (
     <div className="flex min-h-screen flex-col items-center px-6 py-16 bg-bg text-fg">
-      <Logo />
+      <div className="flex w-full max-w-lg items-center justify-between">
+        <Logo />
+        <LanguageToggle />
+      </div>
 
       <div className="mt-8 w-full max-w-lg rounded-2xl border border-border bg-bg-card p-8">
         <h1 className="mb-6 text-lg font-semibold">{t("track.title")}</h1>

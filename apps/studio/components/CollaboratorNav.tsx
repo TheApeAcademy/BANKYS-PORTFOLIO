@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { LanguageToggle } from "./LanguageToggle";
 import { collaboratorSignOut as signOut } from "@/lib/actions/collaborator-auth";
 import { getServerT } from "@/lib/i18n/server";
 
@@ -25,6 +26,7 @@ export async function CollaboratorNav() {
             </Link>
           ))}
         </nav>
+        <LanguageToggle />
         <form action={signOut}>
           <button type="submit" className="text-sm text-fg-muted hover:text-fg">
             {t("nav.signOut")}
