@@ -1,15 +1,34 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState, type FormEvent } from "react";
 import { submitCollaboratorApplication, type ApplyState } from "@/lib/actions/collaborate";
 import { inputCls, buttonCls } from "@/components/ui";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 const initialState: ApplyState = { error: null, success: false };
 
+// Keep in sync with MAX_TOTAL_ATTACHMENT_BYTES in lib/actions/collaborate.ts.
+// Checking this client-side before submit matters: sending an oversized
+// multipart body lets the platform's request size limit abort the upload
+// mid-stream, which the browser shows as a raw connection failure instead
+// of the form's normal in-page error message.
+const MAX_TOTAL_ATTACHMENT_BYTES = 3.5 * 1024 * 1024;
+
 export function CollaborateForm() {
   const { t } = useLanguage();
   const [state, formAction, pending] = useActionState(submitCollaboratorApplication, initialState);
+  const [clientError, setClientError] = useState<string | null>(null);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    const files = new FormData(event.currentTarget).getAll("attachments").filter((f): f is File => f instanceof File);
+    const totalBytes = files.reduce((sum, f) => sum + f.size, 0);
+    if (totalBytes > MAX_TOTAL_ATTACHMENT_BYTES) {
+      event.preventDefault();
+      setClientError(t("collab.error.fileTooLarge"));
+      return;
+    }
+    setClientError(null);
+  }
 
   if (state.success) {
     return (
@@ -21,7 +40,7 @@ export function CollaborateForm() {
   }
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={formAction} onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-sm text-fg-muted">
@@ -77,7 +96,7 @@ export function CollaborateForm() {
         />
       </div>
 
-      {state.error ? <p className="text-sm text-excluded">{state.error}</p> : null}
+      {clientError ?? state.error ? <p className="text-sm text-excluded">{clientError ?? state.error}</p> : null}
 
       <button type="submit" disabled={pending} className={buttonCls}>
         {pending ? t("collab.form.sending") : t("collab.form.submit")}

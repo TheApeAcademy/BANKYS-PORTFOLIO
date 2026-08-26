@@ -9,7 +9,11 @@ import { getServerT } from "@/lib/i18n/server";
 export type ApplyState = { error: string | null; success: boolean };
 
 const MAX_ATTACHMENTS = 5;
-const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024; // 10MB
+// Vercel serverless functions hard-cap request bodies around 4.5MB
+// regardless of the Next.js serverActions.bodySizeLimit config (set to
+// 4mb in next.config.ts). This stays under both, with headroom for
+// multipart boundaries/headers and the other form fields.
+const MAX_TOTAL_ATTACHMENT_BYTES = 3.5 * 1024 * 1024; // 3.5MB combined
 
 type Attachment = { storage_path: string; file_name: string; file_size: number };
 
@@ -33,9 +37,9 @@ export async function submitCollaboratorApplication(
   if (files.length > MAX_ATTACHMENTS) {
     return { error: t("collab.error.tooManyFiles", { max: MAX_ATTACHMENTS }), success: false };
   }
-  const oversized = files.find((f) => f.size > MAX_ATTACHMENT_BYTES);
-  if (oversized) {
-    return { error: t("collab.error.fileTooLarge", { name: oversized.name }), success: false };
+  const totalAttachmentBytes = files.reduce((sum, f) => sum + f.size, 0);
+  if (totalAttachmentBytes > MAX_TOTAL_ATTACHMENT_BYTES) {
+    return { error: t("collab.error.fileTooLarge"), success: false };
   }
 
   const withinLimit = await checkRateLimit("studio-collab-apply", 5, 600);

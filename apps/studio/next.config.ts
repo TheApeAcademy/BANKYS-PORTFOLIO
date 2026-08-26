@@ -42,6 +42,17 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      // Default is 1MB, which the /collaborate application form's file
+      // attachments blow past instantly, aborting the upload mid-stream
+      // with a 413 that Safari renders as a raw connection failure rather
+      // than a page. Vercel serverless functions hard-cap request bodies
+      // around 4.5MB regardless of this setting, so this stays under that
+      // ceiling (see MAX_TOTAL_ATTACHMENT_BYTES in lib/actions/collaborate.ts).
+      bodySizeLimit: "4mb",
+    },
+  },
   async headers() {
     return [
       {
