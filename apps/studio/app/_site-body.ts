@@ -535,10 +535,10 @@ ${LANG_SCRIPT}
   </div>
   <div class="about-right">
     <div class="afc-list reveal">
-      <div class="afc"><div class="afc-icon">💬</div><div class="afc-title">Clear Communication</div><p class="afc-desc">You'll always know exactly what's being worked on. No chasing, no going dark, no surprises.</p></div>
-      <div class="afc"><div class="afc-icon">🎯</div><div class="afc-title">Purpose-Built Design</div><p class="afc-desc">Every font, colour, layout, and interaction serves one goal: making your idea look and work undeniable.</p></div>
-      <div class="afc"><div class="afc-icon">🔑</div><div class="afc-title">You Own Everything</div><p class="afc-desc">All code, all files, all assets are yours forever. No subscriptions, no lock-in.</p></div>
-      <div class="afc"><div class="afc-icon">🌍</div><div class="afc-title">Worldwide Delivery</div><p class="afc-desc">Founders and businesses in Nigeria, the Gulf, the UK, Europe. Wherever you are, we deliver.</p></div>
+      <div class="afc"><div class="afc-title">Clear Communication</div><p class="afc-desc">You'll always know exactly what's being worked on. No chasing, no going dark, no surprises.</p></div>
+      <div class="afc"><div class="afc-title">Purpose-Built Design</div><p class="afc-desc">Every font, colour, layout, and interaction serves one goal: making your idea look and work undeniable.</p></div>
+      <div class="afc"><div class="afc-title">You Own Everything</div><p class="afc-desc">All code, all files, all assets are yours forever. No subscriptions, no lock-in.</p></div>
+      <div class="afc"><div class="afc-title">Worldwide Delivery</div><p class="afc-desc">Founders and businesses in Nigeria, the Gulf, the UK, Europe. Wherever you are, we deliver.</p></div>
     </div>
   </div>
 </section>
@@ -1066,10 +1066,10 @@ ${LANG_SCRIPT}
   </div>
   <div class="about-right">
     <div class="afc-list reveal">
-      <div class="afc"><div class="afc-icon">💬</div><div class="afc-title">Comunicación Clara</div><p class="afc-desc">Siempre sabrás exactamente en qué se está trabajando. Sin tener que perseguir respuestas, sin silencios, sin sorpresas.</p></div>
-      <div class="afc"><div class="afc-icon">🎯</div><div class="afc-title">Diseño con Propósito</div><p class="afc-desc">Cada fuente, color, diseño, e interacción tiene un objetivo: hacer que tu idea se vea y funcione de forma innegable.</p></div>
-      <div class="afc"><div class="afc-icon">🔑</div><div class="afc-title">Todo Te Pertenece</div><p class="afc-desc">Todo el código, todos los archivos, todos los recursos son tuyos para siempre. Sin suscripciones, sin ataduras.</p></div>
-      <div class="afc"><div class="afc-icon">🌍</div><div class="afc-title">Entrega Mundial</div><p class="afc-desc">Fundadores y negocios en Nigeria, el Golfo, el Reino Unido, Europa. Estés donde estés, entregamos.</p></div>
+      <div class="afc"><div class="afc-title">Comunicación Clara</div><p class="afc-desc">Siempre sabrás exactamente en qué se está trabajando. Sin tener que perseguir respuestas, sin silencios, sin sorpresas.</p></div>
+      <div class="afc"><div class="afc-title">Diseño con Propósito</div><p class="afc-desc">Cada fuente, color, diseño, e interacción tiene un objetivo: hacer que tu idea se vea y funcione de forma innegable.</p></div>
+      <div class="afc"><div class="afc-title">Todo Te Pertenece</div><p class="afc-desc">Todo el código, todos los archivos, todos los recursos son tuyos para siempre. Sin suscripciones, sin ataduras.</p></div>
+      <div class="afc"><div class="afc-title">Entrega Mundial</div><p class="afc-desc">Fundadores y negocios en Nigeria, el Golfo, el Reino Unido, Europa. Estés donde estés, entregamos.</p></div>
     </div>
   </div>
 </section>

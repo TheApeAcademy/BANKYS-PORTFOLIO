@@ -386,9 +386,12 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
   .approach-verticals{grid-template-columns:1fr}
 }
 @media(max-width:768px){
-  nav{padding:16px 20px}
+  nav{padding:14px 16px}
   .nav-links{display:none}
-  .nav-cta{padding:9px 14px;font-size:10px;white-space:nowrap}
+  .nav-logo{font-size:15px;gap:6px}
+  .logo-mark{height:22px}
+  .nav-right{gap:6px}
+  .nav-cta{padding:7px 9px;font-size:8px;letter-spacing:.02em;white-space:nowrap}
   .nav-logo-tag{display:none}
   #hero{padding:110px 24px 72px;flex-direction:column;gap:40px;overflow:hidden}
   .hero-bg-name{display:none}
@@ -423,7 +426,8 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 .lang-toggle button.active{color:var(--text)}
 .lang-toggle .lang-sep{color:var(--text-faint);font-size:11px}
 @media(max-width:768px){
-  .lang-toggle button{padding:4px}
+  .lang-toggle{gap:3px;margin-right:0}
+  .lang-toggle button{padding:4px 2px;font-size:10px}
 }
 
 /* Theme toggle (nav) — manual only, sets the same zb_theme cookie the rest
@@ -433,3 +437,8 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 .theme-toggle button:hover{color:var(--text)}
 .theme-toggle button.active{color:var(--text);background:var(--glass-b)}
 .theme-toggle svg{width:13px;height:13px;display:block}
+@media(max-width:768px){
+  .theme-toggle{gap:1px;margin-right:0;padding:2px}
+  .theme-toggle button{width:19px;height:19px}
+  .theme-toggle svg{width:11px;height:11px}
+}
