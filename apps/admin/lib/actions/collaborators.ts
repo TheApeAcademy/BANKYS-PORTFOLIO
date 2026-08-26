@@ -60,7 +60,10 @@ export async function createCollaborator(
   return { error: null, success: { accessCode: (collaborator as { access_code: string }).access_code } };
 }
 
-export type ApproveApplicationState = { error: string | null; success: boolean };
+export type ApproveApplicationState = {
+  error: string | null;
+  success: { name: string; email: string | null; accessCode: string } | null;
+};
 
 export async function approveApplication(
   _prev: ApproveApplicationState,
@@ -78,8 +81,8 @@ export async function approveApplication(
   const accountName = String(formData.get("account_name") ?? "").trim();
   const accountNumber = String(formData.get("account_number") ?? "").trim();
 
-  if (!id) return { error: "Missing application id.", success: false };
-  if (!termStart) return { error: "Term start date is required.", success: false };
+  if (!id) return { error: "Missing application id.", success: null };
+  if (!termStart) return { error: "Term start date is required.", success: null };
 
   const { data: application } = await supabase
     .from("collaborator_applications")
@@ -87,7 +90,7 @@ export async function approveApplication(
     .eq("id", id)
     .eq("status", "pending")
     .single();
-  if (!application) return { error: "This application is no longer pending.", success: false };
+  if (!application) return { error: "This application is no longer pending.", success: null };
 
   const commissionRate = Number(commissionRateRaw) / 100;
   const bankDetails = {
@@ -106,8 +109,9 @@ export async function approveApplication(
     p_bank_details: bankDetails,
   });
   if (insertError || !collaborator) {
-    return { error: insertError?.message ?? "Could not create collaborator.", success: false };
+    return { error: insertError?.message ?? "Could not create collaborator.", success: null };
   }
+  const accessCode = (collaborator as { access_code: string }).access_code;
 
   await supabase
     .from("collaborator_applications")
@@ -120,15 +124,11 @@ export async function approveApplication(
     .eq("id", id);
 
   if (application.email) {
-    await sendCollaboratorApprovalEmail({
-      to: application.email,
-      name: application.name,
-      accessCode: (collaborator as { access_code: string }).access_code,
-    });
+    await sendCollaboratorApprovalEmail({ to: application.email, name: application.name, accessCode });
   }
 
   revalidatePath("/collaborators");
-  return { error: null, success: true };
+  return { error: null, success: { name: application.name, email: application.email, accessCode } };
 }
 
 export async function getApplicationAttachmentUrl(storagePath: string): Promise<string | null> {

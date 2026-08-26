@@ -1,16 +1,78 @@
 "use client";
 
-import { useState } from "react";
-import { useActionState } from "react";
+import { useState, type FormEvent } from "react";
 import { approveApplication, type ApproveApplicationState } from "@/lib/actions/collaborators";
+
+const initialState: ApproveApplicationState = { error: null, success: null };
 import { inputCls, buttonCls } from "@/components/ui";
 
-const initialState: ApproveApplicationState = { error: null, success: false };
+// Same fallback pattern as apps/admin/lib/email.ts. NEXT_PUBLIC_ vars are
+// inlined into the client bundle at build time, so this works here too.
+const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
+
+function buildGmailComposeUrl(to: string, name: string, accessCode: string): string {
+  const subject = "You're approved as a Zebraish collaborator";
+  const body = [
+    `Hi ${name},`,
+    "",
+    "Congratulations! Your application to become a Zebraish collaborator has been approved.",
+    "",
+    `Your private access code is: ${accessCode}`,
+    "",
+    `Sign in at ${STUDIO_URL}/login with this code to reach your collaborator dashboard. No account or password needed, just this code, so keep it somewhere safe.`,
+  ].join("\n");
+  const params = new URLSearchParams({ view: "cm", fs: "1", to, su: subject, body });
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
 
 export function ApproveApplicationForm({ applicationId }: { applicationId: string }) {
   const [expanded, setExpanded] = useState(false);
-  const [state, formAction, pending] = useActionState(approveApplication, initialState);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [approved, setApproved] = useState<{ accessCode: string; email: string | null } | null>(null);
   const today = new Date().toISOString().slice(0, 10);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+    const result = await approveApplication(initialState, formData);
+
+    setPending(false);
+    if (!result.success) {
+      setError(result.error);
+      return;
+    }
+
+    // Opened directly in this same click-triggered handler (not a later
+    // effect) so browsers don't treat it as an unrequested popup — same
+    // reasoning as the WhatsApp compose link in the studio configurator.
+    if (result.success.email) {
+      window.open(
+        buildGmailComposeUrl(result.success.email, result.success.name, result.success.accessCode),
+        "_blank",
+      );
+    }
+    setApproved({ accessCode: result.success.accessCode, email: result.success.email });
+  }
+
+  if (approved) {
+    return (
+      <div className="rounded-lg border border-paid bg-bg-raised p-3 text-sm">
+        <p className="font-medium text-paid">Approved.</p>
+        <p className="mt-1 text-fg-muted">
+          Access code: <span className="tabular-nums text-fg">{approved.accessCode}</span>
+        </p>
+        {approved.email ? (
+          <p className="mt-1 text-fg-muted">A Gmail compose window opened with the code filled in. Click send.</p>
+        ) : (
+          <p className="mt-1 text-fg-muted">No email on file, share this code with them directly.</p>
+        )}
+      </div>
+    );
+  }
 
   if (!expanded) {
     return (
@@ -21,7 +83,7 @@ export function ApproveApplicationForm({ applicationId }: { applicationId: strin
   }
 
   return (
-    <form action={formAction} className="flex w-full flex-col gap-3 rounded-lg border border-border p-3">
+    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3 rounded-lg border border-border p-3">
       <input type="hidden" name="id" value={applicationId} />
       <p className="text-xs text-fg-muted">Set the collaborator&apos;s term and payout details before approving.</p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -51,7 +113,7 @@ export function ApproveApplicationForm({ applicationId }: { applicationId: strin
           <input name="account_number" className={inputCls} />
         </div>
       </div>
-      {state.error ? <p className="text-sm text-excluded">{state.error}</p> : null}
+      {error ? <p className="text-sm text-excluded">{error}</p> : null}
       <div className="flex gap-2">
         <button type="submit" disabled={pending} className={buttonCls}>
           {pending ? "Approving…" : "Confirm approval"}
