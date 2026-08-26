@@ -127,6 +127,13 @@ const en = {
   "collab.error.uploadFailed": "Could not upload \"{name}\". Try again.",
   "collab.error.generic": "Something went wrong submitting your application. Try again.",
 
+  // Legal — shared consent checkbox (collaborate form, configurator)
+  "legal.agree.prefix": "I agree to the",
+  "legal.agree.terms": "Terms of Service",
+  "legal.agree.and": "and",
+  "legal.agree.privacy": "Privacy Policy",
+  "legal.error.mustAgree": "You must agree to the Terms of Service and Privacy Policy to continue.",
+
   // Login
   "login.title": "Collaborator access",
   "login.subtitle": "Enter the access code Zebraish gave you.",
@@ -317,6 +324,13 @@ const es: Record<keyof typeof en, string> = {
   "collab.error.rateLimited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
   "collab.error.uploadFailed": "No se pudo subir \"{name}\". Inténtalo de nuevo.",
   "collab.error.generic": "Algo salió mal al enviar tu solicitud. Inténtalo de nuevo.",
+
+  // Legal — shared consent checkbox (collaborate form, configurator)
+  "legal.agree.prefix": "Acepto los",
+  "legal.agree.terms": "Términos de Servicio",
+  "legal.agree.and": "y la",
+  "legal.agree.privacy": "Política de Privacidad",
+  "legal.error.mustAgree": "Debes aceptar los Términos de Servicio y la Política de Privacidad para continuar.",
 
   // Login
   "login.title": "Acceso de colaborador",

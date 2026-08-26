@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState, type FormEvent } from "react";
 import { submitCollaboratorApplication, type ApplyState } from "@/lib/actions/collaborate";
 import { inputCls, buttonCls } from "@/components/ui";
@@ -95,6 +96,20 @@ export function CollaborateForm() {
           className="text-sm text-fg-muted file:mr-3 file:rounded-lg file:border file:border-border file:bg-bg-raised file:px-3 file:py-1.5 file:text-sm file:text-fg file:transition hover:file:bg-bg-card"
         />
       </div>
+
+      <label className="flex items-start gap-2 text-sm text-fg-muted">
+        <input type="checkbox" name="agree_terms" required className="mt-0.5" />
+        <span>
+          {t("legal.agree.prefix")}{" "}
+          <Link href="/terms" target="_blank" className="text-accent hover:underline">
+            {t("legal.agree.terms")}
+          </Link>{" "}
+          {t("legal.agree.and")}{" "}
+          <Link href="/privacy" target="_blank" className="text-accent hover:underline">
+            {t("legal.agree.privacy")}
+          </Link>
+        </span>
+      </label>
 
       {clientError ?? state.error ? <p className="text-sm text-excluded">{clientError ?? state.error}</p> : null}
 

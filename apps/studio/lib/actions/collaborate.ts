@@ -28,10 +28,15 @@ export async function submitCollaboratorApplication(
   const pitch = String(formData.get("pitch") ?? "").trim();
   const experience = String(formData.get("experience") ?? "").trim();
   const portfolioUrl = String(formData.get("portfolio_url") ?? "").trim();
+  const agreedToTerms = formData.get("agree_terms") === "on";
   const files = formData.getAll("attachments").filter((f): f is File => f instanceof File && f.size > 0);
 
   if (!name || !pitch || !experience) {
     return { error: t("collab.error.required"), success: false };
+  }
+
+  if (!agreedToTerms) {
+    return { error: t("legal.error.mustAgree"), success: false };
   }
 
   if (files.length > MAX_ATTACHMENTS) {

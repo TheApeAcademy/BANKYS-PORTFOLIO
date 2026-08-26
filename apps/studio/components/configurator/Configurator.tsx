@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PROJECT_TYPES } from "@/lib/catalogue/catalogue";
@@ -146,6 +147,7 @@ export function Configurator({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const trackLink = accessToken && typeof window !== "undefined" ? `${window.location.origin}/track?token=${accessToken}` : "";
 
@@ -238,6 +240,10 @@ export function Configurator({
     if (!projectType || !quote) return;
     if (!clientName.trim() || !clientContact.trim()) {
       setError(t("config.details.errorRequired"));
+      return;
+    }
+    if (!agreedToTerms) {
+      setError(t("legal.error.mustAgree"));
       return;
     }
     setSaving(true);
@@ -457,6 +463,25 @@ export function Configurator({
               )}
             </div>
           </div>
+
+          <label className="mb-4 flex items-start gap-2 text-sm text-fg-muted">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              {t("legal.agree.prefix")}{" "}
+              <Link href="/terms" target="_blank" className="text-accent hover:underline">
+                {t("legal.agree.terms")}
+              </Link>{" "}
+              {t("legal.agree.and")}{" "}
+              <Link href="/privacy" target="_blank" className="text-accent hover:underline">
+                {t("legal.agree.privacy")}
+              </Link>
+            </span>
+          </label>
 
           {error ? <p className="mb-4 text-sm text-excluded">{error}</p> : null}
 
