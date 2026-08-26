@@ -20,7 +20,7 @@ export default async function AdminOverviewPage() {
   ]);
 
   const trendCurrencies = [...new Set(trend.map((p) => p.currency))];
-  const primaryCurrency = trendCurrencies[0] ?? "NGN";
+  const primaryCurrency = trendCurrencies[0] ?? "EUR";
 
   return (
     <div>

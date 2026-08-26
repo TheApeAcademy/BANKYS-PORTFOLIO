@@ -63,7 +63,7 @@ export default async function AnalyticsPage() {
             <p className="mb-4 text-sm text-fg-muted">No goal set for this month yet.</p>
           )}
           <div className="mt-4 border-t border-border pt-4">
-            <SetGoalForm defaultCurrency={weekCurrency ?? "NGN"} />
+            <SetGoalForm defaultCurrency={weekCurrency ?? "EUR"} />
           </div>
         </Card>
       </div>
@@ -73,13 +73,13 @@ export default async function AnalyticsPage() {
           <Card>
             <p className="text-xs uppercase tracking-wide text-fg-muted">This week</p>
             <p className="tabular-nums mt-2 text-2xl font-semibold">
-              {formatMoney(thisWeek?.revenue ? Number(thisWeek.revenue) : 0, weekCurrency ?? "NGN")}
+              {formatMoney(thisWeek?.revenue ? Number(thisWeek.revenue) : 0, weekCurrency ?? "EUR")}
             </p>
           </Card>
           <Card>
             <p className="text-xs uppercase tracking-wide text-fg-muted">Last week</p>
             <p className="tabular-nums mt-2 text-2xl font-semibold">
-              {formatMoney(lastWeek?.revenue ? Number(lastWeek.revenue) : 0, weekCurrency ?? "NGN")}
+              {formatMoney(lastWeek?.revenue ? Number(lastWeek.revenue) : 0, weekCurrency ?? "EUR")}
             </p>
           </Card>
         </div>

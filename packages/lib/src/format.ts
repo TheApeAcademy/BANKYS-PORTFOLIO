@@ -12,7 +12,7 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
   GBP: "£",
 };
 
-export function formatMoney(amount: number, currency: string = "NGN") {
+export function formatMoney(amount: number, currency: string = "EUR") {
   const symbol = CURRENCY_SYMBOLS[currency] ?? `${currency} `;
   const formatted = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,

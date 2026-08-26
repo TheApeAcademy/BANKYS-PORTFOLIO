@@ -14,7 +14,7 @@ export async function recordPayment(_prev: ActionState, formData: FormData): Pro
 
   const projectId = String(formData.get("project_id") ?? "");
   const amount = Number(formData.get("amount"));
-  const currency = String(formData.get("currency") ?? "NGN");
+  const currency = String(formData.get("currency") ?? "EUR");
   const method = String(formData.get("method") ?? "").trim() || null;
   const receivedAt = String(formData.get("received_at") ?? "");
   const type = String(formData.get("type") ?? "full");

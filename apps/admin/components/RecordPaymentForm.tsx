@@ -19,11 +19,11 @@ export function RecordPaymentForm({ projectId }: { projectId: string }) {
       </div>
       <div className="flex flex-col gap-1">
         <label className="text-fg-muted">Currency</label>
-        <select name="currency" defaultValue="NGN" className={inputCls}>
-          <option value="NGN">NGN</option>
-          <option value="USD">USD</option>
+        <select name="currency" defaultValue="EUR" className={inputCls}>
           <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
           <option value="GBP">GBP</option>
+          <option value="NGN">NGN</option>
         </select>
       </div>
       <div className="flex flex-col gap-1">

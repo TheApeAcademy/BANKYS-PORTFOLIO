@@ -29,7 +29,7 @@ export async function setRevenueGoal(_prev: GoalActionState, formData: FormData)
   const supabase = await createClient();
 
   const targetAmount = Number(formData.get("target_amount"));
-  const currency = String(formData.get("currency") ?? "NGN");
+  const currency = String(formData.get("currency") ?? "EUR");
   if (!targetAmount || targetAmount <= 0) return { error: "Enter a target amount greater than zero." };
 
   const monthStart = new Date();

@@ -39,7 +39,7 @@ export default async function CollaboratorDashboardPage() {
   const termToDateTotal = rows
     .filter((r) => r.status !== "EXCLUDED")
     .reduce((sum, r) => sum + Number(r.commission_amount), 0);
-  const currency = rows[0]?.commission_currency ?? "NGN";
+  const currency = rows[0]?.commission_currency ?? "EUR";
 
   return (
     <div>

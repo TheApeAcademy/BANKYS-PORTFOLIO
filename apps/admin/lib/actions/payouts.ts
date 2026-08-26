@@ -12,7 +12,7 @@ export async function markPayoutPaid(formData: FormData) {
   const collaboratorId = String(formData.get("collaborator_id") ?? "");
   const weekOf = String(formData.get("week_of") ?? "");
   const exchangeRateRaw = String(formData.get("exchange_rate") ?? "1");
-  const currency = String(formData.get("currency") ?? "NGN");
+  const currency = String(formData.get("currency") ?? "EUR");
 
   if (!collaboratorId || !weekOf) return;
 
