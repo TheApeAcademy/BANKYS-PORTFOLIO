@@ -433,14 +433,15 @@ footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppe
 }
 
 /* Theme toggle (nav) — manual only, sets the same zb_theme cookie the rest
-   of the Studio app reads (see lib/theme). */
-.theme-toggle{display:flex;align-items:center;gap:2px;margin-right:4px;border:1px solid var(--glass-b);border-radius:100px;padding:3px}
-.theme-toggle button{display:flex;align-items:center;justify-content:center;width:22px;height:22px;background:none;border:none;border-radius:50%;color:var(--text-faint);cursor:pointer;padding:0;transition:color .2s,background .2s}
-.theme-toggle button:hover{color:var(--text)}
-.theme-toggle button.active{color:var(--text);background:var(--glass-b)}
-.theme-toggle svg{width:13px;height:13px;display:block}
+   of the Studio app reads (see lib/theme). One button, not a light/dark
+   pair: the icon shows the *current* theme and tapping switches to the
+   other. Sized to stay a real touch target (30-32px) even on mobile,
+   where two packed 19px buttons were too small and too close together
+   to hit reliably. */
+.theme-toggle-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:6px;border:1px solid var(--glass-b);border-radius:50%;background:none;color:var(--text);cursor:pointer;padding:0;transition:background .2s,border-color .2s}
+.theme-toggle-btn:hover{background:var(--glass-b)}
+.theme-toggle-btn svg{width:14px;height:14px;display:block}
 @media(max-width:768px){
-  .theme-toggle{gap:1px;margin-right:0;padding:2px}
-  .theme-toggle button{width:19px;height:19px}
-  .theme-toggle svg{width:11px;height:11px}
+  .theme-toggle-btn{width:30px;height:30px;margin-right:4px}
+  .theme-toggle-btn svg{width:13px;height:13px}
 }

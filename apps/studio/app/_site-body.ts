@@ -26,16 +26,19 @@ function langToggle(lang: Lang) {
   </div>`;
 }
 
+// A single button rather than a light/dark pair: on mobile the pair packed
+// two 19px hit targets edge-to-edge in the nav, well under the ~44px touch
+// target phones need, which was almost certainly why taps weren't reliably
+// landing on it. One larger button (icon shows the *current* theme; tapping
+// switches to the other) needs half the width and gives a single, bigger,
+// unambiguous target instead.
 function themeToggle(theme: Theme) {
-  return `
-  <div class="theme-toggle" role="group" aria-label="Theme">
-    <button type="button" class="${theme === "light" ? "active" : ""}" onclick="setZbTheme('light')" aria-pressed="${theme === "light"}" aria-label="Light mode">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-    </button>
-    <button type="button" class="${theme === "dark" ? "active" : ""}" onclick="setZbTheme('dark')" aria-pressed="${theme === "dark"}" aria-label="Dark mode">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"/></svg>
-    </button>
-  </div>`;
+  const next = theme === "light" ? "dark" : "light";
+  const icon =
+    theme === "light"
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`
+      : `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"/></svg>`;
+  return `<button type="button" class="theme-toggle-btn" onclick="setZbTheme('${next}')" aria-label="Switch to ${next} mode">${icon}</button>`;
 }
 
 const SITE_BODY_EN = (lang: Lang, theme: Theme) => `
