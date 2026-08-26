@@ -13,8 +13,8 @@
   --paid: #2ea86a;
   --excluded: #b0455a;
   --font-system:
-    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+    var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
 }
 
 @theme inline {
@@ -36,7 +36,18 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-system);
+  line-height: 1.6;
+  letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .tabular-nums {

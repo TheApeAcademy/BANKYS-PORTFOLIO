@@ -11,7 +11,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Arial,sans-serif;background:linear-gradient(rgba(6,6,8,.91),rgba(6,6,8,.91)),url('zebra-swirl-soft.jpg') center/cover no-repeat fixed,var(--bg);color:var(--text);overflow-x:hidden}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;line-height:1.6;letter-spacing:.005em;text-rendering:optimizeLegibility;background:linear-gradient(rgba(6,6,8,.91),rgba(6,6,8,.91)),url('zebra-swirl-soft.jpg') center/cover no-repeat fixed,var(--bg);color:var(--text);overflow-x:hidden}
 
 /* ── STRIPE SYSTEM ── the zebra grammar: irregular, layered, purposeful ── */
 .stripe-mark{position:relative;display:inline-block;color:var(--text)}

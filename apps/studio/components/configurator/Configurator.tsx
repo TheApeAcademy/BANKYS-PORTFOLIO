@@ -58,6 +58,47 @@ function translateLineLabel(line: PricedLine, projectTypeId: string, answers: An
 
 type Phase = "type" | "steps" | "details" | "done";
 
+// Before a project exists server-side (i.e. before the details screen is
+// submitted), progress only ever lived in React state — a browser back/
+// refresh wiped it entirely. This mirrors it into localStorage so a resumed
+// tab picks up where the visitor left off; cleared once a real project is
+// saved (from then on the access_token in the URL is the resume mechanism).
+const DRAFT_KEY = "zb_configurator_draft";
+
+type Draft = {
+  phase: Phase;
+  projectType: string | null;
+  answers: Answers;
+  stepPos: number;
+  clientName: string;
+  clientContact: string;
+};
+
+function loadDraft(): Draft | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    return raw ? (JSON.parse(raw) as Draft) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveDraft(draft: Draft) {
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    // localStorage unavailable (private browsing, quota) — draft just won't persist
+  }
+}
+
+function clearDraft() {
+  try {
+    localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 export function Configurator({
   initial,
 }: {
@@ -79,12 +120,21 @@ export function Configurator({
   // meant to be a durable visitor identity.
   const [sessionId] = useState(() => crypto.randomUUID());
 
-  const [phase, setPhase] = useState<Phase>(initial ? "details" : "type");
-  const [projectType, setProjectType] = useState<string | null>(initial?.projectType ?? null);
-  const [answers, setAnswers] = useState<Answers>(initial?.answers ?? {});
-  const [stepPos, setStepPos] = useState(0);
-  const [clientName, setClientName] = useState(initial?.clientName ?? "");
-  const parsedInitialContact = useMemo(() => parseContact(initial?.clientContact ?? ""), [initial]);
+  // Read once, lazily, so a fresh (non-resumed) tab picks up a locally-saved
+  // draft on its very first render instead of flashing back to "type" first —
+  // a browser back/refresh before the final submit used to lose all progress
+  // since nothing was persisted until the project actually saved server-side.
+  const [draft] = useState<Draft | null>(() => (initial ? null : loadDraft()));
+
+  const [phase, setPhase] = useState<Phase>(initial ? "details" : (draft?.phase ?? "type"));
+  const [projectType, setProjectType] = useState<string | null>(initial?.projectType ?? draft?.projectType ?? null);
+  const [answers, setAnswers] = useState<Answers>(initial?.answers ?? draft?.answers ?? {});
+  const [stepPos, setStepPos] = useState(draft?.stepPos ?? 0);
+  const [clientName, setClientName] = useState(initial?.clientName ?? draft?.clientName ?? "");
+  const parsedInitialContact = useMemo(
+    () => parseContact(initial?.clientContact ?? draft?.clientContact ?? ""),
+    [initial, draft],
+  );
   const [contactMethod, setContactMethod] = useState<ContactMethod>(parsedInitialContact.method);
   const [email, setEmail] = useState(parsedInitialContact.email);
   const [phoneDial, setPhoneDial] = useState(parsedInitialContact.dial);
@@ -127,6 +177,20 @@ export function Configurator({
       window.history.replaceState({}, "", url.toString());
     }
   }, [initial, accessToken, projectCode]);
+
+  // Mirror in-progress state to localStorage on every change, until a real
+  // project exists server-side (from then on the URL token is the resume
+  // path, and continuing to write here would just overwrite a resumed
+  // project's draft with stale local data).
+  useEffect(() => {
+    if (initial || phase === "done") return;
+    if (phase === "type" && !projectType) return;
+    saveDraft({ phase, projectType, answers, stepPos, clientName, clientContact });
+  }, [initial, phase, projectType, answers, stepPos, clientName, clientContact]);
+
+  useEffect(() => {
+    if (phase === "done") clearDraft();
+  }, [phase]);
 
   function chooseType(id: string) {
     setProjectType(id);

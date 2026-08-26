@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
 import { getServerLang } from "@/lib/i18n/server";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Zebraish Portal",
@@ -12,7 +15,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const lang = await getServerLang();
 
   return (
-    <html lang={lang} className="h-full">
+    <html lang={lang} className={`h-full ${inter.variable}`}>
       {/* No bg/text classes here — the homepage brings its own (site.css) and would
           lose to Tailwind utility classes on body regardless of stylesheet order, since
           a class selector always beats site.css's plain `body{}` rule. Each Tailwind
