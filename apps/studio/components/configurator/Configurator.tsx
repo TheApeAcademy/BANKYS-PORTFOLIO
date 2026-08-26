@@ -3,13 +3,16 @@
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PROJECT_TYPES } from "@/lib/catalogue/catalogue";
-import { calculateProject, getVisibleSteps } from "@/lib/catalogue/engine";
-import type { Answers } from "@zebraish/lib/catalogue/types";
+import { calculateProject, getVisibleSteps, getFlow, getProjectType } from "@/lib/catalogue/engine";
+import type { Answers, PricedLine } from "@zebraish/lib/catalogue/types";
 import { saveProjectConfiguration } from "@/lib/actions/configurator";
 import { logActivityEvent } from "@/lib/actions/activity";
 import { StepRenderer } from "./StepRenderer";
 import { formatMoney } from "@zebraish/lib/format";
 import { COUNTRY_CODES } from "@/lib/countries";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { translate, type Lang } from "@/lib/i18n/dictionary";
 
 const WHATSAPP_NUMBER = "2348165320780";
 
@@ -28,6 +31,31 @@ function parseContact(contact: string): { method: ContactMethod; email: string; 
   return { method: "phone", email: "", dial: "+234", phoneNumber: contact };
 }
 
+/** Price-line labels stay English at the data layer (they're what gets stored
+ * in project_price_snapshots and shown to admin) — this only translates them
+ * for on-screen display to a Spanish-viewing client. */
+function translateLineLabel(line: PricedLine, projectTypeId: string, answers: Answers, lang: Lang): string {
+  if (lang !== "es") return line.label;
+
+  if (line.stepId === "base") {
+    const type = getProjectType(projectTypeId);
+    if (type?.labelEs) return `Base: ${type.labelEs}`;
+    return line.label;
+  }
+
+  const flow = getFlow(projectTypeId);
+  const step = flow?.steps.find((s) => s.id === line.stepId);
+  if (!step) return line.label;
+
+  if (step.type === "number") {
+    const qty = Number(answers[step.id]) || 0;
+    return `${step.questionEs ?? step.question} (${qty})`;
+  }
+
+  const option = step.options?.find((o) => o.id === line.optionId);
+  return option?.labelEs ?? line.label;
+}
+
 type Phase = "type" | "steps" | "details" | "done";
 
 export function Configurator({
@@ -43,6 +71,7 @@ export function Configurator({
   } | null;
 }) {
   const router = useRouter();
+  const { lang, t } = useLanguage();
 
   // Correlates this configurator session's funnel events (started → steps →
   // submitted → checkout initiated) before a project/access_token exists.
@@ -144,7 +173,7 @@ export function Configurator({
   async function handleSubmitDetails() {
     if (!projectType || !quote) return;
     if (!clientName.trim() || !clientContact.trim()) {
-      setError("Please enter your name and a way to reach you.");
+      setError(t("config.details.errorRequired"));
       return;
     }
     setSaving(true);
@@ -163,9 +192,7 @@ export function Configurator({
       });
     } catch (err) {
       setSaving(false);
-      setError(
-        `Couldn't reach the server to save your project (${err instanceof Error ? err.message : String(err)}). Check your connection and try again — nothing was lost.`,
-      );
+      setError(t("config.details.errorNetwork", { message: err instanceof Error ? err.message : String(err) }));
       return;
     }
     setSaving(false);
@@ -183,15 +210,20 @@ export function Configurator({
     });
 
     const link = `${window.location.origin}/track?token=${result.accessToken}`;
-    const summary = buildWhatsAppMessage(result.projectCode, projectType, answers, quote.total, link);
+    const summary = buildWhatsAppMessage(result.projectCode, projectType, quote.total, link, lang);
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(summary)}`;
     window.open(waUrl, "_blank");
   }
 
-  const projectTypeLabel = PROJECT_TYPES.find((p) => p.id === projectType)?.label ?? "";
+  const projectTypeDef = PROJECT_TYPES.find((p) => p.id === projectType);
+  const projectTypeLabel = (lang === "es" ? projectTypeDef?.labelEs : projectTypeDef?.label) ?? "";
 
   return (
     <div className="mx-auto w-full max-w-2xl">
+      <div className="mb-4 flex justify-end">
+        <LanguageToggle />
+      </div>
+
       {quote && phase !== "type" ? (
         <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-bg-raised px-4 py-3">
           <span className="text-sm text-fg-muted">{projectTypeLabel}</span>
@@ -201,8 +233,8 @@ export function Configurator({
 
       {phase === "type" ? (
         <div>
-          <h2 className="mb-1 text-xl font-semibold">What are you building?</h2>
-          <p className="mb-6 text-sm text-fg-muted">Pick one to see the questions that actually matter.</p>
+          <h2 className="mb-1 text-xl font-semibold">{t("config.type.title")}</h2>
+          <p className="mb-6 text-sm text-fg-muted">{t("config.type.subtitle")}</p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {PROJECT_TYPES.map((p) => (
               <button
@@ -211,8 +243,8 @@ export function Configurator({
                 onClick={() => chooseType(p.id)}
                 className="flex flex-col items-start gap-1 rounded-xl border border-border bg-bg-card px-5 py-4 text-left transition hover:border-accent"
               >
-                <span className="font-medium">{p.label}</span>
-                <span className="text-xs text-fg-muted">{p.helper}</span>
+                <span className="font-medium">{lang === "es" ? p.labelEs ?? p.label : p.label}</span>
+                <span className="text-xs text-fg-muted">{lang === "es" ? p.helperEs ?? p.helper : p.helper}</span>
               </button>
             ))}
           </div>
@@ -229,8 +261,14 @@ export function Configurator({
               />
             ))}
           </div>
-          <h2 className="mb-1 text-xl font-semibold">{currentStep.question}</h2>
-          {currentStep.helper ? <p className="mb-6 text-sm text-fg-muted">{currentStep.helper}</p> : null}
+          <h2 className="mb-1 text-xl font-semibold">
+            {lang === "es" ? currentStep.questionEs ?? currentStep.question : currentStep.question}
+          </h2>
+          {currentStep.helper ? (
+            <p className="mb-6 text-sm text-fg-muted">
+              {lang === "es" ? currentStep.helperEs ?? currentStep.helper : currentStep.helper}
+            </p>
+          ) : null}
           <StepRenderer
             step={currentStep}
             value={answers[currentStep.id] as string | string[] | number | undefined}
@@ -238,7 +276,7 @@ export function Configurator({
           />
           <div className="mt-8 flex items-center justify-between">
             <button type="button" onClick={back} className="text-sm text-fg-muted hover:text-fg">
-              ← Back
+              {t("config.steps.back")}
             </button>
             <button
               type="button"
@@ -246,7 +284,7 @@ export function Configurator({
               onClick={next}
               className="rounded-lg bg-accent px-5 py-2.5 font-medium text-white transition hover:bg-accent-hover disabled:opacity-40"
             >
-              {stepPos === visibleSteps.length - 1 ? "Review →" : "Next →"}
+              {stepPos === visibleSteps.length - 1 ? t("config.steps.review") : t("config.steps.next")}
             </button>
           </div>
         </div>
@@ -254,42 +292,42 @@ export function Configurator({
 
       {phase === "details" && quote ? (
         <div>
-          <h2 className="mb-1 text-xl font-semibold">Your project</h2>
-          <p className="mb-5 text-sm text-fg-muted">Here&apos;s everything you selected.</p>
+          <h2 className="mb-1 text-xl font-semibold">{t("config.details.title")}</h2>
+          <p className="mb-5 text-sm text-fg-muted">{t("config.details.subtitle")}</p>
           <div className="mb-6 flex flex-col divide-y divide-border rounded-xl border border-border bg-bg-card">
             {quote.lines.map((l) => (
               <div key={`${l.stepId}-${l.optionId}`} className="flex justify-between px-4 py-2.5 text-sm">
-                <span className="text-fg-muted">{l.label}</span>
+                <span className="text-fg-muted">{translateLineLabel(l, projectType!, answers, lang)}</span>
                 <span className="tabular-nums">{formatMoney(l.price, "EUR")}</span>
               </div>
             ))}
             {quote.complexityMultiplier !== 1 ? (
               <div className="flex justify-between px-4 py-2.5 text-sm">
-                <span className="text-fg-muted">Complexity adjustment</span>
+                <span className="text-fg-muted">{t("config.details.complexityAdjustment")}</span>
                 <span className="tabular-nums">×{quote.complexityMultiplier}</span>
               </div>
             ) : null}
             {quote.deliveryMultiplier !== 1 ? (
               <div className="flex justify-between px-4 py-2.5 text-sm">
-                <span className="text-fg-muted">Delivery speed adjustment</span>
+                <span className="text-fg-muted">{t("config.details.deliveryAdjustment")}</span>
                 <span className="tabular-nums">×{quote.deliveryMultiplier}</span>
               </div>
             ) : null}
             <div className="flex justify-between px-4 py-3 text-base font-semibold">
-              <span>Total</span>
+              <span>{t("config.details.total")}</span>
               <span className="tabular-nums text-accent">{formatMoney(quote.total, "EUR")}</span>
             </div>
           </div>
 
           {quote.requiresCustomQuote ? (
             <p className="mb-4 rounded-lg border border-pending/40 bg-pending/10 px-4 py-3 text-sm text-pending">
-              You added a note we&apos;ll need to review manually — we&apos;ll follow up with a final quote before anything&apos;s charged.
+              {t("config.details.customQuoteNote")}
             </p>
           ) : null}
 
           <div className="mb-4 flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm text-fg-muted">Your name</label>
+              <label className="text-sm text-fg-muted">{t("config.details.yourName")}</label>
               <input
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
@@ -297,7 +335,7 @@ export function Configurator({
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm text-fg-muted">How should we reach you?</label>
+              <label className="text-sm text-fg-muted">{t("config.details.howReach")}</label>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -308,7 +346,7 @@ export function Configurator({
                       : "border-border bg-bg-raised text-fg-muted hover:text-fg"
                   }`}
                 >
-                  Email
+                  {t("config.details.contactEmail")}
                 </button>
                 <button
                   type="button"
@@ -319,7 +357,7 @@ export function Configurator({
                       : "border-border bg-bg-raised text-fg-muted hover:text-fg"
                   }`}
                 >
-                  Phone
+                  {t("config.details.contactPhone")}
                 </button>
               </div>
 
@@ -360,7 +398,7 @@ export function Configurator({
 
           <div className="flex items-center justify-between">
             <button type="button" onClick={back} className="text-sm text-fg-muted hover:text-fg">
-              ← Edit
+              {t("config.details.edit")}
             </button>
             <button
               type="button"
@@ -368,7 +406,7 @@ export function Configurator({
               onClick={handleSubmitDetails}
               className="rounded-lg bg-accent px-5 py-2.5 font-medium text-white transition hover:bg-accent-hover disabled:opacity-60"
             >
-              {saving ? "Saving…" : "Continue →"}
+              {saving ? t("config.details.saving") : t("config.details.continue")}
             </button>
           </div>
         </div>
@@ -376,18 +414,15 @@ export function Configurator({
 
       {phase === "done" && quote && projectCode ? (
         <div className="text-center">
-          <h2 className="mb-1 text-xl font-semibold">You&apos;re set, {clientName.split(" ")[0]}.</h2>
-          <p className="mb-2 text-sm text-fg-muted">Your project reference:</p>
+          <h2 className="mb-1 text-xl font-semibold">{t("config.done.title", { name: clientName.split(" ")[0] })}</h2>
+          <p className="mb-2 text-sm text-fg-muted">{t("config.done.reference")}</p>
           <p className="tabular-nums mb-6 rounded-lg border border-border bg-bg-raised px-4 py-3 text-2xl font-semibold tracking-wide text-accent">
             {projectCode}
           </p>
 
           <div className="mb-6 rounded-lg border border-border bg-bg-raised p-4 text-left">
-            <p className="mb-2 text-sm font-medium">Save your tracking link</p>
-            <p className="mb-3 text-xs text-fg-muted">
-              This is the only way back into your project — use it to check progress, pay, or message us. We&apos;ve
-              also included it in the WhatsApp message below.
-            </p>
+            <p className="mb-2 text-sm font-medium">{t("config.done.saveLink.title")}</p>
+            <p className="mb-3 text-xs text-fg-muted">{t("config.done.saveLink.body")}</p>
             <div className="flex items-center gap-2">
               <input
                 readOnly
@@ -400,22 +435,19 @@ export function Configurator({
                 onClick={copyTrackLink}
                 className="shrink-0 rounded-md border border-border px-3 py-2 text-xs font-medium text-fg transition hover:bg-bg-raised"
               >
-                {linkCopied ? "Copied" : "Copy"}
+                {linkCopied ? t("config.done.copied") : t("config.done.copy")}
               </button>
             </div>
           </div>
 
-          <p className="mb-6 text-sm text-fg-muted">
-            WhatsApp should have opened with your project details and this link — send it across and we&apos;ll pick
-            up the conversation. Ready to lock it in?
-          </p>
+          <p className="mb-6 text-sm text-fg-muted">{t("config.done.whatsappNote")}</p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <button
               type="button"
               onClick={() => router.push(`/start/pay?token=${accessToken}`)}
               className="w-full rounded-lg bg-accent px-6 py-3 font-medium text-white transition hover:bg-accent-hover sm:w-auto"
             >
-              Pay now — {formatMoney(quote.total, "EUR")}
+              {t("config.done.payNow", { amount: formatMoney(quote.total, "EUR") })}
             </button>
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
@@ -423,12 +455,10 @@ export function Configurator({
               rel="noreferrer"
               className="w-full rounded-lg border border-border px-6 py-3 font-medium text-fg transition hover:bg-bg-raised sm:w-auto"
             >
-              Chat on WhatsApp →
+              {t("config.done.chatWhatsapp")}
             </a>
           </div>
-          <p className="mt-6 text-xs text-fg-muted">
-            Bookmark this page — you can come back anytime to review, edit, or pay later.
-          </p>
+          <p className="mt-6 text-xs text-fg-muted">{t("config.done.bookmark")}</p>
         </div>
       ) : null}
     </div>
@@ -438,19 +468,20 @@ export function Configurator({
 function buildWhatsAppMessage(
   projectCode: string,
   projectType: string,
-  answers: Answers,
   total: number,
   trackLink: string,
+  lang: Lang,
 ): string {
-  const label = PROJECT_TYPES.find((p) => p.id === projectType)?.label ?? projectType;
+  const type = PROJECT_TYPES.find((p) => p.id === projectType);
+  const label = (lang === "es" ? type?.labelEs : type?.label) ?? type?.label ?? projectType;
   const lines: string[] = [
-    `Hi Zebraish! I just configured a project.`,
+    translate(lang, "wa.greeting"),
     ``,
-    `*Reference:* ${projectCode}`,
-    `*Building:* ${label}`,
-    `*Total:* €${total.toFixed(2)}`,
+    `${translate(lang, "wa.reference")} ${projectCode}`,
+    `${translate(lang, "wa.building")} ${label}`,
+    `${translate(lang, "wa.total")} €${total.toFixed(2)}`,
     ``,
-    `My tracking link: ${trackLink}`,
+    `${translate(lang, "wa.trackingLink")} ${trackLink}`,
   ];
   return lines.join("\n");
 }

@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { initiatePayment } from "@/lib/actions/pay";
 import { buttonCls, inputCls } from "@/components/ui";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export function PayButton({ accessToken, label }: { accessToken: string; label: string }) {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [needsEmail, setNeedsEmail] = useState(false);
@@ -32,17 +34,17 @@ export function PayButton({ accessToken, label }: { accessToken: string; label: 
         }}
         className="flex flex-col items-center gap-2"
       >
-        <p className="text-sm text-fg-muted">Card payment needs an email for your receipt.</p>
+        <p className="text-sm text-fg-muted">{t("pay.card.needsEmail")}</p>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder={t("pay.card.emailPlaceholder")}
           className={inputCls}
         />
         <button type="submit" disabled={loading} className={buttonCls}>
-          {loading ? "Redirecting to payment…" : label}
+          {loading ? t("pay.card.redirecting") : label}
         </button>
         {error && !needsEmail ? <p className="text-sm text-excluded">{error}</p> : null}
       </form>
@@ -52,7 +54,7 @@ export function PayButton({ accessToken, label }: { accessToken: string; label: 
   return (
     <div className="flex flex-col items-center gap-2">
       <button type="button" onClick={() => handleClick()} disabled={loading} className={buttonCls}>
-        {loading ? "Redirecting to payment…" : label}
+        {loading ? t("pay.card.redirecting") : label}
       </button>
       {error ? <p className="text-sm text-excluded">{error}</p> : null}
     </div>

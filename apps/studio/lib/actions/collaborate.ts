@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { createServiceClient } from "@zebraish/lib/supabase/service";
 import { checkRateLimit } from "@zebraish/lib/rate-limit";
+import { getServerT } from "@/lib/i18n/server";
 
 export type ApplyState = { error: string | null; success: boolean };
 
@@ -16,6 +17,7 @@ export async function submitCollaboratorApplication(
   _prev: ApplyState,
   formData: FormData,
 ): Promise<ApplyState> {
+  const t = await getServerT();
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
@@ -25,20 +27,20 @@ export async function submitCollaboratorApplication(
   const files = formData.getAll("attachments").filter((f): f is File => f instanceof File && f.size > 0);
 
   if (!name || !pitch || !experience) {
-    return { error: "Name, and both questions below, are required.", success: false };
+    return { error: t("collab.error.required"), success: false };
   }
 
   if (files.length > MAX_ATTACHMENTS) {
-    return { error: `Attach up to ${MAX_ATTACHMENTS} files.`, success: false };
+    return { error: t("collab.error.tooManyFiles", { max: MAX_ATTACHMENTS }), success: false };
   }
   const oversized = files.find((f) => f.size > MAX_ATTACHMENT_BYTES);
   if (oversized) {
-    return { error: `"${oversized.name}" is too large — 10MB max per file.`, success: false };
+    return { error: t("collab.error.fileTooLarge", { name: oversized.name }), success: false };
   }
 
   const withinLimit = await checkRateLimit("studio-collab-apply", 5, 600);
   if (!withinLimit) {
-    return { error: "Too many attempts. Wait a few minutes and try again.", success: false };
+    return { error: t("collab.error.rateLimited"), success: false };
   }
 
   // Applicants are anonymous (pre-auth), so uploads go through the service-role
@@ -53,7 +55,7 @@ export async function submitCollaboratorApplication(
         .from("collaborator-applications")
         .upload(storagePath, file, { contentType: file.type || undefined });
       if (uploadError) {
-        return { error: `Could not upload "${file.name}" — try again.`, success: false };
+        return { error: t("collab.error.uploadFailed", { name: file.name }), success: false };
       }
       attachments.push({ storage_path: storagePath, file_name: file.name, file_size: file.size });
     }
@@ -71,7 +73,7 @@ export async function submitCollaboratorApplication(
   });
 
   if (error) {
-    return { error: "Something went wrong submitting your application — try again.", success: false };
+    return { error: t("collab.error.generic"), success: false };
   }
 
   return { error: null, success: true };

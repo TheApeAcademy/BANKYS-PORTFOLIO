@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@zebraish/lib/supabase/server";
+import { getServerT } from "@/lib/i18n/server";
 
 export type TrackerMessage = {
   id: string;
@@ -21,14 +22,15 @@ export type ActionState = { error: string | null };
 const ok: ActionState = { error: null };
 
 export async function sendClientMessage(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const t = await getServerT();
   const supabase = await createClient();
   const token = String(formData.get("token") ?? "");
   const body = String(formData.get("body") ?? "").trim();
 
-  if (!token || !body) return { error: "Write a message first." };
+  if (!token || !body) return { error: t("messages.error.empty") };
 
   const { error } = await supabase.rpc("send_client_message", { p_access_token: token, p_body: body });
-  if (error) return { error: "Could not send your message — check your link." };
+  if (error) return { error: t("messages.error.sendFailed") };
 
   return ok;
 }

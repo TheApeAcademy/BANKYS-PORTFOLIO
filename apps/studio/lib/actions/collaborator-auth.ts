@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { checkRateLimit } from "@zebraish/lib/rate-limit";
 import { COLLAB_COOKIE_NAME } from "@/lib/collaborator-cookie";
+import { getServerT } from "@/lib/i18n/server";
 
 export type SignInState = { error: string | null };
 
@@ -18,12 +19,13 @@ type CollaboratorRecord = {
 };
 
 export async function verifyAccessCode(_prev: SignInState, formData: FormData): Promise<SignInState> {
+  const t = await getServerT();
   const code = String(formData.get("code") ?? "").trim();
-  if (!code) return { error: "Enter your access code." };
+  if (!code) return { error: t("login.error.required") };
 
   const withinLimit = await checkRateLimit("studio-collab-code", 8, 300);
   if (!withinLimit) {
-    return { error: "Too many attempts. Wait a few minutes and try again." };
+    return { error: t("login.error.rateLimited") };
   }
 
   const supabase = await createClient();
@@ -37,7 +39,7 @@ export async function verifyAccessCode(_prev: SignInState, formData: FormData): 
       p_message: "Failed collaborator access code attempt",
       p_context: {},
     });
-    return { error: "Invalid access code." };
+    return { error: t("login.error.invalid") };
   }
 
   const cookieStore = await cookies();

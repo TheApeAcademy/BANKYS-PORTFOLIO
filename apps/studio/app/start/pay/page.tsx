@@ -4,6 +4,7 @@ import { PaymentMethodSelector } from "@/components/configurator/PaymentMethodSe
 import { getProjectByToken } from "@/lib/actions/configurator";
 import { formatMoney } from "@zebraish/lib/format";
 import { checkRateLimit } from "@zebraish/lib/rate-limit";
+import { getServerT } from "@/lib/i18n/server";
 
 export default async function PayPage({
   searchParams,
@@ -11,6 +12,7 @@ export default async function PayPage({
   searchParams: Promise<{ token?: string }>;
 }) {
   const { token } = await searchParams;
+  const t = await getServerT();
 
   // access_token is a UUID (already unguessable), but this still bounds
   // repeated token-guessing attempts against this lookup per source IP.
@@ -18,7 +20,7 @@ export default async function PayPage({
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
         <Logo />
-        <p className="mt-8 text-sm text-fg-muted">Too many attempts — wait a few minutes and try again.</p>
+        <p className="mt-8 text-sm text-fg-muted">{t("track.rateLimited")}</p>
       </div>
     );
   }
@@ -38,7 +40,7 @@ export default async function PayPage({
           {formatMoney(Number(project.quoted_price ?? 0), project.quoted_currency ?? "EUR")}
         </p>
         {alreadyPaid ? (
-          <p className="text-sm text-paid">This project has already been paid — thank you.</p>
+          <p className="text-sm text-paid">{t("pay.page.alreadyPaid")}</p>
         ) : (
           <PaymentMethodSelector accessToken={token!} />
         )}

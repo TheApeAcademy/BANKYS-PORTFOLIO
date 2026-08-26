@@ -4,6 +4,8 @@ import { getAccessCode } from "@/lib/actions/collaborator-auth";
 import { Card, PageHeader, StatCard, EmptyState } from "@/components/ui";
 import { StatusPill } from "@/components/StatusPill";
 import { formatMoney, formatDate, mondayOf } from "@zebraish/lib/format";
+import { getServerT } from "@/lib/i18n/server";
+import type { DictKey } from "@/lib/i18n/dictionary";
 
 type LedgerRow = {
   entry_id: string;
@@ -19,6 +21,7 @@ type LedgerRow = {
 export default async function CollaboratorDashboardPage() {
   const code = await getAccessCode();
   if (!code) redirect("/login");
+  const t = await getServerT();
 
   const supabase = await createClient();
   const currentWeek = mondayOf();
@@ -40,25 +43,25 @@ export default async function CollaboratorDashboardPage() {
 
   return (
     <div>
-      <PageHeader title="This week" description={`Week of ${formatDate(currentWeek)}`} />
+      <PageHeader title={t("dash.title")} description={t("dash.weekOf", { date: formatDate(currentWeek) })} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <StatCard label="This week's running total" value={formatMoney(currentWeekTotal, currency)} />
-        <StatCard label="Term-to-date total" value={formatMoney(termToDateTotal, currency)} />
+        <StatCard label={t("dash.runningTotal")} value={formatMoney(currentWeekTotal, currency)} />
+        <StatCard label={t("dash.termToDate")} value={formatMoney(termToDateTotal, currency)} />
       </div>
 
       <div className="mt-8">
-        <h2 className="mb-3 text-sm font-medium text-fg-muted">This week&apos;s transactions</h2>
+        <h2 className="mb-3 text-sm font-medium text-fg-muted">{t("dash.transactions")}</h2>
         <Card className="p-0">
           {currentWeekRows.length ? (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-fg-muted">
-                    <th className="px-5 py-3">Project ID</th>
-                    <th className="px-5 py-3">Payment</th>
-                    <th className="px-5 py-3">Commission</th>
-                    <th className="px-5 py-3">Status</th>
+                    <th className="px-5 py-3">{t("dash.col.projectId")}</th>
+                    <th className="px-5 py-3">{t("dash.col.payment")}</th>
+                    <th className="px-5 py-3">{t("dash.col.commission")}</th>
+                    <th className="px-5 py-3">{t("dash.col.status")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -68,7 +71,7 @@ export default async function CollaboratorDashboardPage() {
                       <td className="tabular-nums px-5 py-3">{formatMoney(r.payment_amount, r.payment_currency)}</td>
                       <td className="tabular-nums px-5 py-3">{formatMoney(r.commission_amount, r.commission_currency)}</td>
                       <td className="px-5 py-3">
-                        <StatusPill status={r.status} />
+                        <StatusPill status={r.status} label={t(`status.${r.status}` as DictKey)} />
                       </td>
                     </tr>
                   ))}
@@ -76,7 +79,7 @@ export default async function CollaboratorDashboardPage() {
               </table>
             </div>
           ) : (
-            <EmptyState>No transactions this week yet.</EmptyState>
+            <EmptyState>{t("dash.empty")}</EmptyState>
           )}
         </Card>
       </div>

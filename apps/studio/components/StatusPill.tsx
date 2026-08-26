@@ -1,4 +1,4 @@
-export function StatusPill({ status }: { status: string }) {
+export function StatusPill({ status, label }: { status: string; label?: string }) {
   const cls =
     status === "PAID"
       ? "pill pill-paid"
@@ -7,5 +7,5 @@ export function StatusPill({ status }: { status: string }) {
         : status === "EXCLUDED"
           ? "pill pill-excluded"
           : "pill pill-neutral";
-  return <span className={cls}>{status}</span>;
+  return <span className={cls}>{label ?? status}</span>;
 }

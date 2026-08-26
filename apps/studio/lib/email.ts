@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { formatMoney } from "@zebraish/lib/format";
+import { translate, DEFAULT_LANG } from "@/lib/i18n/dictionary";
 
 function getClient(): Resend | null {
   const key = process.env.RESEND_API_KEY;
@@ -25,15 +26,20 @@ export async function sendClientPaymentConfirmation(params: {
   const from = process.env.RESEND_FROM_EMAIL;
   if (!resend || !from) return;
 
+  // No reliable way to know the client's chosen language at webhook time (no
+  // cookie context tied to their browser), so this defaults to the site's
+  // default language rather than English.
+  const amount = formatMoney(params.amount, params.currency);
   try {
     await resend.emails.send({
       from,
       to: params.to,
-      subject: `Payment received — ${params.projectCode}`,
-      html: `<p>Hi ${params.clientName},</p><p>We've received your payment of <strong>${formatMoney(
-        params.amount,
-        params.currency,
-      )}</strong> for project <strong>${params.projectCode}</strong>. We'll be in touch shortly to get started.</p><p>— Zebraish</p>`,
+      subject: translate(DEFAULT_LANG, "email.paymentConfirmation.subject", { projectCode: params.projectCode }),
+      html: translate(DEFAULT_LANG, "email.paymentConfirmation.body", {
+        clientName: params.clientName,
+        amount,
+        projectCode: params.projectCode,
+      }),
     });
   } catch {
     // best-effort; don't let email failures affect payment recording

@@ -3,20 +3,19 @@
 import { useActionState } from "react";
 import { submitCollaboratorApplication, type ApplyState } from "@/lib/actions/collaborate";
 import { inputCls, buttonCls } from "@/components/ui";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 const initialState: ApplyState = { error: null, success: false };
 
 export function CollaborateForm() {
+  const { t } = useLanguage();
   const [state, formAction, pending] = useActionState(submitCollaboratorApplication, initialState);
 
   if (state.success) {
     return (
       <div className="rounded-lg border border-paid bg-bg-raised p-4 text-sm">
-        <p className="font-medium text-paid">Submitted — your application is under review.</p>
-        <p className="mt-2 text-fg-muted">
-          We&apos;ll go through it and follow up. If you&apos;re approved, you&apos;ll get a private access code to
-          sign in to the collaborator dashboard — no account needed.
-        </p>
+        <p className="font-medium text-paid">{t("collab.form.successTitle")}</p>
+        <p className="mt-2 text-fg-muted">{t("collab.form.successBody")}</p>
       </div>
     );
   }
@@ -26,25 +25,25 @@ export function CollaborateForm() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-sm text-fg-muted">
-            Name
+            {t("collab.form.name")}
           </label>
           <input id="name" name="name" required className={inputCls} />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-sm text-fg-muted">
-            Email
+            {t("collab.form.email")}
           </label>
           <input id="email" name="email" type="email" className={inputCls} />
         </div>
         <div className="flex flex-col gap-1.5 sm:col-span-2">
           <label htmlFor="phone" className="text-sm text-fg-muted">
-            Phone / WhatsApp
+            {t("collab.form.phone")}
           </label>
           <input id="phone" name="phone" type="tel" className={inputCls} />
         </div>
         <div className="flex flex-col gap-1.5 sm:col-span-2">
           <label htmlFor="portfolio_url" className="text-sm text-fg-muted">
-            Portfolio, LinkedIn, or website <span className="text-fg-muted/70">(optional)</span>
+            {t("collab.form.portfolio")} <span className="text-fg-muted/70">{t("collab.form.optional")}</span>
           </label>
           <input id="portfolio_url" name="portfolio_url" type="url" placeholder="https://…" className={inputCls} />
         </div>
@@ -52,22 +51,21 @@ export function CollaborateForm() {
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="about" className="text-sm text-fg-muted">
-          Tell us about yourself — your background, what you do, and why you&apos;d be a good fit to collaborate
-          with Zebraish
+          {t("collab.form.about")}
         </label>
         <textarea id="about" name="experience" required rows={6} className={inputCls} />
       </div>
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="pitch" className="text-sm text-fg-muted">
-          What kind of clients or projects would you bring us?
+          {t("collab.form.pitch")}
         </label>
         <textarea id="pitch" name="pitch" required rows={3} className={inputCls} />
       </div>
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="attachments" className="text-sm text-fg-muted">
-          Attach anything relevant — resume, portfolio, ID <span className="text-fg-muted/70">(optional, up to 5 files, 10MB each)</span>
+          {t("collab.form.attachments")} <span className="text-fg-muted/70">{t("collab.form.attachmentsHelper")}</span>
         </label>
         <input
           id="attachments"
@@ -82,7 +80,7 @@ export function CollaborateForm() {
       {state.error ? <p className="text-sm text-excluded">{state.error}</p> : null}
 
       <button type="submit" disabled={pending} className={buttonCls}>
-        {pending ? "Sending…" : "Submit application"}
+        {pending ? t("collab.form.sending") : t("collab.form.submit")}
       </button>
     </form>
   );

@@ -2,8 +2,10 @@
 
 import { useState, useRef } from "react";
 import { sendClientMessage, getProjectMessages, type TrackerMessage } from "@/lib/actions/messages";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export function MessageBox({ token, initialMessages }: { token: string; initialMessages: TrackerMessage[] }) {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState(initialMessages);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -39,12 +41,12 @@ export function MessageBox({ token, initialMessages }: { token: string; initialM
             >
               <p>{m.body}</p>
               <p className={`mt-1 text-xs ${m.sender_type === "client" ? "text-white/70" : "text-fg-muted"}`}>
-                {m.sender_type === "admin" ? "Zebraish" : m.sender_label}
+                {m.sender_type === "admin" ? t("messages.fromZebraish") : m.sender_label}
               </p>
             </div>
           ))
         ) : (
-          <p className="text-sm text-fg-muted">No messages yet — say hello.</p>
+          <p className="text-sm text-fg-muted">{t("messages.empty")}</p>
         )}
       </div>
 
@@ -52,7 +54,7 @@ export function MessageBox({ token, initialMessages }: { token: string; initialM
         <input type="hidden" name="token" value={token} />
         <input
           name="body"
-          placeholder="Message Zebraish about this project…"
+          placeholder={t("messages.placeholder")}
           required
           className="w-full rounded-lg border border-border bg-bg-raised px-3.5 py-2.5 text-sm text-fg outline-none focus:border-accent"
         />
@@ -61,7 +63,7 @@ export function MessageBox({ token, initialMessages }: { token: string; initialM
           disabled={pending}
           className="shrink-0 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-hover disabled:opacity-60"
         >
-          {pending ? "…" : "Send"}
+          {pending ? t("messages.sending") : t("messages.send")}
         </button>
       </form>
       {error ? <p className="mt-2 text-xs text-excluded">{error}</p> : null}

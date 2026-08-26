@@ -3,6 +3,9 @@ export type Answers = Record<string, string | string[] | number | boolean | unde
 export interface CatalogueOption {
   id: string;
   label: string;
+  /** Spanish label for on-screen display only — never used for stored price-line
+   * labels (those stay English so admin's price breakdowns are always English). */
+  labelEs?: string;
   /** Flat EUR add-on price. Omit (or 0) for included/free options. */
   price?: number;
   /** For "multiplier" steps (complexity, delivery speed) instead of a flat price. */
@@ -20,7 +23,9 @@ export type StepRole = "base" | "addon" | "multiplier" | "note";
 export interface CatalogueStep {
   id: string;
   question: string;
+  questionEs?: string;
   helper?: string;
+  helperEs?: string;
   type: StepType;
   role?: StepRole; // defaults to "addon"
   options?: CatalogueOption[];
@@ -40,7 +45,9 @@ export interface Flow {
 export interface ProjectTypeDef {
   id: string;
   label: string;
+  labelEs?: string;
   helper: string;
+  helperEs?: string;
   flow: string;
 }
 

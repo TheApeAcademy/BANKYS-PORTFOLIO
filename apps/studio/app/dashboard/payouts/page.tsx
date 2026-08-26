@@ -3,6 +3,7 @@ import { createClient } from "@zebraish/lib/supabase/server";
 import { getAccessCode } from "@/lib/actions/collaborator-auth";
 import { Card, PageHeader, EmptyState } from "@/components/ui";
 import { formatMoney, formatDate } from "@zebraish/lib/format";
+import { getServerT } from "@/lib/i18n/server";
 
 type PayoutRow = {
   payout_id: string;
@@ -15,6 +16,7 @@ type PayoutRow = {
 export default async function CollaboratorPayoutsPage() {
   const code = await getAccessCode();
   if (!code) redirect("/login");
+  const t = await getServerT();
 
   const supabase = await createClient();
 
@@ -25,16 +27,16 @@ export default async function CollaboratorPayoutsPage() {
 
   return (
     <div>
-      <PageHeader title="Payout history" description="Every payout marked paid, by week." />
+      <PageHeader title={t("payouts.title")} description={t("payouts.subtitle")} />
       <Card className="p-0">
         {payouts.length ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-fg-muted">
-                  <th className="px-5 py-3">Week covered</th>
-                  <th className="px-5 py-3">Date paid</th>
-                  <th className="px-5 py-3">Amount</th>
+                  <th className="px-5 py-3">{t("payouts.col.week")}</th>
+                  <th className="px-5 py-3">{t("payouts.col.datePaid")}</th>
+                  <th className="px-5 py-3">{t("payouts.col.amount")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -49,7 +51,7 @@ export default async function CollaboratorPayoutsPage() {
             </table>
           </div>
         ) : (
-          <EmptyState>No payouts yet.</EmptyState>
+          <EmptyState>{t("payouts.empty")}</EmptyState>
         )}
       </Card>
     </div>

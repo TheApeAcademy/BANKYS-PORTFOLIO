@@ -2,6 +2,7 @@
 
 import type { CatalogueStep } from "@zebraish/lib/catalogue/types";
 import { formatMoney } from "@zebraish/lib/format";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 type Value = string | string[] | number | undefined;
 
@@ -14,6 +15,9 @@ export function StepRenderer({
   value: Value;
   onChange: (value: Value) => void;
 }) {
+  const { lang } = useLanguage();
+  const optionLabel = (label: string, labelEs?: string) => (lang === "es" ? labelEs ?? label : label);
+
   if (step.type === "single") {
     const selected = typeof value === "string" ? value : undefined;
     return (
@@ -29,10 +33,10 @@ export function StepRenderer({
                 : "border-border bg-bg-raised text-fg-muted hover:border-accent/50 hover:text-fg"
             }`}
           >
-            <span className="font-medium">{o.label}</span>
+            <span className="font-medium">{optionLabel(o.label, o.labelEs)}</span>
             {o.description ? <span className="text-xs text-fg-muted">{o.description}</span> : null}
             {o.included ? (
-              <span className="text-xs text-paid">Included</span>
+              <span className="text-xs text-paid">{lang === "es" ? "Incluido" : "Included"}</span>
             ) : o.price ? (
               <span className="tabular-nums text-xs text-accent">+{formatMoney(o.price, "EUR")}</span>
             ) : null}
@@ -60,9 +64,9 @@ export function StepRenderer({
                 : "border-border bg-bg-raised text-fg-muted hover:border-accent/50 hover:text-fg"
             }`}
           >
-            <span className="font-medium">{o.label}</span>
+            <span className="font-medium">{optionLabel(o.label, o.labelEs)}</span>
             {o.included ? (
-              <span className="shrink-0 text-xs text-paid">Included</span>
+              <span className="shrink-0 text-xs text-paid">{lang === "es" ? "Incluido" : "Included"}</span>
             ) : o.price ? (
               <span className="tabular-nums shrink-0 text-xs text-accent">+{formatMoney(o.price, "EUR")}</span>
             ) : null}
@@ -92,7 +96,9 @@ export function StepRenderer({
           +
         </button>
         {step.pricePerUnit ? (
-          <span className="text-sm text-fg-muted">{formatMoney(step.pricePerUnit, "EUR")} each</span>
+          <span className="text-sm text-fg-muted">
+            {formatMoney(step.pricePerUnit, "EUR")} {lang === "es" ? "cada uno" : "each"}
+          </span>
         ) : null}
       </div>
     );
@@ -106,7 +112,7 @@ export function StepRenderer({
       onChange={(e) => onChange(e.target.value)}
       rows={4}
       className="w-full rounded-lg border border-border bg-bg-raised px-3.5 py-2.5 text-fg outline-none focus:border-accent"
-      placeholder="Type here..."
+      placeholder={lang === "es" ? "Escribe aquí..." : "Type here..."}
     />
   );
 }
