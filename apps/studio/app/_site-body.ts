@@ -57,7 +57,7 @@ ${LANG_SCRIPT}
       <span class="hero-name">WE BUILD <span class="stripe-mark hero-name-accent">WHAT'S NEXT</span></span>
       <span class="hero-type-sub">Idea &nbsp;·&nbsp; <span style="font-weight:900;color:var(--text)">Build</span> &nbsp;·&nbsp; Launch</span>
     </div>
-    <p class="hero-sub">I'm the founder behind <em>Zebraish Studio</em> — the build layer of the Zebraish ecosystem. I turn ideas into real, hand-built digital products. No templates. No agency bloat.</p>
+    <p class="hero-sub">I'm the founder behind <em>Zebraish Studio</em>, the build layer of the Zebraish ecosystem. I turn ideas into real, hand-built digital products. No templates. No agency bloat.</p>
     <div class="hero-actions">
       <a href="#start-a-project" class="btn-primary">Tell Us What You're Building →</a>
       <div class="dropdown-wrap" id="heroDropdown">
@@ -126,7 +126,7 @@ ${LANG_SCRIPT}
     <div style="overflow:hidden;margin:8px 0"><span class="stmt-bold stmt-word exotic exotic-wine" style="transition-delay:.15s">SOMETHING</span></div>
     <div style="overflow:hidden"><span class="stmt-bold stmt-outline stmt-word exotic" style="transition-delay:.3s">REAL.</span></div>
     <div class="stmt-spacer"></div>
-    <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">no two businesses are the same —</span></div>
+    <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">no two businesses are the same,</span></div>
     <div style="overflow:hidden;margin-top:8px"><span class="stmt-bold stmt-word stripe-mark" style="transition-delay:.6s">NEITHER ARE WE.</span></div>
   </div>
 </section>
@@ -136,7 +136,7 @@ ${LANG_SCRIPT}
   <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-react.mp4" type="video/mp4"></video></div>
   <div class="s-label reveal">01 · What We Build</div>
   <h2 class="s-h2 reveal">IDEAS BECOME <span class="stripe-mark">INFRASTRUCTURE</span></h2>
-  <p class="s-sub reveal">Website or full software system — Zebraish Studio figures out what your idea actually needs to become real.</p>
+  <p class="s-sub reveal">Website or full software system, Zebraish Studio figures out what your idea actually needs to become real.</p>
   <div class="skills-layout">
     <div class="radar-wrap reveal-left">
       <canvas id="skills-radar"></canvas>
@@ -246,7 +246,7 @@ ${LANG_SCRIPT}
 <section class="section" id="work">
   <div class="s-label reveal">02 · Selected Work</div>
   <h2 class="s-h2 reveal">REAL WORK. <span class="stripe-mark">REAL PROOF.</span></h2>
-  <p class="s-sub reveal">Nine live sites, nine different worlds — built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on.</p>
+  <p class="s-sub reveal">Nine live sites, nine different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on.</p>
   <div class="bento-grid">
 
     <!-- 01 PM PORTFOLIO -->
@@ -258,8 +258,8 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">01</div>
-        <div class="bento-title">PM Portfolio — Product &amp; Frontend Builder</div>
-        <p class="bento-desc">Personal product portfolio. PM thinking meets frontend execution — real products shipped to production, presented in a clean dark interface.</p>
+        <div class="bento-title">PM Portfolio: Product &amp; Frontend Builder</div>
+        <p class="bento-desc">Personal product portfolio. PM thinking meets frontend execution: real products shipped to production, presented in a clean dark interface.</p>
         <div class="bento-tags"><span class="bento-tag">Product</span><span class="bento-tag">Frontend</span><span class="bento-tag">Portfolio</span></div>
         <div class="bento-footer"><span class="bento-industry">Tech &amp; Product</span><a href="https://pm-portfolio-steel-rho.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
       </div>
@@ -274,7 +274,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">02</div>
-        <div class="bento-title">MALAAK — Modest Luxury Abayas</div>
+        <div class="bento-title">MALAAK: Modest Luxury Abayas</div>
         <p class="bento-desc">Minimal editorial fashion site. Split-hero layout, hover-reveal product grid, seamless WhatsApp order flow. Built for Snapchat-native buyers.</p>
         <div class="bento-tags"><span class="bento-tag">Fashion</span><span class="bento-tag">Editorial</span><span class="bento-tag">WhatsApp</span></div>
         <div class="bento-footer"><span class="bento-industry">Modest Fashion</span><a href="https://malaak-abaya.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
@@ -291,7 +291,7 @@ ${LANG_SCRIPT}
       <div class="bento-body">
         <div class="bento-meta">
           <div class="bento-num">03</div>
-          <div class="bento-title">Doberman — Bold Brand Experience</div>
+          <div class="bento-title">Doberman: Bold Brand Experience</div>
           <div class="bento-tags"><span class="bento-tag">Brand</span><span class="bento-tag">Dark Bold</span><span class="bento-tag">Interactive</span></div>
           <div class="bento-footer"><span class="bento-industry">Brand &amp; Identity</span><a href="https://doberman-kappa.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
         </div>
@@ -308,8 +308,8 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">04</div>
-        <div class="bento-title">Christian Prieto — Digital Creator</div>
-        <p class="bento-desc">Sleek creator portfolio built for a Barcelona-based fashion and lifestyle creator. Stats-forward layout, TikTok-native aesthetic, and a seamless brand collab flow — 9.6M likes and counting.</p>
+        <div class="bento-title">Christian Prieto: Digital Creator</div>
+        <p class="bento-desc">Sleek creator portfolio built for a Barcelona-based fashion and lifestyle creator. Stats-forward layout, TikTok-native aesthetic, and a seamless brand collab flow, with 9.6M likes and counting.</p>
         <div class="bento-tags"><span class="bento-tag">Creator</span><span class="bento-tag">Fashion</span><span class="bento-tag">TikTok</span></div>
         <div class="bento-footer"><span class="bento-industry">Creator Economy</span><a href="https://christain-theapeacademys-projects.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
       </div>
@@ -324,7 +324,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">05</div>
-        <div class="bento-title">Ape Academy — Academic Excellence</div>
+        <div class="bento-title">Ape Academy: Academic Excellence</div>
         <p class="bento-desc">Clean, bold educational platform. Strong brand identity, structured content layout, and a no-nonsense conversion flow built for serious learners.</p>
         <div class="bento-tags"><span class="bento-tag">Education</span><span class="bento-tag">Dark Theme</span><span class="bento-tag">Bold</span></div>
         <div class="bento-footer"><span class="bento-industry">Education</span><a href="https://deploy-1-p1ke.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
@@ -340,7 +340,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">06</div>
-        <div class="bento-title">AAURA — Arabian Luxury Perfumery</div>
+        <div class="bento-title">AAURA: Arabian Luxury Perfumery</div>
         <p class="bento-desc">Animated gold particle field, arabesque typography, WhatsApp ordering. Every pixel drips with money.</p>
         <div class="bento-tags"><span class="bento-tag">Luxury</span><span class="bento-tag">Canvas FX</span><span class="bento-tag">Arabic</span></div>
         <div class="bento-footer"><span class="bento-industry">Fragrance</span><a href="https://aaura-perfume.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
@@ -356,7 +356,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">07</div>
-        <div class="bento-title">NOIR ATELIER — Luxury Ready-to-Wear</div>
+        <div class="bento-title">NOIR ATELIER: Luxury Ready-to-Wear</div>
         <p class="bento-desc">Custom magnetic cursor, scrolling marquee, French-named product grid. Bold. Cold. Unforgettable.</p>
         <div class="bento-tags"><span class="bento-tag">High Fashion</span><span class="bento-tag">B&amp;W</span></div>
         <div class="bento-footer"><span class="bento-industry">Apparel</span><a href="https://noir-atelier-clothing.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
@@ -372,7 +372,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">08</div>
-        <div class="bento-title">Ember &amp; Salt — Wood-Fired Restaurant</div>
+        <div class="bento-title">Ember &amp; Salt: Wood-Fired Restaurant</div>
         <p class="bento-desc">CSS animated flame, warm ember palette, seasonal menu tabs, reservation CTA. You can almost smell the smoke.</p>
         <div class="bento-tags"><span class="bento-tag">Restaurant</span><span class="bento-tag">Animation</span></div>
         <div class="bento-footer"><span class="bento-industry">Food &amp; Drink</span><a href="https://ember-salt-restaurant.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
@@ -388,7 +388,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">09</div>
-        <div class="bento-title">Reverie — Luxury Beauty Salon</div>
+        <div class="bento-title">Reverie: Luxury Beauty Salon</div>
         <p class="bento-desc">Soft marble luxury aesthetic. Services grid, team showcase, WhatsApp booking integration.</p>
         <div class="bento-tags"><span class="bento-tag">Beauty</span><span class="bento-tag">Marble</span></div>
         <div class="bento-footer"><span class="bento-industry">Beauty</span><a href="https://reverie-salon.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
@@ -396,7 +396,7 @@ ${LANG_SCRIPT}
     </div>
 
   </div>
-  <p class="work-honesty reveal">These projects were built by the founder — some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work.</p>
+  <p class="work-honesty reveal">These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work.</p>
   <div class="projects-more reveal">
     <a href="all-work.html" class="btn-more">View All Work <span class="btn-more-arrow">→</span></a>
   </div>
@@ -407,7 +407,7 @@ ${LANG_SCRIPT}
   <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-control.mp4" type="video/mp4"></video></div>
   <div class="s-label reveal">03 · How We Work</div>
   <h2 class="s-h2 reveal">FROM IDEA<br><span class="stripe-mark thin">TO LIVE.</span></h2>
-  <p class="s-sub reveal">Four steps. No bloat, no bureaucracy — just a founder who ships.</p>
+  <p class="s-sub reveal">Four steps. No bloat, no bureaucracy, just a founder who ships.</p>
   <div class="process-timeline">
     <div class="process-line"></div>
     <div class="process-line-fill" id="processLineFill"></div>
@@ -424,7 +424,7 @@ ${LANG_SCRIPT}
 <section class="section" id="approach">
   <div class="s-label reveal">04 · The Bigger Picture</div>
   <h2 class="s-h2 reveal">STUDIO IS THE <span class="exotic exotic-emerald">FIRST STEP.</span></h2>
-  <p class="s-sub reveal">Zebraish Studio is the build layer of a larger ecosystem — one that's still being built, on purpose, in the open.</p>
+  <p class="s-sub reveal">Zebraish Studio is the build layer of a larger ecosystem, one that's still being built, on purpose, in the open.</p>
 
   <div class="approach-flow reveal">
     <div class="af-node"><div class="af-node-label">Idea</div><div class="af-node-sub">You</div></div>
@@ -442,17 +442,17 @@ ${LANG_SCRIPT}
     <div class="av-card active">
       <div class="av-tag live">Live Today</div>
       <div class="av-title">Zebraish Studio</div>
-      <p class="av-desc">The build layer. Turns ideas and businesses into real websites, software, brand and automation — what this page is.</p>
+      <p class="av-desc">The build layer. Turns ideas and businesses into real websites, software, brand and automation: what this page is.</p>
     </div>
     <div class="av-card">
       <div class="av-tag">In Development</div>
       <div class="av-title faint">The Board</div>
-      <p class="av-desc">Where businesses built with Studio can eventually launch, gather feedback, and be discovered. Not built yet — part of the roadmap.</p>
+      <p class="av-desc">Where businesses built with Studio can eventually launch, gather feedback, and be discovered. Not built yet, part of the roadmap.</p>
     </div>
     <div class="av-card">
       <div class="av-tag">In Development</div>
       <div class="av-title faint">Zebraish Fashion</div>
-      <p class="av-desc">The cultural and creative arm of Zebraish — an animal-inspired fashion universe. Also part of the roadmap, not this build.</p>
+      <p class="av-desc">The cultural and creative arm of Zebraish, an animal-inspired fashion universe. Also part of the roadmap, not this build.</p>
     </div>
   </div>
 </section>
@@ -461,11 +461,11 @@ ${LANG_SCRIPT}
 <section class="section" id="start-a-project">
   <div class="s-label reveal">05 · Start a Project</div>
   <h2 class="s-h2 reveal">TELL US <span class="stripe-mark">WHAT YOU'RE BUILDING.</span></h2>
-  <p class="s-sub reveal">Configure your project and get an instant price — no back-and-forth.</p>
+  <p class="s-sub reveal">Configure your project and get an instant price. No back-and-forth.</p>
 
   <div class="sp-card reveal-scale" style="text-align:center;padding:56px 40px">
     <p style="font-size:15px;line-height:1.7;color:var(--text-muted);max-width:460px;margin:0 auto 32px">
-      Tell us what you're building and pick exactly what you need. We calculate the price live as you go —
+      Tell us what you're building and pick exactly what you need. We calculate the price live as you go,
       no surprises, no waiting on a quote.
     </p>
     <a href="/start" class="btn-primary" style="display:inline-block">Configure Your Project →</a>
@@ -483,14 +483,14 @@ ${LANG_SCRIPT}
       <div style="flex:1;min-width:240px">
         <h3 style="font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px">New Collaborator?</h3>
         <p style="font-size:14px;line-height:1.7;color:var(--text-muted);max-width:320px;margin:0 auto 24px">
-          Apply to become an official Zebraish collaborator. Tell us a bit about yourself — we'll follow up.
+          Apply to become an official Zebraish collaborator. Tell us a bit about yourself and we'll follow up.
         </p>
         <a href="/collaborate" class="btn-primary" style="display:inline-block">Apply to Collaborate →</a>
       </div>
       <div style="flex:1;min-width:240px">
         <h3 style="font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px">Already a Collaborator?</h3>
         <p style="font-size:14px;line-height:1.7;color:var(--text-muted);max-width:320px;margin:0 auto 24px">
-          Enter your access code to check your dashboard — commissions, payouts, everything.
+          Enter your access code to check your dashboard: commissions, payouts, everything.
         </p>
         <a href="/login" class="btn-more">Enter Your Code <span class="btn-more-arrow">→</span></a>
       </div>
@@ -504,8 +504,8 @@ ${LANG_SCRIPT}
     <div class="sec-vid reveal"><video autoplay muted loop playsinline style="width:160px;height:160px;border-radius:24px"><source src="3d-integrate-weekend.mp4" type="video/mp4"></video></div>
     <div class="s-label reveal">07 · About</div>
     <h2 class="s-h2 reveal">ABOUT <span class="exotic exotic-wine">ZEBRAISH STUDIO</span></h2>
-    <p class="about-p reveal">I'm the founder behind <em>Zebraish Studio</em> — the build layer of the wider Zebraish ecosystem. Today, that means one person, hand-building real digital products for real businesses.</p>
-    <p class="about-p reveal">Most agencies are slow, overpriced, and generic. I started building because good ideas kept getting undersold online. Zebraish Studio is the opposite — <em>fast, direct, custom</em>, and built around what a business actually needs to become real.</p>
+    <p class="about-p reveal">I'm the founder behind <em>Zebraish Studio</em>, the build layer of the wider Zebraish ecosystem. Today, that means one person, hand-building real digital products for real businesses.</p>
+    <p class="about-p reveal">Most agencies are slow, overpriced, and generic. I started building because good ideas kept getting undersold online. Zebraish Studio is the opposite: <em>fast, direct, custom</em>, and built around what a business actually needs to become real.</p>
     <div class="about-big-quote reveal">
       <span class="aq-thin">the difference is simple:</span>
       "I deliver in days,<br>not months."
@@ -534,7 +534,7 @@ ${LANG_SCRIPT}
   <div class="contact-inner">
     <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="cube.mp4" type="video/mp4"></video></div>
     <h2 class="contact-h2 reveal">LET'S <span class="stripe-mark">BUILD</span><br><span class="thin">SOMETHING REAL.</span></h2>
-    <p class="contact-sub reveal">Every idea deserves infrastructure that does it justice. Start the project flow above, or message directly — no commitment, no pressure.</p>
+    <p class="contact-sub reveal">Every idea deserves infrastructure that does it justice. Start the project flow above, or message directly. No commitment, no pressure.</p>
     <div class="contact-links reveal">
       <a href="https://wa.me/2348165320780" class="contact-link" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.49"/></svg>WhatsApp</a>
       <a href="mailto:j0shbankole19@gmail.com" class="contact-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>Email</a>
@@ -587,7 +587,7 @@ ${LANG_SCRIPT}
       <span class="hero-name">NOSOTROS CONSTRUIMOS <span class="stripe-mark hero-name-accent">LO QUE SIGUE</span></span>
       <span class="hero-type-sub">Idea &nbsp;·&nbsp; <span style="font-weight:900;color:var(--text)">Construir</span> &nbsp;·&nbsp; Lanzar</span>
     </div>
-    <p class="hero-sub">Soy el fundador detrás de <em>Zebraish Studio</em> — la capa de construcción del ecosistema Zebraish. Convierto ideas en productos digitales reales, hechos a mano. Sin plantillas. Sin el peso de una agencia.</p>
+    <p class="hero-sub">Soy el fundador detrás de <em>Zebraish Studio</em>, la capa de construcción del ecosistema Zebraish. Convierto ideas en productos digitales reales, hechos a mano. Sin plantillas. Sin el peso de una agencia.</p>
     <div class="hero-actions">
       <a href="#start-a-project" class="btn-primary">Cuéntanos Qué Estás Construyendo →</a>
       <div class="dropdown-wrap" id="heroDropdown">
@@ -656,7 +656,7 @@ ${LANG_SCRIPT}
     <div style="overflow:hidden;margin:8px 0"><span class="stmt-bold stmt-word exotic exotic-wine" style="transition-delay:.15s">ALGO</span></div>
     <div style="overflow:hidden"><span class="stmt-bold stmt-outline stmt-word exotic" style="transition-delay:.3s">REAL.</span></div>
     <div class="stmt-spacer"></div>
-    <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">ningún negocio es igual a otro —</span></div>
+    <div style="overflow:hidden"><span class="stmt-thin stmt-word" style="transition-delay:.45s">ningún negocio es igual a otro,</span></div>
     <div style="overflow:hidden;margin-top:8px"><span class="stmt-bold stmt-word stripe-mark" style="transition-delay:.6s">NOSOTROS TAMPOCO.</span></div>
   </div>
 </section>
@@ -666,7 +666,7 @@ ${LANG_SCRIPT}
   <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-react.mp4" type="video/mp4"></video></div>
   <div class="s-label reveal">01 · Qué Construimos</div>
   <h2 class="s-h2 reveal">LAS IDEAS SE CONVIERTEN EN <span class="stripe-mark">INFRAESTRUCTURA</span></h2>
-  <p class="s-sub reveal">Sitio web o sistema de software completo — Zebraish Studio descubre exactamente qué necesita tu idea para hacerse realidad.</p>
+  <p class="s-sub reveal">Sitio web o sistema de software completo, Zebraish Studio descubre exactamente qué necesita tu idea para hacerse realidad.</p>
   <div class="skills-layout">
     <div class="radar-wrap reveal-left">
       <canvas id="skills-radar"></canvas>
@@ -776,7 +776,7 @@ ${LANG_SCRIPT}
 <section class="section" id="work">
   <div class="s-label reveal">02 · Trabajo Seleccionado</div>
   <h2 class="s-h2 reveal">TRABAJO REAL. <span class="stripe-mark">PRUEBA REAL.</span></h2>
-  <p class="s-sub reveal">Nueve sitios en vivo, nueve mundos distintos — construidos por el fundador antes y durante la formación de Zebraish Studio. Esta es la capacidad sobre la que se construyó el Studio.</p>
+  <p class="s-sub reveal">Nueve sitios en vivo, nueve mundos distintos, construidos por el fundador antes y durante la formación de Zebraish Studio. Esta es la capacidad sobre la que se construyó el Studio.</p>
   <div class="bento-grid">
 
     <!-- 01 PM PORTFOLIO -->
@@ -788,8 +788,8 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">01</div>
-        <div class="bento-title">PM Portfolio — Constructor de Producto y Frontend</div>
-        <p class="bento-desc">Portafolio de producto personal. Pensamiento de PM se encuentra con ejecución frontend — productos reales lanzados a producción, presentados en una interfaz oscura y limpia.</p>
+        <div class="bento-title">PM Portfolio: Constructor de Producto y Frontend</div>
+        <p class="bento-desc">Portafolio de producto personal. Pensamiento de PM se encuentra con ejecución frontend: productos reales lanzados a producción, presentados en una interfaz oscura y limpia.</p>
         <div class="bento-tags"><span class="bento-tag">Producto</span><span class="bento-tag">Frontend</span><span class="bento-tag">Portafolio</span></div>
         <div class="bento-footer"><span class="bento-industry">Tecnología y Producto</span><a href="https://pm-portfolio-steel-rho.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
       </div>
@@ -804,7 +804,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">02</div>
-        <div class="bento-title">MALAAK — Abayas de Lujo Modesto</div>
+        <div class="bento-title">MALAAK: Abayas de Lujo Modesto</div>
         <p class="bento-desc">Sitio de moda editorial minimalista. Diseño hero dividido, cuadrícula de productos con revelado al pasar el cursor, flujo de pedidos por WhatsApp sin fricciones. Construido para compradores nativos de Snapchat.</p>
         <div class="bento-tags"><span class="bento-tag">Moda</span><span class="bento-tag">Editorial</span><span class="bento-tag">WhatsApp</span></div>
         <div class="bento-footer"><span class="bento-industry">Moda Modesta</span><a href="https://malaak-abaya.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
@@ -821,7 +821,7 @@ ${LANG_SCRIPT}
       <div class="bento-body">
         <div class="bento-meta">
           <div class="bento-num">03</div>
-          <div class="bento-title">Doberman — Experiencia de Marca Audaz</div>
+          <div class="bento-title">Doberman: Experiencia de Marca Audaz</div>
           <div class="bento-tags"><span class="bento-tag">Marca</span><span class="bento-tag">Oscuro y Audaz</span><span class="bento-tag">Interactivo</span></div>
           <div class="bento-footer"><span class="bento-industry">Marca e Identidad</span><a href="https://doberman-kappa.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
         </div>
@@ -838,8 +838,8 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">04</div>
-        <div class="bento-title">Christian Prieto — Creador Digital</div>
-        <p class="bento-desc">Elegante portafolio de creador construido para un creador de moda y estilo de vida con sede en Barcelona. Diseño enfocado en estadísticas, estética nativa de TikTok, y un flujo de colaboraciones de marca sin fricciones — 9.6M de me gusta y contando.</p>
+        <div class="bento-title">Christian Prieto: Creador Digital</div>
+        <p class="bento-desc">Elegante portafolio de creador construido para un creador de moda y estilo de vida con sede en Barcelona. Diseño enfocado en estadísticas, estética nativa de TikTok, y un flujo de colaboraciones de marca sin fricciones, con 9.6M de me gusta y contando.</p>
         <div class="bento-tags"><span class="bento-tag">Creador</span><span class="bento-tag">Moda</span><span class="bento-tag">TikTok</span></div>
         <div class="bento-footer"><span class="bento-industry">Economía de Creadores</span><a href="https://christain-theapeacademys-projects.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
       </div>
@@ -854,7 +854,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">05</div>
-        <div class="bento-title">Ape Academy — Excelencia Académica</div>
+        <div class="bento-title">Ape Academy: Excelencia Académica</div>
         <p class="bento-desc">Plataforma educativa limpia y audaz. Identidad de marca sólida, diseño de contenido estructurado, y un flujo de conversión directo construido para estudiantes serios.</p>
         <div class="bento-tags"><span class="bento-tag">Educación</span><span class="bento-tag">Tema Oscuro</span><span class="bento-tag">Audaz</span></div>
         <div class="bento-footer"><span class="bento-industry">Educación</span><a href="https://deploy-1-p1ke.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
@@ -870,7 +870,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">06</div>
-        <div class="bento-title">AAURA — Perfumería de Lujo Árabe</div>
+        <div class="bento-title">AAURA: Perfumería de Lujo Árabe</div>
         <p class="bento-desc">Campo de partículas doradas animado, tipografía arabesca, pedidos por WhatsApp. Cada píxel rebosa lujo.</p>
         <div class="bento-tags"><span class="bento-tag">Lujo</span><span class="bento-tag">Efectos Canvas</span><span class="bento-tag">Árabe</span></div>
         <div class="bento-footer"><span class="bento-industry">Perfumería</span><a href="https://aaura-perfume.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
@@ -886,7 +886,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">07</div>
-        <div class="bento-title">NOIR ATELIER — Prêt-à-Porter de Lujo</div>
+        <div class="bento-title">NOIR ATELIER: Prêt-à-Porter de Lujo</div>
         <p class="bento-desc">Cursor magnético personalizado, marquesina animada, cuadrícula de productos con nombres en francés. Audaz. Frío. Inolvidable.</p>
         <div class="bento-tags"><span class="bento-tag">Alta Costura</span><span class="bento-tag">B&amp;N</span></div>
         <div class="bento-footer"><span class="bento-industry">Indumentaria</span><a href="https://noir-atelier-clothing.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
@@ -902,7 +902,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">08</div>
-        <div class="bento-title">Ember &amp; Salt — Restaurante a Leña</div>
+        <div class="bento-title">Ember &amp; Salt: Restaurante a Leña</div>
         <p class="bento-desc">Llama animada con CSS, paleta cálida de brasas, pestañas de menú de temporada, llamada a la acción para reservas. Casi puedes oler el humo.</p>
         <div class="bento-tags"><span class="bento-tag">Restaurante</span><span class="bento-tag">Animación</span></div>
         <div class="bento-footer"><span class="bento-industry">Comida y Bebida</span><a href="https://ember-salt-restaurant.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
@@ -918,7 +918,7 @@ ${LANG_SCRIPT}
       </div>
       <div class="bento-body">
         <div class="bento-num">09</div>
-        <div class="bento-title">Reverie — Salón de Belleza de Lujo</div>
+        <div class="bento-title">Reverie: Salón de Belleza de Lujo</div>
         <p class="bento-desc">Estética de lujo en mármol suave. Cuadrícula de servicios, presentación del equipo, integración de reservas por WhatsApp.</p>
         <div class="bento-tags"><span class="bento-tag">Belleza</span><span class="bento-tag">Mármol</span></div>
         <div class="bento-footer"><span class="bento-industry">Belleza</span><a href="https://reverie-salon.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
@@ -926,7 +926,7 @@ ${LANG_SCRIPT}
     </div>
 
   </div>
-  <p class="work-honesty reveal">Estos proyectos fueron construidos por el fundador — algunos antes de que Zebraish Studio existiera como nombre. Se muestran aquí como prueba honesta de capacidad, no como trabajo reclamado para clientes de Zebraish Studio.</p>
+  <p class="work-honesty reveal">Estos proyectos fueron construidos por el fundador, algunos antes de que Zebraish Studio existiera como nombre. Se muestran aquí como prueba honesta de capacidad, no como trabajo reclamado para clientes de Zebraish Studio.</p>
   <div class="projects-more reveal">
     <a href="all-work.html" class="btn-more">Ver Todo el Trabajo <span class="btn-more-arrow">→</span></a>
   </div>
@@ -937,7 +937,7 @@ ${LANG_SCRIPT}
   <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="3d-control.mp4" type="video/mp4"></video></div>
   <div class="s-label reveal">03 · Cómo Trabajamos</div>
   <h2 class="s-h2 reveal">DE LA IDEA<br><span class="stripe-mark thin">AL LANZAMIENTO.</span></h2>
-  <p class="s-sub reveal">Cuatro pasos. Sin relleno, sin burocracia — solo un fundador que entrega resultados.</p>
+  <p class="s-sub reveal">Cuatro pasos. Sin relleno, sin burocracia, solo un fundador que entrega resultados.</p>
   <div class="process-timeline">
     <div class="process-line"></div>
     <div class="process-line-fill" id="processLineFill"></div>
@@ -954,7 +954,7 @@ ${LANG_SCRIPT}
 <section class="section" id="approach">
   <div class="s-label reveal">04 · El Panorama General</div>
   <h2 class="s-h2 reveal">STUDIO ES EL <span class="exotic exotic-emerald">PRIMER PASO.</span></h2>
-  <p class="s-sub reveal">Zebraish Studio es la capa de construcción de un ecosistema más grande — uno que aún se está construyendo, a propósito, a la vista de todos.</p>
+  <p class="s-sub reveal">Zebraish Studio es la capa de construcción de un ecosistema más grande, uno que aún se está construyendo, a propósito, a la vista de todos.</p>
 
   <div class="approach-flow reveal">
     <div class="af-node"><div class="af-node-label">Idea</div><div class="af-node-sub">Tú</div></div>
@@ -972,17 +972,17 @@ ${LANG_SCRIPT}
     <div class="av-card active">
       <div class="av-tag live">En Vivo Hoy</div>
       <div class="av-title">Zebraish Studio</div>
-      <p class="av-desc">La capa de construcción. Convierte ideas y negocios en sitios web reales, software, marca y automatización — lo que es esta página.</p>
+      <p class="av-desc">La capa de construcción. Convierte ideas y negocios en sitios web reales, software, marca y automatización: lo que es esta página.</p>
     </div>
     <div class="av-card">
       <div class="av-tag">En Desarrollo</div>
       <div class="av-title faint">The Board</div>
-      <p class="av-desc">Donde los negocios construidos con Studio eventualmente podrán lanzarse, recopilar comentarios, y ser descubiertos. Aún no está construido — parte de la hoja de ruta.</p>
+      <p class="av-desc">Donde los negocios construidos con Studio eventualmente podrán lanzarse, recopilar comentarios, y ser descubiertos. Aún no está construido, parte de la hoja de ruta.</p>
     </div>
     <div class="av-card">
       <div class="av-tag">En Desarrollo</div>
       <div class="av-title faint">Zebraish Fashion</div>
-      <p class="av-desc">El brazo cultural y creativo de Zebraish — un universo de moda inspirado en animales. También parte de la hoja de ruta, no de esta construcción.</p>
+      <p class="av-desc">El brazo cultural y creativo de Zebraish, un universo de moda inspirado en animales. También parte de la hoja de ruta, no de esta construcción.</p>
     </div>
   </div>
 </section>
@@ -991,11 +991,11 @@ ${LANG_SCRIPT}
 <section class="section" id="start-a-project">
   <div class="s-label reveal">05 · Iniciar un Proyecto</div>
   <h2 class="s-h2 reveal">CUÉNTANOS <span class="stripe-mark">QUÉ ESTÁS CONSTRUYENDO.</span></h2>
-  <p class="s-sub reveal">Configura tu proyecto y obtén un precio al instante — sin idas y vueltas.</p>
+  <p class="s-sub reveal">Configura tu proyecto y obtén un precio al instante. Sin idas y vueltas.</p>
 
   <div class="sp-card reveal-scale" style="text-align:center;padding:56px 40px">
     <p style="font-size:15px;line-height:1.7;color:var(--text-muted);max-width:460px;margin:0 auto 32px">
-      Cuéntanos qué estás construyendo y elige exactamente lo que necesitas. Calculamos el precio en vivo a medida que avanzas —
+      Cuéntanos qué estás construyendo y elige exactamente lo que necesitas. Calculamos el precio en vivo a medida que avanzas,
       sin sorpresas, sin esperar un presupuesto.
     </p>
     <a href="/start" class="btn-primary" style="display:inline-block">Configura Tu Proyecto →</a>
@@ -1013,14 +1013,14 @@ ${LANG_SCRIPT}
       <div style="flex:1;min-width:240px">
         <h3 style="font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px">¿Nuevo Colaborador?</h3>
         <p style="font-size:14px;line-height:1.7;color:var(--text-muted);max-width:320px;margin:0 auto 24px">
-          Solicita convertirte en colaborador oficial de Zebraish. Cuéntanos un poco sobre ti — te contactaremos.
+          Solicita convertirte en colaborador oficial de Zebraish. Cuéntanos un poco sobre ti y te contactaremos.
         </p>
         <a href="/collaborate" class="btn-primary" style="display:inline-block">Solicitar Colaborar →</a>
       </div>
       <div style="flex:1;min-width:240px">
         <h3 style="font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px">¿Ya Eres Colaborador?</h3>
         <p style="font-size:14px;line-height:1.7;color:var(--text-muted);max-width:320px;margin:0 auto 24px">
-          Introduce tu código de acceso para ver tu panel — comisiones, pagos, todo.
+          Introduce tu código de acceso para ver tu panel: comisiones, pagos, todo.
         </p>
         <a href="/login" class="btn-more">Introduce Tu Código <span class="btn-more-arrow">→</span></a>
       </div>
@@ -1034,8 +1034,8 @@ ${LANG_SCRIPT}
     <div class="sec-vid reveal"><video autoplay muted loop playsinline style="width:160px;height:160px;border-radius:24px"><source src="3d-integrate-weekend.mp4" type="video/mp4"></video></div>
     <div class="s-label reveal">07 · Sobre Nosotros</div>
     <h2 class="s-h2 reveal">SOBRE <span class="exotic exotic-wine">ZEBRAISH STUDIO</span></h2>
-    <p class="about-p reveal">Soy el fundador detrás de <em>Zebraish Studio</em> — la capa de construcción del ecosistema más amplio de Zebraish. Hoy, eso significa una persona, construyendo a mano productos digitales reales para negocios reales.</p>
-    <p class="about-p reveal">La mayoría de las agencias son lentas, caras, y genéricas. Empecé a construir porque las buenas ideas seguían siendo subestimadas en línea. Zebraish Studio es lo opuesto — <em>rápido, directo, a medida</em>, y construido en torno a lo que un negocio realmente necesita para hacerse realidad.</p>
+    <p class="about-p reveal">Soy el fundador detrás de <em>Zebraish Studio</em>, la capa de construcción del ecosistema más amplio de Zebraish. Hoy, eso significa una persona, construyendo a mano productos digitales reales para negocios reales.</p>
+    <p class="about-p reveal">La mayoría de las agencias son lentas, caras, y genéricas. Empecé a construir porque las buenas ideas seguían siendo subestimadas en línea. Zebraish Studio es lo opuesto: <em>rápido, directo, a medida</em>, y construido en torno a lo que un negocio realmente necesita para hacerse realidad.</p>
     <div class="about-big-quote reveal">
       <span class="aq-thin">la diferencia es simple:</span>
       "Entrego en días,<br>no en meses."
@@ -1064,7 +1064,7 @@ ${LANG_SCRIPT}
   <div class="contact-inner">
     <div class="sec-vid reveal"><video autoplay muted loop playsinline><source src="cube.mp4" type="video/mp4"></video></div>
     <h2 class="contact-h2 reveal">CONSTRUYAMOS<br><span class="stripe-mark">ALGO</span> <span class="thin">REAL.</span></h2>
-    <p class="contact-sub reveal">Toda idea merece una infraestructura que le haga justicia. Inicia el flujo del proyecto arriba, o escríbenos directamente — sin compromiso, sin presión.</p>
+    <p class="contact-sub reveal">Toda idea merece una infraestructura que le haga justicia. Inicia el flujo del proyecto arriba, o escríbenos directamente. Sin compromiso, sin presión.</p>
     <div class="contact-links reveal">
       <a href="https://wa.me/2348165320780" class="contact-link" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.49"/></svg>WhatsApp</a>
       <a href="mailto:j0shbankole19@gmail.com" class="contact-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>Correo</a>

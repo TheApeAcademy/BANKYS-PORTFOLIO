@@ -4,7 +4,7 @@ import { Card } from "@/components/ui";
 import { getServerLang } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Zebraish Studio",
+  title: "Privacy Policy: Zebraish Studio",
   description: "How Zebraish Studio collects, uses, and protects your data.",
 };
 
@@ -18,8 +18,8 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
       <p>
         When you configure a project, apply to collaborate, or send us a message, we collect what you give us
         directly: name, email, phone/WhatsApp number, and project details (the pitch/brief you write, pricing
-        selections). When you pay, our payment processor (Flutterwave) handles your card/transfer details directly
-        — we never see or store your full card number or banking credentials. We keep a record of the transaction
+        selections). When you pay, our payment processor (Flutterwave) handles your card/transfer details directly.
+        We never see or store your full card number or banking credentials. We keep a record of the transaction
         (amount, currency, status, a reference ID) to confirm and track your payment.
       </p>
     ),
@@ -29,7 +29,7 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         We use your information to scope and deliver your project, process payment, send you updates about your
-        project&apos;s status, and — if you&apos;re a collaborator — to track and pay out commission. We
+        project&apos;s status, and, if you&apos;re a collaborator, to track and pay out commission. We
         don&apos;t sell your data, and we don&apos;t use it for advertising to third parties.
       </p>
     ),
@@ -50,7 +50,7 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Collaborators sign in with a private access code instead of a password-based account. That code is stored,
-        hashed where practical, and tied to your commission record — treat it like a password and don&apos;t share
+        hashed where practical, and tied to your commission record. Treat it like a password and don&apos;t share
         it. We can reissue a code if it&apos;s ever compromised.
       </p>
     ),
@@ -83,7 +83,7 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
     heading: "7. Security",
     body: (
       <p>
-        We use industry-standard measures to protect your data — encrypted connections, access controls on our
+        We use industry-standard measures to protect your data: encrypted connections, access controls on our
         admin systems, rate limiting on public forms, and audit logging of admin actions. No system is perfectly
         secure, but we take reasonable steps to protect what you share with us.
       </p>
@@ -108,7 +108,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
         Cuando configuras un proyecto, solicitas colaborar, o nos envías un mensaje, recopilamos lo que nos das
         directamente: nombre, correo electrónico, número de teléfono/WhatsApp, y detalles del proyecto (la
         propuesta/brief que escribes, las selecciones de precio). Cuando pagas, nuestro procesador de pagos
-        (Flutterwave) maneja directamente los datos de tu tarjeta/transferencia — nunca vemos ni almacenamos tu
+        (Flutterwave) maneja directamente los datos de tu tarjeta/transferencia. Nunca vemos ni almacenamos tu
         número de tarjeta completo ni tus credenciales bancarias. Guardamos un registro de la transacción (monto,
         moneda, estado, un ID de referencia) para confirmar y hacer seguimiento de tu pago.
       </p>
@@ -119,7 +119,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Usamos tu información para definir el alcance y entregar tu proyecto, procesar el pago, enviarte
-        actualizaciones sobre el estado de tu proyecto y — si eres colaborador — para hacer seguimiento y pagar tu
+        actualizaciones sobre el estado de tu proyecto y, si eres colaborador, para hacer seguimiento y pagar tu
         comisión. No vendemos tus datos, ni los usamos para publicidad a terceros.
       </p>
     ),
@@ -141,7 +141,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Los colaboradores inician sesión con un código de acceso privado en lugar de una cuenta con contraseña. Ese
-        código se almacena, cifrado cuando es posible, y está vinculado a tu registro de comisión — trátalo como
+        código se almacena, cifrado cuando es posible, y está vinculado a tu registro de comisión. Trátalo como
         una contraseña y no lo compartas. Podemos reemitir un código si alguna vez se ve comprometido.
       </p>
     ),
@@ -174,7 +174,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     heading: "7. Seguridad",
     body: (
       <p>
-        Usamos medidas estándar de la industria para proteger tus datos — conexiones cifradas, controles de acceso
+        Usamos medidas estándar de la industria para proteger tus datos: conexiones cifradas, controles de acceso
         en nuestros sistemas administrativos, limitación de intentos en los formularios públicos, y registro de
         auditoría de las acciones administrativas. Ningún sistema es perfectamente seguro, pero tomamos medidas
         razonables para proteger lo que compartes con nosotros.

@@ -61,7 +61,7 @@ export async function sendAdminPaymentNotification(params: {
     await resend.emails.send({
       from,
       to: adminEmail,
-      subject: `Payment received — ${params.projectCode}`,
+      subject: `Payment received: ${params.projectCode}`,
       html: `<p><strong>${params.clientName}</strong> just paid <strong>${formatMoney(
         params.amount,
         params.currency,
@@ -82,7 +82,7 @@ export async function sendAdminIntakeNotification(params: { projectCode: string;
     await resend.emails.send({
       from,
       to: adminEmail,
-      subject: `New project configured — ${params.projectCode}`,
+      subject: `New project configured: ${params.projectCode}`,
       html: `<p><strong>${params.clientName}</strong> just configured a new project (<strong>${params.projectCode}</strong>) and hasn't paid yet.</p>`,
     });
   } catch {

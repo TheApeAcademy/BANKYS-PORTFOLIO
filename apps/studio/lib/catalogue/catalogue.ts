@@ -56,8 +56,8 @@ const websiteKind: CatalogueStep = {
   id: "website_kind",
   question: "What kind of website is it?",
   questionEs: "¿Qué tipo de sitio web es?",
-  helper: "This doesn't change the price — it just helps us understand the project.",
-  helperEs: "Esto no cambia el precio — solo nos ayuda a entender el proyecto.",
+  helper: "This doesn't change the price, it just helps us understand the project.",
+  helperEs: "Esto no cambia el precio, solo nos ayuda a entender el proyecto.",
   type: "single",
   options: [
     ["Personal", "Personal"], ["Portfolio", "Portafolio"], ["Business", "Empresa"], ["Corporate", "Corporativo"],
@@ -129,8 +129,8 @@ const softwareTypeStep: CatalogueStep = {
   id: "software_type",
   question: "What type of software are you building?",
   questionEs: "¿Qué tipo de software vas a construir?",
-  helper: "Doesn't change the price — helps us scope it correctly.",
-  helperEs: "No cambia el precio — nos ayuda a dimensionarlo correctamente.",
+  helper: "Doesn't change the price, helps us scope it correctly.",
+  helperEs: "No cambia el precio, nos ayuda a dimensionarlo correctamente.",
   type: "single",
   options: [
     ["Business management software", "Software de gestión empresarial"], ["CRM", "CRM"], ["ERP", "ERP"],
@@ -314,8 +314,8 @@ const aiApplicationFeaturesStep: CatalogueStep = {
   id: "ai_features",
   question: "Should your AI remember and search through your own documents and knowledge?",
   questionEs: "¿Tu IA debería recordar y buscar en tus propios documentos y conocimiento?",
-  helper: "Pick everything that applies — this determines the AI infrastructure we build.",
-  helperEs: "Marca todo lo que aplique — esto determina la infraestructura de IA que construimos.",
+  helper: "Pick everything that applies. This determines the AI infrastructure we build.",
+  helperEs: "Marca todo lo que aplique. Esto determina la infraestructura de IA que construimos.",
   type: "multi",
   options: [
     { id: "ai_chatbot", label: "AI chatbot", labelEs: "Chatbot de IA", price: 120 },
@@ -533,8 +533,8 @@ const apiTypeStep: CatalogueStep = {
   id: "api_type",
   question: "What should this power?",
   questionEs: "¿Qué debería impulsar esto?",
-  helper: "No client-facing pages here — this is infrastructure.",
-  helperEs: "Sin páginas de cara al cliente aquí — esto es infraestructura.",
+  helper: "No client-facing pages here, this is infrastructure.",
+  helperEs: "Sin páginas de cara al cliente aquí, esto es infraestructura.",
   type: "text",
   optional: true,
 };

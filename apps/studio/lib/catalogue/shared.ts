@@ -8,8 +8,8 @@ export const designStep: CatalogueStep = {
   id: "design",
   question: "How should it look?",
   questionEs: "¿Cómo debería verse?",
-  helper: "A standard design system is included — pick anything beyond that.",
-  helperEs: "Incluye un sistema de diseño estándar — elige lo que quieras añadir además.",
+  helper: "A standard design system is included, pick anything beyond that.",
+  helperEs: "Incluye un sistema de diseño estándar, elige lo que quieras añadir además.",
   type: "multi",
   options: [
     { id: "custom_ui", label: "Custom UI design", labelEs: "Diseño de interfaz a medida", price: 60 },
@@ -216,9 +216,9 @@ export const complexityStep: CatalogueStep = {
   type: "single",
   role: "multiplier",
   options: [
-    { id: "standard", label: "Standard — normal functionality", labelEs: "Estándar — funcionalidad normal", multiplier: 1.0 },
-    { id: "advanced", label: "Advanced — more custom UI, logic, or integrations", labelEs: "Avanzado — más interfaz, lógica o integraciones a medida", multiplier: 1.2 },
-    { id: "complex", label: "Complex — substantial custom functionality, multiple integrations", labelEs: "Complejo — funcionalidad a medida considerable, múltiples integraciones", multiplier: 1.4 },
+    { id: "standard", label: "Standard: normal functionality", labelEs: "Estándar: funcionalidad normal", multiplier: 1.0 },
+    { id: "advanced", label: "Advanced: more custom UI, logic, or integrations", labelEs: "Avanzado: más interfaz, lógica o integraciones a medida", multiplier: 1.2 },
+    { id: "complex", label: "Complex: substantial custom functionality, multiple integrations", labelEs: "Complejo: funcionalidad a medida considerable, múltiples integraciones", multiplier: 1.4 },
   ],
 };
 
@@ -264,8 +264,8 @@ export const maintenanceStep: CatalogueStep = {
   type: "single",
   options: [
     { id: "none", label: "Just the 30-day post-launch support (included)", labelEs: "Solo los 30 días de soporte post-lanzamiento (incluido)", price: 0, included: true },
-    { id: "monthly", label: "Monthly maintenance — €30/month", labelEs: "Mantenimiento mensual — 30 €/mes", price: 30, unit: "per_month" },
-    { id: "full", label: "Full maintenance package — €90/month", labelEs: "Paquete de mantenimiento completo — 90 €/mes", price: 90, unit: "per_month" },
+    { id: "monthly", label: "Monthly maintenance: €30/month", labelEs: "Mantenimiento mensual: 30 €/mes", price: 30, unit: "per_month" },
+    { id: "full", label: "Full maintenance package: €90/month", labelEs: "Paquete de mantenimiento completo: 90 €/mes", price: 90, unit: "per_month" },
   ],
   optional: true,
 };

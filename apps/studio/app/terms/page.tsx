@@ -4,7 +4,7 @@ import { Card } from "@/components/ui";
 import { getServerLang } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — Zebraish Studio",
+  title: "Terms of Service: Zebraish Studio",
   description: "The terms that govern working with Zebraish Studio.",
 };
 
@@ -35,7 +35,7 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Every project starts with a scope and a quoted price, shared with you before any payment is requested. The
-        quote is specific to what was discussed — work outside that scope (new features, extra revisions beyond
+        quote is specific to what was discussed. Work outside that scope (new features, extra revisions beyond
         what was agreed, a materially different direction) is treated as new work and quoted separately. Timelines
         communicated to you are estimates, not fixed deadlines, unless confirmed in writing for your project.
       </p>
@@ -47,7 +47,7 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
       <p>
         Payments are processed through Flutterwave. By paying an invoice you agree to Flutterwave&apos;s own terms
         for the transaction in addition to these terms. Prices are quoted in the currency shown at checkout. Work
-        on a project begins once payment (or the agreed deposit) is confirmed as received — we don&apos;t start
+        on a project begins once payment (or the agreed deposit) is confirmed as received. We don&apos;t start
         building on the strength of a promise to pay.
       </p>
     ),
@@ -136,7 +136,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Cada proyecto comienza con un alcance y un precio presupuestado, que se te comparte antes de solicitar
-        cualquier pago. El presupuesto es específico a lo acordado — trabajo fuera de ese alcance (nuevas
+        cualquier pago. El presupuesto es específico a lo acordado. El trabajo fuera de ese alcance (nuevas
         funcionalidades, revisiones adicionales más allá de lo acordado, un cambio de dirección sustancial) se
         trata como trabajo nuevo y se presupuesta por separado. Los plazos que te comunicamos son estimaciones, no
         fechas límite fijas, salvo que se confirmen por escrito para tu proyecto.
@@ -150,7 +150,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
         Los pagos se procesan a través de Flutterwave. Al pagar una factura, aceptas los propios términos de
         Flutterwave para la transacción, además de estos términos. Los precios se presupuestan en la moneda que se
         muestra al pagar. El trabajo en un proyecto comienza una vez que el pago (o el depósito acordado) se
-        confirma como recibido — no empezamos a construir basándonos en una promesa de pago.
+        confirma como recibido. No empezamos a construir basándonos en una promesa de pago.
       </p>
     ),
   },
