@@ -54,11 +54,12 @@ export async function upsertBankTransferAccount(_prev: ActionState, formData: Fo
   const supabase = await createClient();
 
   const currency = String(formData.get("currency") ?? "").trim();
+  const provider = String(formData.get("provider") ?? "").trim();
   const beneficiaryName = String(formData.get("beneficiary_name") ?? "").trim();
   const active = formData.get("active") === "on";
 
-  if (!currency || !beneficiaryName) {
-    return { error: "Currency and beneficiary name are required." };
+  if (!currency || !provider || !beneficiaryName) {
+    return { error: "Currency, provider, and beneficiary name are required." };
   }
 
   // Free-form label/value pairs — matches[i] "detail_label"/"detail_value" from
@@ -73,6 +74,7 @@ export async function upsertBankTransferAccount(_prev: ActionState, formData: Fo
 
   const { error } = await supabase.rpc("upsert_bank_transfer_account", {
     p_currency: currency,
+    p_provider: provider,
     p_beneficiary_name: beneficiaryName,
     p_details: details,
     p_active: active,

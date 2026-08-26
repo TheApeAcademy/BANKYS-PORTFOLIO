@@ -5,12 +5,16 @@ import {
   initiateBankTransfer,
   getBankTransferInstructions,
   type BankTransferIntent,
-  type BankTransferInstructions,
+  type BankTransferAccount,
 } from "@/lib/actions/pay";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 function formatLabel(key: string) {
   return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function providerLabel(provider: string) {
+  return provider.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function Row({ label, value, emphasize }: { label: string; value: string; emphasize?: boolean }) {
@@ -27,7 +31,8 @@ export function BankTransferPanel({ accessToken, onBack }: { accessToken: string
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [intent, setIntent] = useState<BankTransferIntent | null>(null);
-  const [instructions, setInstructions] = useState<BankTransferInstructions>(null);
+  const [accounts, setAccounts] = useState<BankTransferAccount[]>([]);
+  const [selected, setSelected] = useState(0);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -41,9 +46,9 @@ export function BankTransferPanel({ accessToken, onBack }: { accessToken: string
         return;
       }
       setIntent(result.intent);
-      const instr = await getBankTransferInstructions(result.intent.currency);
+      const accts = await getBankTransferInstructions(result.intent.currency);
       if (!cancelled) {
-        setInstructions(instr);
+        setAccounts(accts);
         setLoading(false);
       }
     })();
@@ -78,7 +83,7 @@ export function BankTransferPanel({ accessToken, onBack }: { accessToken: string
     );
   }
 
-  if (!instructions) {
+  if (accounts.length === 0) {
     return (
       <div className="rounded-lg border border-pending/40 bg-pending/10 p-4 text-left text-sm text-pending">
         {t("pay.bank.notSetUp", { currency: intent.currency })}
@@ -91,11 +96,30 @@ export function BankTransferPanel({ accessToken, onBack }: { accessToken: string
     );
   }
 
+  const instructions = accounts[selected] ?? accounts[0];
   const detailFields = Object.entries(instructions.details).filter(([, v]) => Boolean(v));
 
   return (
     <div className="rounded-lg border border-border bg-bg-raised p-4 text-left text-sm">
       <p className="mb-3 font-medium">{t("pay.bank.instructionsTitle")}</p>
+      {accounts.length > 1 ? (
+        <div className="mb-3 flex gap-1.5">
+          {accounts.map((a, i) => (
+            <button
+              key={a.provider}
+              type="button"
+              onClick={() => setSelected(i)}
+              className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+                i === selected
+                  ? "border-accent bg-accent/10 text-accent"
+                  : "border-border text-fg-muted hover:text-fg"
+              }`}
+            >
+              {providerLabel(a.provider)}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <dl className="flex flex-col gap-2">
         <Row label={t("pay.bank.beneficiary")} value={instructions.beneficiaryName} />
         {detailFields.map(([key, value]) => (

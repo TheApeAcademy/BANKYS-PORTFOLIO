@@ -84,19 +84,17 @@ export async function initiateBankTransfer(accessToken: string): Promise<Initiat
   };
 }
 
-export type BankTransferInstructions = {
+export type BankTransferAccount = {
   beneficiaryName: string;
   details: Record<string, string>;
   provider: string;
-} | null;
+};
 
-export async function getBankTransferInstructions(currency: string): Promise<BankTransferInstructions> {
+export async function getBankTransferInstructions(currency: string): Promise<BankTransferAccount[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .rpc("get_bank_transfer_instructions", { p_currency: currency })
-    .maybeSingle();
+  const { data, error } = await supabase.rpc("get_bank_transfer_instructions", { p_currency: currency });
 
-  if (error || !data) return null;
-  const row = data as { beneficiary_name: string; details: Record<string, string>; provider: string };
-  return { beneficiaryName: row.beneficiary_name, details: row.details ?? {}, provider: row.provider };
+  if (error || !data) return [];
+  const rows = data as { beneficiary_name: string; details: Record<string, string>; provider: string }[];
+  return rows.map((row) => ({ beneficiaryName: row.beneficiary_name, details: row.details ?? {}, provider: row.provider }));
 }

@@ -7,11 +7,14 @@ import { inputCls, buttonCls } from "@/components/ui";
 const initialState: ActionState = { error: null };
 
 type ExistingAccount = {
+  provider: string;
   beneficiary_name: string;
   details: Record<string, string>;
   active: boolean;
   updated_at: string;
 } | null;
+
+const PROVIDER_SUGGESTIONS = ["Payoneer", "Skrill", "Wise", "Revolut"];
 
 export function BankTransferAccountForm({ currency, existing }: { currency: string; existing: ExistingAccount }) {
   const [state, formAction, pending] = useActionState(upsertBankTransferAccount, initialState);
@@ -22,16 +25,47 @@ export function BankTransferAccountForm({ currency, existing }: { currency: stri
       : [{ label: "", value: "" }],
   );
 
+  const title = existing
+    ? `${currency} · ${existing.provider.replace(/\b\w/g, (c) => c.toUpperCase())}`
+    : `${currency} · Add another provider`;
+
   return (
     <details className="rounded-lg border border-border p-4" open={Boolean(existing)}>
       <summary className="flex cursor-pointer select-none items-center justify-between text-sm font-medium">
         <span>
-          {currency} {existing?.active ? <span className="text-xs text-paid">· configured</span> : <span className="text-xs text-fg-muted">· not set up</span>}
+          {title}{" "}
+          {existing ? (
+            existing.active ? (
+              <span className="text-xs text-paid">· configured</span>
+            ) : (
+              <span className="text-xs text-fg-muted">· hidden from clients</span>
+            )
+          ) : (
+            <span className="text-xs text-fg-muted">· not set up</span>
+          )}
         </span>
       </summary>
 
       <form action={formAction} className="mt-4 flex flex-col gap-3 text-sm">
         <input type="hidden" name="currency" value={currency} />
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs text-fg-muted">Provider</label>
+          <input
+            name="provider"
+            list={`provider-suggestions-${currency}`}
+            defaultValue={existing?.provider ?? ""}
+            placeholder="e.g. Payoneer, Skrill"
+            required
+            readOnly={Boolean(existing)}
+            className={`${inputCls} ${existing ? "opacity-70" : ""}`}
+          />
+          <datalist id={`provider-suggestions-${currency}`}>
+            {PROVIDER_SUGGESTIONS.map((p) => (
+              <option key={p} value={p} />
+            ))}
+          </datalist>
+        </div>
 
         <div className="flex flex-col gap-1.5">
           <label className="text-xs text-fg-muted">Beneficiary name</label>
@@ -45,7 +79,7 @@ export function BankTransferAccountForm({ currency, existing }: { currency: stri
 
         <div className="flex flex-col gap-2">
           <label className="text-xs text-fg-muted">
-            Receiving details — exactly what Payoneer shows you (IBAN, SWIFT/BIC, account number, sort code,
+            Receiving details — exactly what the provider shows you (IBAN, SWIFT/BIC, account number, sort code,
             routing number, bank name, address — whichever apply for {currency})
           </label>
           {rows.map((row, i) => (
