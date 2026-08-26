@@ -2,16 +2,21 @@
 
 import { useState } from "react";
 import { PayButton } from "./PayButton";
-import { BankChargeButton } from "./BankChargeButton";
 import { BankTransferPanel } from "./BankTransferPanel";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import type { DictKey } from "@/lib/i18n/dictionary";
 
-type Method = "card" | "bank_charge" | "bank_transfer";
+type Method = "card" | "bank_transfer";
 
+// "bank_charge" (Flutterwave's direct Charge API "Pay With Bank") is built in
+// lib/actions/pay.ts + BankChargeButton.tsx but pulled from checkout — a live
+// test returned "Payment method currently not available," meaning the
+// account-ach-uk charge type isn't actually provisioned for this merchant
+// account even though the equivalent hosted-checkout toggle is on. Re-add
+// once the correct integration path (likely payment_options on the existing
+// Standard Checkout endpoint, not a separate charge type) is confirmed.
 const METHODS: { id: Method; icon: string; labelKey: DictKey; helperKey: DictKey }[] = [
   { id: "card", icon: "💳", labelKey: "pay.method.card", helperKey: "pay.method.cardHelper" },
-  { id: "bank_charge", icon: "🏛️", labelKey: "pay.method.bankCharge", helperKey: "pay.method.bankChargeHelper" },
   { id: "bank_transfer", icon: "🏦", labelKey: "pay.method.bankTransfer", helperKey: "pay.method.bankTransferHelper" },
 ];
 
@@ -21,9 +26,6 @@ export function PaymentMethodSelector({ accessToken }: { accessToken: string }) 
 
   if (method === "card") {
     return <PayButton accessToken={accessToken} label={`${t("pay.method.card")} →`} />;
-  }
-  if (method === "bank_charge") {
-    return <BankChargeButton accessToken={accessToken} label={`${t("pay.method.bankCharge")} →`} />;
   }
   if (method === "bank_transfer") {
     return <BankTransferPanel accessToken={accessToken} onBack={() => setMethod(null)} />;
