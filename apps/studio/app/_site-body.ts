@@ -54,6 +54,7 @@ ${LANG_SCRIPT}
     <li><a href="#process">Process</a></li>
     <li><a href="#approach">Approach</a></li>
     <li><a href="#collaborate">Collaborate</a></li>
+    <li><a href="#partner">Partner</a></li>
   </ul>
   <div class="nav-right">
     ${themeToggle(theme)}
@@ -546,6 +547,26 @@ ${LANG_SCRIPT}
   </div>
 </section>
 
+<!-- PARTNER -->
+<section class="section" id="partner">
+  <div class="s-label reveal">08 · Official Partner</div>
+  <h2 class="s-h2 reveal">BUILT WITH <span class="exotic exotic-violet">HENKOGEN.</span></h2>
+  <p class="s-sub reveal">Our official AI partner, for founders ready to go beyond the build and automate how the business runs.</p>
+
+  <div class="sp-card reveal-scale" style="padding:48px 40px">
+    <p style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px">Applied AI · High Performance</p>
+    <p style="font-size:16px;line-height:1.75;color:var(--text-muted);max-width:520px;margin:0 0 28px">
+      HenkoGen designs AI agents that automate sales funnels, customer service, and social media, then stays to
+      implement them alongside your team until they actually work. Where we build the product, HenkoGen builds the
+      intelligence that runs behind it.
+    </p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="https://henkogen.vercel.app" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block">Visit HenkoGen →</a>
+      <a href="https://henkogen.vercel.app/kaizen" target="_blank" rel="noopener" class="btn-more">Explore Kaizen Agents <span class="btn-more-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <canvas id="cta-liquid" width="900" height="500"></canvas>
@@ -586,6 +607,7 @@ ${LANG_SCRIPT}
     <li><a href="#process">Proceso</a></li>
     <li><a href="#approach">Enfoque</a></li>
     <li><a href="#collaborate">Colabora</a></li>
+    <li><a href="#partner">Socio</a></li>
   </ul>
   <div class="nav-right">
     ${themeToggle(theme)}
@@ -1074,6 +1096,26 @@ ${LANG_SCRIPT}
       <div class="afc"><div class="afc-title">Diseño con Propósito</div><p class="afc-desc">Cada fuente, color, diseño, e interacción tiene un objetivo: hacer que tu idea se vea y funcione de forma innegable.</p></div>
       <div class="afc"><div class="afc-title">Todo Te Pertenece</div><p class="afc-desc">Todo el código, todos los archivos, todos los recursos son tuyos para siempre. Sin suscripciones, sin ataduras.</p></div>
       <div class="afc"><div class="afc-title">Entrega Mundial</div><p class="afc-desc">Fundadores y negocios en Nigeria, el Golfo, el Reino Unido, Europa. Estés donde estés, entregamos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER -->
+<section class="section" id="partner">
+  <div class="s-label reveal">08 · Socio Oficial</div>
+  <h2 class="s-h2 reveal">CONSTRUIDO CON <span class="exotic exotic-violet">HENKOGEN.</span></h2>
+  <p class="s-sub reveal">Nuestro socio oficial de IA, para fundadores listos para ir más allá de la construcción y automatizar cómo opera el negocio.</p>
+
+  <div class="sp-card reveal-scale" style="padding:48px 40px">
+    <p style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px">IA Aplicada · Alto Rendimiento</p>
+    <p style="font-size:16px;line-height:1.75;color:var(--text-muted);max-width:520px;margin:0 0 28px">
+      HenkoGen diseña agentes de IA que automatizan embudos de ventas, atención al cliente y redes sociales, y se
+      queda para implementarlos junto a tu equipo hasta que funcionen de verdad. Donde nosotros construimos el
+      producto, HenkoGen construye la inteligencia que corre detrás.
+    </p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="https://henkogen.vercel.app" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block">Visitar HenkoGen →</a>
+      <a href="https://henkogen.vercel.app/kaizen" target="_blank" rel="noopener" class="btn-more">Explorar Kaizen Agents <span class="btn-more-arrow">→</span></a>
     </div>
   </div>
 </section>
