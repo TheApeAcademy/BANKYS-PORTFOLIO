@@ -18,9 +18,13 @@ type CollaboratorRecord = {
   active: boolean;
 };
 
-export async function verifyAccessCode(_prev: SignInState, formData: FormData): Promise<SignInState> {
+/**
+ * Core sign-in logic shared by the manual code-entry form and the
+ * ?code= magic link (see /login/page.tsx). Doesn't redirect itself —
+ * callers decide what to do with a successful sign-in.
+ */
+export async function signInWithCode(code: string): Promise<SignInState> {
   const t = await getServerT();
-  const code = String(formData.get("code") ?? "").trim();
   if (!code) return { error: t("login.error.required") };
 
   const withinLimit = await checkRateLimit("studio-collab-code", 8, 300);
@@ -51,6 +55,13 @@ export async function verifyAccessCode(_prev: SignInState, formData: FormData): 
     maxAge: 60 * 60 * 24 * 180,
   });
 
+  return { error: null };
+}
+
+export async function verifyAccessCode(_prev: SignInState, formData: FormData): Promise<SignInState> {
+  const code = String(formData.get("code") ?? "").trim();
+  const result = await signInWithCode(code);
+  if (result.error) return result;
   redirect("/dashboard");
 }
 

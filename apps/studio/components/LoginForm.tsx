@@ -4,10 +4,9 @@ import { useActionState } from "react";
 import { verifyAccessCode, type SignInState } from "@/lib/actions/collaborator-auth";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
-const initialState: SignInState = { error: null };
-
-export function LoginForm() {
+export function LoginForm({ initialError = null }: { initialError?: string | null }) {
   const { t } = useLanguage();
+  const initialState: SignInState = { error: initialError };
   const [state, formAction, pending] = useActionState(verifyAccessCode, initialState);
 
   return (

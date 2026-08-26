@@ -1,9 +1,5 @@
 import { Resend } from "resend";
-
-// The studio site's public origin — same fallback pattern as the Track/Pay
-// links on a project's detail page. Optional; defaults to the current
-// *.vercel.app deployment if unset.
-const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
+import { collaboratorLoginLink } from "./gmail-compose";
 
 function getClient(): Resend | null {
   const key = process.env.RESEND_API_KEY;
@@ -22,6 +18,7 @@ export async function sendCollaboratorApprovalEmail(params: { to: string; name: 
   if (!resend || !from) return;
 
   try {
+    const link = collaboratorLoginLink(params.accessCode);
     await resend.emails.send({
       from,
       to: params.to,
@@ -29,7 +26,7 @@ export async function sendCollaboratorApprovalEmail(params: { to: string; name: 
       html: `<p>Hi ${params.name},</p>
 <p>Your application to become a Zebraish collaborator has been approved.</p>
 <p>Your private access code is: <strong>${params.accessCode}</strong></p>
-<p>Sign in at <a href="${STUDIO_URL}/login">${STUDIO_URL}/login</a> with this code to reach your collaborator dashboard. No account or password needed, just this code, so keep it somewhere safe.</p>`,
+<p>Sign in directly with this link: <a href="${link}">${link}</a> (or enter the code above at /login). No account or password needed, just this code/link, so keep it somewhere safe.</p>`,
     });
   } catch {
     // best-effort; don't let email failures affect the approval itself

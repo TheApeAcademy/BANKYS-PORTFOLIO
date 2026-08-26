@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { updateCollaborator } from "@/lib/actions/collaborators";
 import { Card, PageHeader, StatCard, EmptyState, inputCls, buttonCls } from "@/components/ui";
+import { SendCollaboratorEmailButton } from "@/components/SendCollaboratorEmailButton";
 import { StatusPill } from "@/components/StatusPill";
 import { formatMoney, formatDate, firstOf } from "@zebraish/lib/format";
 
@@ -101,6 +102,13 @@ export default async function CollaboratorDetailPage({
               What they enter to sign in to the collaborator dashboard — no account, no email
               confirmation. Share it with them directly if they&apos;ve lost it.
             </p>
+            <div className="mt-3">
+              <SendCollaboratorEmailButton
+                name={collaborator.name}
+                email={collaborator.email}
+                accessCode={collaborator.access_code}
+              />
+            </div>
           </Card>
 
           <Card>

@@ -24,6 +24,10 @@
   --gold:#a8720f;
   --invert-bg:#141414;--invert-fg:#fff;
 }
+/* The mark is a black/white zebra graphic — opaque white pixels read fine
+   on the dark bg but vanish on light. Inverting swaps which strokes are
+   light vs dark rather than flattening detail (verified visually). */
+:root[data-theme="light"] .logo-mark,:root[data-theme="light"] .footer-logo img{filter:invert(1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;line-height:1.6;letter-spacing:.005em;text-rendering:optimizeLegibility;background:linear-gradient(rgba(var(--bg-rgb),.91),rgba(var(--bg-rgb),.91)),url('zebra-swirl-soft.jpg') center/cover no-repeat fixed,var(--bg);color:var(--text);overflow-x:hidden}

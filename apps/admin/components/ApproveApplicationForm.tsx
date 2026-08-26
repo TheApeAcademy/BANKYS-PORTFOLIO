@@ -2,16 +2,13 @@
 
 import { useState, type FormEvent } from "react";
 import { approveApplication, type ApproveApplicationState } from "@/lib/actions/collaborators";
+import { inputCls, buttonCls } from "@/components/ui";
+import { buildGmailComposeUrl, collaboratorLoginLink } from "@/lib/gmail-compose";
 
 const initialState: ApproveApplicationState = { error: null, success: null };
-import { inputCls, buttonCls } from "@/components/ui";
 
-// Same fallback pattern as apps/admin/lib/email.ts. NEXT_PUBLIC_ vars are
-// inlined into the client bundle at build time, so this works here too.
-const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
-
-function buildGmailComposeUrl(to: string, name: string, accessCode: string): string {
-  const subject = "You're approved as a Zebraish collaborator";
+function buildApprovalEmailUrl(to: string, name: string, accessCode: string): string {
+  const link = collaboratorLoginLink(accessCode);
   const body = [
     `Hi ${name},`,
     "",
@@ -19,10 +16,12 @@ function buildGmailComposeUrl(to: string, name: string, accessCode: string): str
     "",
     `Your private access code is: ${accessCode}`,
     "",
-    `Sign in at ${STUDIO_URL}/login with this code to reach your collaborator dashboard. No account or password needed, just this code, so keep it somewhere safe.`,
+    `Sign in directly with this link: ${link}`,
+    `(or go to /login and enter the code above)`,
+    "",
+    "No account or password needed, just this code/link, so keep it somewhere safe.",
   ].join("\n");
-  const params = new URLSearchParams({ view: "cm", fs: "1", to, su: subject, body });
-  return `https://mail.google.com/mail/?${params.toString()}`;
+  return buildGmailComposeUrl(to, "You're approved as a Zebraish collaborator", body);
 }
 
 export function ApproveApplicationForm({ applicationId }: { applicationId: string }) {
@@ -50,10 +49,7 @@ export function ApproveApplicationForm({ applicationId }: { applicationId: strin
     // effect) so browsers don't treat it as an unrequested popup — same
     // reasoning as the WhatsApp compose link in the studio configurator.
     if (result.success.email) {
-      window.open(
-        buildGmailComposeUrl(result.success.email, result.success.name, result.success.accessCode),
-        "_blank",
-      );
+      window.open(buildApprovalEmailUrl(result.success.email, result.success.name, result.success.accessCode), "_blank");
     }
     setApproved({ accessCode: result.success.accessCode, email: result.success.email });
   }
