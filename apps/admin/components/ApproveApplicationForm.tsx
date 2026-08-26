@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { approveApplication, type ApproveApplicationState } from "@/lib/actions/collaborators";
 import { inputCls, buttonCls } from "@/components/ui";
-import { buildGmailComposeUrl, collaboratorLoginLink } from "@/lib/gmail-compose";
+import { buildGmailComposeUrl, collaboratorLoginLink, openGmailCompose } from "@/lib/gmail-compose";
 
 const initialState: ApproveApplicationState = { error: null, success: null };
 
@@ -49,7 +49,7 @@ export function ApproveApplicationForm({ applicationId }: { applicationId: strin
     // effect) so browsers don't treat it as an unrequested popup — same
     // reasoning as the WhatsApp compose link in the studio configurator.
     if (result.success.email) {
-      window.open(buildApprovalEmailUrl(result.success.email, result.success.name, result.success.accessCode), "_blank");
+      openGmailCompose(buildApprovalEmailUrl(result.success.email, result.success.name, result.success.accessCode));
     }
     setApproved({ accessCode: result.success.accessCode, email: result.success.email });
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { buttonCls } from "@/components/ui";
-import { buildCollaboratorAccessEmailUrl } from "@/lib/gmail-compose";
+import { buildCollaboratorAccessEmailUrl, openGmailCompose } from "@/lib/gmail-compose";
 
 export function SendCollaboratorEmailButton({
   name,
@@ -19,7 +19,7 @@ export function SendCollaboratorEmailButton({
   return (
     <button
       type="button"
-      onClick={() => window.open(buildCollaboratorAccessEmailUrl({ to: email, name, accessCode }), "_blank")}
+      onClick={() => openGmailCompose(buildCollaboratorAccessEmailUrl({ to: email, name, accessCode }))}
       className={buttonCls}
     >
       Send access email
