@@ -62,12 +62,20 @@ const en = {
   "pay.method.cardHelper": "Pay securely with your card",
   "pay.method.bankTransfer": "Bank Transfer",
   "pay.method.bankTransferHelper": "Transfer directly using your bank's app",
+  "pay.method.bankCharge": "Pay with Bank",
+  "pay.method.bankChargeHelper": "Authorize instantly from your own bank (Spain/EU/UK)",
   "pay.method.changeMethod": "← Choose a different method",
 
   // Card checkout
   "pay.card.needsEmail": "Card payment needs an email for your receipt.",
   "pay.card.emailPlaceholder": "you@example.com",
   "pay.card.redirecting": "Redirecting to payment…",
+
+  // Pay with Bank (Flutterwave, automated)
+  "pay.bankCharge.needsContact": "We need both an email and a phone number to verify your bank payment.",
+  "pay.bankCharge.emailPlaceholder": "you@example.com",
+  "pay.bankCharge.phonePlaceholder": "Phone number",
+  "pay.bankCharge.redirecting": "Redirecting to your bank…",
 
   // Bank transfer panel
   "pay.bank.settingUp": "Setting up your transfer…",
@@ -255,12 +263,20 @@ const es: Record<keyof typeof en, string> = {
   "pay.method.cardHelper": "Paga de forma segura con tu tarjeta",
   "pay.method.bankTransfer": "Transferencia bancaria",
   "pay.method.bankTransferHelper": "Transfiere directamente desde la app de tu banco",
+  "pay.method.bankCharge": "Pagar con el banco",
+  "pay.method.bankChargeHelper": "Autoriza al instante desde tu propio banco (España/UE/Reino Unido)",
   "pay.method.changeMethod": "← Elegir otro método",
 
   // Card checkout
   "pay.card.needsEmail": "El pago con tarjeta necesita un correo electrónico para tu recibo.",
   "pay.card.emailPlaceholder": "tucorreo@ejemplo.com",
   "pay.card.redirecting": "Redirigiendo al pago…",
+
+  // Pay with Bank (Flutterwave, automated)
+  "pay.bankCharge.needsContact": "Necesitamos un correo electrónico y un número de teléfono para verificar tu pago bancario.",
+  "pay.bankCharge.emailPlaceholder": "tucorreo@ejemplo.com",
+  "pay.bankCharge.phonePlaceholder": "Número de teléfono",
+  "pay.bankCharge.redirecting": "Redirigiendo a tu banco…",
 
   // Bank transfer panel
   "pay.bank.settingUp": "Preparando tu transferencia…",
