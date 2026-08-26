@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { requireAdmin, getActorLabel } from "@zebraish/lib/auth";
+import { sendCollaboratorApprovalEmail } from "@/lib/email";
 
 export type CreateCollaboratorState = {
   error: string | null;
@@ -95,6 +96,14 @@ export async function approveApplication(formData: FormData) {
       collaborator_id: (collaborator as { id: string }).id,
     })
     .eq("id", id);
+
+  if (application.email) {
+    await sendCollaboratorApprovalEmail({
+      to: application.email,
+      name: application.name,
+      accessCode: (collaborator as { access_code: string }).access_code,
+    });
+  }
 
   revalidatePath("/collaborators");
 }
