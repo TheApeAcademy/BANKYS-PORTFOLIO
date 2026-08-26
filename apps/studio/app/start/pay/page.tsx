@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { PaymentMethodSelector } from "@/components/configurator/PaymentMethodSelector";
 import { getProjectByToken } from "@/lib/actions/configurator";
 import { formatMoney } from "@zebraish/lib/format";
@@ -22,7 +23,10 @@ export default async function PayPage({
       <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
         <div className="flex w-full max-w-md items-center justify-between">
           <Logo />
-          <LanguageToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageToggle />
+          </div>
         </div>
         <p className="mt-8 text-sm text-fg-muted">{t("track.rateLimited")}</p>
       </div>

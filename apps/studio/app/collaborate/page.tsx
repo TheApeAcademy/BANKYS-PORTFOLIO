@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Logo } from "@/components/Logo";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { CollaborateForm } from "@/components/CollaborateForm";
 import { getServerT } from "@/lib/i18n/server";
 
@@ -17,7 +18,10 @@ export default async function CollaboratePage() {
     <div className="flex min-h-screen flex-col items-center px-6 py-16 bg-bg text-fg">
       <div className="flex w-full max-w-lg items-center justify-between">
         <Logo />
-        <LanguageToggle />
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <LanguageToggle />
+        </div>
       </div>
 
       <div className="mt-8 w-full max-w-lg rounded-2xl border border-border bg-bg-card p-8">

@@ -1,5 +1,6 @@
 import { Logo } from "@/components/Logo";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Configurator } from "@/components/configurator/Configurator";
 import { getProjectByToken } from "@/lib/actions/configurator";
 import type { Answers } from "@zebraish/lib/catalogue/types";
@@ -20,7 +21,10 @@ export default async function StartPage({
       <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
         <div className="flex w-full max-w-md items-center justify-between">
           <Logo />
-          <LanguageToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageToggle />
+          </div>
         </div>
         <div className="mt-8 w-full max-w-md rounded-2xl border border-border bg-bg-card p-8">
           <h1 className="mb-2 text-lg font-semibold">{resumed.project_code}</h1>

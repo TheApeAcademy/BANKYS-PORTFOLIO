@@ -17,6 +17,20 @@
     Helvetica, Arial, sans-serif;
 }
 
+/* Manual toggle only (no prefers-color-scheme fallback) — matches the
+   homepage's zb_theme cookie so the choice carries across the whole site. */
+:root[data-theme="light"] {
+  --bg: #faf9f7;
+  --bg-raised: #f1f0ec;
+  --bg-card: #ffffff;
+  --border: #e0ded8;
+  --fg: #17171a;
+  --fg-muted: #6b6a70;
+  --pending: #96721f;
+  --paid: #1f7a4d;
+  --excluded: #96293b;
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-raised: var(--bg-raised);

@@ -8,10 +8,12 @@
 // cookie the rest of the Studio app reads (see lib/i18n) and reloads so the server-rendered
 // page (this one included) picks the new language on next paint.
 import type { Lang } from "@/lib/i18n/dictionary";
+import type { Theme } from "@/lib/theme/theme";
 
 const LANG_SCRIPT = `
 <script>
 function setZbLang(l){document.cookie="zb_lang="+l+"; path=/; max-age="+(60*60*24*365)+"; SameSite=Lax"; location.reload();}
+function setZbTheme(t){document.cookie="zb_theme="+t+"; path=/; max-age="+(60*60*24*365)+"; SameSite=Lax"; location.reload();}
 </script>
 `;
 
@@ -24,7 +26,19 @@ function langToggle(lang: Lang) {
   </div>`;
 }
 
-const SITE_BODY_EN = (lang: Lang) => `
+function themeToggle(theme: Theme) {
+  return `
+  <div class="theme-toggle" role="group" aria-label="Theme">
+    <button type="button" class="${theme === "light" ? "active" : ""}" onclick="setZbTheme('light')" aria-pressed="${theme === "light"}" aria-label="Light mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <button type="button" class="${theme === "dark" ? "active" : ""}" onclick="setZbTheme('dark')" aria-pressed="${theme === "dark"}" aria-label="Dark mode">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"/></svg>
+    </button>
+  </div>`;
+}
+
+const SITE_BODY_EN = (lang: Lang, theme: Theme) => `
 <div id="scroll-bar"></div>
 ${LANG_SCRIPT}
 
@@ -39,6 +53,7 @@ ${LANG_SCRIPT}
     <li><a href="#collaborate">Collaborate</a></li>
   </ul>
   <div class="nav-right">
+    ${themeToggle(theme)}
     ${langToggle(lang)}
     <a href="#start-a-project" class="nav-cta">Start a Project</a>
   </div>
@@ -554,7 +569,7 @@ ${LANG_SCRIPT}
 </footer>
 `;
 
-const SITE_BODY_ES = (lang: Lang) => `
+const SITE_BODY_ES = (lang: Lang, theme: Theme) => `
 <div id="scroll-bar"></div>
 ${LANG_SCRIPT}
 
@@ -569,6 +584,7 @@ ${LANG_SCRIPT}
     <li><a href="#collaborate">Colabora</a></li>
   </ul>
   <div class="nav-right">
+    ${themeToggle(theme)}
     ${langToggle(lang)}
     <a href="#start-a-project" class="nav-cta">Iniciar un Proyecto</a>
   </div>
@@ -1084,6 +1100,6 @@ ${LANG_SCRIPT}
 </footer>
 `;
 
-export function getSiteBodyHtml(lang: Lang): string {
-  return lang === "es" ? SITE_BODY_ES(lang) : SITE_BODY_EN(lang);
+export function getSiteBodyHtml(lang: Lang, theme: Theme): string {
+  return lang === "es" ? SITE_BODY_ES(lang, theme) : SITE_BODY_EN(lang, theme);
 }

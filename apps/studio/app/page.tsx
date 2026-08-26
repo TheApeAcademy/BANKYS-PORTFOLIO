@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { getSiteBodyHtml } from "./_site-body";
 import { getServerLang } from "@/lib/i18n/server";
+import { getServerTheme } from "@/lib/theme/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getServerLang();
@@ -20,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const lang = await getServerLang();
+  const theme = await getServerTheme();
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,7 +31,7 @@ export default async function Home() {
         rel="stylesheet"
       />
       <link rel="stylesheet" href="/site.css" />
-      <div dangerouslySetInnerHTML={{ __html: getSiteBodyHtml(lang) }} />
+      <div dangerouslySetInnerHTML={{ __html: getSiteBodyHtml(lang, theme) }} />
       <Script src="/site.js" strategy="afterInteractive" />
     </>
   );

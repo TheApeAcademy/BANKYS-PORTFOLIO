@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Logo } from "@/components/Logo";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card } from "@/components/ui";
 import { getServerLang } from "@/lib/i18n/server";
 
@@ -226,7 +227,10 @@ export default async function TermsPage() {
     <div className="flex min-h-screen flex-col items-center px-6 py-16 bg-bg text-fg">
       <div className="flex w-full max-w-2xl items-center justify-between">
         <Logo />
-        <LanguageToggle />
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <LanguageToggle />
+        </div>
       </div>
 
       <div className="mt-8 w-full max-w-2xl">

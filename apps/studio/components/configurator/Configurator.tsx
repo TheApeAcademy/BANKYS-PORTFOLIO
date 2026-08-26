@@ -13,6 +13,7 @@ import { formatMoney } from "@zebraish/lib/format";
 import { COUNTRY_CODES } from "@/lib/countries";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { translate, type Lang } from "@/lib/i18n/dictionary";
 
 const WHATSAPP_NUMBER = "2348165320780";
@@ -290,7 +291,8 @@ export function Configurator({
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-end gap-2">
+        <ThemeToggle />
         <LanguageToggle />
       </div>
 
