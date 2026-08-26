@@ -60,13 +60,26 @@ export async function createCollaborator(
   return { error: null, success: { accessCode: (collaborator as { access_code: string }).access_code } };
 }
 
-export async function approveApplication(formData: FormData) {
+export type ApproveApplicationState = { error: string | null; success: boolean };
+
+export async function approveApplication(
+  _prev: ApproveApplicationState,
+  formData: FormData,
+): Promise<ApproveApplicationState> {
   await requireAdmin();
   const actor = await getActorLabel();
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");
-  if (!id) return;
+  const termStart = String(formData.get("term_start") ?? "");
+  const termEndRaw = String(formData.get("term_end") ?? "").trim();
+  const commissionRateRaw = String(formData.get("commission_rate") ?? "10");
+  const bankName = String(formData.get("bank_name") ?? "").trim();
+  const accountName = String(formData.get("account_name") ?? "").trim();
+  const accountNumber = String(formData.get("account_number") ?? "").trim();
+
+  if (!id) return { error: "Missing application id.", success: false };
+  if (!termStart) return { error: "Term start date is required.", success: false };
 
   const { data: application } = await supabase
     .from("collaborator_applications")
@@ -74,18 +87,27 @@ export async function approveApplication(formData: FormData) {
     .eq("id", id)
     .eq("status", "pending")
     .single();
-  if (!application) return;
+  if (!application) return { error: "This application is no longer pending.", success: false };
+
+  const commissionRate = Number(commissionRateRaw) / 100;
+  const bankDetails = {
+    bank_name: bankName || null,
+    account_name: accountName || null,
+    account_number: accountNumber || null,
+  };
 
   const { data: collaborator, error: insertError } = await supabase.rpc("create_collaborator_record", {
     p_name: application.name,
     p_email: application.email,
-    p_term_start: new Date().toISOString().slice(0, 10),
-    p_commission_rate: 0.1,
+    p_term_start: termStart,
+    p_commission_rate: commissionRate,
     p_actor: actor,
-    p_term_end: null,
-    p_bank_details: {},
+    p_term_end: termEndRaw || null,
+    p_bank_details: bankDetails,
   });
-  if (insertError || !collaborator) return;
+  if (insertError || !collaborator) {
+    return { error: insertError?.message ?? "Could not create collaborator.", success: false };
+  }
 
   await supabase
     .from("collaborator_applications")
@@ -106,6 +128,7 @@ export async function approveApplication(formData: FormData) {
   }
 
   revalidatePath("/collaborators");
+  return { error: null, success: true };
 }
 
 export async function getApplicationAttachmentUrl(storagePath: string): Promise<string | null> {

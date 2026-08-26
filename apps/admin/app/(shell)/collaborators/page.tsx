@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { createClient } from "@zebraish/lib/supabase/server";
-import { PageHeader, Card, EmptyState, buttonCls, buttonGhostCls } from "@/components/ui";
+import { PageHeader, Card, EmptyState, buttonGhostCls } from "@/components/ui";
 import { CreateCollaboratorForm } from "@/components/CreateCollaboratorForm";
 import { ApplicationAttachments } from "@/components/ApplicationAttachments";
-import { approveApplication, rejectApplication } from "@/lib/actions/collaborators";
+import { ApproveApplicationForm } from "@/components/ApproveApplicationForm";
+import { rejectApplication } from "@/lib/actions/collaborators";
 import { formatMoney, formatDate } from "@zebraish/lib/format";
 
 export default async function AdminCollaboratorsPage() {
@@ -64,13 +65,8 @@ export default async function AdminCollaboratorsPage() {
                   <span className="text-fg">Would bring:</span> {a.pitch}
                 </p>
                 <ApplicationAttachments attachments={a.attachments ?? []} />
-                <div className="mt-4 flex gap-2">
-                  <form action={approveApplication}>
-                    <input type="hidden" name="id" value={a.id} />
-                    <button type="submit" className={buttonCls}>
-                      Approve
-                    </button>
-                  </form>
+                <div className="mt-4 flex flex-wrap items-start gap-2">
+                  <ApproveApplicationForm applicationId={a.id} />
                   <form action={rejectApplication}>
                     <input type="hidden" name="id" value={a.id} />
                     <button type="submit" className={buttonGhostCls}>
