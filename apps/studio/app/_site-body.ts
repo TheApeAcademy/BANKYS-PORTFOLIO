@@ -565,6 +565,7 @@ ${LANG_SCRIPT}
   <div class="footer-logo"><img src="zebraish-mark.png" alt="Zebraish">ZEBRAISH STUDIO</div>
   <p>Part of the Zebraish Ecosystem</p>
   <p>Based in Nigeria · Available Worldwide</p>
+  <a href="/collaborate" class="footer-collab">Become a Collaborator →</a>
   <div class="footer-legal"><a href="/terms">Terms of Service</a><a href="/privacy">Privacy Policy</a></div>
 </footer>
 `;
@@ -1096,6 +1097,7 @@ ${LANG_SCRIPT}
   <div class="footer-logo"><img src="zebraish-mark.png" alt="Zebraish">ZEBRAISH STUDIO</div>
   <p>Parte del Ecosistema Zebraish</p>
   <p>Con sede en Nigeria · Disponible en Todo el Mundo</p>
+  <a href="/collaborate" class="footer-collab">Conviértete en Colaborador →</a>
   <div class="footer-legal"><a href="/terms">Términos de Servicio</a><a href="/privacy">Política de Privacidad</a></div>
 </footer>
 `;

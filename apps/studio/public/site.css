@@ -345,6 +345,8 @@ footer{padding:44px 48px;border-top:1px solid var(--glass-b);display:flex;justif
 .footer-logo{display:flex;align-items:center;gap:12px;font-size:26px;font-weight:900;letter-spacing:.04em;color:var(--text)}
 .footer-logo img{height:44px;width:auto;display:block}
 footer p{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
+.footer-collab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text);text-decoration:none;border-bottom:1px solid var(--glass-b);padding-bottom:2px;transition:opacity .2s,border-color .2s}
+.footer-collab:hover{opacity:.65;border-color:var(--text)}
 .footer-legal{display:flex;gap:20px}
 .footer-legal a{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);text-decoration:none;transition:color .2s}
 .footer-legal a:hover{color:var(--text)}
