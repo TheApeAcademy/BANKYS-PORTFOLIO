@@ -72,9 +72,7 @@ const en = {
   "pay.card.redirecting": "Redirecting to payment…",
 
   // Pay with Bank (Flutterwave, automated)
-  "pay.bankCharge.needsContact": "We need both an email and a phone number to verify your bank payment.",
-  "pay.bankCharge.emailPlaceholder": "you@example.com",
-  "pay.bankCharge.phonePlaceholder": "Phone number",
+  "pay.bankCharge.needsEmail": "Bank payment needs an email for your receipt.",
   "pay.bankCharge.redirecting": "Redirecting to your bank…",
 
   // Bank transfer panel
@@ -273,9 +271,7 @@ const es: Record<keyof typeof en, string> = {
   "pay.card.redirecting": "Redirigiendo al pago…",
 
   // Pay with Bank (Flutterwave, automated)
-  "pay.bankCharge.needsContact": "Necesitamos un correo electrónico y un número de teléfono para verificar tu pago bancario.",
-  "pay.bankCharge.emailPlaceholder": "tucorreo@ejemplo.com",
-  "pay.bankCharge.phonePlaceholder": "Número de teléfono",
+  "pay.bankCharge.needsEmail": "El pago con banco necesita un correo electrónico para tu recibo.",
   "pay.bankCharge.redirecting": "Redirigiendo a tu banco…",
 
   // Bank transfer panel

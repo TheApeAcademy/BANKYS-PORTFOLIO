@@ -3,7 +3,7 @@
 import { createClient } from "@zebraish/lib/supabase/server";
 import { getProjectByToken } from "./configurator";
 import { logActivityEvent } from "./activity";
-import { buildTxRef, initiateFlutterwavePayment, initiateBankAccountCharge } from "@/lib/flutterwave";
+import { buildTxRef, initiateFlutterwavePayment } from "@/lib/flutterwave";
 import { headers } from "next/headers";
 
 async function checkoutOrigin(): Promise<string> {
@@ -17,7 +17,20 @@ export type InitiatePaymentResult =
   | { ok: true; link: string }
   | { ok: false; error: string; needsEmail?: boolean };
 
-export async function initiatePayment(accessToken: string, email?: string): Promise<InitiatePaymentResult> {
+/**
+ * "card" is Flutterwave's Standard Checkout restricted to card entry. "bank"
+ * restricts the same hosted page to its bank-transfer/direct-bank-debit
+ * methods (Flutterwave decides what's actually available for the project's
+ * currency/region there) — this replaced a direct call to Flutterwave's
+ * separate Charge API, which returned "payment method currently not
+ * available" because that API needs its own account-level enablement beyond
+ * the Standard Checkout toggle in the merchant dashboard.
+ */
+export async function initiatePayment(
+  accessToken: string,
+  email?: string,
+  method: "card" | "bank" = "card",
+): Promise<InitiatePaymentResult> {
   const project = await getProjectByToken(accessToken);
   if (!project) return { ok: false, error: "Project not found." };
   if (!project.quoted_price) return { ok: false, error: "This project doesn't have a price yet." };
@@ -25,12 +38,12 @@ export async function initiatePayment(accessToken: string, email?: string): Prom
     return { ok: false, error: "This project has already been paid or is no longer awaiting payment." };
   }
 
-  // Flutterwave's card checkout requires a customer email — no exceptions —
-  // but the configurator lets a client give a phone number instead. Fall
-  // back to whatever email the payment screen collected for this case.
+  // Flutterwave's checkout requires a customer email — no exceptions — but
+  // the configurator lets a client give a phone number instead. Fall back to
+  // whatever email the payment screen collected for this case.
   const customerEmail = project.client_contact?.includes("@") ? project.client_contact : email?.trim();
   if (!customerEmail || !customerEmail.includes("@")) {
-    return { ok: false, error: "An email is required to pay by card.", needsEmail: true };
+    return { ok: false, error: "An email is required to pay.", needsEmail: true };
   }
 
   const origin = await checkoutOrigin();
@@ -44,70 +57,18 @@ export async function initiatePayment(accessToken: string, email?: string): Prom
       customerEmail,
       customerName: project.client_name,
       projectCode: project.project_code,
-      // Card-only — "Bank Transfer" on this site is the separate Payoneer
-      // manual rail below, not Flutterwave's own bank-transfer methods.
-      paymentOptions: "card",
+      // "banktransfer" is Flutterwave's own automated bank-authorization
+      // method, distinct from the manual Payoneer-based "Bank Transfer" rail
+      // below.
+      paymentOptions: method === "bank" ? "banktransfer" : "card",
     });
     await logActivityEvent("checkout_initiated", {
       projectId: project.id,
-      metadata: { quoted_price: project.quoted_price, currency: project.quoted_currency, method: "card" },
+      metadata: { quoted_price: project.quoted_price, currency: project.quoted_currency, method },
     });
     return { ok: true, link };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Could not start payment." };
-  }
-}
-
-export type InitiateBankPaymentResult =
-  | { ok: true; link: string }
-  | { ok: false; error: string; needsEmail?: boolean; needsPhone?: boolean };
-
-/**
- * "Pay with Bank" (Flutterwave's automated EU/UK bank-authorization method,
- * distinct from the manual Bank Transfer rail below). Requires both an
- * email and a phone number regardless of which one the configurator
- * already collected as the client's contact.
- */
-export async function initiateBankPayment(
-  accessToken: string,
-  overrides?: { email?: string; phone?: string },
-): Promise<InitiateBankPaymentResult> {
-  const project = await getProjectByToken(accessToken);
-  if (!project) return { ok: false, error: "Project not found." };
-  if (!project.quoted_price) return { ok: false, error: "This project doesn't have a price yet." };
-  if (!["draft", "awaiting_payment"].includes(project.status)) {
-    return { ok: false, error: "This project has already been paid or is no longer awaiting payment." };
-  }
-
-  const contactIsEmail = Boolean(project.client_contact?.includes("@"));
-  const customerEmail = (contactIsEmail ? project.client_contact : overrides?.email?.trim()) || "";
-  const customerPhone = (!contactIsEmail ? project.client_contact : overrides?.phone?.trim()) || "";
-  const needsEmail = !customerEmail.includes("@");
-  const needsPhone = customerPhone.trim().length < 6;
-
-  if (needsEmail || needsPhone) {
-    return { ok: false, error: "An email and phone number are required to pay by bank.", needsEmail, needsPhone };
-  }
-
-  const origin = await checkoutOrigin();
-
-  try {
-    const link = await initiateBankAccountCharge({
-      txRef: buildTxRef(accessToken),
-      amount: Number(project.quoted_price),
-      currency: project.quoted_currency ?? "EUR",
-      redirectUrl: `${origin}/start/pay/callback`,
-      customerEmail,
-      customerPhone,
-      customerName: project.client_name,
-    });
-    await logActivityEvent("checkout_initiated", {
-      projectId: project.id,
-      metadata: { quoted_price: project.quoted_price, currency: project.quoted_currency, method: "bank_charge" },
-    });
-    return { ok: true, link };
-  } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : "Could not start bank payment." };
   }
 }
 

@@ -49,47 +49,6 @@ export async function initiateFlutterwavePayment(params: {
   return data.data.link as string;
 }
 
-/**
- * "Pay With Bank" (UK & EU) — a different Flutterwave product from Standard
- * Checkout: the client authorizes payment directly from their own bank
- * (redirect to their bank, not a Flutterwave-hosted card page), covering
- * Spain/EU/UK in EUR or GBP. Uses the Charge API (POST /charges?type=...)
- * rather than /payments, and requires both an email and a phone number.
- * Sourced from Flutterwave's own Node SDK docs, not their (network-blocked
- * from this environment) developer site — worth a real test transaction
- * once live.
- */
-export async function initiateBankAccountCharge(params: {
-  txRef: string;
-  amount: number;
-  currency: string;
-  redirectUrl: string;
-  customerEmail: string;
-  customerPhone: string;
-  customerName: string;
-}): Promise<string> {
-  const res = await fetch(`${FLW_BASE}/charges?type=account-ach-uk`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${secretKey()}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      tx_ref: params.txRef,
-      amount: params.amount,
-      currency: params.currency,
-      email: params.customerEmail,
-      phone_number: params.customerPhone,
-      fullname: params.customerName,
-      redirect_url: params.redirectUrl,
-      is_token_io: 1,
-    }),
-  });
-  const data = await res.json();
-  const redirect: string | undefined = data?.data?.meta?.authorization?.redirect ?? data?.meta?.authorization?.redirect;
-  if (!res.ok || data.status !== "success" || !redirect) {
-    throw new Error(data.message || "Could not start bank payment with Flutterwave.");
-  }
-  return redirect;
-}
-
 export type FlutterwaveTransaction = {
   status: string;
   data?: {

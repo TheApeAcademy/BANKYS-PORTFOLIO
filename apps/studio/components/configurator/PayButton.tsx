@@ -5,7 +5,15 @@ import { initiatePayment } from "@/lib/actions/pay";
 import { buttonCls, inputCls } from "@/components/ui";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
-export function PayButton({ accessToken, label }: { accessToken: string; label: string }) {
+export function PayButton({
+  accessToken,
+  label,
+  method = "card",
+}: {
+  accessToken: string;
+  label: string;
+  method?: "card" | "bank";
+}) {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +23,7 @@ export function PayButton({ accessToken, label }: { accessToken: string; label: 
   async function handleClick(overrideEmail?: string) {
     setLoading(true);
     setError(null);
-    const result = await initiatePayment(accessToken, overrideEmail);
+    const result = await initiatePayment(accessToken, overrideEmail, method);
     if (!result.ok) {
       setError(result.error);
       setNeedsEmail(Boolean(result.needsEmail));
@@ -34,7 +42,7 @@ export function PayButton({ accessToken, label }: { accessToken: string; label: 
         }}
         className="flex flex-col items-center gap-2"
       >
-        <p className="text-sm text-fg-muted">{t("pay.card.needsEmail")}</p>
+        <p className="text-sm text-fg-muted">{t(method === "bank" ? "pay.bankCharge.needsEmail" : "pay.card.needsEmail")}</p>
         <input
           type="email"
           required
@@ -44,7 +52,7 @@ export function PayButton({ accessToken, label }: { accessToken: string; label: 
           className={inputCls}
         />
         <button type="submit" disabled={loading} className={buttonCls}>
-          {loading ? t("pay.card.redirecting") : label}
+          {loading ? t(method === "bank" ? "pay.bankCharge.redirecting" : "pay.card.redirecting") : label}
         </button>
         {error && !needsEmail ? <p className="text-sm text-excluded">{error}</p> : null}
       </form>
@@ -54,7 +62,7 @@ export function PayButton({ accessToken, label }: { accessToken: string; label: 
   return (
     <div className="flex flex-col items-center gap-2">
       <button type="button" onClick={() => handleClick()} disabled={loading} className={buttonCls}>
-        {loading ? t("pay.card.redirecting") : label}
+        {loading ? t(method === "bank" ? "pay.bankCharge.redirecting" : "pay.card.redirecting") : label}
       </button>
       {error ? <p className="text-sm text-excluded">{error}</p> : null}
     </div>
