@@ -8,14 +8,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const lang = await getServerLang();
   return lang === "es"
     ? {
-        title: "ZEBRAISH STUDIO — Capa de Construcción del Ecosistema Zebraish",
+        title: "ZEBRAISH STUDIO | Capa de Construcción del Ecosistema Zebraish",
         description:
-          "Zebraish Studio ayuda a fundadores y negocios a convertir ideas en productos digitales reales, hechos a mano — sitios web, software, marca, automatización. La capa de construcción del ecosistema Zebraish.",
+          "Zebraish Studio ayuda a fundadores y negocios a convertir ideas en productos digitales reales, hechos a mano: sitios web, software, marca, automatización. La capa de construcción del ecosistema Zebraish.",
       }
     : {
-        title: "ZEBRAISH STUDIO — Build Layer of the Zebraish Ecosystem",
+        title: "ZEBRAISH STUDIO | Build Layer of the Zebraish Ecosystem",
         description:
-          "Zebraish Studio helps founders and businesses turn ideas into real, hand-built digital products — websites, software, brand, automation. The build layer of the Zebraish ecosystem.",
+          "Zebraish Studio helps founders and businesses turn ideas into real, hand-built digital products: websites, software, brand, automation. The build layer of the Zebraish ecosystem.",
       };
 }
 
