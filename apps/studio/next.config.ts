@@ -23,9 +23,10 @@ const SUPABASE_URL = "https://rxyqoaucuwdgpbzgfjqp.supabase.co";
 const csp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
+  // The homepage and /all-work.html load Fraunces + Inter from Google Fonts.
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: https:",
-  "font-src 'self' data:",
+  "font-src 'self' data: https://fonts.gstatic.com",
   `connect-src 'self' ${SUPABASE_URL} https://api.flutterwave.com`,
   "frame-ancestors 'self'",
   "base-uri 'self'",

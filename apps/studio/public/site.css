@@ -204,12 +204,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .bento-card:nth-child(6){grid-column:span 4}
 .bento-card:nth-child(7){grid-column:span 6}
 .bento-card:nth-child(8){grid-column:span 6}
+.bento-card:nth-child(9),.bento-card:nth-child(10){grid-column:span 6}
 
 .bento-thumb{position:relative;overflow:hidden}
 .bento-card:nth-child(1) .bento-thumb,.bento-card:nth-child(2) .bento-thumb{height:300px}
 .bento-card:nth-child(3) .bento-thumb{height:360px}
 .bento-card:nth-child(4) .bento-thumb,.bento-card:nth-child(5) .bento-thumb,.bento-card:nth-child(6) .bento-thumb{height:200px}
-.bento-card:nth-child(7) .bento-thumb,.bento-card:nth-child(8) .bento-thumb{height:240px}
+.bento-card:nth-child(7) .bento-thumb,.bento-card:nth-child(8) .bento-thumb,.bento-card:nth-child(9) .bento-thumb,.bento-card:nth-child(10) .bento-thumb{height:240px}
 
 .bento-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease,filter .4s ease;filter:brightness(.82)}
 .bento-card:hover .bento-thumb img{transform:scale(1.06);filter:brightness(.96)}

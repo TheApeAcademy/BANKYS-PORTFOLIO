@@ -265,7 +265,7 @@ ${LANG_SCRIPT}
 <section class="section" id="work">
   <div class="s-label reveal">02 · Selected Work</div>
   <h2 class="s-h2 reveal">REAL WORK. <span class="stripe-mark">REAL PROOF.</span></h2>
-  <p class="s-sub reveal">Nine live sites, nine different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on.</p>
+  <p class="s-sub reveal">Ten live sites, ten different worlds, built before and during the formation of Zebraish Studio. This is the capability the Studio is built on.</p>
   <div class="bento-grid">
 
     <!-- 01 PM PORTFOLIO -->
@@ -414,8 +414,24 @@ ${LANG_SCRIPT}
       </div>
     </div>
 
+    <!-- 10 MFM CHILDREN'S MINISTRY (client build) -->
+    <div class="bento-card reveal-scale">
+      <div class="bento-thumb">
+        <img src="mfm-childrens-ministry.jpg" alt="MFM Children's Ministry" loading="lazy">
+        <div class="bento-brand"><span class="bno-name">MFM CHILDREN'S MINISTRY</span><span class="bno-tag">Church Learning Platform</span></div>
+        <div class="bento-overlay"><a href="https://cct-rho.vercel.app/" class="bento-live" target="_blank">Live Preview →</a></div>
+      </div>
+      <div class="bento-body">
+        <div class="bento-num">10</div>
+        <div class="bento-title">MFM Children's Ministry: Church Learning Platform</div>
+        <p class="bento-desc">Client build for MFM Wuye's children's ministry. Four separate portals for children, teachers, parents and admins, Duolingo-style Bible lessons with streaks, badges and leaderboards, a live Bible quiz, an AI Bible companion, and safeguarding enforced in the database.</p>
+        <div class="bento-tags"><span class="bento-tag">Client Build</span><span class="bento-tag">Education</span><span class="bento-tag">PWA</span></div>
+        <div class="bento-footer"><span class="bento-industry">Church &amp; Education</span><a href="https://cct-rho.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Live Site</a></div>
+      </div>
+    </div>
+
   </div>
-  <p class="work-honesty reveal">These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work.</p>
+  <p class="work-honesty reveal">MFM Children's Ministry is a client build. The other projects were built by the founder, some before Zebraish Studio existed as a name, and are shown here as honest proof of capability, not as claimed Zebraish Studio client work.</p>
   <div class="projects-more reveal">
     <a href="all-work.html" class="btn-more">View All Work <span class="btn-more-arrow">→</span></a>
   </div>
@@ -818,7 +834,7 @@ ${LANG_SCRIPT}
 <section class="section" id="work">
   <div class="s-label reveal">02 · Trabajo Seleccionado</div>
   <h2 class="s-h2 reveal">TRABAJO REAL. <span class="stripe-mark">PRUEBA REAL.</span></h2>
-  <p class="s-sub reveal">Nueve sitios en vivo, nueve mundos distintos, construidos por el fundador antes y durante la formación de Zebraish Studio. Esta es la capacidad sobre la que se construyó el Studio.</p>
+  <p class="s-sub reveal">Diez sitios en vivo, diez mundos distintos, construidos antes y durante la formación de Zebraish Studio. Esta es la capacidad sobre la que se construyó el Studio.</p>
   <div class="bento-grid">
 
     <!-- 01 PM PORTFOLIO -->
@@ -967,8 +983,24 @@ ${LANG_SCRIPT}
       </div>
     </div>
 
+    <!-- 10 MFM CHILDREN'S MINISTRY (client build) -->
+    <div class="bento-card reveal-scale">
+      <div class="bento-thumb">
+        <img src="mfm-childrens-ministry.jpg" alt="MFM Children's Ministry" loading="lazy">
+        <div class="bento-brand"><span class="bno-name">MFM CHILDREN'S MINISTRY</span><span class="bno-tag">Plataforma de Aprendizaje para la Iglesia</span></div>
+        <div class="bento-overlay"><a href="https://cct-rho.vercel.app/" class="bento-live" target="_blank">Vista en Vivo →</a></div>
+      </div>
+      <div class="bento-body">
+        <div class="bento-num">10</div>
+        <div class="bento-title">MFM Children's Ministry: Plataforma de Aprendizaje para la Iglesia</div>
+        <p class="bento-desc">Proyecto para el ministerio infantil de MFM Wuye. Cuatro portales separados para niños, maestros, padres y administradores, lecciones bíblicas estilo Duolingo con rachas, insignias y clasificaciones, un quiz bíblico en vivo, un compañero bíblico con IA y protección infantil aplicada en la base de datos.</p>
+        <div class="bento-tags"><span class="bento-tag">Proyecto de Cliente</span><span class="bento-tag">Educación</span><span class="bento-tag">PWA</span></div>
+        <div class="bento-footer"><span class="bento-industry">Iglesia y Educación</span><a href="https://cct-rho.vercel.app/" class="live-badge" target="_blank"><div class="live-dot"></div>Sitio en Vivo</a></div>
+      </div>
+    </div>
+
   </div>
-  <p class="work-honesty reveal">Estos proyectos fueron construidos por el fundador, algunos antes de que Zebraish Studio existiera como nombre. Se muestran aquí como prueba honesta de capacidad, no como trabajo reclamado para clientes de Zebraish Studio.</p>
+  <p class="work-honesty reveal">MFM Children's Ministry es un proyecto de cliente. Los demás proyectos fueron construidos por el fundador, algunos antes de que Zebraish Studio existiera como nombre, y se muestran aquí como prueba honesta de capacidad, no como trabajo reclamado para clientes de Zebraish Studio.</p>
   <div class="projects-more reveal">
     <a href="all-work.html" class="btn-more">Ver Todo el Trabajo <span class="btn-more-arrow">→</span></a>
   </div>

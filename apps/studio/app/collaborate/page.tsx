@@ -7,7 +7,7 @@ import { CollaborateForm } from "@/components/CollaborateForm";
 import { getServerT } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
-  title: "Become a Collaborator — Zebraish Studio",
+  title: "Become a Collaborator | Zebraish Studio",
   description: "Apply to become an official Zebraish Studio collaborator and earn commission on projects you bring in.",
 };
 
