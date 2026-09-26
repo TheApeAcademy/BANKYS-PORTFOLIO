@@ -14,14 +14,15 @@ if (typeof window !== "undefined") {
 
   // ---------- 1. WET HIDE ----------
   const VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
-  const FS = `precision highp float;uniform vec2 uR;uniform float uT,uS,uV;uniform vec2 uM;uniform vec4 uRip[6];uniform vec3 uInk,uBg;
+  const FS = `#extension GL_OES_standard_derivatives : enable
+precision highp float;uniform vec2 uR;uniform float uT,uS,uV;uniform vec2 uM;uniform vec4 uRip[6];uniform vec3 uInk,uBg;
   float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
   float n(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),u.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x),u.y);}
   float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.02;a*=.5;}return v;}
   float hide(vec2 p){vec2 q=p*1.35+vec2(0.,-uS*.35);vec2 w=vec2(fbm(q*.7+vec2(0.,uT*.02)),fbm(q*.7+vec2(5.2,-uT*.018)));
-    float f=q.x*.9+q.y*.3+w.x*1.2+fbm(q*1.3+w)*.6;float v=sin(f*8.);return smoothstep(-.35,.35,v);}
+    float f=q.x*.9+q.y*.3+w.x*1.2+fbm(q*1.3+w)*.6;float v=sin(f*8.);float aa=fwidth(f*8.)*1.2+.015;return smoothstep(-aa,aa,v);}
   float rip(vec2 p){float r=0.;for(int i=0;i<6;i++){vec4 k=uRip[i];float age=uT-k.z;if(age<0.||age>3.)continue;float d=length(p-k.xy);float wv=sin(d*38.-age*9.)*exp(-d*5.)*exp(-age*1.3)*k.w;r+=wv;}return r;}
-  float H(vec2 p){return hide(p)*.9+rip(p)*.12+fbm(p*9.+uT*.05)*.05;}
+  float H(vec2 p){return hide(p)*.9+rip(p)*.12;}
   void main(){vec2 uv=gl_FragCoord.xy/uR;float a=uR.x/uR.y;vec2 p=(uv-.5)*vec2(a,1.);
     vec2 m=(uM-.5)*vec2(a,1.);float e=1.5/uR.y;
     float c=H(p),hx=H(p+vec2(e,0.))-c,hy=H(p+vec2(0.,e))-c;vec3 N=normalize(vec3(-hx/e*.018,-hy/e*.018,1.));
@@ -30,7 +31,7 @@ if (typeof window !== "undefined") {
     float fr=pow(1.-N.z,2.)*1.4;
     vec3 col=mix(uBg,mix(uBg,uInk,.2),c);col+=uInk*(spec*.55+sheen*.25+fr*.05);
     float mist=fbm(p*1.1+vec2(uT*.015,-uS*.12))*fbm(p*2.3-vec2(uT*.01,0.));mist=smoothstep(.12,.55,mist);
-    col=mix(col,mix(uBg,uInk,.22),mist*.28);
+    col=mix(col,mix(uBg,uInk,.22),mist*.1);
     float glow=exp(-dot(p-m,p-m)*6.)*.05;col+=uInk*glow;
     float vig=smoothstep(1.25,.25,length(p*vec2(.8,1.)));col=mix(uBg,col,.55+.45*vig);
     gl_FragColor=vec4(col,1.);}`;
@@ -38,7 +39,7 @@ if (typeof window !== "undefined") {
     const cv = document.createElement('canvas'); cv.setAttribute('aria-hidden', 'true');
     cv.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block';
     document.body.prepend(cv); document.body.style.background = '#060608';
-    const gl = cv.getContext('webgl', { antialias: false, powerPreference: 'low-power' });
+    const gl = cv.getContext('webgl', { antialias: false, powerPreference: 'low-power' }); gl && gl.getExtension('OES_standard_derivatives');
     if (!gl) { cv.style.background = '#060608 repeating-linear-gradient(124deg,rgba(245,245,247,.05) 0 2px,transparent 2px 16px)'; return; }
     const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.warn('wet shader', gl.getShaderInfoLog(o)); return o; };
     window.__zbWetGL = gl;
@@ -46,15 +47,15 @@ if (typeof window !== "undefined") {
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     const lp = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(lp); gl.vertexAttribPointer(lp, 2, gl.FLOAT, false, 0, 0);
     const U = {}; ['uR', 'uT', 'uS', 'uV', 'uM', 'uRip', 'uInk', 'uBg'].forEach(k => U[k] = gl.getUniformLocation(pr, k));
-    let scale = touch ? .45 : .6, t = 0, last = performance.now(), mx = .5, my = .5, tmx = .5, tmy = .5, rips = [], lastRip = 0, fpsA = 0, fpsN = 0;
+    let scale = Math.min(devicePixelRatio || 1, touch ? 1.25 : 1.5), t = 0, last = performance.now(), mx = .5, my = .5, tmx = .5, tmy = .5, rips = [], lastRip = 0, fpsA = 0, fpsN = 0;
     const size = () => { cv.width = Math.round(innerWidth * scale); cv.height = Math.round(innerHeight * scale); gl.viewport(0, 0, cv.width, cv.height); };
     size(); addEventListener('resize', size);
     const addRip = (x, y, s) => { rips.unshift([x, y, t, s]); rips = rips.slice(0, 6); };
     addEventListener('pointermove', e => { tmx = e.clientX / innerWidth; tmy = 1 - e.clientY / innerHeight; if (t - lastRip > .35) { lastRip = t; addRip((tmx - .5) * innerWidth / innerHeight, tmy - .5, .5); } }, { passive: true });
     addEventListener('pointerdown', e => addRip((e.clientX / innerWidth - .5) * innerWidth / innerHeight, .5 - e.clientY / innerHeight, 1.4), { passive: true });
     const frame = now => {
-      requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!reduce) t += dt;
-      fpsA += dt; fpsN++; if (fpsA > 1.5) { if (fpsN / fpsA < 40 && scale > .3) { scale -= .1; size(); } fpsA = fpsN = 0; }
+      requestAnimationFrame(frame); if (!innerWidth) return; if (cv.width !== Math.round(innerWidth * scale) || cv.height !== Math.round(innerHeight * scale)) size(); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!reduce) t += dt;
+      fpsA += dt; fpsN++; if (fpsA > 1.5) { if (fpsN / fpsA < 40 && scale > .6) { scale -= .15; size(); } fpsA = fpsN = 0; }
       mx += (tmx - mx) * .06; my += (tmy - my) * .06;
       const light = document.querySelector('[data-theme="light"]');
       gl.uniform2f(U.uR, cv.width, cv.height); gl.uniform1f(U.uT, t); gl.uniform1f(U.uS, scrollY / innerHeight); gl.uniform2f(U.uM, mx, my);
@@ -92,6 +93,37 @@ if (typeof window !== "undefined") {
     if (!window.ZB_NO_SOUND_UI) document.body.appendChild(btn);
   }
 
+  // ---------- 2b. SCROLL LINE: one line that travels the whole page as you scroll ----------
+  function line() {
+    const cv = document.createElement('canvas'); cv.setAttribute('aria-hidden', 'true');
+    cv.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block';
+    document.body.appendChild(cv);
+    const x = cv.getContext('2d'); let W = 0, H = 0, d = 1, t = 0, last = performance.now(), sy = scrollY, vel = 0;
+    const size = () => { d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; x.setTransform(d, 0, 0, d, 0, 0); };
+    size(); addEventListener('resize', size);
+    // page-space path: sweeps edge to edge, one crossing roughly every screen
+    const px = (y, docH) => { const u = y / docH, k = docH / Math.max(1, H); return W * (.5 + .46 * Math.sin(u * k * 1.35 + .4) * (.75 + .25 * Math.cos(u * 7.3)) + .03 * Math.sin(u * k * 5.1 + t * .4)); };
+    const frame = now => {
+      requestAnimationFrame(frame); if (!innerWidth) return; if (cv.width !== Math.round(innerWidth * d)) size();
+      const dt = Math.min(.05, (now - last) / 1000); last = now; if (!reduce) t += dt;
+      sy += (scrollY - sy) * .18; vel += (Math.min(1, Math.abs(scrollY - sy) / 60) - vel) * .1;
+      const docH = Math.max(H, document.documentElement.scrollHeight), head = Math.min(docH, sy + H * .62);
+      const light = !!document.querySelector('[data-theme="light"]'), ink = light ? '20,20,24' : '245,245,247';
+      x.clearRect(0, 0, W, H);
+      const y0 = Math.max(0, sy - 40), step = 6; if (head <= y0) return;
+      x.beginPath(); for (let y = y0; y <= head; y += step) { const X = px(y, docH), Y = y - sy; y === y0 ? x.moveTo(X, Y) : x.lineTo(X, Y); } x.lineTo(px(head, docH), head - sy);
+      x.lineCap = 'round'; x.lineJoin = 'round';
+      x.strokeStyle = `rgba(${ink},.07)`; x.lineWidth = 9; x.stroke();
+      const g = x.createLinearGradient(0, Math.max(0, head - sy - H * .9), 0, head - sy); g.addColorStop(0, `rgba(${ink},.12)`); g.addColorStop(1, `rgba(${ink},.85)`);
+      x.strokeStyle = g; x.lineWidth = 1.6 + vel * 1.2; x.stroke();
+      const hx = px(head, docH), hy = head - sy;
+      const rg = x.createRadialGradient(hx, hy, 0, hx, hy, 34 + vel * 20); rg.addColorStop(0, `rgba(${ink},.5)`); rg.addColorStop(1, `rgba(${ink},0)`);
+      x.fillStyle = rg; x.beginPath(); x.arc(hx, hy, 34 + vel * 20, 0, 7); x.fill();
+      x.fillStyle = `rgb(${ink})`; x.beginPath(); x.arc(hx, hy, 3.2 + Math.sin(t * 4) * .6, 0, 7); x.fill();
+    };
+    requestAnimationFrame(frame);
+  }
+
   // ---------- 3. ALIVE UI ----------
   function alive() {
     if (touch || reduce) return;
@@ -106,7 +138,7 @@ if (typeof window !== "undefined") {
     }, { passive: true });
   }
 
-  ready(() => { if (!window.ZB_NO_WET) wet(); sound(); alive(); });
+  ready(() => { if (!window.ZB_NO_WET) wet(); if (!window.ZB_NO_LINE) line(); sound(); alive(); });
 })();
 
 }
