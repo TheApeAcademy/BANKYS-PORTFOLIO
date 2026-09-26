@@ -1,32 +1,29 @@
 import type { NextConfig } from "next";
 
-// The marketing homepage (`app/page.tsx` + `app/_site-body.ts`) is ported
-// verbatim from the original static site and relies on inline `style=`
-// attributes, so `style-src` keeps 'unsafe-inline' — tightening that would
-// require rewriting the ported HTML, which the homepage is deliberately
-// exempt from (see README: "kept pixel-for-pixel unchanged").
+// The Zebraish design pages (app/(zebraish), ported from the Claude Design
+// handoff) render with inline styles, so `style-src` keeps 'unsafe-inline'.
 //
 // `script-src` also needs 'unsafe-inline': without it, Next.js's own
-// required inline hydration bootstrap scripts get blocked by the browser
-// (this isn't about the ported markup — Next.js injects these on every
-// page regardless), which silently breaks client-side hydration entirely.
-// Concretely, that meant `site.js` (loaded via `next/script` with
-// `strategy="afterInteractive"`, which only runs post-hydration) never
-// executed, so every `.reveal`/`.stmt-word` element in site.css — which
-// start at opacity:0 until JS toggles a visibility class on scroll —
-// stayed invisible forever. A nonce-based CSP (no 'unsafe-inline' at all)
-// is the stricter long-term option, but needs real middleware work
-// (per-request nonce generation + injection in proxy.ts) that doesn't
-// exist yet — worth doing later, not a blocker for restoring the site now.
+// required inline hydration bootstrap scripts get blocked by the browser,
+// which silently breaks client-side hydration entirely. A nonce-based CSP
+// is the stricter long-term option, but needs per-request nonce generation
+// in proxy.ts that doesn't exist yet.
+//
+// Zebraish pages also need: Google Fonts (Inter, Fraunces), blob: images
+// (three.js GLTFLoader decodes the zebra head's textures from blob URLs, which
+// its ImageBitmapLoader also fetches, hence connect-src blob:) and
+// https: frames (case studies play each client's live site in a browser frame).
 const SUPABASE_URL = "https://rxyqoaucuwdgpbzgfjqp.supabase.co";
 
 const csp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https:",
-  "font-src 'self' data:",
-  `connect-src 'self' ${SUPABASE_URL} https://api.flutterwave.com`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "media-src 'self'",
+  "frame-src https:",
+  `connect-src 'self' blob: ${SUPABASE_URL} https://api.flutterwave.com`,
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",

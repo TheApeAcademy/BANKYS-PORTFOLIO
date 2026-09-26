@@ -6,7 +6,7 @@ import { getProjectByToken } from "@/lib/actions/configurator";
 import type { Answers } from "@zebraish/lib/catalogue/types";
 import { getServerT } from "@/lib/i18n/server";
 
-export default async function StartPage({
+export default async function StartResumePage({
   searchParams,
 }: {
   searchParams: Promise<{ token?: string; payment?: string }>;

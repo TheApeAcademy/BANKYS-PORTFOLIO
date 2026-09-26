@@ -4,10 +4,16 @@ The customer-facing Next.js app — one of two apps in this repo's npm workspace
 root `README.md` for the monorepo layout). Studio and the separate `apps/admin` control
 center share one Supabase backend but are deployed independently, on different domains:
 
-- `/` — the marketing homepage (ported verbatim from the original static site).
-- `/all-work.html` — the project archive (served as-is, untouched, from `/public`).
-- `/start` — the context-aware project configurator: branches by project type, prices
-  live as you go, saves a resumable draft, then hands off to WhatsApp and Flutterwave.
+- `/` - the Zebraish Experience: power-on intro, eight scroll-driven 3D Acts (three.js),
+  ending in a zoom into a zebra stripe that opens `/studio`.
+- `/studio` - the Zebraish Home content site. `/world` is the alternate home with the
+  scroll-drawn zebra ribbon.
+- `/work/[id]` - case studies (data in `lib/zebraish/projects.js`).
+- `/all-work.html` - the project archive (served as-is, untouched, from `/public`).
+- `/start` - the discovery flow (what, for, needs, ambition, contact). Saves the profile
+  as a project with pricing "Inquire" through `saveProjectConfiguration`.
+- `/start/resume?token=` - the priced, context-aware configurator for saved projects;
+  `/start?token=` (e.g. the Flutterwave callback) redirects here.
 - `/start/pay` — Flutterwave checkout for a configured project.
 - `/dashboard` — collaborator commission dashboard (no client PII exposed).
 
@@ -19,8 +25,13 @@ domain with no link to it anywhere in this app.
 
 - Next.js 16 (App Router, Turbopack, Server Actions)
 - Supabase (Postgres + Auth). Project: `zebraish` (`rxyqoaucuwdgpbzgfjqp`), region `eu-west-1`.
-- Tailwind CSS v4 for the app surfaces; the homepage keeps its own original CSS
-  (`public/site.css` / `public/site.js`) so its design stays pixel-for-pixel unchanged.
+- Two route groups. `app/(portal)` holds the app surfaces and loads Tailwind CSS v4.
+  `app/(zebraish)` holds the design pages ported from the Claude Design handoff: each
+  prototype is a client component in `components/zebraish` (its logic class plus its
+  markup, run by the small runtime in `lib/dc.tsx`), with no Tailwind so the designs
+  stay pixel-exact. Shared scripts (sound + wet hide, stripe shader, 3D engine, ribbon)
+  are in `lib/zebraish`; assets and sounds in `public/zb/assets`.
+- three.js 0.160 and Lenis 1.1 for the 3D and smooth scroll.
 - Flutterwave for payment collection.
 - Resend for transactional email (optional — inactive until configured).
 
