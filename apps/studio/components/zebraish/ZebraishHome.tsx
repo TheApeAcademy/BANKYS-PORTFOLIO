@@ -14,6 +14,8 @@ import Ecosystem from "./Ecosystem";
 import IdeaPrompt from "./IdeaPrompt";
 import HenkoGenIntro from "./HenkoGenIntro";
 import WordmarkFooter from "./WordmarkFooter";
+// Home draws its own living-hide stripe field, so the ambient wet hide stays off here.
+import "@/lib/zebraish/no-wet.js";
 import "@/lib/zebraish/zb-ambient.js";
 class Component extends DCLogic {
   rootRef = React.createRef();
@@ -129,7 +131,7 @@ class Component extends DCLogic {
   }
   renderVals() {
     const theme = this.state.themeOverride ?? this.props.theme ?? 'dark';
-    const stripes = this.props.stripes ?? 'wet';
+    const stripes = this.props.stripes ?? 'hide';
     const W = (label, hi) => ({ label, w: hi ? 800 : 500, c: hi ? 'var(--text)' : 'var(--text-faint)' });
     const tk = [W('Build', 1), W('Intelligence'), W('Automate', 1), W('Brand'), W('Grow', 1), W('Idea → Product'), W('Zebraish Ecosystem', 1), W('Founder-Led')];
     const m1 = [['HTML5', '#ffffff'], ['CSS3', '#d4d4d8'], ['JavaScript', '#a8a8b0'], ['Canvas API', '#84848c'], ['WhatsApp', '#f0f0f2'], ['Vercel', '#c2c2c8'], ['Automation', '#ffffff'], ['Zebraish Ecosystem', '#a8a8b0']].map(([label, c]) => ({ label, c }));
@@ -822,4 +824,4 @@ function template(v) {
   );
 }
 
-export default dcComponent("Zebraish Home", Component, template, {"theme":"dark","stripes":"wet","numbers":"c","ecosystem":"b","head":"a","footer":"a"});
+export default dcComponent("Zebraish Home", Component, template, {"theme":"dark","stripes":"hide","numbers":"c","ecosystem":"b","head":"a","footer":"a"});
