@@ -8,6 +8,8 @@ import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc"
 import { saveProjectConfiguration } from "@/lib/actions/configurator";
 import { logActivityEvent } from "@/lib/actions/activity";
 
+import StripeField from "./StripeField";
+import "@/lib/zebraish/no-wet.js";
 import "@/lib/zebraish/zb-ambient.js";
 class Component extends DCLogic {
   rootRef = React.createRef();
@@ -110,7 +112,11 @@ function template(v) {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
-      <div ref={v.rootRef} style={{"minHeight":"100vh","display":"flex","flexDirection":"column","background":"transparent","color":"#f5f5f7","fontFamily":"Inter,-apple-system,sans-serif"}}>
+      {/* Living-hide stripe field behind the page (same as Home); the ambient wet hide is off. */}
+      <div data-theme="dark" aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+        <StripeField mode="hide" __hostStyle={hostPositionStyle("position:absolute;inset:0")} />
+      </div>
+      <div ref={v.rootRef} style={{"position":"relative","zIndex":"1","minHeight":"100vh","display":"flex","flexDirection":"column","background":"transparent","color":"#f5f5f7","fontFamily":"Inter,-apple-system,sans-serif"}}>
       {" "}
       <div style={{"position":"sticky","top":"0","zIndex":"5","height":"3px","background":"rgba(245,245,247,.08)"}}>
         <div style={css(`height:100%;width:${v.progress ?? ""};background-image:repeating-linear-gradient(90deg,#f5f5f7 0 8px,rgba(245,245,247,.45) 8px 12px);transition:width .7s cubic-bezier(.16,1,.3,1)`)} />

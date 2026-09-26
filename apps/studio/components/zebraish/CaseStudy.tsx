@@ -6,6 +6,8 @@
 import React from "react";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 
+import StripeField from "./StripeField";
+import "@/lib/zebraish/no-wet.js";
 import "@/lib/zebraish/zb-ambient.js";
 import "@/lib/zebraish/projects.js";
 class Component extends DCLogic {
@@ -35,7 +37,11 @@ function template(v) {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
-      <div ref={v.rootRef} style={{"minHeight":"100vh","background":"transparent","color":"#f5f5f7","fontFamily":"Inter,-apple-system,sans-serif"}}>
+      {/* Living-hide stripe field behind the page (same as Home); the ambient wet hide is off. */}
+      <div data-theme="dark" aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+        <StripeField mode="hide" __hostStyle={hostPositionStyle("position:absolute;inset:0")} />
+      </div>
+      <div ref={v.rootRef} style={{"position":"relative","zIndex":"1","minHeight":"100vh","background":"transparent","color":"#f5f5f7","fontFamily":"Inter,-apple-system,sans-serif"}}>
       {" "}
       <nav style={{"position":"sticky","top":"0","zIndex":"10","display":"flex","justifyContent":"space-between","alignItems":"center","gap":"16px","padding":"18px clamp(20px,4vw,56px)","background":"rgba(4,4,5,.7)","backdropFilter":"blur(18px)","WebkitBackdropFilter":"blur(18px)","borderBottom":"1px solid rgba(245,245,247,.08)"}}>
         {" "}
