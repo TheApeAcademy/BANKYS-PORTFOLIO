@@ -22,6 +22,8 @@ class Component extends DCLogic {
     ['SHADOWZ', 'Urban Art Intelligence', 'Urban Tech', 'shadow-rho-three.vercel.app', '', 'Explore'],
     ['PM PORTFOLIO', 'Product & Frontend Builder', 'Tech', 'pm-portfolio-steel-rho.vercel.app', '', 'View'],
   ];
+  // Sites that refuse to load in an iframe (X-Frame-Options: DENY); their screenshot fills the screen instead.
+  NO_FRAME = new Set(['doberman-kappa.vercel.app']);
   // w,h as fraction of viewport min-dim-aware; x offset (fraction of W); r radius; b bezel; chin; rz, ry; list alpha; site index; cursor path; stand
   keys(W, H) {
     const m = Math.min(W, H);
@@ -29,8 +31,8 @@ class Component extends DCLogic {
       { p: 0, x: .14 * W, w: Math.min(.56 * W, 1.45 * H * .62), ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 0, list: 1, site: 0, name: 'iMac', sub: 'Every site, on every screen', stand: 1, stop: 0 },
       { p: .1, x: .14 * W, w: Math.min(.56 * W, 1.45 * H * .62), ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 0, list: 1, site: 0, name: 'iMac', sub: 'Every site, on every screen', stand: 1, stop: 0 },
       { p: .2, x: 0, w: W * 1.02, ar: H * 1.02 / (W * 1.02), r: 0, b: 0, chin: 0, rz: 0, ry: 0, list: 0, site: 0, name: 'Full screen', sub: 'Scroll inside the site', stand: 0, stop: 1 },
-      { p: .3, x: 0, w: .6 * W > 1.1 * H ? 1.1 * H : .6 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 0, ry: 0, list: 0, site: 1, name: 'iPad', sub: 'Landscape', stand: 0, stop: 2 },
-      { p: .4, x: 0, w: .6 * W > 1.1 * H ? 1.1 * H * .8 : .48 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 90, ry: 0, list: 0, site: 1, name: 'iPad', sub: 'Rolls to portrait', stand: 0, stop: 3 },
+      { p: .3, x: 0, w: .6 * W > 1.1 * H ? 1.1 * H : .6 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 0, ry: 0, list: 0, site: 4, name: 'iPad', sub: 'Landscape', stand: 0, stop: 2 },
+      { p: .4, x: 0, w: .6 * W > 1.1 * H ? 1.1 * H * .8 : .48 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 90, ry: 0, list: 0, site: 4, name: 'iPad', sub: 'Rolls to portrait', stand: 0, stop: 3 },
       { p: .52, x: 0, w: .72 * m, ar: .46, r: 44, b: 10, chin: 0, rz: 90, ry: 360, list: 0, site: 3, name: 'iPhone', sub: 'Flips front to back', stand: 0, stop: 4 },
       { p: .64, x: 0, w: .95 * m, ar: .46, r: 50, b: 10, chin: 0, rz: 0, ry: 360, list: 0, site: 3, name: 'iPhone', sub: 'Landscape', stand: 0, stop: 5 },
       { p: .8, x: 0, w: Math.min(W * .94, H * .86 / .5625), ar: .5625, r: 6, b: 6, chin: 0, rz: 0, ry: 360, list: 0, site: 6, name: '100" TV', sub: 'Living-room scale', stand: 2, stop: 6 },
@@ -81,14 +83,16 @@ class Component extends DCLogic {
     if (siteIdx !== this.lastSite) {
       this.lastSite = siteIdx; E.host.textContent = S[3]; E.sname.textContent = S[0]; E.stag.textContent = S[1]; E.btn.textContent = S[5];
       E.grid.style.display = S[4] ? 'none' : 'grid';
-      E.live.style.opacity = 0; E.live.onload = () => { E.live.style.opacity = 1; }; clearTimeout(this._lt); this._lt = setTimeout(() => { E.live.src = 'https://' + S[3]; }, 250);
+      E.live.style.opacity = 0; E.live.onload = () => { if (E.live.src !== 'about:blank') E.live.style.opacity = 1; }; clearTimeout(this._lt);
+      const framed = !this.NO_FRAME.has(S[3]); E.live.style.display = framed ? 'block' : 'none'; E.shade.style.display = E.sname.parentElement.style.display = framed || !S[4] ? '' : 'none';
+      this._lt = setTimeout(() => { E.live.src = framed ? 'https://' + S[3] : 'about:blank'; }, 250);
       E.page.style.backgroundImage = S[4] ? `url('${S[4]}')` : 'repeating-linear-gradient(124deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px)';
       this.rows.forEach((row, k) => { row.style.background = k === siteIdx ? 'rgba(var(--tint-rgb),.07)' : 'transparent'; row.style.color = k === siteIdx ? 'var(--text)' : 'var(--text-muted)'; });
     }
     const lw = /iPhone/.test(near.name) && Math.abs(Math.cos(rz * Math.PI / 180)) < .5 ? 390 : /iPhone/.test(near.name) ? 844 : /iPad/.test(near.name) ? (cw > ch ? 1180 : 820) : 1440;
-    const sc = cw / lw, ph = E.page.offsetHeight || ch * 2.6;
-    if (this._lw !== lw || Math.abs((this._sc || 0) - sc) > .002) { this._lw = lw; this._sc = sc; E.live.style.width = lw + 'px'; E.live.style.height = (ph / sc) + 'px'; E.live.style.transform = 'scale(' + sc + ')'; }
-    E.page.style.transform = `translateY(${-Math.min(.55, Math.max(0, (p * 7) % 1) * .55) * 100}%)`;
+    const barH = /iMac|Full|Back/.test(near.name) ? 24 : 0, ph = Math.max(1, ch - barH), sc = cw / lw;
+    E.page.style.top = barH + 'px'; E.page.style.height = ph + 'px';
+    if (this._lw !== lw || Math.abs((this._sc || 0) - sc) > .002 || Math.abs((this._ph || 0) - ph) > 1) { this._lw = lw; this._sc = sc; this._ph = ph; E.live.style.width = lw + 'px'; E.live.style.height = (ph / sc) + 'px'; E.live.style.transform = 'scale(' + sc + ')'; }
     const cx = .3 + .4 * Math.sin(p * 17), cy = .25 + .45 * (.5 + .5 * Math.sin(p * 11 + 1));
     E.cursor.style.left = (cx * cw) + 'px'; E.cursor.style.top = (cy * ch) + 'px';
     const clickSlot = Math.floor(p * 14);
@@ -152,9 +156,9 @@ function template(v) {
                   <span data-host="1" style={{"margin":"0 auto","fontSize":"10px","color":"rgba(255,255,255,.55)","fontFamily":"ui-monospace,Menlo,monospace","background":"rgba(255,255,255,.06)","padding":"2px 12px","borderRadius":"5px"}}>{"malaak-abaya.vercel.app"}</span>
                 </div>
                 {" "}
-                <div data-page="1" style={{"position":"absolute","left":"0","right":"0","top":"24px","height":"260%","backgroundSize":"cover","backgroundPosition":"top center","backgroundImage":"repeating-linear-gradient(124deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px)"}}>
+                <div data-page="1" style={{"position":"absolute","left":"0","right":"0","top":"24px","height":"100%","overflow":"hidden","backgroundSize":"cover","backgroundPosition":"top center","backgroundImage":"repeating-linear-gradient(124deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px)"}}>
                   {" "}
-                  <iframe data-live="1" title="Live site" loading="lazy" tabIndex="-1" style={{"position":"absolute","left":"0","top":"0","border":"0","transformOrigin":"0 0","pointerEvents":"none","background":"transparent","opacity":"0","transition":"opacity .6s","zIndex":"2"}} />
+                  <iframe data-live="1" title="Live site" loading="lazy" tabIndex="-1" scrolling="no" style={{"position":"absolute","left":"0","top":"0","border":"0","transformOrigin":"0 0","pointerEvents":"none","background":"transparent","opacity":"0","transition":"opacity .6s","zIndex":"2"}} />
                   {" "}
                   <div data-shade="1" style={{"position":"absolute","inset":"0","background":"linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.6))"}} />
                   {" "}

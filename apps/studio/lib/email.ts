@@ -72,18 +72,29 @@ export async function sendAdminPaymentNotification(params: {
   }
 }
 
-export async function sendAdminIntakeNotification(params: { projectCode: string; clientName: string }) {
+const escapeHtml = (value: string) =>
+  value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+export async function sendAdminIntakeNotification(params: {
+  projectCode: string;
+  clientName: string;
+  /** Optional brief details (grade, estimate, contact) from the project builder. */
+  details?: string[];
+}) {
   const resend = getClient();
   const from = process.env.RESEND_FROM_EMAIL;
   const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
   if (!resend || !from || !adminEmail) return;
 
+  const details = params.details?.length
+    ? `<ul>${params.details.map((d) => `<li>${escapeHtml(d)}</li>`).join("")}</ul>`
+    : "";
   try {
     await resend.emails.send({
       from,
       to: adminEmail,
       subject: `New project configured: ${params.projectCode}`,
-      html: `<p><strong>${params.clientName}</strong> just configured a new project (<strong>${params.projectCode}</strong>) and hasn't paid yet.</p>`,
+      html: `<p><strong>${escapeHtml(params.clientName)}</strong> just configured a new project (<strong>${params.projectCode}</strong>) and hasn't paid yet.</p>${details}`,
     });
   } catch {
     // best-effort

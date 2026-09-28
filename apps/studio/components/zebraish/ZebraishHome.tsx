@@ -14,6 +14,7 @@ import Ecosystem from "./Ecosystem";
 import IdeaPrompt from "./IdeaPrompt";
 import HenkoGenIntro from "./HenkoGenIntro";
 import WordmarkFooter from "./WordmarkFooter";
+import ProjectBuilder from "./ProjectBuilder";
 // Home draws its own living-hide stripe field, so the ambient wet hide stays off here.
 import "@/lib/zebraish/no-wet.js";
 import "@/lib/zebraish/zb-ambient.js";
@@ -38,20 +39,16 @@ class Component extends DCLogic {
     this.initLiquid();
   }
   componentWillUnmount() { removeEventListener('resize', this._vw); cancelAnimationFrame(this._ln); this.lenis && this.lenis.destroy(); removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); cancelAnimationFrame(this._lq); }
+  // Arrival from the Experience: it fades out to this page's own background, so
+  // Home fades in from that same colour with a gentle settle instead of a cut.
   runReveal() {
     scrollTo(0, 0); history.replaceState(null, '', location.pathname + location.search);
     const go = () => {
-      const ov = this.q('[data-id="reveal"]'), hero = this.q('#hero'), dev = this.q('[data-id="device"]'); if (!ov || !hero || !dev) { setTimeout(go, 60); return; }
-      const r = dev.getBoundingClientRect(), hr = hero.getBoundingClientRect();
-      const cx = ((r.left + r.width * .52) / innerWidth * 100).toFixed(2), cy = ((r.top + r.height * .42) / innerHeight * 100).toFixed(2);
-      const ox = (r.left + r.width * .52 - hr.left) + 'px', oy = (r.top + r.height * .42 - hr.top) + 'px';
-      hero.style.transformOrigin = ox + ' ' + oy;
-      const st = performance.now(), D = 1500, E = t => 1 - Math.pow(1 - t, 3);
-      const f = now => { const t = Math.min(1, (now - st) / D), e = E(t), hole = Math.pow(t, 1.5) * 160;
-        ov.style.webkitMaskImage = ov.style.maskImage = `radial-gradient(circle at ${cx}% ${cy}%, transparent ${hole}%, #000 ${hole + 5}%)`;
-        hero.style.transform = `scale(${(1 + (1 - e) * 1.1).toFixed(4)})`;
-        if (t < 1) requestAnimationFrame(f); else { hero.style.transform = ''; this.setState({ revealDone: true }); } };
-      setTimeout(() => requestAnimationFrame(f), 350);
+      const ov = this.q('[data-id="reveal"]'), hero = this.q('#hero'); if (!ov || !hero) { setTimeout(go, 60); return; }
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { this.setState({ revealDone: true }); return; }
+      const E = 'cubic-bezier(.16,1,.3,1)';
+      hero.animate([{ opacity: 0, transform: 'scale(1.035)', filter: 'blur(6px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 1400, delay: 150, easing: E, fill: 'backwards' });
+      ov.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1100, delay: 150, easing: 'ease', fill: 'forwards' }).onfinish = () => this.setState({ revealDone: true });
     };
     go();
   }
@@ -94,7 +91,7 @@ class Component extends DCLogic {
     const canvas = this.q('[data-id="radar"]'); if (!canvas) return;
     const size = Math.min(canvas.parentElement.offsetWidth || 380, 380); canvas.width = size; canvas.height = size;
     const ctx = canvas.getContext('2d');
-    const labels = ['Build', 'Brand', 'Automate', 'Intelligence', 'Speed', 'Delivery'], values = [.97, .94, .88, .60, .96, 1];
+    const labels = ['Build', 'Brand', 'Automate', 'Intelligence', 'Speed', 'Delivery'], values = [.97, .94, .88, .72, .96, 1];
     const colors = ['#e0295f', '#e8a93c', '#17c98d', '#3d7ef0', '#17c98d', '#e8a93c'], n = 6, step = Math.PI * 2 / n;
     this.drawRadar = p => {
       const light = getComputedStyle(canvas).getPropertyValue('--tint-rgb').trim().startsWith('20');
@@ -164,7 +161,7 @@ class Component extends DCLogic {
       untilt: e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; },
       ticker: [...tk, ...tk], mq1: [...m1, ...m1], mq2: [...m2, ...m2],
       legend: [['var(--wine)', 'Build'], ['var(--gold)', 'Brand'], ['var(--emerald)', 'Automate'], ['var(--sapphire)', 'Intelligence'], ['var(--emerald)', 'Speed'], ['var(--gold)', 'Delivery']].map(([c, label]) => ({ c, label })),
-      skills: [['Build', 97, 'var(--wine)', '224,41,95', 'Websites · Web Apps · Software'], ['Brand', 94, 'var(--gold)', '232,169,60', 'Identity · Typography · Design Systems'], ['Automate', 88, 'var(--emerald)', '23,201,141', 'Workflows · Integrations · CRM'], ['Intelligence', 60, 'var(--sapphire)', '61,126,240', 'AI & Analytics · Available on Request'], ['Grow', 82, 'var(--emerald)', '23,201,141', 'Launch Strategy · The Board (Coming)'], ['Live Deployment', 100, 'var(--gold)', '232,169,60', 'Vercel · Custom Domain · SSL']].map(([name, pct, c, rgb, tags]) => ({ name, pct, c, rgb, tags })),
+      skills: [['Build', 97, 'var(--wine)', '224,41,95', 'Websites · Web Apps · Software'], ['Brand', 94, 'var(--gold)', '232,169,60', 'Identity · Typography · Design Systems'], ['Motion & 3D', 92, 'var(--violet)', '139,92,246', 'three.js · WebGL · Scroll Storytelling'], ['E-commerce', 90, 'var(--gold)', '232,169,60', 'Stores · Flutterwave · WhatsApp Orders'], ['Automate', 88, 'var(--emerald)', '23,201,141', 'Workflows · Integrations · CRM'], ['Security', 86, 'var(--sapphire)', '61,126,240', 'Auth · Row-Level Security · Audit Logs'], ['Grow', 82, 'var(--emerald)', '23,201,141', 'Launch Strategy · SEO · Analytics'], ['Mobile', 78, 'var(--wine)', '224,41,95', 'PWA · Capacitor · iOS & Android'], ['Intelligence', 72, 'var(--sapphire)', '61,126,240', 'AI Assistants · Claude API · Agents'], ['Live Deployment', 100, 'var(--gold)', '232,169,60', 'Vercel · Custom Domain · SSL']].map(([name, pct, c, rgb, tags]) => ({ name, pct, c, rgb, tags })),
       work,
       steps: [['01', "Tell Us What You're Building", 'Fill out the Start a Project flow or message directly. Tell us what your idea or business needs. Takes 5 minutes.'], ['02', 'We Shape a Direction', 'Within 48 hours you get a visual direction, structure, and a flat project price.'], ['03', 'We Build It', "The full product gets built and sent to you as a live preview link. You review, we refine until it's exactly right."], ['04', 'You Launch', "Once you're happy, it goes live. From there, the wider Zebraish ecosystem is there to help you keep growing."]].map(([n, t, d]) => ({ n, t, d })),
       values: [{ n: 10, suf: '+', v: '10+', l: 'Days Max' }, { n: '', suf: '', v: '100%', l: 'Custom Built' }, { n: '', suf: '', v: '∞', l: 'Revisions' }, { n: '', suf: '', v: '5★', l: 'Rating' }],
@@ -249,7 +246,7 @@ function template(v) {
         {" "}
         {v.revealOn ? (
           <>
-            <div data-id="reveal" style={{"position":"fixed","inset":"0","zIndex":"20001","background":"#f4f4f2","pointerEvents":"none"}} />
+            <div data-id="reveal" style={{"position":"fixed","inset":"0","zIndex":"20001","background":"#060608","pointerEvents":"none"}} />
           </>
         ) : null}
         {" "}
@@ -476,12 +473,12 @@ function template(v) {
               {" "}
             </div>
             {" "}
-            <div data-hr="r" data-bars="1" style={{"display":"flex","flexDirection":"column","gap":"28px"}}>
+            <div data-hr="r" data-bars="1" style={{"display":"grid","gridTemplateColumns":"repeat(auto-fit,minmax(min(240px,100%),1fr))","gap":"18px 32px"}}>
               {" "}
               {each(v, v.skills, "s", (v) => (
                 <>
                   {" "}
-                  <div style={{"display":"flex","flexDirection":"column","gap":"8px"}}>
+                  <div style={{"display":"flex","flexDirection":"column","gap":"6px"}}>
                     {" "}
                     <div style={{"display":"flex","justifyContent":"space-between","alignItems":"baseline"}}>
                       <span style={{"fontSize":"15px","fontWeight":"700","letterSpacing":"-.01em"}}>{I(v.s?.name)}</span>
@@ -661,7 +658,7 @@ function template(v) {
                   {"Apply to become an official Zebraish collaborator. Tell us a bit about yourself and we'll follow up."}
                 </p>
                 {" "}
-                <a href="#collaborate" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"14px 30px","fontSize":"13px","fontWeight":"700","letterSpacing":".03em","textTransform":"uppercase","borderRadius":"100px","textDecoration":"none","display":"inline-block"}}>{"Apply to Collaborate →"}</a>
+                <a href="/collaborate" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"14px 30px","fontSize":"13px","fontWeight":"700","letterSpacing":".03em","textTransform":"uppercase","borderRadius":"100px","textDecoration":"none","display":"inline-block"}}>{"Apply to Collaborate →"}</a>
                 {" "}
               </div>
               {" "}
@@ -673,7 +670,7 @@ function template(v) {
                   {"Enter your access code to check your dashboard: commissions, payouts, everything."}
                 </p>
                 {" "}
-                <a href="#collaborate" style={{"color":"var(--text-muted)","border":"1px solid var(--glass-b)","padding":"15px 44px","fontSize":"12px","fontWeight":"600","letterSpacing":".14em","textTransform":"uppercase","borderRadius":"100px","textDecoration":"none","display":"inline-flex","gap":"10px"}}>
+                <a href="/login" style={{"color":"var(--text-muted)","border":"1px solid var(--glass-b)","padding":"15px 44px","fontSize":"12px","fontWeight":"600","letterSpacing":".14em","textTransform":"uppercase","borderRadius":"100px","textDecoration":"none","display":"inline-flex","gap":"10px"}}>
                   {"Enter Your Code "}
                   <span>{"→"}</span>
                 </a>
@@ -818,6 +815,7 @@ function template(v) {
         {" "}
         <WordmarkFooter variant={v.footer} />
         {" "}
+        <ProjectBuilder />
       </div>
     </div>
     </>

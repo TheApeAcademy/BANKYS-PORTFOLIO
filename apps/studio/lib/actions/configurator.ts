@@ -13,6 +13,8 @@ export type SaveConfigurationInput = {
   quotedPrice: number;
   currency: string;
   quote: QuoteResult;
+  /** Extra lines for the admin intake email (grade, estimate, contact channel). */
+  notifyDetails?: string[];
 };
 
 /**
@@ -126,7 +128,11 @@ export async function saveProjectConfiguration(
 
   if (!input.accessToken) {
     // Only notify on first creation, not on every edit/resave of an existing draft.
-    await sendAdminIntakeNotification({ projectCode: row.project_code, clientName: input.clientName });
+    await sendAdminIntakeNotification({
+      projectCode: row.project_code,
+      clientName: input.clientName,
+      details: input.notifyDetails,
+    });
   }
 
   return { ok: true, projectId: row.project_id, projectCode: row.project_code, accessToken: row.access_token };

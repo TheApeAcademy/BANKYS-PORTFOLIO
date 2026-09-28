@@ -5,6 +5,10 @@
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
+import { openProjectBuilder } from "./ProjectBuilder";
+
+// Idea Prompt chips to catalogue project types (lib/catalogue).
+const TYPE_ID = { Website: 'website', 'Web App': 'web_app', 'E-commerce': 'ecommerce', 'AI Product': 'ai_application', Automation: 'automation', 'Creative Experience': 'website' };
 
 class Component extends DCLogic {
   state = { text: '', type: 'Website', ph: 0, step: -1, ans: [] };
@@ -18,7 +22,9 @@ class Component extends DCLogic {
     const goal = /sell|store|shop|perfume/.test(txt) ? 'Sell' : /ai|automat|24\/7/.test(txt) ? 'Automate' : /launch|new/.test(txt) ? 'Launch' : 'Engage';
     const amb = st.type === 'Creative Experience' || /3d|immersive/.test(txt) ? 'Immersive' : st.type === 'Website' ? 'Essential' : 'Advanced';
     const rows = [{ k: 'Creating', v: st.type }, { k: 'For', v: goal }, { k: 'Needs', v: /whatsapp/.test(txt) ? 'WhatsApp flow' : /book/.test(txt) ? 'Booking' : 'Custom build' }, { k: 'Ambition', v: amb }];
-    const submit = () => { if (!st.text.trim()) return; this.setState({ step: 0 }); const tick = n => { this.t2 = setTimeout(() => { this.setState({ step: n }); if (n < 4) tick(n + 1); }, 260); }; tick(1); };
+    const build = () => openProjectBuilder({ projectType: TYPE_ID[st.type] || 'website', idea: st.text.trim() });
+    // Shape the live profile, then open the builder with the idea and type carried over.
+    const submit = () => { if (!st.text.trim()) return; this.setState({ step: 0 }); const tick = n => { this.t2 = setTimeout(() => { this.setState({ step: n }); if (n < 4) tick(n + 1); else this.t2 = setTimeout(build, 450); }, 260); }; tick(1); };
     const v = this.props.variant ?? 'a';
     const Q = [['What are we creating?', ['Website', 'Web App', 'AI Product', 'E-commerce']], ['What is it for?', ['Launch', 'Sell', 'Automate', 'Engage']], ['What does it need to do?', ['Bookings', 'Payments', 'WhatsApp flow', 'Dashboard']], ['How ambitious?', ['Essential', 'Advanced', 'Immersive']]];
     const me = { side: 'flex-end', bg: 'var(--invert-bg)', fg: 'var(--invert-fg)' }, zb = { side: 'flex-start', bg: 'rgba(var(--tint-rgb),.05)', fg: 'var(--text)' };
@@ -33,7 +39,7 @@ class Component extends DCLogic {
       liveProfile: rows.map(r => ({ ...r, c: st.text.trim() ? '#17c98d' : 'var(--text-faint)', v: st.text.trim() ? r.v : '…' })),
       text: st.text, onType: e => this.setState({ text: e.target.value }), ph: P[st.ph],
       types: T.map(label => { const on = label === st.type; return { label, bg: on ? 'var(--invert-bg)' : 'rgba(var(--tint-rgb),.05)', fg: on ? 'var(--invert-fg)' : 'rgba(var(--tint-rgb),.6)', bd: on ? 'var(--invert-bg)' : 'rgba(var(--tint-rgb),.12)', pick: () => this.setState({ type: label }) }; }),
-      canOp: st.text.trim() ? 1 : .4, submit,
+      canOp: st.text.trim() ? 1 : .4, submit, build, buildChat: () => openProjectBuilder({ idea: st.ans.join(' · ') }),
       showProfile: st.step >= 0,
       profile: rows.map((r, i) => ({ ...r, op: st.step > i ? 1 : 0, y: st.step > i ? '0' : '10px' })),
     };
@@ -86,7 +92,7 @@ function template(v) {
           {" "}
           {v.chatDone ? (
             <>
-              <a href="/start" style={{"alignSelf":"flex-start","marginTop":"6px","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","color":"#17c98d","textDecoration":"none"}}>{"Project profile generated · See your tailored proposal →"}</a>
+              <button type="button" onClick={v.buildChat} style={{"alignSelf":"flex-start","marginTop":"6px","fontFamily":"inherit","background":"none","border":"none","padding":"0","cursor":"pointer","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","color":"#17c98d"}}>{"Project profile generated · See your tailored proposal →"}</button>
             </>
           ) : null}
           {" "}
@@ -193,7 +199,7 @@ function template(v) {
               </>
             ))}
             {" "}
-            <a href="/start" style={{"gridColumn":"1/-1","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","color":"#17c98d","textDecoration":"none","marginTop":"6px"}}>{"Project profile generated · Continue to your tailored proposal →"}</a>
+            <button type="button" onClick={v.build} style={{"gridColumn":"1/-1","fontFamily":"inherit","background":"none","border":"none","padding":"0","cursor":"pointer","textAlign":"left","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","color":"#17c98d","marginTop":"6px"}}>{"Project profile generated · Continue to your tailored proposal →"}</button>
             {" "}
           </div>
             {" "}

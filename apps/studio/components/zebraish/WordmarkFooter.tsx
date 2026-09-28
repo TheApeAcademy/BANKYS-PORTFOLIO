@@ -41,11 +41,11 @@ function template(v) {
         {" "}
         <p style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","margin":"0"}}>{"Based in Nigeria · Available Worldwide"}</p>
         {" "}
-        <a href="#collaborate" style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text)","textDecoration":"none","borderBottom":"1px solid var(--glass-b)","paddingBottom":"2px"}}>{"Become a Collaborator →"}</a>
+        <a href="/collaborate" style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text)","textDecoration":"none","borderBottom":"1px solid var(--glass-b)","paddingBottom":"2px"}}>{"Become a Collaborator →"}</a>
         {" "}
         <div style={{"display":"flex","gap":"20px"}}>
-          <a href="#" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Terms of Service"}</a>
-          <a href="#" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Privacy Policy"}</a>
+          <a href="/terms" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Terms of Service"}</a>
+          <a href="/privacy" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Privacy Policy"}</a>
         </div>
         {" "}
       </div>

@@ -8,7 +8,6 @@ const PAGES = {
   experience: dynamic(() => import("./ZebraishExperience"), { ssr: false }),
   home: dynamic(() => import("./ZebraishHome"), { ssr: false }),
   world: dynamic(() => import("./ZebraishWorld"), { ssr: false }),
-  start: dynamic(() => import("./StartAProject"), { ssr: false }),
   case: dynamic(() => import("./CaseStudy"), { ssr: false }),
 };
 

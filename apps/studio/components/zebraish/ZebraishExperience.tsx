@@ -112,6 +112,7 @@ class Component extends DCLogic {
 
     const rawV = this.lenis ? this.lenis.velocity : 0; this.vel += (Math.min(1, Math.abs(rawV) / 45) - this.vel) * .12; this.p = p;
     this.choreo(p, this.lenis ? Math.sign(rawV) * this.vel : 0);
+    const hc = this.$('hcta'); if (hc) { const off = p > .9; if (hc._off !== off) { hc._off = off; hc.style.opacity = off ? '0' : '1'; hc.style.pointerEvents = off ? 'none' : 'auto'; } }
     const hint = this.$('hint'); if (this.introDone && hint) { const fadeIn = Math.min(1, (now - (this._hintOn || now)) / 1000); hint.style.transition = 'none'; hint.style.opacity = String(fadeIn * (1 - Math.min(1, p / .01))); }
     let ai = 0; this.ACTS.forEach((a, i) => { if (p >= a[1]) ai = i; });
     if (ai !== this.state.act && this.introDone) { if (this.state.act >= 0) this.play('whoosh', .22); this.setState({ act: ai }); }
@@ -148,9 +149,10 @@ class Component extends DCLogic {
     const fl = this.$('xflash'), ov = this.$('overlay');
     if (Math.abs(q - (this._lq ?? -1)) < 1e-4) return; this._lq = q;
     ov.style.opacity = String(1 - ss(0, .22, q)); ov.style.visibility = q > .3 ? 'hidden' : 'visible';
-    const white = ss(.45, .8, q); fl.style.visibility = white > 0 ? 'visible' : 'hidden'; fl.style.opacity = String(white);
+    const fade = ss(.4, .88, q); fl.style.visibility = fade > 0 ? 'visible' : 'hidden'; fl.style.opacity = String(fade);
+    if (q > .15 && !this._pf) { this._pf = 1; const l = document.createElement('link'); l.rel = 'prefetch'; l.href = '/studio'; document.head.appendChild(l); }
     if (q > .3 && !this._xw) { this._xw = 1; this.play('whoosh', .4); } if (q < .2) this._xw = 0;
-    if (q >= .93 && !this._nav) { this._nav = 1; try { sessionStorage.setItem('zb-from-zebra', '1'); } catch (e) {} setTimeout(() => { location.href = '/studio#from-zebra'; }, 120); }
+    if (q >= .93 && !this._nav) { this._nav = 1; try { sessionStorage.setItem('zb-from-zebra', '1'); } catch (e) {} setTimeout(() => { location.href = '/studio#from-zebra'; }, 60); }
   }
   setLang(l) { this.setState({ lang: l }); const root = this.rootRef.current; if (!root) return; root.querySelectorAll('[data-es]').forEach(el => { if (el.dataset.en == null) el.dataset.en = el.textContent; el.textContent = l === 'es' ? el.dataset.es : el.dataset.en; }); document.documentElement.lang = l; }
   labels(list) { for (const l of list) { const el = this.lb[l.id]; if (!el) continue; const o = l.o > .02 ? l.o : 0; if (o === 0) { if (el._o !== 0) { el._o = 0; el.style.opacity = '0'; } continue; } el._o = o; el.style.opacity = o.toFixed(3); el.style.transform = `translate3d(${l.x.toFixed(1)}px,${l.y.toFixed(1)}px,0)`; } }
@@ -200,7 +202,7 @@ function template(v) {
       {" "}
       <div data-id="zone" style={{"position":"relative","height":"140vh","pointerEvents":"none"}} />
       {" "}
-      <div data-id="xflash" style={{"position":"fixed","inset":"0","zIndex":"7","pointerEvents":"none","background":"#f4f4f2","opacity":"0","visibility":"hidden"}} />
+      <div data-id="xflash" style={{"position":"fixed","inset":"0","zIndex":"7","pointerEvents":"none","background":"#060608","opacity":"0","visibility":"hidden"}} />
       {" "}
       <div data-id="overlay" style={{"position":"fixed","inset":"0","zIndex":"2","pointerEvents":"none","overflow":"hidden"}}>
         {" "}
@@ -244,7 +246,6 @@ function template(v) {
         {" "}
         <div data-r=".055,.125" style={{"position":"absolute","left":"7%","bottom":"14%","maxWidth":"560px","display":"flex","flexDirection":"column","gap":"14px","padding":"26px 30px","margin":"-26px -30px","borderRadius":"24px","background":"rgba(4,4,5,.66)","backdropFilter":"blur(10px)","WebkitBackdropFilter":"blur(10px)"}}>
           {" "}
-          <span style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)"}} data-es="Acto I · El patrón">{"Act I · The Pattern"}</span>
           {" "}
           <span data-track="1" style={{"fontSize":"clamp(34px,4.4vw,64px)","fontWeight":"900","letterSpacing":"-.035em","lineHeight":"1","transformOrigin":"left"}} data-es="No hay dos caminos iguales.">{"No two paths are exactly the same."}</span>
           {" "}
@@ -257,7 +258,6 @@ function template(v) {
         {" "}
         <div data-r=".135,.185" style={{"position":"absolute","left":"0","right":"0","top":"50%","transform":"translateY(-50%)","textAlign":"center","padding":"0 24px"}}>
           {" "}
-          <div style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)","marginBottom":"18px"}} data-es="Acto II · La señal">{"Act II · The Signal"}</div>
           {" "}
           <div data-track="1" style={{"fontSize":"clamp(38px,5.6vw,88px)","fontWeight":"900","letterSpacing":"-.04em","lineHeight":"1"}} data-es="Toda idea empieza en algún lugar.">{"Every idea begins somewhere."}</div>
           {" "}
@@ -292,7 +292,6 @@ function template(v) {
         {" "}
         <div data-r=".315,.415" style={{"position":"absolute","left":"7%","bottom":"12%","maxWidth":"460px","display":"flex","flexDirection":"column","gap":"12px"}}>
           {" "}
-          <span style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)"}} data-es="Acto III · La forja">{"Act III · The Forge"}</span>
           {" "}
           <span style={{"fontSize":"clamp(30px,3.4vw,52px)","fontWeight":"900","letterSpacing":"-.03em","lineHeight":"1"}}>
             {"At the centre, the "}
@@ -308,7 +307,6 @@ function template(v) {
         {" "}
         <div data-r=".42,.47" style={{"position":"absolute","left":"7%","top":"16%","maxWidth":"620px","display":"flex","flexDirection":"column","gap":"12px"}}>
           {" "}
-          <span style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)"}} data-es="Acto IV · Idea → Forma">{"Act IV · Idea → Form"}</span>
           {" "}
           <span data-track="1" style={{"fontSize":"clamp(34px,4.4vw,68px)","fontWeight":"900","letterSpacing":"-.035em","lineHeight":"1","transformOrigin":"left"}} data-es="No empezamos con la tecnología.">{"We don't start with technology."}</span>
           {" "}
@@ -329,7 +327,6 @@ function template(v) {
         {" "}
         <div data-r=".605,.67" style={{"position":"absolute","left":"0","right":"0","top":"9%","display":"flex","flexDirection":"column","alignItems":"center","textAlign":"center","gap":"10px","padding":"0 24px"}}>
           {" "}
-          <span style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)"}} data-es="Acto V · La web viva">{"Act V · The Living Website"}</span>
           {" "}
           <span style={{"fontSize":"clamp(28px,3.4vw,54px)","fontWeight":"900","letterSpacing":"-.03em","lineHeight":"1.05"}}>
             {"A digital product shouldn't just exist."}
@@ -355,7 +352,6 @@ function template(v) {
         {" "}
         <div data-r=".726,.83" data-fx="chain" style={{"position":"absolute","left":"6%","top":"50%","transform":"translateY(-50%)","display":"flex","flexDirection":"column","gap":"6px"}}>
           {" "}
-          <span style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)","marginBottom":"10px"}} data-es="Acto VI · Las rayas se vuelven sistemas">{"Act VI · The stripes become systems"}</span>
           {" "}
           {each(v, v.chain, "c", (v) => (
             <>
@@ -370,7 +366,6 @@ function template(v) {
         {" "}
         <div data-r=".83,.905" style={{"position":"absolute","left":"0","right":"0","top":"8%","display":"flex","flexDirection":"column","alignItems":"center","textAlign":"center","gap":"10px"}}>
           {" "}
-          <span style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.55)"}} data-es="Acto VII · El mundo exterior">{"Act VII · The World Outside"}</span>
           {" "}
           <span data-track="1" style={{"fontSize":"clamp(36px,5vw,80px)","fontWeight":"900","letterSpacing":"-.04em","lineHeight":"1"}}>
             {"One pattern. "}
@@ -386,7 +381,7 @@ function template(v) {
           {" "}
           <span style={{"fontSize":"clamp(18px,2vw,28px)","fontWeight":"300","letterSpacing":".02em"}} data-es="Construye lo que aún no existe.">{"Build what doesn't exist yet."}</span>
           {" "}
-          <a href="/start" data-ui="1" style={{"pointerEvents":"auto","marginTop":"8px","padding":"15px 34px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"13px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none"}} data-es="Empieza un proyecto →">{"Start a project →"}</a>
+          <a href="/studio?build=1" data-ui="1" style={{"pointerEvents":"auto","marginTop":"8px","padding":"15px 34px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"13px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none"}} data-es="Empieza un proyecto →">{"Start a project →"}</a>
           {" "}
         </div>
         {" "}
@@ -418,7 +413,7 @@ function template(v) {
           <span style={{"display":"block","marginTop":"22px","padding":"4px"}}>
             <span data-wd="1" style={{"display":"flex","gap":"10px","flexWrap":"wrap","justifyContent":"center"}}>
               {" "}
-              <a href="/start" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 30px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"12px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none"}} data-es="Empieza un proyecto →">{"Start a project →"}</a>
+              <a href="/studio?build=1" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 30px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"12px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none"}} data-es="Empieza un proyecto →">{"Start a project →"}</a>
               {" "}
               <a href="https://wa.me/2348165320780" target="_blank" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 26px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.25)","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","textDecoration":"none"}}>{"WhatsApp"}</a>
               {" "}
@@ -533,7 +528,7 @@ function template(v) {
               {" "}
               <button type="button" data-ui="1" onClick={v.toggleLang} style={{"pointerEvents":"auto","padding":"9px 12px","borderRadius":"100px","background":"none","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".14em","cursor":"pointer"}}>{I(v.langLabel)}</button>
               {" "}
-              <a href="/start" data-ui="1" style={{"pointerEvents":"auto","padding":"10px 20px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"11px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none","whiteSpace":"nowrap"}} data-es="Empieza un proyecto">{"Start a project"}</a>
+              <a href="/studio?build=1" data-ui="1" data-id="hcta" style={{"transition":"opacity .5s ease","pointerEvents":"auto","padding":"10px 20px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"11px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none","whiteSpace":"nowrap"}} data-es="Empieza un proyecto">{"Start a project"}</a>
               {" "}
             </div>
             {" "}
