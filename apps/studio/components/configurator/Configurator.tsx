@@ -1,5 +1,6 @@
 "use client";
 
+import { CONTACT } from "@zebraish/lib/contact";
 import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -16,7 +17,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { translate, type Lang } from "@/lib/i18n/dictionary";
 
-const WHATSAPP_NUMBER = "2348165320780";
+const WHATSAPP_NUMBER = CONTACT.whatsapp;
 
 type ContactMethod = "email" | "phone";
 

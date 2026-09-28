@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CONTACT, mailtoUrl, telUrl } from "@zebraish/lib/contact";
 import { Logo } from "@/components/Logo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -21,12 +22,12 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
         Zebraish Studio (&quot;Zebraish&quot;, &quot;we&quot;, &quot;us&quot;) is a digital product studio that
         designs and builds websites, software, brand, and automation work for clients. Zebraish is based in Nigeria
         and works with clients worldwide. You can reach us at{" "}
-        <a href="mailto:j0shbankole19@gmail.com" className="text-accent hover:underline">
-          j0shbankole19@gmail.com
+        <a href={mailtoUrl} className="text-accent hover:underline">
+          {CONTACT.email}
         </a>{" "}
         or{" "}
-        <a href="tel:+2348165320780" className="text-accent hover:underline">
-          +234 816 532 0780
+        <a href={telUrl} className="text-accent hover:underline">
+          {CONTACT.phoneDisplay}
         </a>
         .
       </p>
@@ -122,12 +123,12 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
         Zebraish Studio (&quot;Zebraish&quot;, &quot;nosotros&quot;) es un estudio de productos digitales que
         diseña y desarrolla sitios web, software, marca y automatización para clientes. Zebraish tiene su base en
         Nigeria y trabaja con clientes de todo el mundo. Puedes contactarnos en{" "}
-        <a href="mailto:j0shbankole19@gmail.com" className="text-accent hover:underline">
-          j0shbankole19@gmail.com
+        <a href={mailtoUrl} className="text-accent hover:underline">
+          {CONTACT.email}
         </a>{" "}
         o al{" "}
-        <a href="tel:+2348165320780" className="text-accent hover:underline">
-          +234 816 532 0780
+        <a href={telUrl} className="text-accent hover:underline">
+          {CONTACT.phoneDisplay}
         </a>
         .
       </p>

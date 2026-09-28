@@ -2,6 +2,7 @@
 // clients actually render) shared by studio and admin, plus a template per
 // message. Images are served from the studio domain (public/zb/email/, built
 // by scripts/build-email-assets.mjs), so pass that origin as `site`.
+import { whatsappUrl } from "./contact";
 
 export type EmailRow = { label: string; value: string };
 export type EmailContent = {
@@ -25,7 +26,7 @@ export type Rendered = { subject: string; html: string; text: string };
 const C = { bg: "#060608", card: "#0e0e12", line: "#22222a", text: "#f5f5f7", muted: "#a1a1aa", faint: "#6b6b75", accent: "#17c98d" };
 const FONT = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
 export const STUDIO_EMAIL = "hello@zebraish.com";
-const WHATSAPP = "https://wa.me/2348165320780";
+const WHATSAPP = whatsappUrl();
 
 export const esc = (v: unknown) =>
   String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);

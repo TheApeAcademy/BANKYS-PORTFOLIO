@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CONTACT, mailtoUrl } from "@zebraish/lib/contact";
 import { Logo } from "@/components/Logo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -74,8 +75,8 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
       <p>
         You can ask us what data we hold about you, ask us to correct it, or ask us to delete it (subject to the
         accounting/legal retention needs above). Reach out to{" "}
-        <a href="mailto:j0shbankole19@gmail.com" className="text-accent hover:underline">
-          j0shbankole19@gmail.com
+        <a href={mailtoUrl} className="text-accent hover:underline">
+          {CONTACT.email}
         </a>{" "}
         for any of this.
       </p>
@@ -165,8 +166,8 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
       <p>
         Puedes preguntarnos qué datos tenemos sobre ti, pedirnos que los corrijamos, o pedirnos que los eliminemos
         (sujeto a las necesidades de retención contable/legal mencionadas arriba). Escríbenos a{" "}
-        <a href="mailto:j0shbankole19@gmail.com" className="text-accent hover:underline">
-          j0shbankole19@gmail.com
+        <a href={mailtoUrl} className="text-accent hover:underline">
+          {CONTACT.email}
         </a>{" "}
         para cualquiera de estas solicitudes.
       </p>

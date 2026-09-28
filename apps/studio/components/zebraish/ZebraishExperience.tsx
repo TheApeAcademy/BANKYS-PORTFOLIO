@@ -3,6 +3,7 @@
 "use client";
 // Zebraish Experience: ported from the Claude Design handoff (Zebraish Experience.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
+import { mailtoUrl, whatsappUrl } from "@zebraish/lib/contact";
 import React from "react";
 import { getZbLang, setSiteLang, tr } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
@@ -416,9 +417,9 @@ function template(v) {
               {" "}
               <a href="/studio?build=1" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 30px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"12px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none"}} data-es="Empieza un proyecto →">{"Start a project →"}</a>
               {" "}
-              <a href="https://wa.me/2348165320780" target="_blank" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 26px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.25)","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","textDecoration":"none"}}>{"WhatsApp"}</a>
+              <a href={whatsappUrl()} target="_blank" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 26px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.25)","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","textDecoration":"none"}}>{"WhatsApp"}</a>
               {" "}
-              <a href="mailto:j0shbankole19@gmail.com" data-ui="1" style={{"pointerEvents":"auto","padding":"14px 26px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.25)","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","textDecoration":"none"}}>{"Email"}</a>
+              <a href={mailtoUrl} data-ui="1" style={{"pointerEvents":"auto","padding":"14px 26px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.25)","fontSize":"12px","fontWeight":"700","letterSpacing":".1em","textTransform":"uppercase","textDecoration":"none"}}>{"Email"}</a>
               {" "}
             </span>
           </span>

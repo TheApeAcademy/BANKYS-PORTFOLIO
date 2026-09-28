@@ -5,6 +5,7 @@
 // grades the project Z1-Z5, saves it, and hands the client a pre-filled
 // message for whichever channel they want us to reply on. The estimate is a
 // starting point: the final price is confirmed by hand after review.
+import { CONTACT } from "@zebraish/lib/contact";
 import { getZbLang, tr, translateTree, useZbLang } from "@/lib/zebraish/i18n";
 import { gradeNameEs } from "@/lib/zebraish/es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -25,9 +26,9 @@ export function openProjectBuilder(detail: OpenBuilderDetail = {}) {
   window.dispatchEvent(new CustomEvent<OpenBuilderDetail>(OPEN_BUILDER_EVENT, { detail }));
 }
 
-const PHONE = "2348165320780";
-const EMAIL = "j0shbankole19@gmail.com";
-const SNAP = "j0shh.b";
+const PHONE = CONTACT.whatsapp;
+const EMAIL = CONTACT.email;
+const SNAP = CONTACT.snapchat;
 const ACCENT = "#17c98d";
 
 type Channel = "whatsapp" | "email" | "imessage" | "telegram" | "snapchat";
