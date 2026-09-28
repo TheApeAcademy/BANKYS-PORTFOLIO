@@ -94,7 +94,7 @@ function template(v) {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
-      <section id="approach" ref={v.rootRef} style={css(`scroll-margin-top:72px;position:relative;overflow:hidden;font-family:Inter,-apple-system,sans-serif;color:var(--text);padding:${v.pad ?? ""};background:${v.sectionBg ?? ""}`)}>
+      <section id="ecosystem" ref={v.rootRef} style={css(`scroll-margin-top:72px;position:relative;overflow:hidden;font-family:Inter,-apple-system,sans-serif;color:var(--text);padding:${v.pad ?? ""};background:${v.sectionBg ?? ""}`)}>
       {" "}
       {v.isCurrent ? (
         <>

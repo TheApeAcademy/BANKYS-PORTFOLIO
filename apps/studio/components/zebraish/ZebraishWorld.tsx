@@ -169,7 +169,7 @@ class Component extends DCLogic {
       numbers: this.props.numbers ?? 'c', head: this.props.head ?? 'a', footer: this.props.footer ?? 'a', ecosystem: this.props.ecosystem ?? 'b',
       heroVignette: stripes === 'current' ? 'var(--bg)' : 'rgba(var(--bg-rgb),.4)',
       navLinksDisplay: this.state.vw && this.state.vw < 1160 ? 'none' : 'flex',
-      navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#approach', 'Approach'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
+      navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#ecosystem', 'Ecosystem'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
       toggleTheme: () => this.setState({ themeOverride: theme === 'light' ? 'dark' : 'light' }, () => this.drawRadar && setTimeout(() => this.drawRadar(1), 50)),
       dropOpen: this.state.drop, toggleDrop: () => this.setState(s => ({ drop: !s.drop })),
       dropItems: [{ label: 'WhatsApp', href: 'https://wa.me/2348165320780' }, { label: 'Email', href: 'mailto:j0shbankole19@gmail.com' }, { label: 'Snapchat', href: 'https://www.snapchat.com/add/j0shh.b' }],
