@@ -587,9 +587,7 @@ const PAGES: Record<string, string> = {
   // Project builder
   "Your WhatsApp number": "Tu número de WhatsApp",
   "Your email": "Tu email",
-  "Your Telegram username": "Tu usuario de Telegram",
   "+234 802 123 4567": "+34 612 34 56 78",
-  "@yourname": "@tunombre",
   "you@brand.com": "tu@marca.com",
   "Included": "Incluido",
   "Less": "Menos",

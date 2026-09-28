@@ -30,11 +30,10 @@ const PHONE = CONTACT.whatsapp;
 const EMAIL = CONTACT.email;
 const ACCENT = "#17c98d";
 
-type Channel = "whatsapp" | "email" | "telegram";
+type Channel = "whatsapp" | "email";
 const CHANNELS: { id: Channel; label: string; handle: string; ph: string }[] = [
   { id: "whatsapp", label: "WhatsApp", handle: "Your WhatsApp number", ph: "+234 802 123 4567" },
   { id: "email", label: "Email", handle: "Your email", ph: "you@brand.com" },
-  { id: "telegram", label: "Telegram", handle: "Your Telegram username", ph: "@yourname" },
 ];
 
 type Phase = "type" | "steps" | "contact" | "done";
@@ -307,7 +306,6 @@ export default function ProjectBuilder() {
     return {
       whatsapp: `https://wa.me/${PHONE}?text=${t}`,
       email: `mailto:${EMAIL}?subject=${subject}&body=${t}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(saved ? `${location.origin}/track?token=${saved.token}` : location.origin)}&text=${t}`,
     } as Record<Channel, string>;
   }, [message, saved, grade, lang]);
 
