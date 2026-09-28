@@ -27,7 +27,7 @@ class Component extends DCLogic {
     this.scrollFx();
     this.bindReveals();
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) import('lenis').then(m => {
-      const L = m.default || m.Lenis; this.lenis = new L({ lerp: .09, wheelMultiplier: 1, smoothWheel: true });
+      const L = m.default || m.Lenis; this.lenis = new L({ lerp: .09, wheelMultiplier: 1, smoothWheel: true }); window.__lenis = this.lenis;
       const f = t => { this.lenis.raf(t); this._ln = requestAnimationFrame(f); }; this._ln = requestAnimationFrame(f);
     }).catch(() => {});
     this.initRadar();
@@ -69,7 +69,7 @@ class Component extends DCLogic {
   }
   sfx(k) { if (!this.state.sound || !this.aud) return; const a = this.aud[k]; try { a.currentTime = 0; a.play(); } catch (e) {} }
   toggleSound() { const on = !this.state.sound; this.setState({ sound: on }); if (!this.aud) return; if (on) { this.aud.amb.play().catch(() => {}); } else this.aud.amb.pause(); }
-  componentWillUnmount() { removeEventListener('resize', this._vw); (this._it || []).forEach(clearTimeout); cancelAnimationFrame(this._rv); this.world && this.world.destroy(); this.aud && this.aud.amb.pause(); document.documentElement.style.overflow = ''; cancelAnimationFrame(this._ln); this.lenis && this.lenis.destroy(); removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); cancelAnimationFrame(this._lq); }
+  componentWillUnmount() { removeEventListener('resize', this._vw); (this._it || []).forEach(clearTimeout); cancelAnimationFrame(this._rv); this.world && this.world.destroy(); this.aud && this.aud.amb.pause(); document.documentElement.style.overflow = ''; cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); cancelAnimationFrame(this._lq); }
   scrollFx() {
     const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
     const vel = Math.max(-1, Math.min(1, (y - (this._ly ?? y)) / 60)); this._ly = y;

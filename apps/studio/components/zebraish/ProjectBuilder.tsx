@@ -360,7 +360,7 @@ export default function ProjectBuilder() {
         </div>
 
         {/* Body */}
-        <div ref={bodyRef} style={{ padding: "24px 26px", overflowY: "auto", flex: 1 }}>
+        <div ref={bodyRef} data-lenis-prevent style={{ padding: "24px 26px", overflowY: "auto", overscrollBehavior: "contain", WebkitOverflowScrolling: "touch", flex: 1 }}>
           <div key={`${phase}-${stepPos}`} style={{ animation: "zbpb-step .45s cubic-bezier(.16,1,.3,1) both" }}>
             {phase === "type" ? (
               <>

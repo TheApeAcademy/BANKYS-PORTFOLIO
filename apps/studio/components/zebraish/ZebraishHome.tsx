@@ -34,13 +34,13 @@ class Component extends DCLogic {
     this.scrollFx();
     this.bindReveals();
     if (!this.props.embedded && !matchMedia('(prefers-reduced-motion: reduce)').matches) import('lenis').then(m => {
-      const L = m.default || m.Lenis; this.lenis = new L({ lerp: .09, wheelMultiplier: 1, smoothWheel: true });
+      const L = m.default || m.Lenis; this.lenis = new L({ lerp: .09, wheelMultiplier: 1, smoothWheel: true }); window.__lenis = this.lenis;
       const f = t => { this.lenis.raf(t); this._ln = requestAnimationFrame(f); }; this._ln = requestAnimationFrame(f);
     }).catch(() => {});
     this.initRadar();
     this.initLiquid();
   }
-  componentWillUnmount() { removeEventListener('resize', this._vw); cancelAnimationFrame(this._ln); this.lenis && this.lenis.destroy(); removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); cancelAnimationFrame(this._lq); }
+  componentWillUnmount() { removeEventListener('resize', this._vw); cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); cancelAnimationFrame(this._lq); }
   // Arrival from the Experience: it fades out to this page's own background, so
   // Home fades in from that same colour with a gentle settle instead of a cut.
   runReveal() {

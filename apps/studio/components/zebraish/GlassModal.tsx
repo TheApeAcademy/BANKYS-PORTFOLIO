@@ -64,7 +64,7 @@ export function GlassModal({
           </div>
           <button type="button" onClick={onClose} aria-label="Close" style={{ width: 38, height: 38, borderRadius: "50%", border: "1px solid rgba(245,245,247,.2)", background: "rgba(245,245,247,.05)", color: "#f5f5f7", fontSize: 18, cursor: "pointer", fontFamily: "inherit" }}>×</button>
         </div>
-        <div style={{ padding: "24px 26px", overflowY: "auto", flex: 1 }}>{children}</div>
+        <div data-lenis-prevent style={{ padding: "24px 26px", overflowY: "auto", overscrollBehavior: "contain", WebkitOverflowScrolling: "touch", flex: 1 }}>{children}</div>
       </div>
     </div>
   );
