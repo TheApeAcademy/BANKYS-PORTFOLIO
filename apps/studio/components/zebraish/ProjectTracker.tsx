@@ -5,6 +5,8 @@
 // builder's confirmation, or by project code + the contact they gave us.
 // Shows grade, estimate or confirmed price (Pay once confirmed), selections,
 // live progress and the message thread.
+import { getZbLang, tr, translateTree, useZbLang } from "@/lib/zebraish/i18n";
+import { gradeNameEs } from "@/lib/zebraish/es";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Answers } from "@zebraish/lib/catalogue/types";
 import { getProjectType } from "@/lib/catalogue/engine";
@@ -34,7 +36,10 @@ const STATUS: Record<string, string> = {
   revision_requested: "Revision requested", revision_in_progress: "Revising", completed: "Completed", closed: "Closed", cancelled: "Cancelled", refunded: "Refunded",
 };
 
-const money = (n: number, cur = "EUR") => ({ EUR: "€", GBP: "£", USD: "$", NGN: "₦" } as Record<string, string>)[cur] + Math.round(n).toLocaleString("en-US");
+const money = (n: number, cur = "EUR") => {
+  const sym = ({ EUR: "€", GBP: "£", USD: "$", NGN: "₦" } as Record<string, string>)[cur] ?? cur;
+  return getZbLang() === "es" ? `${Math.round(n).toLocaleString("es-ES")} ${sym}` : sym + Math.round(n).toLocaleString("en-US");
+};
 
 function useCountUp(target: number, ms = 900) {
   const [shown, setShown] = useState(0);
@@ -54,6 +59,7 @@ function useCountUp(target: number, ms = 900) {
 }
 
 function Lookup({ onFound, initialError }: { onFound: (token: string) => void; initialError?: string }) {
+  useZbLang();
   const [code, setCode] = useState("");
   const [contact, setContact] = useState("");
   const [error, setError] = useState(initialError ?? "");
@@ -66,7 +72,7 @@ function Lookup({ onFound, initialError }: { onFound: (token: string) => void; i
     setBusy(false);
     if ("token" in res) onFound(res.token); else setError(res.error);
   };
-  return (
+  return translateTree(
     <form onSubmit={submit}>
       <div style={glass.label}>Track a project</div>
       <h3 style={glass.h3}>Where&apos;s my project at?</h3>
@@ -88,12 +94,13 @@ function Lookup({ onFound, initialError }: { onFound: (token: string) => void; i
 }
 
 function Tracker({ token, view, onRefresh, onSwitch }: { token: string; view: Extract<TrackerView, { ok: true }>; onRefresh: (v: TrackerView) => void; onSwitch: () => void }) {
+  const lang = useZbLang();
   const { overview: o, tracker: t, messages } = view;
   const cfg = o.configuration as Answers & { grade?: string; grade_name?: string; idea?: string; initial_estimate?: number };
   const price = useCountUp(Number(o.price ?? 0));
   const pct = Math.round(Number(t?.percent_complete ?? 0));
   const typeLabel = (o.project_type && getProjectType(o.project_type)?.label) || "Project";
-  const selections = o.project_type ? describeSelections(o.project_type, cfg) : [];
+  const selections = o.project_type ? describeSelections(o.project_type, cfg, lang) : [];
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [msgError, setMsgError] = useState("");
@@ -109,7 +116,7 @@ function Tracker({ token, view, onRefresh, onSwitch }: { token: string; view: Ex
   };
 
   const card: React.CSSProperties = { borderRadius: 20, border: "1px solid rgba(245,245,247,.1)", background: "rgba(245,245,247,.035)", padding: "18px 20px" };
-  return (
+  return translateTree(
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <div>
@@ -133,7 +140,7 @@ function Tracker({ token, view, onRefresh, onSwitch }: { token: string; view: Ex
         {cfg.grade ? (
           <div style={{ padding: "10px 14px", borderRadius: 16, border: "1px solid rgba(245,245,247,.2)", textAlign: "center" }}>
             <div style={{ fontSize: 20, fontWeight: 900 }}>{cfg.grade}</div>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(245,245,247,.6)" }}>{cfg.grade_name}</div>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(245,245,247,.6)" }}>{lang === "es" && cfg.grade_name ? gradeNameEs(String(cfg.grade_name)) : cfg.grade_name}</div>
           </div>
         ) : null}
         {o.payable ? <a href={`/start/pay?token=${encodeURIComponent(token)}`} style={glass.primary}>Pay {o.price ? money(Number(o.price), o.currency) : ""} →</a> : null}
@@ -143,7 +150,7 @@ function Tracker({ token, view, onRefresh, onSwitch }: { token: string; view: Ex
       <div style={card}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
           <span style={glass.label}>Progress</span>
-          <span style={{ fontSize: 13, fontWeight: 700 }}>{t?.stages?.length ? `${pct}%${t.current_stage_label ? ` · ${t.current_stage_label}` : ""}` : "Starting soon"}</span>
+          <span style={{ fontSize: 13, fontWeight: 700 }}>{t?.stages?.length ? `${pct}%${t.current_stage_label ? ` · ${tr(t.current_stage_label)}` : ""}` : "Starting soon"}</span>
         </div>
         <div style={{ height: 6, borderRadius: 100, background: "rgba(245,245,247,.08)", overflow: "hidden" }}>
           <div style={{ height: "100%", width: `${pct}%`, borderRadius: 100, background: glass.accent, transition: "width 1.2s cubic-bezier(.16,1,.3,1)" }} />
@@ -198,6 +205,7 @@ function Tracker({ token, view, onRefresh, onSwitch }: { token: string; view: Ex
 }
 
 export default function ProjectTracker() {
+  useZbLang();
   // Home renders client-only, so the link's ?track= token can be read up front.
   const [token, setToken] = useState<string | null>(() => {
     if (typeof location === "undefined") return null;
@@ -248,7 +256,7 @@ export default function ProjectTracker() {
   const close = useCallback(() => setOpen(false), []);
   if (!open) return null;
 
-  return (
+  return translateTree(
     <GlassModal title="Your project" kicker="Zebraish Studio · Tracker" onClose={close} width={760}>
       {token && (loading || !view) ? (
         <p style={{ color: "rgba(245,245,247,.6)", fontSize: 14 }}>Loading your project...</p>

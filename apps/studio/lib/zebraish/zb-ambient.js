@@ -87,9 +87,9 @@ precision highp float;uniform vec2 uR;uniform float uT,uS,uV;uniform vec2 uM;uni
     document.addEventListener('click', e => { const el = e.target.closest && e.target.closest(hit); if (!el) return; const href = el.getAttribute && el.getAttribute('href'); play(href && !href.startsWith('#') && !el.target ? 'whoosh' : 'click', .45); }, true);
     const btn = document.createElement('button'); btn.type = 'button'; btn.setAttribute('data-ui', '1');
     btn.style.cssText = 'position:fixed;right:20px;bottom:20px;z-index:2147483000;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:100px;background:rgba(10,10,12,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(245,245,247,.16);color:#f5f5f7;font:700 10px/1 Inter,-apple-system,sans-serif;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap';
-    const paint = () => { btn.innerHTML = `<span style="display:flex;align-items:flex-end;gap:2px;height:11px">${[.4, .9, .6, .8].map((h, i) => `<span style="width:2px;height:${on ? h * 100 : 25}%;background:currentColor;${on && !reduce ? `animation:zbEq ${0.6 + i * .15}s ease-in-out ${i * .1}s infinite alternate` : ''}"></span>`).join('')}</span>${on ? 'Sound on' : 'Sound off'}`; btn.setAttribute('aria-pressed', on ? 'true' : 'false'); };
+    const paint = () => { btn.innerHTML = `<span style="display:flex;align-items:flex-end;gap:2px;height:11px">${[.4, .9, .6, .8].map((h, i) => `<span style="width:2px;height:${on ? h * 100 : 25}%;background:currentColor;${on && !reduce ? `animation:zbEq ${0.6 + i * .15}s ease-in-out ${i * .1}s infinite alternate` : ''}"></span>`).join('')}</span>${window.__zbLang === 'es' ? (on ? 'Sonido activado' : 'Sonido desactivado') : (on ? 'Sound on' : 'Sound off')}`; btn.setAttribute('aria-pressed', on ? 'true' : 'false'); };
     const st = document.createElement('style'); st.textContent = '@keyframes zbEq{from{transform:scaleY(.35)}to{transform:scaleY(1)}}'; document.head.appendChild(st);
-    btn.onclick = () => window.ZBSound.set(!on); paint();
+    btn.onclick = () => window.ZBSound.set(!on); paint(); addEventListener('zb:lang', paint);
     if (!window.ZB_NO_SOUND_UI) document.body.appendChild(btn);
   }
 

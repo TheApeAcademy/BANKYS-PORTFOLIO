@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getServerLang } from "@/lib/i18n/server";
+import { ES } from "@/lib/zebraish/es";
 import { ZebraishPage } from "@/components/zebraish/ZebraishPage";
 import { ZB_PROJECTS } from "@/lib/zebraish/projects.js";
 
@@ -14,10 +16,12 @@ export async function generateMetadata({ params }: PageProps<"/work/[id]">): Pro
   const { id } = await params;
   const p = PROJECTS.find((x) => x.id === id);
   if (!p) return {};
+  const es = (await getServerLang()) === "es";
+  const desc = (es && ES[p.desc]) || p.desc;
   return {
-    title: `${p.name} · Case study · Zebraish Studio`,
-    description: p.desc,
-    openGraph: { title: `${p.name} · Zebraish Studio`, description: p.desc, images: p.img ? [p.img] : undefined },
+    title: `${p.name} · ${es ? "Caso de estudio" : "Case study"} · Zebraish Studio`,
+    description: desc,
+    openGraph: { title: `${p.name} · Zebraish Studio`, description: desc, images: p.img ? [p.img] : undefined },
   };
 }
 

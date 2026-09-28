@@ -4,11 +4,12 @@
 // Zebraish Experience: ported from the Claude Design handoff (Zebraish Experience.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
+import { getZbLang, setSiteLang, tr } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 
 class Component extends DCLogic {
   rootRef = React.createRef();
-  state = { lang: 'en', power: true, sound: false, act: -1, pj: null, eco: null, home: false };
+  state = { power: true, sound: false, act: -1, pj: null, eco: null, home: false };
   PROJECTS = [
     { id: 'malaak', name: 'MALAAK', cat: 'Modest Fashion', img: '/zb/assets/a3eb67a33eb96ed907adcdd7619cb9d5.jpg', url: 'https://malaak-abaya.vercel.app/', desc: 'Minimal editorial fashion site with a hover-reveal product grid and WhatsApp ordering, built for Snapchat-native buyers.' },
     { id: 'doberman', name: 'DOBERMAN', cat: 'Brand', img: '/zb/assets/b78ad4f230a4015d24a420fce2a7d53b.jpg', url: 'https://doberman-kappa.vercel.app/', desc: 'High-impact brand site. Aggressive typography, a dramatic dark palette and a conversion-focused layout.' },
@@ -92,7 +93,7 @@ class Component extends DCLogic {
     }
     if (flash) { const fo = t < 7.35 ? ss(7.12, 7.35, t) : 1; const hole = t < 7.4 ? 0 : Math.pow(lin(7.4, 8.5, t), 1.6) * 150; flash.style.opacity = String(fo * (1 - ss(8.3, 8.6, t))); flash.style.webkitMaskImage = flash.style.maskImage = hole > 0 ? `radial-gradient(circle at 50% 50%, transparent ${hole}%, #000 ${hole + 6}%)` : 'none'; }
     if (t > 7.3 && !this._wh) { this._wh = 1; this.play('whoosh', .45); }
-    const st = this.$('status'); const msg = t < 1.9 ? 'Constructing the pattern…' : t < 3.6 ? 'Establishing signal…' : 'Entering Zebraish…';
+    const st = this.$('status'); const msg = tr(t < 1.9 ? 'Constructing the pattern…' : t < 3.6 ? 'Establishing signal…' : 'Entering Zebraish…');
     if (st.textContent !== msg) { st.textContent = msg; st.animate([{ opacity: 0, letterSpacing: '.42em' }, { opacity: 1, letterSpacing: '.28em' }], { duration: 700, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }); }
     if (t > 5.4 && !this._stOut) { this._stOut = 1; st.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' }); }
     this.stmt = ss(8.9, 10, t);
@@ -154,9 +155,9 @@ class Component extends DCLogic {
     if (q > .3 && !this._xw) { this._xw = 1; this.play('whoosh', .4); } if (q < .2) this._xw = 0;
     if (q >= .93 && !this._nav) { this._nav = 1; try { sessionStorage.setItem('zb-from-zebra', '1'); } catch (e) {} setTimeout(() => { location.href = '/studio#from-zebra'; }, 60); }
   }
-  setLang(l) { this.setState({ lang: l }); const root = this.rootRef.current; if (!root) return; root.querySelectorAll('[data-es]').forEach(el => { if (el.dataset.en == null) el.dataset.en = el.textContent; el.textContent = l === 'es' ? el.dataset.es : el.dataset.en; }); document.documentElement.lang = l; }
+  setLang(l) { setSiteLang(l); }
   labels(list) { for (const l of list) { const el = this.lb[l.id]; if (!el) continue; const o = l.o > .02 ? l.o : 0; if (o === 0) { if (el._o !== 0) { el._o = 0; el.style.opacity = '0'; } continue; } el._o = o; el.style.opacity = o.toFixed(3); el.style.transform = `translate3d(${l.x.toFixed(1)}px,${l.y.toFixed(1)}px,0)`; } }
-  setCursor(k) { const lab = this.$('clabel'), ring = this.$('cring'); if (!lab) return; lab.textContent = k; const big = k !== 'Explore'; ring.style.width = ring.style.height = big ? '46px' : '26px'; ring.style.margin = big ? '-23px 0 0 -23px' : '-13px 0 0 -13px'; ring.style.background = big ? 'rgba(245,245,247,.12)' : 'transparent'; if (big) this.play('hover', .22); }
+  setCursor(k) { const lab = this.$('clabel'), ring = this.$('cring'); if (!lab) return; lab.textContent = tr(k); const big = k !== 'Explore'; ring.style.width = ring.style.height = big ? '46px' : '26px'; ring.style.margin = big ? '-23px 0 0 -23px' : '-13px 0 0 -13px'; ring.style.background = big ? 'rgba(245,245,247,.12)' : 'transparent'; if (big) this.play('hover', .22); }
   click3d(kind, id) {
     this.world && this.world.nudgeSeed(.07); this.play('click', .5);
     if (kind === 'project') { this.world.focus(id); this.lenis && this.lenis.stop(); this.setState({ pj: id, eco: null }); }
@@ -167,7 +168,7 @@ class Component extends DCLogic {
     const pj0 = this.PROJECTS.find(x => x.id === this.state.pj) || {}, pj = Object.assign({}, pj0, { caseHref: '/work/' + (pj0.id || '') }), eco = this.ECO.find(x => x.id === this.state.eco) || {};
     const touch = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
     return {
-      rootRef: this.rootRef, homeOn: this.state.home, langLabel: this.state.lang === 'es' ? 'ES · en' : 'EN · es', toggleLang: () => this.setLang(this.state.lang === 'es' ? 'en' : 'es'),
+      rootRef: this.rootRef, homeOn: this.state.home, langLabel: getZbLang() === 'es' ? 'ES · en' : 'EN · es', toggleLang: () => this.setLang(getZbLang() === 'es' ? 'en' : 'es'),
       powerOn: this.state.power, start: () => this.start(),
       powerLabel: touch ? 'Tap to power on' : 'Click to power on', powerSub: touch ? 'Sound off · turn it on anytime' : 'Best with sound',
       soundLabel: this.state.sound ? 'Sound on' : 'Sound off',

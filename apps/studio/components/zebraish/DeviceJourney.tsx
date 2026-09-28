@@ -4,6 +4,7 @@
 // Device Journey: ported from the Claude Design handoff (Device Journey.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
+import { tr } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 
 class Component extends DCLogic {
@@ -81,7 +82,7 @@ class Component extends DCLogic {
     const seg = (p - A.p) / (B.p - A.p || 1);
     const siteIdx = near.site, S = this.SITES[siteIdx];
     if (siteIdx !== this.lastSite) {
-      this.lastSite = siteIdx; E.host.textContent = S[3]; E.sname.textContent = S[0]; E.stag.textContent = S[1]; E.btn.textContent = S[5];
+      this.lastSite = siteIdx; E.host.textContent = S[3]; E.sname.textContent = S[0]; E.stag.textContent = tr(S[1]); E.btn.textContent = tr(S[5]);
       E.grid.style.display = S[4] ? 'none' : 'grid';
       E.live.style.opacity = 0; E.live.onload = () => { if (E.live.src !== 'about:blank') E.live.style.opacity = 1; }; clearTimeout(this._lt);
       const framed = !this.NO_FRAME.has(S[3]); E.live.style.display = framed ? 'block' : 'none'; E.shade.style.display = E.sname.parentElement.style.display = framed || !S[4] ? '' : 'none';
@@ -97,7 +98,7 @@ class Component extends DCLogic {
     E.cursor.style.left = (cx * cw) + 'px'; E.cursor.style.top = (cy * ch) + 'px';
     const clickSlot = Math.floor(p * 14);
     if (clickSlot !== this.lastClick) { this.lastClick = clickSlot; E.ripple.style.animation = 'none'; E.ripple.offsetWidth; E.ripple.style.animation = 'djclick .6s ease-out'; E.btn.style.transform = 'scale(.94)'; setTimeout(() => { if (E.btn) E.btn.style.transform = ''; }, 160); }
-    E.dname.textContent = near.name; E.dsub.textContent = near.sub;
+    E.dname.textContent = tr(near.name); E.dsub.textContent = tr(near.sub);
     this.stops.forEach((s, k) => { const on = k === near.stop; s.style.background = on ? 'var(--invert-bg)' : 'transparent'; s.style.color = on ? 'var(--invert-fg)' : 'var(--text-faint)'; });
   }
   renderVals() {

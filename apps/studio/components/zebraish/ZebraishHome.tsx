@@ -4,6 +4,7 @@
 // Zebraish Home: ported from the Claude Design handoff (Zebraish Home.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
+import { getZbLang, setSiteLang } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 import StripeField from "./StripeField";
 import ZebraHead from "./ZebraHead";
@@ -235,9 +236,9 @@ function template(v) {
             </button>
             {" "}
             <div style={{"display":"flex","alignItems":"center","gap":"5px","marginRight":"4px","fontSize":"11px","fontWeight":"700","letterSpacing":".04em"}}>
-              <span style={{"color":"var(--text-muted)","padding":"4px 5px"}}>{"ES"}</span>
+              <button type="button" onClick={() => setSiteLang("es")} aria-pressed={getZbLang() === "es"} aria-label="Cambiar a español" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "es" ? "var(--text)" : "var(--text-muted)"}}>{"ES"}</button>
               <span style={{"color":"var(--text-faint)"}}>{"|"}</span>
-              <span style={{"color":"var(--text)","padding":"4px 5px"}}>{"EN"}</span>
+              <button type="button" onClick={() => setSiteLang("en")} aria-pressed={getZbLang() === "en"} aria-label="Switch to English" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "en" ? "var(--text)" : "var(--text-muted)"}}>{"EN"}</button>
             </div>
             {" "}
             <a href="#track" className="zbzh-0" style={{"fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","color":"var(--text-muted)","textDecoration":"none","whiteSpace":"nowrap"}}>{"Track"}</a>

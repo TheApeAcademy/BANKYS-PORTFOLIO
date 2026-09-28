@@ -4,6 +4,7 @@
 // Zebraish World: ported from the Claude Design handoff (Zebraish World.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
+import { getZbLang, setSiteLang, tr } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 import ZebraHead from "./ZebraHead";
 import GlassNumbers from "./GlassNumbers";
@@ -40,9 +41,9 @@ class Component extends DCLogic {
     lines.forEach((l, i) => { l.style.transition = 'transform 1.1s cubic-bezier(.16,1,.3,1) ' + (120 + i * 90) + 'ms'; requestAnimationFrame(() => requestAnimationFrame(() => l.style.transform = 'scaleX(1)')); });
     bar.style.transition = 'width 7.4s linear'; requestAnimationFrame(() => requestAnimationFrame(() => bar.style.width = '100%'));
     const T = (ms, f) => this._it.push(setTimeout(f, ms)); this._it = [];
-    T(600, () => st.textContent = 'Constructing the pattern…');
-    T(1600, () => st.textContent = 'Establishing signal…');
-    T(2600, () => st.textContent = 'Entering Zebraish…');
+    T(600, () => st.textContent = tr('Constructing the pattern…'));
+    T(1600, () => st.textContent = tr('Establishing signal…'));
+    T(2600, () => st.textContent = tr('Entering Zebraish…'));
     T(3300, () => { st.style.opacity = 0; stmt.style.opacity = 1; stmt.style.transform = 'none'; lines.forEach(l => { l.style.transition = 'transform 1.2s cubic-bezier(.7,0,.2,1), opacity 1.2s'; l.style.transform = 'scaleX(0)'; l.style.transformOrigin = 'right'; }); });
     T(4900, () => { stmt.style.opacity = 0; stmt.style.transform = 'translateY(-24px) scale(.96)'; head.style.opacity = 1; head.style.transform = 'scale(1)'; });
     T(6900, () => { head.style.transition = 'transform 1.35s cubic-bezier(.7,0,.2,1)'; head.style.transform = 'scale(38)'; this.sfx('whoosh'); });
@@ -274,9 +275,9 @@ function template(v) {
             </button>
             {" "}
             <div style={{"display":"flex","alignItems":"center","gap":"5px","marginRight":"4px","fontSize":"11px","fontWeight":"700","letterSpacing":".04em"}}>
-              <span style={{"color":"var(--text-muted)","padding":"4px 5px"}}>{"ES"}</span>
+              <button type="button" onClick={() => setSiteLang("es")} aria-pressed={getZbLang() === "es"} aria-label="Cambiar a español" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "es" ? "var(--text)" : "var(--text-muted)"}}>{"ES"}</button>
               <span style={{"color":"var(--text-faint)"}}>{"|"}</span>
-              <span style={{"color":"var(--text)","padding":"4px 5px"}}>{"EN"}</span>
+              <button type="button" onClick={() => setSiteLang("en")} aria-pressed={getZbLang() === "en"} aria-label="Switch to English" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "en" ? "var(--text)" : "var(--text-muted)"}}>{"EN"}</button>
             </div>
             {" "}
             <a href="#start-a-project" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"9px 20px","fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","borderRadius":"20px","textDecoration":"none","transition":"transform var(--t) var(--ease),box-shadow var(--t) var(--ease)"}} className="zbzw-1">{"Start a Project"}</a>

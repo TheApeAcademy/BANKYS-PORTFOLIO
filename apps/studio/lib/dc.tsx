@@ -5,6 +5,7 @@
 // mirrors the prototype runtime's semantics so the ported pages render and
 // behave exactly as designed.
 import React, { Fragment, isValidElement } from "react";
+import { subscribeZbLang, translateTree } from "@/lib/zebraish/i18n";
 
 type Vals = Record<string, unknown>;
 type Props = Record<string, unknown>;
@@ -98,7 +99,9 @@ export function dcComponent(name: string, Logic: LogicClass, template: (v: Vals)
       this.logic.state = { ...prev, ...patch };
       this.setState((s) => ({ v: s.v + 1 }), cb);
     };
+    unsubLang: (() => void) | null = null;
     componentDidMount() {
+      this.unsubLang = subscribeZbLang(() => this.forceUpdate());
       try {
         this.logic.componentDidMount();
       } catch (e) {
@@ -117,6 +120,7 @@ export function dcComponent(name: string, Logic: LogicClass, template: (v: Vals)
       }
     }
     componentWillUnmount() {
+      this.unsubLang?.();
       try {
         this.logic.componentWillUnmount();
       } catch (e) {
@@ -134,7 +138,7 @@ export function dcComponent(name: string, Logic: LogicClass, template: (v: Vals)
       }
       return (
         <div className="sc-host" data-sc-name={name} style={this.props.__hostStyle as React.CSSProperties | undefined}>
-          {template(vals)}
+          {translateTree(template(vals))}
         </div>
       );
     }

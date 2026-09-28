@@ -6,6 +6,19 @@
 import React from "react";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 import { openProjectBuilder } from "./ProjectBuilder";
+import { FLAT_BASE_PRICES, FLOWS, PROJECT_TYPES } from "@/lib/catalogue/catalogue";
+import { getZbLang } from "@/lib/zebraish/i18n";
+
+/** Lowest starting price for a project type, straight from the pricing catalogue. */
+function fromPrice(typeId) {
+  let n = FLAT_BASE_PRICES[typeId];
+  if (n === undefined) {
+    const flow = FLOWS[PROJECT_TYPES.find((t) => t.id === typeId)?.flow];
+    const base = flow?.steps.find((st) => st.role === "base");
+    n = Math.min(...(base?.options || []).map((o) => o.price || 0).filter((x) => x > 0));
+  }
+  return getZbLang() === "es" ? `${n.toLocaleString("es-ES")} €` : `€${n.toLocaleString("en-US")}`;
+}
 
 // Idea Prompt chips to catalogue project types (lib/catalogue).
 const TYPE_ID = { Website: 'website', 'Web App': 'web_app', 'E-commerce': 'ecommerce', 'AI Product': 'ai_application', Automation: 'automation', 'Creative Experience': 'website' };
@@ -211,10 +224,10 @@ function template(v) {
       {" "}
       <div style={{"display":"flex","gap":"22px","flexWrap":"wrap","justifyContent":"center","marginTop":"26px","fontSize":"11px","fontWeight":"600","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint,rgba(var(--tint-rgb),.35))"}}>
         {" "}
-        <span>{"Websites from £[TBC]"}</span>
-        <span>{"Web apps from £[TBC]"}</span>
-        <span>{"AI products from £[TBC]"}</span>
-        <span>{"Immersive from £[TBC]"}</span>
+        <span>{`Websites from ${fromPrice("website")}`}</span>
+        <span>{`Web apps from ${fromPrice("web_app")}`}</span>
+        <span>{`Stores from ${fromPrice("ecommerce")}`}</span>
+        <span>{`AI products from ${fromPrice("ai_application")}`}</span>
         {" "}
       </div>
     </section>

@@ -10,7 +10,7 @@ export type Grade = {
   color: string;
 };
 
-const GRADES: Omit<Grade, "level">[] = [
+export const GRADES: Omit<Grade, "level">[] = [
   { code: "Z1", name: "Spark", blurb: "Small, focused build. Fast turnaround.", color: "#17c98d" },
   { code: "Z2", name: "Build", blurb: "A complete product with a few moving parts.", color: "#3d7ef0" },
   { code: "Z3", name: "Engine", blurb: "Custom logic, integrations or a bigger surface.", color: "#8b5cf6" },

@@ -2,13 +2,14 @@
 
 // Collaborator pop-ups on Zebraish Home: "Apply to Collaborate" and "Enter Your
 // Code", in glass. Same server actions as the /collaborate and /login pages.
+import { getZbLang, translateTree, useZbLang } from "@/lib/zebraish/i18n";
 import { useActionState, useCallback, useEffect, useState, type FormEvent } from "react";
 import { submitCollaboratorApplication, type ApplyState } from "@/lib/actions/collaborate";
 import { verifyAccessCode, type SignInState } from "@/lib/actions/collaborator-auth";
 import { translate, type DictKey } from "@/lib/i18n/dictionary";
 
-// Zebraish Home is English-first, so these read English regardless of the portal language cookie.
-const t = (key: DictKey) => translate("en", key);
+// Same dictionary as the /collaborate and /login pages, in the site language.
+const t = (key: DictKey) => translate(getZbLang(), key);
 import { GlassModal, glass } from "./GlassModal";
 
 type Mode = "apply" | "code" | null;
@@ -16,7 +17,8 @@ type Mode = "apply" | "code" | null;
 const MAX_TOTAL_ATTACHMENT_BYTES = 3.5 * 1024 * 1024;
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
+  useZbLang();
+  return translateTree(
     <label style={{ display: "grid", gap: 6 }}>
       <span style={glass.label}>{label}</span>
       {children}
@@ -25,6 +27,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function ApplyForm({ onCode }: { onCode: () => void }) {
+  useZbLang();
   const [state, formAction, pending] = useActionState(submitCollaboratorApplication, { error: null, success: false } as ApplyState);
   const [clientError, setClientError] = useState<string | null>(null);
 
@@ -39,7 +42,7 @@ function ApplyForm({ onCode }: { onCode: () => void }) {
   };
 
   if (state.success) {
-    return (
+    return translateTree(
       <div style={{ textAlign: "center", padding: "16px 0" }}>
         <div style={{ ...glass.label, color: glass.accent }}>Application sent</div>
         <h3 style={glass.h3}>{t("collab.form.successTitle")}</h3>
@@ -48,9 +51,9 @@ function ApplyForm({ onCode }: { onCode: () => void }) {
     );
   }
 
-  return (
+  return translateTree(
     <form action={formAction} onSubmit={onSubmit} style={{ display: "grid", gap: 14 }}>
-      <input type="hidden" name="lang" value="en" />
+      <input type="hidden" name="lang" value={getZbLang()} />
       <div>
         <div style={glass.label}>Collaborate</div>
         <h3 style={glass.h3}>Bring us clients. Earn on every project.</h3>
@@ -83,10 +86,11 @@ function ApplyForm({ onCode }: { onCode: () => void }) {
 }
 
 function CodeForm({ onApply }: { onApply: () => void }) {
+  useZbLang();
   const [state, formAction, pending] = useActionState(verifyAccessCode, { error: null } as SignInState);
-  return (
+  return translateTree(
     <form action={formAction} style={{ display: "grid", gap: 14 }}>
-      <input type="hidden" name="lang" value="en" />
+      <input type="hidden" name="lang" value={getZbLang()} />
       <div>
         <div style={glass.label}>Collaborator access</div>
         <h3 style={glass.h3}>Enter your code.</h3>
@@ -105,6 +109,7 @@ function CodeForm({ onApply }: { onApply: () => void }) {
 }
 
 export default function CollaboratorPopups() {
+  useZbLang();
   const [mode, setMode] = useState<Mode>(null);
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -119,7 +124,7 @@ export default function CollaboratorPopups() {
   }, []);
   const close = useCallback(() => setMode(null), []);
   if (!mode) return null;
-  return (
+  return translateTree(
     <GlassModal title={mode === "apply" ? "Become a collaborator" : "Collaborator access"} onClose={close} width={mode === "apply" ? 760 : 520}>
       {mode === "apply" ? <ApplyForm onCode={() => setMode("code")} /> : <CodeForm onApply={() => setMode("apply")} />}
     </GlassModal>

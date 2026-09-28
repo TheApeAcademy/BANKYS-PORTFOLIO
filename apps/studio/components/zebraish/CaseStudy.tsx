@@ -4,6 +4,7 @@
 // Case Study: ported from the Claude Design handoff (Case Study.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
+import { getZbLang, setSiteLang } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 
 import StripeField from "./StripeField";
@@ -53,6 +54,7 @@ function template(v) {
         <div style={{"display":"flex","gap":"10px","alignItems":"center"}}>
           {" "}
           <a href="/" style={{"padding":"9px 16px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.2)","fontSize":"11px","fontWeight":"700","letterSpacing":".14em","textTransform":"uppercase","textDecoration":"none"}}>{"← All work"}</a>
+          <button type="button" onClick={() => setSiteLang(getZbLang() === "es" ? "en" : "es")} aria-label={getZbLang() === "es" ? "Switch to English" : "Cambiar a español"} style={{"padding":"9px 14px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.2)","background":"none","color":"#f5f5f7","cursor":"pointer","fontFamily":"inherit","fontSize":"11px","fontWeight":"700","letterSpacing":".14em"}}>{getZbLang() === "es" ? "ES · en" : "EN · es"}</button>
           {" "}
           <a href="/start" style={{"padding":"10px 18px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"11px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none"}}>{"Start a project"}</a>
           {" "}

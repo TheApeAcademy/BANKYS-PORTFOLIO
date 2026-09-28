@@ -5,6 +5,8 @@
 // grades the project Z1-Z5, saves it, and hands the client a pre-filled
 // message for whichever channel they want us to reply on. The estimate is a
 // starting point: the final price is confirmed by hand after review.
+import { getZbLang, tr, translateTree, useZbLang } from "@/lib/zebraish/i18n";
+import { gradeNameEs } from "@/lib/zebraish/es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Answers, CatalogueStep } from "@zebraish/lib/catalogue/types";
 import { PROJECT_TYPES } from "@/lib/catalogue/catalogue";
@@ -39,7 +41,8 @@ const CHANNELS: { id: Channel; label: string; handle: string; ph: string }[] = [
 
 type Phase = "type" | "steps" | "contact" | "done";
 
-const money = (n: number) => "€" + Math.round(n).toLocaleString("en-US");
+const money = (n: number) =>
+  getZbLang() === "es" ? `${Math.round(n).toLocaleString("es-ES")} €` : "€" + Math.round(n).toLocaleString("en-US");
 
 /** Counts the shown number toward `target` instead of jumping to it. */
 function useCountUp(target: number, ms = 750) {
@@ -68,10 +71,11 @@ function optionPriceTag(price?: number, included?: boolean) {
 }
 
 function StepOptions({ step, value, onChange }: { step: CatalogueStep; value: Answers[string]; onChange: (v: Answers[string]) => void }) {
+  useZbLang();
   if (step.type === "number") {
     const qty = typeof value === "number" ? value : 0;
     const btn: React.CSSProperties = { width: 48, height: 48, borderRadius: "50%", border: "1px solid rgba(245,245,247,.2)", background: "rgba(245,245,247,.05)", color: "#f5f5f7", fontSize: 20, cursor: "pointer", fontFamily: "inherit" };
-    return (
+    return translateTree(
       <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
         <button type="button" style={btn} onClick={() => onChange(Math.max(step.min ?? 0, qty - 1))} aria-label="Less">-</button>
         <span style={{ fontSize: 30, fontWeight: 800, minWidth: 48, textAlign: "center", fontVariantNumeric: "tabular-nums" }}>{qty}</span>
@@ -81,7 +85,7 @@ function StepOptions({ step, value, onChange }: { step: CatalogueStep; value: An
     );
   }
   if (step.type === "text") {
-    return (
+    return translateTree(
       <textarea
         value={typeof value === "string" ? value : ""}
         onChange={(e) => onChange(e.target.value)}
@@ -97,7 +101,7 @@ function StepOptions({ step, value, onChange }: { step: CatalogueStep; value: An
     if (!multi) return onChange(id);
     onChange(selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id]);
   };
-  return (
+  return translateTree(
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(210px,1fr))", gap: 10 }}>
       {step.options?.map((o) => {
         const on = selected.includes(o.id);
@@ -128,6 +132,7 @@ function StepOptions({ step, value, onChange }: { step: CatalogueStep; value: An
 }
 
 export default function ProjectBuilder() {
+  const lang = useZbLang();
   // Home renders client-only, so ?build=1 (from the Experience and /start) can be read up front.
   const [open, setOpen] = useState(() => typeof location !== "undefined" && new URLSearchParams(location.search).get("build") === "1");
   const [phase, setPhase] = useState<Phase>("type");
@@ -225,6 +230,7 @@ export default function ProjectBuilder() {
 
   // Every selection, in words, for the message we receive.
   const selectionLines = useMemo(() => (projectType ? describeSelections(projectType, answers) : []), [projectType, answers]);
+  const selectionLinesShown = useMemo(() => (projectType ? describeSelections(projectType, answers, lang) : []), [projectType, answers, lang]);
 
   const channelDef = CHANNELS.find((c) => c.id === channel)!;
   const contactLine = `${channelDef.label}: ${handle.trim()}${channel !== "email" && email.trim() ? ` · ${email.trim()}` : ""}`;
@@ -232,24 +238,26 @@ export default function ProjectBuilder() {
   const message = useMemo(() => {
     if (!quote || !grade || !typeDef) return "";
     const track = saved ? `${location.origin}/track?token=${saved.token}` : "";
+    // The client sends this themselves, so it reads in their language.
+    const es = lang === "es";
     return [
-      `New Zebraish project${saved ? ` ${saved.code}` : ""}`,
-      `Name: ${name.trim()}`,
-      `Building: ${typeDef.label}`,
-      `Grade: ${grade.code} ${grade.name}`,
-      `Initial estimate: ${money(quote.total)}`,
-      `Reply to me on ${contactLine}`,
-      idea.trim() ? `\nIdea: ${idea.trim()}` : "",
-      `\nSelections:\n${selectionLines.map((l) => `- ${l}`).join("\n")}`,
-      track ? `\nTrack: ${track}` : "",
+      es ? `Nuevo proyecto Zebraish${saved ? ` ${saved.code}` : ""}` : `New Zebraish project${saved ? ` ${saved.code}` : ""}`,
+      `${es ? "Nombre" : "Name"}: ${name.trim()}`,
+      `${es ? "Proyecto" : "Building"}: ${es ? typeDef.labelEs ?? typeDef.label : typeDef.label}`,
+      `${es ? "Grado" : "Grade"}: ${grade.code} ${es ? gradeNameEs(grade.name) : grade.name}`,
+      `${es ? "Estimación inicial" : "Initial estimate"}: ${money(quote.total)}`,
+      `${es ? "Podéis responderme por" : "Reply to me on"} ${contactLine}`,
+      idea.trim() ? `\n${es ? "Idea" : "Idea"}: ${idea.trim()}` : "",
+      `\n${es ? "Selección" : "Selections"}:\n${selectionLinesShown.map((l) => `- ${l}`).join("\n")}`,
+      track ? `\n${es ? "Seguimiento" : "Track"}: ${track}` : "",
     ].filter(Boolean).join("\n");
-  }, [quote, grade, typeDef, saved, name, contactLine, idea, selectionLines]);
+  }, [quote, grade, typeDef, saved, name, contactLine, idea, selectionLinesShown, lang]);
 
   const submit = async () => {
     if (!projectType || !quote || !grade || saving) return;
     const h = handle.trim();
     if (!name.trim()) return setError("Add your name.");
-    if (!h) return setError(`Add ${channelDef.handle.toLowerCase()}.`);
+    if (!h) { const what = tr(channelDef.handle); return setError(`${getZbLang() === "es" ? "Añade" : "Add"} ${what.charAt(0).toLowerCase()}${what.slice(1)}.`); }
     if (channel === "email" && !/^\S+@\S+\.\S+$/.test(h)) return setError("Add a valid email.");
     if (email.trim() && !/^\S+@\S+\.\S+$/.test(email.trim())) return setError("That email doesn't look right.");
     setSaving(true); setError("");
@@ -297,7 +305,7 @@ export default function ProjectBuilder() {
 
   const sendLinks = useMemo(() => {
     const t = encodeURIComponent(message);
-    const subject = encodeURIComponent(`New project${saved ? ` ${saved.code}` : ""} (${grade?.code ?? ""})`);
+    const subject = encodeURIComponent(`${lang === "es" ? "Nuevo proyecto" : "New project"}${saved ? ` ${saved.code}` : ""} (${grade?.code ?? ""})`);
     return {
       whatsapp: `https://wa.me/${PHONE}?text=${t}`,
       email: `mailto:${EMAIL}?subject=${subject}&body=${t}`,
@@ -305,7 +313,7 @@ export default function ProjectBuilder() {
       telegram: `https://t.me/share/url?url=${encodeURIComponent(saved ? `${location.origin}/track?token=${saved.token}` : location.origin)}&text=${t}`,
       snapchat: `https://www.snapchat.com/add/${SNAP}`,
     } as Record<Channel, string>;
-  }, [message, saved, grade]);
+  }, [message, saved, grade, lang]);
 
   const copy = async () => {
     try { await navigator.clipboard.writeText(message); setCopied(true); setTimeout(() => setCopied(false), 1600); } catch { /* clipboard blocked: message stays visible */ }
@@ -313,13 +321,15 @@ export default function ProjectBuilder() {
 
   if (!open) return null;
 
+  const gradeLabel = grade ? (getZbLang() === "es" ? gradeNameEs(grade.name) : grade.name) : "";
+
   const progress = phase === "type" ? 0 : phase === "steps" ? (stepPos + 1) / (steps.length + 1) : 1;
   const label: React.CSSProperties = { fontSize: 10, fontWeight: 700, letterSpacing: ".26em", textTransform: "uppercase", color: "rgba(245,245,247,.5)" };
   const input: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "rgba(245,245,247,.05)", border: "1px solid rgba(245,245,247,.16)", borderRadius: 14, padding: "13px 15px", color: "#f5f5f7", fontFamily: "inherit", fontSize: 15, outline: "none" };
   const primary: React.CSSProperties = { fontFamily: "inherit", background: "#f5f5f7", color: "#040405", border: "none", padding: "14px 28px", borderRadius: 100, fontSize: 12, fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase", cursor: "pointer" };
   const ghost: React.CSSProperties = { fontFamily: "inherit", background: "none", border: "1px solid rgba(245,245,247,.2)", color: "#f5f5f7", padding: "13px 22px", borderRadius: 100, fontSize: 12, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", cursor: "pointer", textDecoration: "none", display: "inline-block" };
 
-  return (
+  return translateTree(
     <div
       role="dialog"
       aria-modal="true"
@@ -351,7 +361,7 @@ export default function ProjectBuilder() {
               </div>
               <div title={grade.blurb} style={{ padding: "8px 12px", borderRadius: 14, border: `1px solid ${grade.color}`, background: `${grade.color}22`, textAlign: "center", minWidth: 58, transition: "all .4s" }}>
                 <div style={{ fontSize: 16, fontWeight: 900, color: grade.color }}>{grade.code}</div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(245,245,247,.7)" }}>{grade.name}</div>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(245,245,247,.7)" }}>{gradeLabel}</div>
               </div>
             </div>
           ) : null}
@@ -395,7 +405,7 @@ export default function ProjectBuilder() {
             {phase === "contact" && quote && grade ? (
               <>
                 <div style={label}>Last step · Where do we reply?</div>
-                <h3 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 900, letterSpacing: "-.03em", margin: "8px 0 6px" }}>Your brief is graded {grade.code} {grade.name}.</h3>
+                <h3 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 900, letterSpacing: "-.03em", margin: "8px 0 6px" }}>Your brief is graded {grade.code} {gradeLabel}.</h3>
                 <p style={{ margin: "0 0 20px", color: "rgba(245,245,247,.55)", fontSize: 14, lineHeight: 1.6 }}>
                   {grade.blurb} Your initial estimate is <strong style={{ color: "#f5f5f7" }}>{money(quote.total)}</strong>. We review every brief personally and text you the final price, usually within 48 hours.
                 </p>
@@ -406,7 +416,7 @@ export default function ProjectBuilder() {
                   </label>
                   <label style={{ display: "grid", gap: 6 }}>
                     <span style={label}>Your name</span>
-                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Banks" style={input} />
+                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder={getZbLang() === "es" ? "Lucía" : "Banks"} style={input} />
                   </label>
                   <div style={{ display: "grid", gap: 8 }}>
                     <span style={label}>Text me back on</span>
@@ -447,7 +457,7 @@ export default function ProjectBuilder() {
                 <div style={label}>Brief received · {saved.code}</div>
                 <div style={{ margin: "18px auto 10px", width: 96, height: 96, borderRadius: 28, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: `1px solid ${grade.color}`, background: `${grade.color}22` }}>
                   <div style={{ fontSize: 32, fontWeight: 900, color: grade.color }}>{grade.code}</div>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase" }}>{grade.name}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase" }}>{gradeLabel}</div>
                 </div>
                 <h3 style={{ fontSize: "clamp(24px,3.4vw,34px)", fontWeight: 900, letterSpacing: "-.03em", margin: "8px 0 6px" }}>Initial estimate {money(shown)}</h3>
                 <p style={{ margin: "0 auto 22px", maxWidth: 500, color: "rgba(245,245,247,.6)", fontSize: 14, lineHeight: 1.65 }}>

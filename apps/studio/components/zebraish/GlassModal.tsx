@@ -3,6 +3,7 @@
 // Shared glass pop-up shell for Zebraish Home (tracker, collaborate, access code).
 // Freezes the page and its smooth-scroll behind it, closes on Escape or a
 // click outside the card.
+import { translateTree, useZbLang } from "@/lib/zebraish/i18n";
 import { useEffect } from "react";
 
 export const glass = {
@@ -29,6 +30,7 @@ export function GlassModal({
   width?: number;
   children: React.ReactNode;
 }) {
+  useZbLang();
   useEffect(() => {
     const prev = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
@@ -39,7 +41,7 @@ export function GlassModal({
     return () => { document.documentElement.style.overflow = prev; lenis?.start(); removeEventListener("keydown", onKey); };
   }, [onClose]);
 
-  return (
+  return translateTree(
     <div
       role="dialog"
       aria-modal="true"
