@@ -1,6 +1,6 @@
 import { createServiceClient } from "@zebraish/lib/supabase/service";
 import { verifyFlutterwaveTransaction, extractAccessToken } from "@/lib/flutterwave";
-import { sendClientPaymentConfirmation, sendAdminPaymentNotification } from "@/lib/email";
+import { sendClientPaymentConfirmation, sendAdminPaymentNotification, emailFrom } from "@/lib/email";
 
 /**
  * Verifies a Flutterwave transaction directly with Flutterwave (never trusts the
@@ -37,7 +37,7 @@ export async function verifyAndRecordFlutterwavePayment(transactionId: string | 
 
   const { data: project, error: projectError } = await supabase
     .from("projects")
-    .select("id, client_name, client_contact, quoted_price, quoted_currency")
+    .select("id, client_name, client_contact, quoted_price, quoted_currency, configuration")
     .eq("access_token", accessToken)
     .maybeSingle();
 
@@ -99,7 +99,11 @@ export async function verifyAndRecordFlutterwavePayment(transactionId: string | 
       currency: txn.currency,
     };
     await Promise.all([
-      sendClientPaymentConfirmation({ to: project.client_contact ?? "", ...notifyParams }),
+      sendClientPaymentConfirmation({
+        to: emailFrom((project.configuration as { email?: string } | null)?.email, project.client_contact),
+        accessToken,
+        ...notifyParams,
+      }),
       sendAdminPaymentNotification(notifyParams),
     ]);
   }

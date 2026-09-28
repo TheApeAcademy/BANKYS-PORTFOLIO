@@ -50,6 +50,7 @@ function ApplyForm({ onCode }: { onCode: () => void }) {
 
   return (
     <form action={formAction} onSubmit={onSubmit} style={{ display: "grid", gap: 14 }}>
+      <input type="hidden" name="lang" value="en" />
       <div>
         <div style={glass.label}>Collaborate</div>
         <h3 style={glass.h3}>Bring us clients. Earn on every project.</h3>
@@ -85,6 +86,7 @@ function CodeForm({ onApply }: { onApply: () => void }) {
   const [state, formAction, pending] = useActionState(verifyAccessCode, { error: null } as SignInState);
   return (
     <form action={formAction} style={{ display: "grid", gap: 14 }}>
+      <input type="hidden" name="lang" value="en" />
       <div>
         <div style={glass.label}>Collaborator access</div>
         <h3 style={glass.h3}>Enter your code.</h3>

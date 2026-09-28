@@ -1,49 +1,92 @@
 import { Resend } from "resend";
 import { formatMoney } from "@zebraish/lib/format";
-import { translate, DEFAULT_LANG } from "@/lib/i18n/dictionary";
-
-function getClient(): Resend | null {
-  const key = process.env.RESEND_API_KEY;
-  return key ? new Resend(key) : null;
-}
+import { adminNoticeEmail, briefReceivedEmail, paymentReceivedEmail, type Rendered } from "@zebraish/lib/email";
 
 /**
- * All of these no-op silently if RESEND_API_KEY / RESEND_FROM_EMAIL aren't set, or if the
- * client's contact info isn't an email address — WhatsApp already covers that case, and a
- * *.vercel.app address can't be verified with Resend, so this stays inactive until a real
- * domain is configured. Never throws — email failing shouldn't block a payment from recording.
+ * All of these no-op silently if RESEND_API_KEY / RESEND_FROM_EMAIL aren't set, or if there's
+ * no client email address — WhatsApp covers that case. Resend needs a verified domain you own
+ * (a *.vercel.app address can't be verified), so email stays inactive until one is attached.
+ * Never throws — email failing shouldn't block a save or a payment.
  */
 
+// Public origin the email images and links point at.
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://bankys-portfolio.vercel.app");
+
+export const trackUrl = (token: string) => `${SITE_URL}/track?token=${encodeURIComponent(token)}`;
+
+/** First email address in a free-form contact string ("WhatsApp: +234... · me@x.com"). */
+export function emailFrom(...values: (string | null | undefined)[]): string | null {
+  for (const v of values) {
+    const m = v?.match(/[^\s<>·,;:]+@[^\s<>·,;:]+\.[a-z]{2,}/i);
+    if (m) return m[0];
+  }
+  return null;
+}
+
+async function send(to: string | null | undefined, email: Rendered) {
+  const key = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!key || !from || !to || !to.includes("@")) return;
+  try {
+    await new Resend(key).emails.send({
+      from,
+      to,
+      replyTo: process.env.RESEND_REPLY_TO ?? undefined,
+      subject: email.subject,
+      html: email.html,
+      text: email.text,
+    });
+  } catch {
+    // best-effort
+  }
+}
+
+const adminTo = () => process.env.ADMIN_NOTIFICATION_EMAIL;
+const firstName = (name: string) => name.trim().split(/\s+/)[0] || "there";
+
+export async function sendClientBriefReceived(params: {
+  to: string | null;
+  projectCode: string;
+  clientName: string;
+  projectType: string;
+  grade?: string;
+  estimate?: number;
+  channel?: string;
+  accessToken: string;
+}) {
+  await send(
+    params.to,
+    briefReceivedEmail(SITE_URL, {
+      code: params.projectCode,
+      firstName: firstName(params.clientName),
+      projectType: params.projectType,
+      grade: params.grade,
+      estimate: params.estimate ? formatMoney(params.estimate, "EUR") : undefined,
+      channel: params.channel,
+      trackUrl: trackUrl(params.accessToken),
+    }),
+  );
+}
+
 export async function sendClientPaymentConfirmation(params: {
-  to: string;
+  to: string | null;
   projectCode: string;
   clientName: string;
   amount: number;
   currency: string;
+  accessToken?: string;
 }) {
-  if (!params.to.includes("@")) return;
-  const resend = getClient();
-  const from = process.env.RESEND_FROM_EMAIL;
-  if (!resend || !from) return;
-
-  // No reliable way to know the client's chosen language at webhook time (no
-  // cookie context tied to their browser), so this defaults to the site's
-  // default language rather than English.
-  const amount = formatMoney(params.amount, params.currency);
-  try {
-    await resend.emails.send({
-      from,
-      to: params.to,
-      subject: translate(DEFAULT_LANG, "email.paymentConfirmation.subject", { projectCode: params.projectCode }),
-      html: translate(DEFAULT_LANG, "email.paymentConfirmation.body", {
-        clientName: params.clientName,
-        amount,
-        projectCode: params.projectCode,
-      }),
-    });
-  } catch {
-    // best-effort; don't let email failures affect payment recording
-  }
+  await send(
+    params.to,
+    paymentReceivedEmail(SITE_URL, {
+      code: params.projectCode,
+      firstName: firstName(params.clientName),
+      amount: formatMoney(params.amount, params.currency),
+      trackUrl: params.accessToken ? trackUrl(params.accessToken) : `${SITE_URL}/studio`,
+    }),
+  );
 }
 
 export async function sendAdminPaymentNotification(params: {
@@ -52,51 +95,40 @@ export async function sendAdminPaymentNotification(params: {
   amount: number;
   currency: string;
 }) {
-  const resend = getClient();
-  const from = process.env.RESEND_FROM_EMAIL;
-  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
-  if (!resend || !from || !adminEmail) return;
-
-  try {
-    await resend.emails.send({
-      from,
-      to: adminEmail,
-      subject: `Payment received: ${params.projectCode}`,
-      html: `<p><strong>${params.clientName}</strong> just paid <strong>${formatMoney(
-        params.amount,
-        params.currency,
-      )}</strong> for project <strong>${params.projectCode}</strong>.</p>`,
-    });
-  } catch {
-    // best-effort
-  }
+  const amount = formatMoney(params.amount, params.currency);
+  await send(
+    adminTo(),
+    adminNoticeEmail(SITE_URL, {
+      subject: `Payment received: ${params.projectCode} (${amount})`,
+      kicker: `Payment · ${params.projectCode}`,
+      title: `${params.clientName} paid ${amount}.`,
+      lines: ["Time to move it into the queue."],
+      rows: [
+        { label: "Project", value: params.projectCode },
+        { label: "Amount", value: amount },
+      ],
+    }),
+  );
 }
-
-const escapeHtml = (value: string) =>
-  value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 export async function sendAdminIntakeNotification(params: {
   projectCode: string;
   clientName: string;
-  /** Optional brief details (grade, estimate, contact) from the project builder. */
+  /** Optional brief details ("Label: value" lines) from the project builder. */
   details?: string[];
 }) {
-  const resend = getClient();
-  const from = process.env.RESEND_FROM_EMAIL;
-  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
-  if (!resend || !from || !adminEmail) return;
-
-  const details = params.details?.length
-    ? `<ul>${params.details.map((d) => `<li>${escapeHtml(d)}</li>`).join("")}</ul>`
-    : "";
-  try {
-    await resend.emails.send({
-      from,
-      to: adminEmail,
-      subject: `New project configured: ${params.projectCode}`,
-      html: `<p><strong>${escapeHtml(params.clientName)}</strong> just configured a new project (<strong>${params.projectCode}</strong>) and hasn't paid yet.</p>${details}`,
-    });
-  } catch {
-    // best-effort
-  }
+  const rows = (params.details ?? []).map((d) => {
+    const i = d.indexOf(": ");
+    return i > 0 ? { label: d.slice(0, i), value: d.slice(i + 2) } : { label: "Note", value: d };
+  });
+  await send(
+    adminTo(),
+    adminNoticeEmail(SITE_URL, {
+      subject: `New brief: ${params.projectCode} from ${params.clientName}`,
+      kicker: `New brief · ${params.projectCode}`,
+      title: `${params.clientName} sent a brief.`,
+      lines: ["Review it, then confirm the final price in admin so they can pay."],
+      rows: [{ label: "Reference", value: params.projectCode }, ...rows],
+    }),
+  );
 }

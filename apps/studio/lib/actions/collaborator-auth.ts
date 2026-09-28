@@ -23,8 +23,8 @@ type CollaboratorRecord = {
  * ?code= magic link (see /login/page.tsx). Doesn't redirect itself —
  * callers decide what to do with a successful sign-in.
  */
-export async function signInWithCode(code: string): Promise<SignInState> {
-  const t = await getServerT();
+export async function signInWithCode(code: string, lang?: "en" | "es"): Promise<SignInState> {
+  const t = await getServerT(lang);
   if (!code) return { error: t("login.error.required") };
 
   const withinLimit = await checkRateLimit("studio-collab-code", 8, 300);
@@ -60,7 +60,7 @@ export async function signInWithCode(code: string): Promise<SignInState> {
 
 export async function verifyAccessCode(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const code = String(formData.get("code") ?? "").trim();
-  const result = await signInWithCode(code);
+  const result = await signInWithCode(code, formData.get("lang") === "en" ? "en" : undefined);
   if (result.error) return result;
   redirect("/dashboard");
 }

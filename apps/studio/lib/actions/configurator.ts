@@ -2,7 +2,10 @@
 
 import { createClient } from "@zebraish/lib/supabase/server";
 import type { Answers, QuoteResult } from "@zebraish/lib/catalogue/types";
-import { sendAdminIntakeNotification } from "@/lib/email";
+import { sendAdminIntakeNotification, sendClientBriefReceived, emailFrom } from "@/lib/email";
+import { getProjectType } from "@/lib/catalogue/engine";
+
+const CHANNEL_LABELS: Record<string, string> = { whatsapp: "WhatsApp", email: "email", imessage: "iMessage", telegram: "Telegram", snapchat: "Snapchat" };
 
 export type SaveConfigurationInput = {
   accessToken: string | null;
@@ -132,6 +135,17 @@ export async function saveProjectConfiguration(
       projectCode: row.project_code,
       clientName: input.clientName,
       details: input.notifyDetails,
+    });
+    const a = input.answers as Record<string, unknown>;
+    await sendClientBriefReceived({
+      to: emailFrom(typeof a.email === "string" ? a.email : null, input.clientContact),
+      projectCode: row.project_code,
+      clientName: input.clientName,
+      projectType: getProjectType(input.projectType)?.label ?? input.projectType,
+      grade: typeof a.grade === "string" ? `${a.grade} ${a.grade_name ?? ""}`.trim() : undefined,
+      estimate: input.quotedPrice || undefined,
+      channel: typeof a.contact_channel === "string" ? CHANNEL_LABELS[a.contact_channel] : undefined,
+      accessToken: row.access_token,
     });
   }
 

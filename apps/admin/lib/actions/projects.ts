@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@zebraish/lib/supabase/server";
 import { requireAdmin, getActorLabel } from "@zebraish/lib/auth";
+import { sendPriceConfirmedEmail } from "@/lib/email";
 
 export async function createProjectByAdmin(formData: FormData) {
   await requireAdmin();
@@ -52,7 +53,15 @@ export async function confirmProjectPrice(projectId: string, formData: FormData)
   const price = Number(String(formData.get("price") ?? "").replace(/[^0-9.]/g, ""));
   if (!Number.isFinite(price) || price <= 0) return;
   const supabase = await createClient();
-  await supabase.rpc("confirm_project_price", { p_project_id: projectId, p_price: price });
+  const { error } = await supabase.rpc("confirm_project_price", { p_project_id: projectId, p_price: price });
+  if (!error) {
+    const { data: project } = await supabase
+      .from("projects")
+      .select("project_code, client_name, client_contact, quoted_price, quoted_currency, access_token, configuration")
+      .eq("id", projectId)
+      .single();
+    if (project?.access_token) await sendPriceConfirmedEmail(project);
+  }
   revalidatePath("/projects");
   revalidatePath(`/projects/${projectId}`);
 }

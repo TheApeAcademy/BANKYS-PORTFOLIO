@@ -21,7 +21,7 @@ export async function submitCollaboratorApplication(
   _prev: ApplyState,
   formData: FormData,
 ): Promise<ApplyState> {
-  const t = await getServerT();
+  const t = await getServerT(formData.get("lang") === "en" ? "en" : undefined);
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();

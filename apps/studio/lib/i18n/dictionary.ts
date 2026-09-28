@@ -204,10 +204,6 @@ const en = {
   "status.PENDING": "PENDING",
   "status.EXCLUDED": "EXCLUDED",
 
-  // Client payment confirmation email
-  "email.paymentConfirmation.subject": "Payment received: {projectCode}",
-  "email.paymentConfirmation.body":
-    "<p>Hi {clientName},</p><p>We've received your payment of <strong>{amount}</strong> for project <strong>{projectCode}</strong>. We'll be in touch shortly to get started.</p><p>Zebraish</p>",
 
   // Language toggle
   "lang.toggle.aria": "Switch language",
@@ -410,10 +406,6 @@ const es: Record<keyof typeof en, string> = {
   "status.PENDING": "PENDIENTE",
   "status.EXCLUDED": "EXCLUIDO",
 
-  // Client payment confirmation email
-  "email.paymentConfirmation.subject": "Pago recibido: {projectCode}",
-  "email.paymentConfirmation.body":
-    "<p>Hola {clientName},</p><p>Hemos recibido tu pago de <strong>{amount}</strong> para el proyecto <strong>{projectCode}</strong>. Nos pondremos en contacto contigo en breve para comenzar.</p><p>Zebraish</p>",
 
   // Language toggle
   "lang.toggle.aria": "Cambiar idioma",
