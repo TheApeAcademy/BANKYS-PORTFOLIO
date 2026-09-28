@@ -3,7 +3,7 @@
 "use client";
 // Zebraish Home: ported from the Claude Design handoff (Zebraish Home.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
-import { mailtoUrl, snapchatUrl, telUrl, whatsappUrl } from "@zebraish/lib/contact";
+import { contactLinks } from "@zebraish/lib/contact";
 import React from "react";
 import { getZbLang, setSiteLang } from "@/lib/zebraish/i18n";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
@@ -158,7 +158,7 @@ class Component extends DCLogic {
       navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#ecosystem', 'Ecosystem'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
       toggleTheme: () => this.setState({ themeOverride: theme === 'light' ? 'dark' : 'light' }, () => this.drawRadar && setTimeout(() => this.drawRadar(1), 50)),
       dropOpen: this.state.drop, toggleDrop: () => this.setState(s => ({ drop: !s.drop })),
-      dropItems: [{ label: 'WhatsApp', href: whatsappUrl() }, { label: 'Email', href: mailtoUrl }, { label: 'Snapchat', href: snapchatUrl }],
+      dropItems: contactLinks(),
       devTilt: e => { const d = this.q('[data-id="device"]'); if (!d) return; const r = d.getBoundingClientRect(), x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2; d.style.transform = `perspective(900px) rotateX(${-(y / r.height) * 14}deg) rotateY(${(x / r.width) * 14}deg)`; },
       devReset: () => { const d = this.q('[data-id="device"]'); if (d) d.style.transform = ''; },
       tilt: e => { const el = e.currentTarget, r = el.getBoundingClientRect(), x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2; el.style.transition = 'box-shadow .3s ease'; el.style.transform = `perspective(1000px) rotateX(${-(y / r.height) * 6}deg) rotateY(${(x / r.width) * 6}deg) scale(1.01)`; el.style.boxShadow = `0 30px 80px rgba(0,0,0,.6),${(x / r.width) * -12}px ${(y / r.height) * -12}px 30px rgba(245,245,247,.12)`; },
@@ -170,7 +170,7 @@ class Component extends DCLogic {
       steps: [['01', "Tell Us What You're Building", 'Fill out the Start a Project flow or message directly. Tell us what your idea or business needs. Takes 5 minutes.'], ['02', 'We Shape a Direction', 'Within 48 hours you get a visual direction, structure, and a flat project price.'], ['03', 'We Build It', "The full product gets built and sent to you as a live preview link. You review, we refine until it's exactly right."], ['04', 'You Launch', "Once you're happy, it goes live. From there, the wider Zebraish ecosystem is there to help you keep growing."]].map(([n, t, d]) => ({ n, t, d })),
       values: [{ n: 10, suf: '+', v: '10+', l: 'Days Max' }, { n: '', suf: '', v: '100%', l: 'Custom Built' }, { n: '', suf: '', v: '∞', l: 'Revisions' }, { n: '', suf: '', v: '5★', l: 'Rating' }],
       afc: [['Clear Communication', "You'll always know exactly what's being worked on. No chasing, no going dark, no surprises."], ['Purpose-Built Design', 'Every font, colour, layout, and interaction serves one goal: making your idea look and work undeniable.'], ['You Own Everything', 'All code, all files, all assets are yours forever. No subscriptions, no lock-in.'], ['Worldwide Delivery', 'Founders and businesses in Nigeria, the Gulf, the UK, Europe. Wherever you are, we deliver.']].map(([t, d]) => ({ t, d })),
-      contactLinks: [{ label: 'WhatsApp', href: whatsappUrl() }, { label: 'Email', href: mailtoUrl }, { label: 'Snapchat', href: snapchatUrl }, { label: 'Call Me', href: telUrl }],
+      contactLinks: contactLinks(),
     };
   }
 }

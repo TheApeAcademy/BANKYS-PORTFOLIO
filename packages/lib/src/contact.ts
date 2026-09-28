@@ -8,7 +8,6 @@ export const CONTACT = {
   phoneDisplay: "+234 905 171 7561",
   /** Swap for the domain inbox (e.g. hello@zebraish.com) once it's set up. */
   email: "j0shbankole19@gmail.com",
-  snapchat: "j0shh.b",
   /** Handles without the @; left empty until the accounts are ready. */
   instagram: "",
   tiktok: "",
@@ -18,4 +17,16 @@ export const whatsappUrl = (text?: string) =>
   `https://wa.me/${CONTACT.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 export const mailtoUrl = `mailto:${CONTACT.email}`;
 export const telUrl = `tel:${CONTACT.phone}`;
-export const snapchatUrl = `https://www.snapchat.com/add/${CONTACT.snapchat}`;
+export const instagramUrl = CONTACT.instagram ? `https://www.instagram.com/${CONTACT.instagram}` : "";
+export const tiktokUrl = CONTACT.tiktok ? `https://www.tiktok.com/@${CONTACT.tiktok}` : "";
+
+/** Every way to reach us, in display order; socials appear once their handle is set. */
+export function contactLinks(): { label: string; href: string }[] {
+  return [
+    { label: "WhatsApp", href: whatsappUrl() },
+    { label: "Email", href: mailtoUrl },
+    { label: "Call Me", href: telUrl },
+    { label: "Instagram", href: instagramUrl },
+    { label: "TikTok", href: tiktokUrl },
+  ].filter((l) => l.href);
+}

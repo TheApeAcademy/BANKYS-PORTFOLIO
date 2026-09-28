@@ -587,13 +587,9 @@ const PAGES: Record<string, string> = {
   // Project builder
   "Your WhatsApp number": "Tu número de WhatsApp",
   "Your email": "Tu email",
-  "Your iMessage number or Apple ID": "Tu número de iMessage o Apple ID",
   "Your Telegram username": "Tu usuario de Telegram",
-  "Your Snapchat username": "Tu usuario de Snapchat",
   "+234 802 123 4567": "+34 612 34 56 78",
-  "+44 7700 900123": "+34 612 34 56 78",
   "@yourname": "@tunombre",
-  "yourname": "tunombre",
   "you@brand.com": "tu@marca.com",
   "Included": "Incluido",
   "Less": "Menos",
@@ -634,7 +630,6 @@ const PAGES: Record<string, string> = {
   "We've got your brief. We review it personally and text you the final price on":
     "Ya tenemos tu brief. Lo revisamos personalmente y te enviamos el precio final por",
   ". Send it to us now to skip the queue.": ". Envíanoslo ahora para saltarte la cola.",
-  "Copy brief + open Snapchat": "Copiar brief y abrir Snapchat",
   "Copied": "Copiado",
   "Copy brief": "Copiar brief",
   "Track your project →": "Sigue tu proyecto →",

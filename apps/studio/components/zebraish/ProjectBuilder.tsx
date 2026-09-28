@@ -28,16 +28,13 @@ export function openProjectBuilder(detail: OpenBuilderDetail = {}) {
 
 const PHONE = CONTACT.whatsapp;
 const EMAIL = CONTACT.email;
-const SNAP = CONTACT.snapchat;
 const ACCENT = "#17c98d";
 
-type Channel = "whatsapp" | "email" | "imessage" | "telegram" | "snapchat";
+type Channel = "whatsapp" | "email" | "telegram";
 const CHANNELS: { id: Channel; label: string; handle: string; ph: string }[] = [
   { id: "whatsapp", label: "WhatsApp", handle: "Your WhatsApp number", ph: "+234 802 123 4567" },
   { id: "email", label: "Email", handle: "Your email", ph: "you@brand.com" },
-  { id: "imessage", label: "iMessage", handle: "Your iMessage number or Apple ID", ph: "+44 7700 900123" },
   { id: "telegram", label: "Telegram", handle: "Your Telegram username", ph: "@yourname" },
-  { id: "snapchat", label: "Snapchat", handle: "Your Snapchat username", ph: "yourname" },
 ];
 
 type Phase = "type" | "steps" | "contact" | "done";
@@ -310,9 +307,7 @@ export default function ProjectBuilder() {
     return {
       whatsapp: `https://wa.me/${PHONE}?text=${t}`,
       email: `mailto:${EMAIL}?subject=${subject}&body=${t}`,
-      imessage: `sms:+${PHONE}&body=${t}`,
       telegram: `https://t.me/share/url?url=${encodeURIComponent(saved ? `${location.origin}/track?token=${saved.token}` : location.origin)}&text=${t}`,
-      snapchat: `https://www.snapchat.com/add/${SNAP}`,
     } as Record<Channel, string>;
   }, [message, saved, grade, lang]);
 
@@ -465,11 +460,11 @@ export default function ProjectBuilder() {
                   We&apos;ve got your brief. We review it personally and text you the final price on {channelDef.label}. Send it to us now to skip the queue.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                  <a href={sendLinks[channel]} target="_blank" rel="noreferrer" onClick={channel === "snapchat" ? copy : undefined} style={{ ...primary, textDecoration: "none", display: "inline-block" }}>
-                    {channel === "snapchat" ? "Copy brief + open Snapchat" : `Send on ${channelDef.label} →`}
+                  <a href={sendLinks[channel]} target="_blank" rel="noreferrer" style={{ ...primary, textDecoration: "none", display: "inline-block" }}>
+                    {`Send on ${channelDef.label} →`}
                   </a>
                   {CHANNELS.filter((c) => c.id !== channel).map((c) => (
-                    <a key={c.id} href={sendLinks[c.id]} target="_blank" rel="noreferrer" onClick={c.id === "snapchat" ? copy : undefined} style={ghost}>{c.label}</a>
+                    <a key={c.id} href={sendLinks[c.id]} target="_blank" rel="noreferrer" style={ghost}>{c.label}</a>
                   ))}
                 </div>
                 <div style={{ display: "flex", gap: 18, justifyContent: "center", marginTop: 20, fontSize: 12, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase" }}>
