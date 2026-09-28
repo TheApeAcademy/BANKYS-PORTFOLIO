@@ -10,8 +10,10 @@ import type { Answers, CatalogueStep } from "@zebraish/lib/catalogue/types";
 import { PROJECT_TYPES } from "@/lib/catalogue/catalogue";
 import { calculateProject, getProjectType, getVisibleSteps } from "@/lib/catalogue/engine";
 import { gradeProject } from "@/lib/catalogue/grade";
+import { describeSelections } from "@/lib/catalogue/describe";
 import { saveProjectConfiguration } from "@/lib/actions/configurator";
 import { logActivityEvent } from "@/lib/actions/activity";
+import { openProjectTracker, rememberProjectToken } from "./ProjectTracker";
 
 export const OPEN_BUILDER_EVENT = "zb:open-builder";
 export type OpenBuilderDetail = { projectType?: string; idea?: string };
@@ -222,19 +224,7 @@ export default function ProjectBuilder() {
   };
 
   // Every selection, in words, for the message we receive.
-  const selectionLines = useMemo(() => {
-    const out: string[] = [];
-    for (const s of steps) {
-      const v = answers[s.id];
-      if (v === undefined || v === "" || (Array.isArray(v) && !v.length)) continue;
-      if (s.type === "number") { if (Number(v) > 0) out.push(`${s.question} ${v}`); continue; }
-      if (s.type === "text") { out.push(`Notes: ${String(v).trim()}`); continue; }
-      const ids = Array.isArray(v) ? v : [String(v)];
-      const labels = ids.map((id) => s.options?.find((o) => o.id === id)?.label ?? id);
-      out.push(`${s.question} ${labels.join(", ")}`);
-    }
-    return out;
-  }, [steps, answers]);
+  const selectionLines = useMemo(() => (projectType ? describeSelections(projectType, answers) : []), [projectType, answers]);
 
   const channelDef = CHANNELS.find((c) => c.id === channel)!;
   const contactLine = `${channelDef.label}: ${handle.trim()}${channel !== "email" && email.trim() ? ` · ${email.trim()}` : ""}`;
@@ -280,6 +270,7 @@ export default function ProjectBuilder() {
           contact_handle: h,
           email: channel === "email" ? h : email.trim() || undefined,
           price_status: "initial_estimate",
+          initial_estimate: quote.total,
         },
         quotedPrice: quote.total,
         currency: "EUR",
@@ -299,6 +290,7 @@ export default function ProjectBuilder() {
     setSaving(false);
     if (!res.ok) return setError("We couldn't save your brief. Try again, or send it straight to us on WhatsApp.");
     setSaved({ code: res.projectCode, token: res.accessToken });
+    rememberProjectToken(res.accessToken);
     setPhase("done");
     void logActivityEvent("configurator_submitted", { sessionId, projectId: res.projectId, metadata: { project_type: projectType, quoted_price: quote.total, grade: grade.code, source: "builder" } });
   };
@@ -471,7 +463,7 @@ export default function ProjectBuilder() {
                 </div>
                 <div style={{ display: "flex", gap: 18, justifyContent: "center", marginTop: 20, fontSize: 12, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase" }}>
                   <button type="button" onClick={copy} style={{ background: "none", border: "none", color: "rgba(245,245,247,.6)", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase" }}>{copied ? "Copied" : "Copy brief"}</button>
-                  <a href={`/track?token=${encodeURIComponent(saved.token)}`} style={{ color: ACCENT, textDecoration: "none" }}>Track your project →</a>
+                  <button type="button" onClick={() => { setOpen(false); openProjectTracker(saved.token); }} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: ACCENT }}>Track your project →</button>
                 </div>
               </div>
             ) : null}

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@zebraish/lib/supabase/server";
-import { updateProjectStatus } from "@/lib/actions/projects";
+import { updateProjectStatus, confirmProjectPrice } from "@/lib/actions/projects";
 import { Card, PageHeader, EmptyState, inputCls, buttonGhostCls } from "@/components/ui";
 import { CopyLinkButton } from "@/components/CopyLinkButton";
 import { RecordPaymentForm } from "@/components/RecordPaymentForm";
@@ -170,6 +170,36 @@ export default async function ProjectDetailPage({
         </Card>
 
         <div className="lg:col-span-2">
+          <Card className="mb-6">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <p className="text-sm font-medium">Final price</p>
+              {project.configuration?.grade ? (
+                <span className="rounded-full border border-border px-2.5 py-0.5 text-xs text-fg-muted">
+                  Grade {project.configuration.grade} {project.configuration.grade_name ?? ""}
+                </span>
+              ) : null}
+            </div>
+            <p className="mb-3 text-sm text-fg-muted">
+              {project.price_confirmed_at
+                ? `Confirmed ${formatDateTime(project.price_confirmed_at)} at ${formatMoney(project.quoted_price ?? 0, project.quoted_currency ?? "EUR")}. The client can pay from their tracker.`
+                : project.configuration?.price_status === "initial_estimate"
+                  ? `Initial estimate ${formatMoney(project.quoted_price ?? 0, project.quoted_currency ?? "EUR")}. The client can't pay until you confirm a final price.`
+                  : "Priced by the configurator. Confirming locks in a new price."}
+            </p>
+            <form action={confirmProjectPrice.bind(null, project.id)} className="flex gap-2">
+              <input
+                name="price"
+                inputMode="decimal"
+                required
+                defaultValue={project.quoted_price ?? ""}
+                className={inputCls}
+                aria-label="Final price"
+              />
+              <button type="submit" className={buttonGhostCls}>
+                {project.price_confirmed_at ? "Update price" : "Confirm price"}
+              </button>
+            </form>
+          </Card>
           <Card className="mb-6">
             <p className="mb-4 text-sm font-medium">Price at purchase</p>
             {latestSnapshot ? (

@@ -148,6 +148,7 @@ export type ResumedProject = {
   quoted_price: number | null;
   quoted_currency: string | null;
   status: string;
+  price_confirmed_at?: string | null;
 };
 
 export async function getProjectByToken(token: string): Promise<ResumedProject | null> {

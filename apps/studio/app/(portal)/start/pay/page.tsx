@@ -4,6 +4,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { PaymentMethodSelector } from "@/components/configurator/PaymentMethodSelector";
 import { getProjectByToken } from "@/lib/actions/configurator";
+import { awaitingPriceConfirmation } from "@/lib/price-status";
 import { formatMoney } from "@zebraish/lib/format";
 import { checkRateLimit } from "@zebraish/lib/rate-limit";
 import { getServerT } from "@/lib/i18n/server";
@@ -37,6 +38,7 @@ export default async function PayPage({
   if (!project) notFound();
 
   const alreadyPaid = !["draft", "awaiting_payment"].includes(project.status);
+  const pendingPrice = awaitingPriceConfirmation(project);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center bg-bg text-fg">
@@ -52,6 +54,10 @@ export default async function PayPage({
         </p>
         {alreadyPaid ? (
           <p className="text-sm text-paid">{t("pay.page.alreadyPaid")}</p>
+        ) : pendingPrice ? (
+          <p className="text-sm text-fg-muted">
+            This is your initial estimate. We&apos;re reviewing your brief and will text you the final price, then you can pay here.
+          </p>
         ) : (
           <PaymentMethodSelector accessToken={token!} />
         )}

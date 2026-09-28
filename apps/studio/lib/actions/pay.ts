@@ -2,6 +2,7 @@
 
 import { createClient } from "@zebraish/lib/supabase/server";
 import { getProjectByToken } from "./configurator";
+import { awaitingPriceConfirmation } from "@/lib/price-status";
 import { logActivityEvent } from "./activity";
 import { buildTxRef, initiateFlutterwavePayment } from "@/lib/flutterwave";
 import { headers } from "next/headers";
@@ -34,6 +35,9 @@ export async function initiatePayment(
   const project = await getProjectByToken(accessToken);
   if (!project) return { ok: false, error: "Project not found." };
   if (!project.quoted_price) return { ok: false, error: "This project doesn't have a price yet." };
+  if (awaitingPriceConfirmation(project)) {
+    return { ok: false, error: "Your final price is still being confirmed. We'll text you as soon as it's ready." };
+  }
   if (!["draft", "awaiting_payment"].includes(project.status)) {
     return { ok: false, error: "This project has already been paid or is no longer awaiting payment." };
   }
@@ -82,6 +86,10 @@ export type BankTransferIntent = {
 export type InitiateBankTransferResult = { ok: true; intent: BankTransferIntent } | { ok: false; error: string };
 
 export async function initiateBankTransfer(accessToken: string): Promise<InitiateBankTransferResult> {
+  const project = await getProjectByToken(accessToken);
+  if (project && (awaitingPriceConfirmation(project))) {
+    return { ok: false, error: "Your final price is still being confirmed. We'll text you as soon as it's ready." };
+  }
   const supabase = await createClient();
   const { data, error } = await supabase
     .rpc("create_bank_transfer_intent", { p_access_token: accessToken })

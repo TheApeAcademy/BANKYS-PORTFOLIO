@@ -15,6 +15,8 @@ import IdeaPrompt from "./IdeaPrompt";
 import HenkoGenIntro from "./HenkoGenIntro";
 import WordmarkFooter from "./WordmarkFooter";
 import ProjectBuilder from "./ProjectBuilder";
+import ProjectTracker from "./ProjectTracker";
+import CollaboratorPopups from "./CollaboratorPopups";
 // Home draws its own living-hide stripe field, so the ambient wet hide stays off here.
 import "@/lib/zebraish/no-wet.js";
 import "@/lib/zebraish/zb-ambient.js";
@@ -237,6 +239,8 @@ function template(v) {
               <span style={{"color":"var(--text-faint)"}}>{"|"}</span>
               <span style={{"color":"var(--text)","padding":"4px 5px"}}>{"EN"}</span>
             </div>
+            {" "}
+            <a href="#track" className="zbzh-0" style={{"fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","color":"var(--text-muted)","textDecoration":"none","whiteSpace":"nowrap"}}>{"Track"}</a>
             {" "}
             <a href="#start-a-project" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"9px 20px","fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","borderRadius":"20px","textDecoration":"none","transition":"transform var(--t) var(--ease),box-shadow var(--t) var(--ease)"}} className="zbzh-1">{"Start a Project"}</a>
             {" "}
@@ -816,6 +820,8 @@ function template(v) {
         <WordmarkFooter variant={v.footer} />
         {" "}
         <ProjectBuilder />
+        <ProjectTracker />
+        <CollaboratorPopups />
       </div>
     </div>
     </>

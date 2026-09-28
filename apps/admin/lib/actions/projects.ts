@@ -45,3 +45,14 @@ export async function updateProjectStatus(projectId: string, formData: FormData)
   revalidatePath("/projects");
   revalidatePath(`/projects/${projectId}`);
 }
+
+/** Locks in the hand-reviewed final price. Builder briefs only become payable after this. */
+export async function confirmProjectPrice(projectId: string, formData: FormData) {
+  await requireAdmin();
+  const price = Number(String(formData.get("price") ?? "").replace(/[^0-9.]/g, ""));
+  if (!Number.isFinite(price) || price <= 0) return;
+  const supabase = await createClient();
+  await supabase.rpc("confirm_project_price", { p_project_id: projectId, p_price: price });
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${projectId}`);
+}
