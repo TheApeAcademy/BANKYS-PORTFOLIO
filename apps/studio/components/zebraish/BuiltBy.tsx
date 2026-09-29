@@ -58,7 +58,7 @@ function template(v) {
       {v.isB ? (
         <>
           {" "}
-          <div style={{"overflow":"hidden","margin":"0 -48px","borderTop":"1px solid rgba(var(--tint-rgb),.1)","borderBottom":"1px solid rgba(var(--tint-rgb),.1)","padding":"26px 0","WebkitMask":"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)","mask":"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)"}}>
+          <div data-bleed="1" style={{"overflow":"hidden","margin":"0 -48px","borderTop":"1px solid rgba(var(--tint-rgb),.1)","borderBottom":"1px solid rgba(var(--tint-rgb),.1)","padding":"26px 0","WebkitMask":"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)","mask":"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)"}}>
           {" "}
           <div style={{"display":"flex","alignItems":"center","gap":"72px","width":"max-content","animation":"bbmq 28s linear infinite"}}>
             {" "}

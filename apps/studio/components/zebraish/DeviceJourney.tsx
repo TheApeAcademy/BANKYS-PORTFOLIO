@@ -218,7 +218,7 @@ function template(v) {
             <div data-dsub="1" style={{"fontSize":"12px","fontWeight":"600","letterSpacing":".16em","textTransform":"uppercase","color":"var(--text-muted)","marginTop":"6px"}}>{"Every site, on every screen"}</div>
           </div>
           {" "}
-          <div style={{"display":"flex","gap":"6px"}}>
+          <div data-stops="1" style={{"display":"flex","gap":"6px"}}>
             {" "}
             {each(v, v.stops, "t", (v) => (
               <>

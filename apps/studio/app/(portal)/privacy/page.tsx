@@ -111,8 +111,8 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
         Cuando configuras un proyecto, solicitas colaborar, o nos envías un mensaje, recopilamos lo que nos das
         directamente: nombre, correo electrónico, número de teléfono/WhatsApp, y detalles del proyecto (la
         propuesta/brief que escribes, las selecciones de precio). Cuando pagas, nuestro procesador de pagos
-        (Flutterwave) maneja directamente los datos de tu tarjeta/transferencia. Nunca vemos ni almacenamos tu
-        número de tarjeta completo ni tus credenciales bancarias. Guardamos un registro de la transacción (monto,
+        (Flutterwave) gestiona directamente los datos de tu tarjeta/transferencia. Nunca vemos ni almacenamos tu
+        número de tarjeta completo ni tus credenciales bancarias. Guardamos un registro de la transacción (importe,
         moneda, estado, un ID de referencia) para confirmar y hacer seguimiento de tu pago.
       </p>
     ),
@@ -145,7 +145,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
       <p>
         Los colaboradores inician sesión con un código de acceso privado en lugar de una cuenta con contraseña. Ese
         código se almacena, cifrado cuando es posible, y está vinculado a tu registro de comisión. Trátalo como
-        una contraseña y no lo compartas. Podemos reemitir un código si alguna vez se ve comprometido.
+        una contraseña y no lo compartas. Si alguna vez se ve comprometido, podemos emitir uno nuevo.
       </p>
     ),
   },
@@ -188,7 +188,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     heading: "8. Cambios a esta política",
     body: (
       <p>
-        Podemos actualizar esta política a medida que evolucionan los servicios de Zebraish. Los cambios materiales
+        Podemos actualizar esta política a medida que evolucionan los servicios de Zebraish. Los cambios importantes
         se reflejarán aquí con una fecha actualizada arriba.
       </p>
     ),
@@ -212,7 +212,7 @@ export default async function PrivacyPage() {
       <div className="mt-8 w-full max-w-2xl">
         <Card className="prose-sm">
           <h1 className="mb-1 text-lg font-semibold">
-            {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
+            {lang === "es" ? "Política de privacidad" : "Privacy Policy"}
           </h1>
           <p className="mb-8 text-sm text-fg-muted">
             {lang === "es" ? "Última actualización:" : "Last updated:"}{" "}

@@ -138,8 +138,8 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     heading: "2. Alcance del trabajo y presupuestos",
     body: (
       <p>
-        Cada proyecto comienza con un alcance y un precio presupuestado, que se te comparte antes de solicitar
-        cualquier pago. El presupuesto es específico a lo acordado. El trabajo fuera de ese alcance (nuevas
+        Cada proyecto comienza con un alcance y un precio presupuestado, que te enviamos antes de pedirte
+        ningún pago. El presupuesto se ciñe a lo acordado. El trabajo fuera de ese alcance (nuevas
         funcionalidades, revisiones adicionales más allá de lo acordado, un cambio de dirección sustancial) se
         trata como trabajo nuevo y se presupuesta por separado. Los plazos que te comunicamos son estimaciones, no
         fechas límite fijas, salvo que se confirmen por escrito para tu proyecto.
@@ -152,7 +152,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
       <p>
         Los pagos se procesan a través de Flutterwave. Al pagar una factura, aceptas los propios términos de
         Flutterwave para la transacción, además de estos términos. Los precios se presupuestan en la moneda que se
-        muestra al pagar. El trabajo en un proyecto comienza una vez que el pago (o el depósito acordado) se
+        muestra al pagar. El trabajo en un proyecto comienza una vez que el pago (o la señal acordada) se
         confirma como recibido. No empezamos a construir basándonos en una promesa de pago.
       </p>
     ),
@@ -163,14 +163,14 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
       <p>
         Si cancelas antes de que el trabajo haya comenzado, tienes derecho a un reembolso completo. Una vez que el
         trabajo está en marcha, los reembolsos se prorratean según la parte del alcance aún no entregada, a nuestra
-        discreción, menos las comisiones del procesador de pagos ya incurridas. Si un proyecto se detiene porque no
+        discreción, menos las comisiones del procesador de pagos ya generadas. Si un proyecto se detiene porque no
         podemos contactarte para obtener la información necesaria para continuar, haremos intentos razonables de
-        contactarte antes de considerarlo en pausa; un proyecto en esta situación por más de 60 días podrá cerrarse
+        contactarte antes de considerarlo en pausa; un proyecto en esta situación durante más de 60 días podrá cerrarse
         sin reembolso por el trabajo ya completado. Consulta nuestra{" "}
         <a href="/privacy" className="text-accent hover:underline">
-          Política de Privacidad
+          política de privacidad
         </a>{" "}
-        para saber cómo manejamos tus datos si esto ocurre.
+        para saber cómo tratamos tus datos si esto ocurre.
       </p>
     ),
   },
@@ -190,9 +190,9 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     heading: "6. Colaboradores",
     body: (
       <p>
-        Las personas aprobadas como colaboradores de Zebraish ganan comisión sobre los proyectos que refieren, a la
-        tasa acordada al momento de su aprobación. La comisión se calcula sobre los pagos efectivamente recibidos
-        del cliente referido, y se paga según el calendario comunicado al colaborador. El código de acceso de un
+        Las personas aprobadas como colaboradores de Zebraish ganan una comisión por los proyectos que recomiendan, al
+        porcentaje acordado en el momento de su aprobación. La comisión se calcula sobre los pagos efectivamente recibidos
+        del cliente recomendado, y se paga según el calendario comunicado al colaborador. El código de acceso de un
         colaborador es personal y no debe compartirse.
       </p>
     ),
@@ -201,9 +201,9 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     heading: "7. Responsabilidad",
     body: (
       <p>
-        Construimos las cosas con cuidado, pero la responsabilidad de Zebraish por cualquier reclamo derivado de un
-        proyecto se limita al monto que pagaste por ese proyecto. No somos responsables de pérdidas indirectas o
-        consecuentes (pérdida de ganancias, pérdida de datos de tus propios sistemas, interrupciones de servicios
+        Construimos las cosas con cuidado, pero la responsabilidad de Zebraish por cualquier reclamación derivada de un
+        proyecto se limita al importe que pagaste por ese proyecto. No somos responsables de pérdidas indirectas o
+        consecuentes (pérdida de beneficios, pérdida de datos de tus propios sistemas, interrupciones de servicios
         de terceros, y similares).
       </p>
     ),
@@ -213,7 +213,7 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Podemos actualizar estos términos a medida que evolucionan los servicios de Zebraish. Los cambios
-        materiales se reflejarán aquí con una fecha actualizada arriba; continuar usando nuestros servicios después
+        importantes se reflejarán aquí con una fecha actualizada arriba; continuar usando nuestros servicios después
         de un cambio significa que aceptas los términos actualizados.
       </p>
     ),
@@ -237,7 +237,7 @@ export default async function TermsPage() {
       <div className="mt-8 w-full max-w-2xl">
         <Card className="prose-sm">
           <h1 className="mb-1 text-lg font-semibold">
-            {lang === "es" ? "Términos de Servicio" : "Terms of Service"}
+            {lang === "es" ? "Condiciones del servicio" : "Terms of Service"}
           </h1>
           <p className="mb-8 text-sm text-fg-muted">
             {lang === "es" ? "Última actualización:" : "Last updated:"}{" "}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { CookieNotice } from "@/components/CookieNotice";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
 import { getServerLang } from "@/lib/i18n/server";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
@@ -24,6 +25,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <LanguageProvider initialLang={lang}>
           <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+          <CookieNotice />
         </LanguageProvider>
       </body>
     </html>

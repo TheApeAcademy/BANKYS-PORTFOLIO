@@ -16,6 +16,32 @@ export const metadata: Metadata = {
 
 const BASE_CSS = "html,body{height:100%;margin:0;background:#040405}#dc-root,#dc-root>.sc-host{height:100%}";
 
+// Phone layout. The designs were drawn for desktop with inline styles, so these
+// overrides (hence !important) narrow the side padding, stack the hero, and
+// drop wide grid minimums to one column below tablet width.
+const MOBILE_CSS = `
+.zb-burger { display: none; }
+@media (max-width: 1159px) { .zb-burger { display: flex !important; } }
+@media (max-width: 640px) { .zb-bar-extra { display: none !important; } }
+@media (max-width: 760px) {
+  #dc-root section, #dc-root footer { padding-left: 20px !important; padding-right: 20px !important; }
+  #dc-root [style*="minmax(3"], #dc-root [style*="minmax(4"], #dc-root [style*="minmax(5"] { grid-template-columns: 1fr !important; }
+  #hero { flex-direction: column !important; align-items: stretch !important; min-height: auto !important; padding-top: 104px !important; gap: 12px !important; }
+  #hero [data-id="heroLeft"] { max-width: 100% !important; min-width: 0 !important; }
+  #hero div:has(> [data-id="device"]) { align-self: center !important; margin-top: 0 !important; zoom: .78; }
+  #dc-root h1, #dc-root h2 { overflow-wrap: anywhere; }
+  #dc-root [data-bleed] { margin-left: -20px !important; margin-right: -20px !important; }
+  #dc-root [data-stops] { flex-wrap: wrap !important; }
+}
+@media (max-width: 560px) {
+  [data-topbar] { left: 16px !important; right: 16px !important; }
+  [data-topbar] [data-brand] { font-size: 0 !important; gap: 0 !important; }
+  [data-topbar] [data-soundbtn] { font-size: 0 !important; gap: 0 !important; padding: 9px 11px !important; }
+}
+@media (max-width: 400px) {
+  #hero div:has(> [data-id="device"]) { zoom: .68; }
+}`;
+
 export default function ZebraishLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -27,6 +53,7 @@ export default function ZebraishLayout({ children }: { children: React.ReactNode
         href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,900;1,600;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
       />
       <style>{BASE_CSS}</style>
+      <style>{MOBILE_CSS}</style>
       <div id="dc-root">{children}</div>
     </>
   );

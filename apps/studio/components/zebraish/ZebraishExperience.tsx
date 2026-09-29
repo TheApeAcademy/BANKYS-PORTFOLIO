@@ -517,16 +517,16 @@ function template(v) {
         {" "}
         <div data-id="chrome" style={{"position":"absolute","inset":"0","opacity":"0"}}>
           {" "}
-          <div style={{"position":"absolute","left":"28px","right":"28px","top":"22px","display":"flex","justifyContent":"space-between","alignItems":"center"}}>
+          <div data-topbar="1" style={{"position":"absolute","left":"28px","right":"28px","top":"22px","display":"flex","justifyContent":"space-between","alignItems":"center"}}>
             {" "}
-            <a href="#top" data-ui="1" style={{"pointerEvents":"auto","display":"flex","alignItems":"center","gap":"10px","textDecoration":"none","fontSize":"16px","fontWeight":"800","letterSpacing":".1em"}}>
+            <a href="#top" data-ui="1" data-brand="1" style={{"pointerEvents":"auto","display":"flex","alignItems":"center","gap":"10px","textDecoration":"none","fontSize":"16px","fontWeight":"800","letterSpacing":".1em"}}>
               <img src="/zb/assets/zebraish-mark.png" alt="" style={{"height":"26px","width":"auto"}} />
               {"ZEBRAISH"}
             </a>
             {" "}
             <div style={{"display":"flex","gap":"10px","alignItems":"center"}}>
               {" "}
-              <button type="button" data-ui="1" onClick={v.toggleSound} style={{"pointerEvents":"auto","display":"flex","alignItems":"center","gap":"8px","padding":"9px 14px","borderRadius":"100px","background":"rgba(245,245,247,.06)","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".18em","textTransform":"uppercase","cursor":"pointer","whiteSpace":"nowrap"}}>{I(v.soundLabel)}</button>
+              <button type="button" data-ui="1" data-soundbtn="1" aria-label={v.soundLabel} onClick={v.toggleSound} style={{"pointerEvents":"auto","display":"flex","alignItems":"center","gap":"8px","padding":"9px 14px","borderRadius":"100px","background":"rgba(245,245,247,.06)","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".18em","textTransform":"uppercase","cursor":"pointer","whiteSpace":"nowrap"}}>{I(v.soundLabel)}</button>
               {" "}
               <button type="button" data-ui="1" onClick={v.toggleLang} style={{"pointerEvents":"auto","padding":"9px 12px","borderRadius":"100px","background":"none","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".14em","cursor":"pointer"}}>{I(v.langLabel)}</button>
               {" "}

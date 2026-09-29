@@ -11,7 +11,7 @@ const PAGES: Record<string, string> = {
   "Process": "Proceso",
   "Ecosystem": "Ecosistema",
   "Collaborate": "Colabora",
-  "Partner": "Aliado",
+  "Partner": "Socio",
   "Track": "Seguimiento",
   "Start a Project": "Empieza un proyecto",
   "Start a Project →": "Empieza un proyecto →",
@@ -23,6 +23,7 @@ const PAGES: Record<string, string> = {
   "Switch to English": "Cambiar a inglés",
   "Call Me": "Llámame",
   "Close": "Cerrar",
+  "Open menu": "Abrir menú",
 
   // Home: hero
   "Zebraish Studio · Founder-Led · Building Now": "Zebraish Studio · Dirigido por su fundador · Creando ahora",
@@ -158,7 +159,7 @@ const PAGES: Record<string, string> = {
   "We Build It": "Lo construimos",
   "The full product gets built and sent to you as a live preview link. You review, we refine until it's exactly right.":
     "Construimos el producto completo y te lo enviamos como enlace de vista previa en vivo. Tú lo revisas y lo afinamos hasta que quede exactamente como quieres.",
-  "You Launch": "Lanzas",
+  "You Launch": "Lo lanzas",
   "Once you're happy, it goes live. From there, the wider Zebraish ecosystem is there to help you keep growing.":
     "Cuando te guste el resultado, se publica. A partir de ahí, el ecosistema Zebraish te acompaña para que sigas creciendo.",
   "04 · The Bigger Picture": "04 · La visión global",
@@ -502,7 +503,7 @@ const PAGES: Record<string, string> = {
 
   // HenkoGen
   "Layer 03": "Capa 03",
-  "Shared pool": "Fondo compartido",
+  "Shared pool": "Repositorio compartido",
   "Software and artifacts both teams can reuse. To be defined.": "Software y recursos que ambos equipos pueden reutilizar. Por definir.",
   "Coming": "Próximamente",
   "Layer 02": "Capa 02",
@@ -515,7 +516,7 @@ const PAGES: Record<string, string> = {
   "Customer service": "Atención al cliente",
   "Social media": "Redes sociales",
   "Coming · to be defined": "Próximamente · por definir",
-  "Shared pool of software & artifacts": "Fondo compartido de software y recursos",
+  "Shared pool of software & artifacts": "Repositorio compartido de software y recursos",
   "MEET": "CONOCE A",
   "Where we build the product, HenkoGen builds the intelligence that runs behind it.":
     "Nosotros construimos el producto; HenkoGen construye la inteligencia que lo mueve.",
@@ -527,7 +528,7 @@ const PAGES: Record<string, string> = {
     "diseña agentes de IA que automatizan embudos de venta, atención al cliente y redes sociales, y se queda para implantarlos junto a tu equipo hasta que funcionen de verdad.",
   "Together": "Juntos",
   ", a shared pool of software and artifacts is on the way. Details to be defined.":
-    ", viene en camino un fondo compartido de software y recursos. Detalles por definir.",
+    ", viene en camino un repositorio compartido de software y recursos. Detalles por definir.",
   "Builds the product.": "Construye el producto.",
   "HENKOGEN · APPLIED AI": "HENKOGEN · IA APLICADA",
   "Builds the intelligence.": "Construye la inteligencia.",
@@ -541,6 +542,8 @@ const PAGES: Record<string, string> = {
   "Become a Collaborator →": "Hazte colaborador →",
   "Terms of Service": "Condiciones del servicio",
   "Privacy Policy": "Política de privacidad",
+  "Cookie Policy": "Política de cookies",
+  "Legal Notice": "Aviso legal",
 
   // Idea prompt
   "Web App": "App web",

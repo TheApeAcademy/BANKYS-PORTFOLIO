@@ -43,9 +43,11 @@ function template(v) {
         {" "}
         <a href="/collaborate" style={{"fontSize":"11px","fontWeight":"700","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text)","textDecoration":"none","borderBottom":"1px solid var(--glass-b)","paddingBottom":"2px"}}>{"Become a Collaborator →"}</a>
         {" "}
-        <div style={{"display":"flex","gap":"20px"}}>
+        <div style={{"display":"flex","gap":"10px 20px","flexWrap":"wrap","justifyContent":"center"}}>
           <a href="/terms" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Terms of Service"}</a>
           <a href="/privacy" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Privacy Policy"}</a>
+          <a href="/cookies" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Cookie Policy"}</a>
+          <a href="/aviso-legal" style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".12em","textTransform":"uppercase","color":"var(--text-faint)","textDecoration":"none"}}>{"Legal Notice"}</a>
         </div>
         {" "}
       </div>

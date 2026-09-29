@@ -235,12 +235,12 @@ const es: Record<keyof typeof en, string> = {
 
   // Configurator — details/review
   "config.details.title": "Tu proyecto",
-  "config.details.subtitle": "Esto es todo lo que seleccionaste.",
+  "config.details.subtitle": "Esto es todo lo que has seleccionado.",
   "config.details.complexityAdjustment": "Ajuste por complejidad",
   "config.details.deliveryAdjustment": "Ajuste por tiempo de entrega",
   "config.details.total": "Total",
   "config.details.customQuoteNote":
-    "Añadiste una nota que revisaremos manualmente. Te enviaremos un presupuesto final antes de cobrar nada.",
+    "Has añadido una nota que revisaremos a mano. Te enviaremos un presupuesto final antes de cobrar nada.",
   "config.details.yourName": "Tu nombre",
   "config.details.howReach": "¿Cómo prefieres que te contactemos?",
   "config.details.contactEmail": "Correo electrónico",
@@ -250,7 +250,7 @@ const es: Record<keyof typeof en, string> = {
   "config.details.edit": "← Editar",
   "config.details.errorRequired": "Por favor, indica tu nombre y una forma de contactarte.",
   "config.details.errorNetwork":
-    "No se pudo conectar con el servidor para guardar tu proyecto ({message}). Revisa tu conexión e inténtalo de nuevo. No se perdió nada.",
+    "No se ha podido conectar con el servidor para guardar tu proyecto ({message}). Revisa tu conexión e inténtalo de nuevo. No se ha perdido nada.",
 
   // WhatsApp draft message
   "wa.greeting": "¡Hola Zebraish! Acabo de configurar un proyecto.",
@@ -279,7 +279,7 @@ const es: Record<keyof typeof en, string> = {
 
   // Bank transfer panel
   "pay.bank.settingUp": "Preparando tu transferencia…",
-  "pay.bank.genericError": "No se pudo iniciar la transferencia bancaria.",
+  "pay.bank.genericError": "No se ha podido iniciar la transferencia bancaria.",
   "pay.bank.notSetUp":
     "La transferencia bancaria aún no está disponible en {currency}. Elige Tarjeta en su lugar, o escríbenos por WhatsApp y lo resolvemos directamente.",
   "pay.bank.instructionsTitle": "Instrucciones de transferencia",
@@ -303,12 +303,12 @@ const es: Record<keyof typeof en, string> = {
   "collab.form.name": "Nombre",
   "collab.form.email": "Correo electrónico",
   "collab.form.phone": "Teléfono / WhatsApp",
-  "collab.form.portfolio": "Portafolio, LinkedIn o sitio web",
+  "collab.form.portfolio": "Portfolio, LinkedIn o web",
   "collab.form.optional": "(opcional)",
   "collab.form.about": "Cuéntanos sobre ti: tu trayectoria, a qué te dedicas y por qué encajarías bien colaborando con Zebraish",
   "collab.form.pitch": "¿Qué tipo de clientes o proyectos nos traerías?",
-  "collab.form.attachments": "Adjunta lo que consideres relevante: currículum, portafolio, identificación",
-  "collab.form.attachmentsHelper": "(opcional, hasta 5 archivos, 3.5MB en total)",
+  "collab.form.attachments": "Adjunta lo que consideres relevante: currículum, portfolio, identificación",
+  "collab.form.attachmentsHelper": "(opcional, hasta 5 archivos, 3,5 MB en total)",
   "collab.form.submit": "Enviar solicitud",
   "collab.form.sending": "Enviando…",
   "collab.form.successTitle": "Enviado. Tu solicitud está en revisión.",
@@ -316,27 +316,27 @@ const es: Record<keyof typeof en, string> = {
     "La revisaremos y te avisaremos. Si te aprobamos, recibirás un código de acceso privado para entrar al panel de colaborador. Sin necesidad de cuenta.",
   "collab.error.required": "El nombre y ambas preguntas de abajo son obligatorios.",
   "collab.error.tooManyFiles": "Adjunta un máximo de {max} archivos.",
-  "collab.error.fileTooLarge": "Los archivos adjuntos pesan demasiado. 3.5MB máximo en total.",
+  "collab.error.fileTooLarge": "Los archivos adjuntos pesan demasiado. Máximo 3,5 MB en total.",
   "collab.error.rateLimited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
-  "collab.error.uploadFailed": "No se pudo subir \"{name}\". Inténtalo de nuevo.",
-  "collab.error.generic": "Algo salió mal al enviar tu solicitud. Inténtalo de nuevo.",
+  "collab.error.uploadFailed": "No se ha podido subir \"{name}\". Inténtalo de nuevo.",
+  "collab.error.generic": "Algo ha salido mal al enviar tu solicitud. Inténtalo de nuevo.",
 
   // Legal — shared consent checkbox (collaborate form, configurator)
-  "legal.agree.prefix": "Acepto los",
-  "legal.agree.terms": "Términos de Servicio",
+  "legal.agree.prefix": "Acepto las",
+  "legal.agree.terms": "condiciones del servicio",
   "legal.agree.and": "y la",
-  "legal.agree.privacy": "Política de Privacidad",
-  "legal.error.mustAgree": "Debes aceptar los Términos de Servicio y la Política de Privacidad para continuar.",
+  "legal.agree.privacy": "política de privacidad",
+  "legal.error.mustAgree": "Debes aceptar las condiciones del servicio y la política de privacidad para continuar.",
 
   // Login
   "login.title": "Acceso de colaborador",
-  "login.subtitle": "Introduce el código de acceso que te dio Zebraish.",
+  "login.subtitle": "Introduce el código de acceso que te ha dado Zebraish.",
   "login.accessCode": "Código de acceso",
   "login.enter": "Entrar",
   "login.signingIn": "Entrando…",
   "login.error.required": "Introduce tu código de acceso.",
   "login.error.rateLimited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
-  "login.error.invalid": "Código de acceso inválido.",
+  "login.error.invalid": "El código de acceso no es válido.",
 
   // Collaborator nav
   "nav.thisWeek": "Esta semana",
@@ -369,7 +369,7 @@ const es: Record<keyof typeof en, string> = {
   "track.inputPlaceholder": "Pega el token de tu enlace de proyecto",
   "track.submit": "Buscar",
   "track.rateLimited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
-  "track.notFound": "No encontramos ningún proyecto con ese enlace. Revisa el enlace que te enviamos, o contáctanos si crees que es un error.",
+  "track.notFound": "No hemos encontrado ningún proyecto con ese enlace. Revisa el enlace que te enviamos, o contáctanos si crees que es un error.",
   "track.started": "Iniciado el {date}",
   "track.percentComplete": "{percent}% completado",
   "track.currentlyStage": "Actualmente: {stage}",
@@ -391,7 +391,7 @@ const es: Record<keyof typeof en, string> = {
   "messages.sending": "…",
   "messages.fromZebraish": "Zebraish",
   "messages.error.empty": "Escribe un mensaje primero.",
-  "messages.error.sendFailed": "No se pudo enviar tu mensaje. Revisa tu enlace.",
+  "messages.error.sendFailed": "No se ha podido enviar tu mensaje. Revisa tu enlace.",
 
   // Start page
   "start.logoLabel": "Iniciar un proyecto",

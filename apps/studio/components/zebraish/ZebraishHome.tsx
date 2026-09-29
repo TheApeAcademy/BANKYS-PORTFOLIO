@@ -24,7 +24,7 @@ import "@/lib/zebraish/no-wet.js";
 import "@/lib/zebraish/zb-ambient.js";
 class Component extends DCLogic {
   rootRef = React.createRef();
-  state = { drop: false, themeOverride: null };
+  state = { menu: false, drop: false, themeOverride: null };
   fromZebra = typeof location !== 'undefined' && location.hash === '#from-zebra';
   q(s) { return this.rootRef.current && this.rootRef.current.querySelector(s); }
   componentDidMount() {
@@ -155,6 +155,7 @@ class Component extends DCLogic {
       numbers: this.props.numbers ?? 'c', head: this.props.head ?? 'a', footer: this.props.footer ?? 'a', ecosystem: this.props.ecosystem ?? 'b',
       heroVignette: stripes === 'current' ? 'var(--bg)' : 'rgba(var(--bg-rgb),.4)',
       navLinksDisplay: this.state.vw && this.state.vw < 1160 ? 'none' : 'flex',
+      menuOpen: this.state.menu, toggleMenu: () => this.setState({ menu: !this.state.menu }), closeMenu: () => this.setState({ menu: false }),
       navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#ecosystem', 'Ecosystem'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
       toggleTheme: () => this.setState({ themeOverride: theme === 'light' ? 'dark' : 'light' }, () => this.drawRadar && setTimeout(() => this.drawRadar(1), 50)),
       dropOpen: this.state.drop, toggleDrop: () => this.setState(s => ({ drop: !s.drop })),
@@ -230,25 +231,52 @@ function template(v) {
           {" "}
           <div style={{"display":"flex","gap":"14px","alignItems":"center"}}>
             {" "}
-            <button type="button" onClick={v.toggleTheme} aria-label="Switch theme" style={{"display":"flex","alignItems":"center","justifyContent":"center","width":"32px","height":"32px","marginRight":"6px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","padding":"0"}}>
+            <button type="button" className="zb-bar-extra" onClick={v.toggleTheme} aria-label="Switch theme" style={{"display":"flex","alignItems":"center","justifyContent":"center","width":"32px","height":"32px","marginRight":"6px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","padding":"0"}}>
               {" "}
               <svg viewBox="0 0 24 24" fill="currentColor" style={{"width":"14px","height":"14px","display":"block"}}><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z" /></svg>
               {" "}
             </button>
             {" "}
-            <div style={{"display":"flex","alignItems":"center","gap":"5px","marginRight":"4px","fontSize":"11px","fontWeight":"700","letterSpacing":".04em"}}>
+            <div className="zb-bar-extra" style={{"display":"flex","alignItems":"center","gap":"5px","marginRight":"4px","fontSize":"11px","fontWeight":"700","letterSpacing":".04em"}}>
               <button type="button" onClick={() => setSiteLang("es")} aria-pressed={getZbLang() === "es"} aria-label="Cambiar a español" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "es" ? "var(--text)" : "var(--text-muted)"}}>{"ES"}</button>
               <span style={{"color":"var(--text-faint)"}}>{"|"}</span>
               <button type="button" onClick={() => setSiteLang("en")} aria-pressed={getZbLang() === "en"} aria-label="Switch to English" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "en" ? "var(--text)" : "var(--text-muted)"}}>{"EN"}</button>
             </div>
             {" "}
-            <a href="#track" className="zbzh-0" style={{"fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","color":"var(--text-muted)","textDecoration":"none","whiteSpace":"nowrap"}}>{"Track"}</a>
+            <a href="#track" className="zbzh-0 zb-bar-extra" style={{"fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","color":"var(--text-muted)","textDecoration":"none","whiteSpace":"nowrap"}}>{"Track"}</a>
             {" "}
-            <a href="#start-a-project" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"9px 20px","fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","borderRadius":"20px","textDecoration":"none","transition":"transform var(--t) var(--ease),box-shadow var(--t) var(--ease)"}} className="zbzh-1">{"Start a Project"}</a>
+            <a href="#start-a-project" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"9px 20px","fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","borderRadius":"20px","textDecoration":"none","transition":"transform var(--t) var(--ease),box-shadow var(--t) var(--ease)"}} className="zbzh-1 zb-bar-extra">{"Start a Project"}</a>
             {" "}
+            <button type="button" className="zb-burger" onClick={v.toggleMenu} aria-label="Open menu" aria-expanded={!!v.menuOpen} style={{"alignItems":"center","justifyContent":"center","width":"38px","height":"38px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","padding":"0"}}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{"width":"16px","height":"16px","display":"block"}}><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+            </button>
           </div>
           {" "}
         </nav>
+        {v.menuOpen ? (
+          <div data-lenis-prevent className="zb-menu" style={{"position":"fixed","inset":"0","zIndex":"1100","display":"flex","flexDirection":"column","padding":"18px 24px 96px","overflowY":"auto","background":"rgba(var(--bg-rgb),.96)","backdropFilter":"blur(24px)","WebkitBackdropFilter":"blur(24px)","color":"var(--text)"}}>
+            <div style={{"display":"flex","alignItems":"center","justifyContent":"space-between","marginBottom":"28px"}}>
+              <span style={{"display":"flex","alignItems":"center","gap":"10px","fontSize":"19px","fontWeight":"800","letterSpacing":".06em"}}>
+                <img src="/zb/assets/zebraish-mark.png" alt="Zebraish" style={{"height":"30px","width":"auto","display":"block","filter":"invert(var(--logo-inv))"}} />
+                {"ZEBRAISH"}
+              </span>
+              <button type="button" onClick={v.closeMenu} aria-label="Close" style={{"width":"38px","height":"38px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","fontSize":"20px","lineHeight":"1","padding":"0","fontFamily":"inherit"}}>{"×"}</button>
+            </div>
+            {each(v, v.navLinks, "l", (v) => (
+              <a href={v.l?.href} onClick={v.closeMenu} style={{"fontSize":"30px","fontWeight":"900","letterSpacing":"-.02em","textTransform":"uppercase","color":"var(--text)","textDecoration":"none","padding":"12px 0","borderBottom":"1px solid var(--glass-b)"}}>{I(v.l?.label)}</a>
+            ))}
+            <a href="#track" onClick={v.closeMenu} style={{"fontSize":"30px","fontWeight":"900","letterSpacing":"-.02em","textTransform":"uppercase","color":"var(--text)","textDecoration":"none","padding":"12px 0","borderBottom":"1px solid var(--glass-b)"}}>{"Track"}</a>
+            <a href="#start-a-project" onClick={v.closeMenu} style={{"marginTop":"28px","background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"16px 24px","fontSize":"13px","fontWeight":"800","letterSpacing":".06em","textTransform":"uppercase","borderRadius":"100px","textDecoration":"none","textAlign":"center"}}>{"Start a Project →"}</a>
+            <div style={{"display":"flex","alignItems":"center","justifyContent":"space-between","marginTop":"24px","fontSize":"13px","fontWeight":"700","letterSpacing":".04em"}}>
+              <div style={{"display":"flex","alignItems":"center","gap":"6px"}}>
+                <button type="button" onClick={() => setSiteLang("es")} aria-pressed={getZbLang() === "es"} style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","padding":"6px 8px","color":getZbLang() === "es" ? "var(--text)" : "var(--text-muted)"}}>{"ES"}</button>
+                <span style={{"color":"var(--text-faint)"}}>{"|"}</span>
+                <button type="button" onClick={() => setSiteLang("en")} aria-pressed={getZbLang() === "en"} style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","padding":"6px 8px","color":getZbLang() === "en" ? "var(--text)" : "var(--text-muted)"}}>{"EN"}</button>
+              </div>
+              <button type="button" onClick={v.toggleTheme} style={{"background":"none","border":"1px solid var(--glass-b)","borderRadius":"100px","color":"var(--text)","cursor":"pointer","fontFamily":"inherit","fontSize":"11px","fontWeight":"700","letterSpacing":".12em","textTransform":"uppercase","padding":"10px 16px"}}>{"Switch theme"}</button>
+            </div>
+          </div>
+        ) : null}
         {" "}
         {v.revealOn ? (
           <>
@@ -562,7 +590,7 @@ function template(v) {
             {"Nine live sites, nine different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
           </p>
           {" "}
-          <div style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div>
+          <div data-bleed="1" style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div>
           {" "}
           <p data-hr="1" style={{"margin":"20px 0 0","fontSize":"12px","color":"var(--text-faint)","letterSpacing":".02em","maxWidth":"560px"}}>
             {"These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work."}

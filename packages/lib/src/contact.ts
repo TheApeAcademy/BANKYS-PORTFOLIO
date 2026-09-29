@@ -13,6 +13,18 @@ export const CONTACT = {
   tiktok: "",
 } as const;
 
+/** Who runs the site, for the Aviso legal (Spain's LSSI requires it). Empty
+ * values are left off the page until they're filled in. */
+export const LEGAL = {
+  /** Full legal name of the owner (or company name once incorporated). */
+  ownerName: "",
+  /** NIE/NIF (or CIF for a company). */
+  taxId: "",
+  /** Registered postal address. */
+  address: "",
+  tradeName: "Zebraish Studio",
+} as const;
+
 export const whatsappUrl = (text?: string) =>
   `https://wa.me/${CONTACT.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 export const mailtoUrl = `mailto:${CONTACT.email}`;
