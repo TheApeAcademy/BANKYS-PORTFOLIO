@@ -147,7 +147,7 @@ export async function mount(canvas, opts = {}) {
   // ---------------- SERVICES: IDEA → FORM (Act IV / V) ----------------
   const services = new THREE.Group(); services.position.copy(CORE); scene.add(services);
   const svc = [];
-  const loadTex = (src, draw) => { const t = new THREE.CanvasTexture(document.createElement('canvas')); t.colorSpace = THREE.SRGBColorSpace; const img = new Image(); img.crossOrigin = 'anonymous'; img.onload = () => { t.image = draw(img); t.needsUpdate = true; }; img.src = src; return t; };
+  const loadTex = (src, draw) => { const t = new THREE.CanvasTexture(document.createElement('canvas')); t.colorSpace = THREE.SRGBColorSpace; const img = new Image(); img.crossOrigin = 'anonymous'; img.onload = () => { t.image = draw(img); t.needsUpdate = true; try { renderer.initTexture(t); } catch (e) {} }; img.src = src; return t; };
   const cover = (img, w, hgt, bar) => { const c = document.createElement('canvas'); c.width = w; c.height = hgt; const x = c.getContext('2d'); x.fillStyle = '#0c0c0e'; x.fillRect(0, 0, w, hgt); const top = bar ? 34 : 0; const s = Math.max(w / img.width, (hgt - top) / img.height); x.drawImage(img, (w - img.width * s) / 2, top, img.width * s, img.height * s); if (bar) { x.fillStyle = '#1a1a1d'; x.fillRect(0, 0, w, top); ['#666', '#888', '#aaa'].forEach((c2, i) => { x.fillStyle = c2; x.beginPath(); x.arc(20 + i * 18, 17, 5, 0, 7); x.fill(); }); x.fillStyle = 'rgba(255,255,255,.12)'; x.fillRect(w / 2 - 120, 9, 240, 16); } return c; };
   function addSvc(obj, kind) { const g = new THREE.Group(); g.add(obj); g.userData = { kind, spin: 0, hover: 0, ang: new THREE.Vector2(), vel: new THREE.Vector2(), burst: 0 }; services.add(g); svc.push(g); return g; }
   { // 0 Digital products: floating interface
@@ -244,6 +244,7 @@ export async function mount(canvas, opts = {}) {
     const turn = new THREE.Group(); turn.rotation.y = Math.PI / 3; turn.add(zebra); const pivot = new THREE.Group(); pivot.add(turn); zebraGroup.add(pivot); zebraGroup.position.y += .25; zebraGroup.userData.pivot = pivot; if (opts.onLoad) opts.onLoad(1);
     heroZebra = zebra.clone(true); heroZebra.traverse(m => { if (m.isMesh) { m.material = m.material.clone(); m.material.opacity = 0; heroMats.push(m.material); } });
     const ht = new THREE.Group(); ht.rotation.y = Math.PI; ht.add(heroZebra); heroPivot.add(ht);
+    warm();
   }).catch(e => { console.warn('zebra load failed', e); if (opts.onLoad) opts.onLoad(1); });
 
   // ---------------- CAMERA SYSTEM ----------------
@@ -380,6 +381,20 @@ export async function mount(canvas, opts = {}) {
       opts.onLabels(labelsOut); }
     renderer.render(scene, cam);
   }
+  // Warm-up. Parts of the world stay hidden until the story reaches them (the
+  // forge appears as "Every idea begins somewhere." hands over), and three.js
+  // compiles shaders and uploads textures and buffers the first time something
+  // draws, which stalled the scroll at that moment on every device. So draw
+  // everything once, up front, into a single pixel.
+  function warm() {
+    const saved = [];
+    scene.traverse(o => { saved.push([o, o.visible, o.frustumCulled]); o.visible = true; o.frustumCulled = false; });
+    renderer.setScissorTest(true); renderer.setScissor(0, 0, 1, 1);
+    try { renderer.render(scene, cam); } catch (e) {}
+    renderer.setScissorTest(false);
+    saved.forEach(([o, v, f]) => { o.visible = v; o.frustumCulled = f; });
+  }
+  warm();
   raf = requestAnimationFrame(tick);
   return {
     intro, zebraReady,

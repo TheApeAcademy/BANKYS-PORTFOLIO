@@ -149,8 +149,9 @@ class Component extends DCLogic {
     for (const o of this.els) {
       const L = (p - o.a) / (o.b - o.a);
       const gate = o.gate === 'stmt' ? this.stmt : 1;
-      if ((L < -.02 || L > 1.02 || gate <= 0) && !(o.gate === 'stmt' && gate > 0)) { if (o.v !== 0) { o.v = 0; o.el.style.opacity = '0'; o.el.style.visibility = 'hidden'; } continue; }
-      if (o.v !== 1) { o.v = 1; o.el.style.visibility = 'visible'; }
+      if ((L < -.02 || L > 1.02 || gate <= 0) && !(o.gate === 'stmt' && gate > 0)) { if (o.v !== 0) { o.v = 0; o.el.style.opacity = '0'; o.el.style.visibility = 'hidden'; o.el.style.willChange = ''; } continue; }
+      // Composited while on screen, so moving the text never repaints it.
+      if (o.v !== 1) { o.v = 1; o.el.style.visibility = 'visible'; o.el.style.willChange = 'transform,opacity'; }
       const inn = o.gate === 'stmt' ? 1 : ss(0, .2, L), out = 1 - ss(.8, 1, L), vis = inn * out;
       const base = o.el.style.transform.includes('translateY(-50%)') || o.el.dataset.center ? 'translateY(-50%) ' : '';
       if (!o._base) o._base = o.el.style.transform || ''; const bt = o._base;
