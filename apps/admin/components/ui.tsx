@@ -1,6 +1,6 @@
 export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-2xl border border-border bg-bg-card p-6 ${className}`}>{children}</div>
+    <div className={`glass rounded-[20px] p-6 ${className}`}>{children}</div>
   );
 }
 
@@ -16,8 +16,8 @@ export function PageHeader({
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
-        {description ? <p className="mt-1 text-sm text-fg-muted">{description}</p> : null}
+        <h1 className="text-[22px] font-bold tracking-[-.02em]">{title}</h1>
+        {description ? <p className="mt-1 text-[13px] text-fg-muted">{description}</p> : null}
       </div>
       {action}
     </div>
@@ -46,3 +46,13 @@ export const buttonDangerCls =
   "rounded-lg bg-excluded px-4 py-2.5 font-medium text-white transition hover:opacity-90 disabled:opacity-60";
 export const buttonGhostCls =
   "rounded-lg border border-border px-4 py-2.5 font-medium text-fg transition hover:bg-bg-raised disabled:opacity-60";
+
+/** The Control Center's "Live" pill (green pulse), as on Analytics. */
+export function LivePill() {
+  return (
+    <span className="glass flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-fg-muted">
+      <span className="h-[7px] w-[7px] rounded-full bg-[#30D158]" style={{ animation: "livep 2s infinite" }} />
+      Live
+    </span>
+  );
+}

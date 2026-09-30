@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-export function AdminNavMobile({ links }: { links: { href: string; label: string }[] }) {
+export function AdminNavMobile({ links, footer }: { links: { href: string; label: string }[]; footer?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -46,6 +46,7 @@ export function AdminNavMobile({ links }: { links: { href: string; label: string
               {l.label}
             </Link>
           ))}
+          {footer ? <div className="mt-1 border-t border-border px-3 pt-2">{footer}</div> : null}
         </nav>
       ) : null}
     </div>

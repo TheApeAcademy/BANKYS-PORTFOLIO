@@ -1,5 +1,5 @@
-// @ts-nocheck
 /* eslint-disable */
+// @ts-nocheck
 "use client";
 // Zebra Head: the studio's 3D logo (apps/studio/components/zebraish/ZebraHead.tsx),
 // ported from the Claude Design handoff (Zebra Head.dc.html).

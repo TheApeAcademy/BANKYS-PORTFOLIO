@@ -4,8 +4,9 @@ import { signOut } from "@/lib/actions/auth";
 import { getUnreadNotificationCount } from "@/lib/actions/notifications";
 import { GlobalSearch } from "./GlobalSearch";
 import { AdminNavMobile } from "./AdminNavMobile";
+import { AdminNavLinks, type NavLink } from "./AdminNavLinks";
 
-const links = [
+const links: NavLink[] = [
   { href: "/", label: "Overview" },
   { href: "/customers", label: "Customers" },
   { href: "/projects", label: "Projects" },
@@ -18,43 +19,62 @@ const links = [
   { href: "/settings/security", label: "Security" },
 ];
 
-export async function AdminNav() {
+function SignOut() {
+  return (
+    <form action={signOut}>
+      <button type="submit" className="text-sm text-fg-muted transition hover:text-fg">
+        Sign out
+      </button>
+    </form>
+  );
+}
+
+/** Desktop sidebar: brand, sections, sign out. Hidden below lg (the top bar's menu takes over). */
+export function AdminSidebar() {
+  return (
+    <aside className="glass-rail sticky top-0 hidden h-screen flex-col border-r px-4 py-6 lg:flex">
+      <div className="px-2">
+        <Logo href="/" label="Control Center" />
+        <p className="mt-2 text-[11px] uppercase leading-snug tracking-wide text-fg-muted">
+          Bureau of Statistics, Analysis &amp; Critical Motion
+        </p>
+      </div>
+      <div className="mt-8 flex-1 overflow-y-auto">
+        <AdminNavLinks links={links} />
+      </div>
+      <div className="border-t border-border px-2 pt-4">
+        <SignOut />
+      </div>
+    </aside>
+  );
+}
+
+/** Top bar: search and notifications everywhere; brand, menu and sign out on small screens. */
+export async function AdminTopBar() {
   const unreadCount = await getUnreadNotificationCount();
 
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-bg/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-4">
-        <Logo href="/" name="ZEBRAISH BEREAU OF STATISTICS ANALYSIS AND CRITICAL MOTION" />
-        <AdminNavMobile links={links} />
-        <nav className="hidden flex-1 flex-wrap gap-1 text-sm md:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-md px-3 py-1.5 text-fg-muted transition hover:bg-bg-raised hover:text-fg"
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-        <GlobalSearch />
-        <Link
-          href="/notifications"
-          className="relative rounded-md px-3 py-1.5 text-fg-muted transition hover:bg-bg-raised hover:text-fg"
-          aria-label={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications"}
-        >
-          <span aria-hidden>🔔</span>
-          {unreadCount > 0 ? (
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-medium text-white">
-              {unreadCount > 99 ? "99+" : unreadCount}
-            </span>
-          ) : null}
-        </Link>
-        <form action={signOut}>
-          <button type="submit" className="text-sm text-fg-muted hover:text-fg">
-            Sign out
-          </button>
-        </form>
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-3">
+        <AdminNavMobile links={links} footer={<SignOut />} />
+        <div className="shrink-0 lg:hidden">
+          <Logo href="/" name="" />
+        </div>
+        <div className="ml-auto flex min-w-0 items-center gap-2 lg:ml-0 lg:flex-1">
+          <GlobalSearch />
+          <Link
+            href="/notifications"
+            className="relative ml-auto rounded-md px-3 py-1.5 text-fg-muted transition hover:bg-bg-raised hover:text-fg"
+            aria-label={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications"}
+          >
+            <span aria-hidden>🔔</span>
+            {unreadCount > 0 ? (
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-medium text-white">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            ) : null}
+          </Link>
+        </div>
       </div>
     </header>
   );
