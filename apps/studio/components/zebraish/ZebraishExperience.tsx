@@ -112,6 +112,7 @@ class Component extends DCLogic {
     if (t > 10.4) {
       this.introDone = true; document.documentElement.style.overflow = ''; this.lenis && this.lenis.start();
       this.$('chrome').animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1200, fill: 'forwards' });
+      { const lp = this.$('langpre'); if (lp) { lp.style.opacity = '0'; lp.style.pointerEvents = 'none'; lp.style.visibility = 'hidden'; } }
       { const hn = this.$('hint'); hn.style.transition = 'opacity 1s ease'; this._hintOn = performance.now(); }
       this._apPause = performance.now() + 1800; // let the hint be read before the story starts moving
     }
@@ -188,6 +189,10 @@ class Component extends DCLogic {
     if (kind === 'eco') this.setState({ eco: id });
   }
   closePj() { if (!this.state.pj) return; this.world && this.world.unfocus(); this.lenis && this.lenis.start(); this.setState({ pj: null }); }
+  langSeg(on) {
+    return { padding: '6px 11px', borderRadius: '100px', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '10px', fontWeight: 800, letterSpacing: '.14em',
+      background: on ? '#f5f5f7' : 'transparent', color: on ? '#040405' : 'rgba(245,245,247,.6)', transition: 'background .3s, color .3s' };
+  }
   langChip(on) {
     return { padding: '11px 22px', borderRadius: '100px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '11px', fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase',
       border: '1px solid ' + (on ? 'rgba(245,245,247,.9)' : 'rgba(245,245,247,.2)'), background: on ? 'rgba(245,245,247,.92)' : 'rgba(245,245,247,.06)', color: on ? '#040405' : '#f5f5f7',
@@ -197,13 +202,15 @@ class Component extends DCLogic {
     const pj0 = this.PROJECTS.find(x => x.id === this.state.pj) || {}, pj = Object.assign({}, pj0, { caseHref: '/work/' + (pj0.id || '') }), eco = this.ECO.find(x => x.id === this.state.eco) || {};
     const touch = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
     return {
-      rootRef: this.rootRef, homeOn: this.state.home, langLabel: getZbLang() === 'es' ? 'ES · en' : 'EN · es', toggleLang: () => this.setLang(getZbLang() === 'es' ? 'en' : 'es'),
+      rootRef: this.rootRef, homeOn: this.state.home,
       powerOn: this.state.power, start: () => this.start(),
       // Language picker on the power screen (the whole intro re-renders in the chosen language).
       isEs: getZbLang() === 'es', pickEn: () => this.setLang('en'), pickEs: () => this.setLang('es'),
       enStyle: this.langChip(getZbLang() !== 'es'), esStyle: this.langChip(getZbLang() === 'es'),
+      segEs: this.langSeg(getZbLang() === 'es'), segEn: this.langSeg(getZbLang() !== 'es'),
       powerLabel: touch ? 'Tap to power on' : 'Click to power on', powerSub: 'Best with sound',
       soundLabel: this.state.sound ? 'Sound on' : 'Sound off',
+      soundOn: !!this.state.sound,
       toggleSound: () => { const s = !this.state.sound; this.setState({ sound: s }); try { localStorage.setItem('zb-sound', s ? 'on' : 'off'); } catch (x) {} if (s) { this.aud.amb.play().catch(() => {}); this.fadeAmb(.32, 1200); } else this.fadeAmb(0, 600); },
       chain: ['STRIPES', 'LINES', 'NODES', 'SYSTEMS', 'PRODUCTS', 'BUSINESSES'].map((label, i) => ({ label: (i ? '↓ ' : '') + label, i })),
       svcLabels: this.SERVICES.map((s, i) => ({ id: 'svc' + i, name: s[0], sub: s[1] })),
@@ -540,6 +547,13 @@ function template(v) {
         {" "}
         <div data-id="status" role="status" aria-live="polite" style={{"position":"absolute","left":"0","right":"0","bottom":"11%","textAlign":"center","fontFamily":"ui-monospace,Menlo,monospace","fontSize":"12px","letterSpacing":".28em","textTransform":"uppercase","color":"rgba(245,245,247,.62)","opacity":"0"}} />
         {" "}
+        {/* Language switch from the first moment (power screen and opening seconds); the top bar's own takes over when it appears. */}
+        <div data-id="langpre" style={{"position":"absolute","right":"22px","top":"22px","zIndex":"6","transition":"opacity .6s ease"}}>
+          <div role="group" aria-label="Language" data-ui="1" style={{"pointerEvents":"auto","display":"flex","gap":"2px","padding":"3px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.16)","background":"rgba(10,10,12,.5)","backdropFilter":"blur(12px)","WebkitBackdropFilter":"blur(12px)"}}>
+            <button type="button" onClick={v.pickEs} aria-pressed={v.isEs} lang="es" style={v.segEs}>{"ES"}</button>
+            <button type="button" onClick={v.pickEn} aria-pressed={!v.isEs} lang="en" style={v.segEn}>{"EN"}</button>
+          </div>
+        </div>
         {!v.powerOn ? (
           <a href="/studio" data-ui="1" data-skip="1" style={{"position":"absolute","right":"20px","bottom":"22px","zIndex":"5","pointerEvents":"auto","padding":"9px 16px","borderRadius":"100px","background":"rgba(10,10,12,.55)","backdropFilter":"blur(14px)","WebkitBackdropFilter":"blur(14px)","border":"1px solid rgba(245,245,247,.2)","color":"#f5f5f7","fontSize":"10px","fontWeight":"700","letterSpacing":".18em","textTransform":"uppercase","textDecoration":"none"}}>{"Skip intro →"}</a>
         ) : null}
@@ -560,9 +574,12 @@ function template(v) {
             {" "}
             <div style={{"display":"flex","gap":"10px","alignItems":"center"}}>
               {" "}
-              <button type="button" data-ui="1" data-soundbtn="1" aria-label={v.soundLabel} onClick={v.toggleSound} style={{"pointerEvents":"auto","display":"flex","alignItems":"center","gap":"8px","padding":"9px 14px","borderRadius":"100px","background":"rgba(245,245,247,.06)","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".18em","textTransform":"uppercase","cursor":"pointer","whiteSpace":"nowrap"}}>{I(v.soundLabel)}</button>
+              <button type="button" data-ui="1" data-soundbtn="1" aria-label={v.soundLabel} onClick={v.toggleSound} style={{"pointerEvents":"auto","display":"flex","alignItems":"center","gap":"8px","padding":"9px 14px","borderRadius":"100px","background":"rgba(245,245,247,.06)","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".18em","textTransform":"uppercase","cursor":"pointer","whiteSpace":"nowrap"}}><svg aria-hidden="true" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{"flex":"none"}}><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" />{v.soundOn ? <><path d="M15.5 9a4 4 0 0 1 0 6" /><path d="M18 6.5a7.5 7.5 0 0 1 0 11" /></> : <><path d="M16 9.5l5 5" /><path d="M21 9.5l-5 5" /></>}</svg>{I(v.soundLabel)}</button>
               {" "}
-              <button type="button" data-ui="1" onClick={v.toggleLang} style={{"pointerEvents":"auto","padding":"9px 12px","borderRadius":"100px","background":"none","border":"1px solid rgba(245,245,247,.16)","color":"#f5f5f7","fontFamily":"inherit","fontSize":"10px","fontWeight":"700","letterSpacing":".14em","cursor":"pointer"}}>{I(v.langLabel)}</button>
+              <div role="group" aria-label="Language" data-ui="1" style={{"pointerEvents":"auto","display":"flex","gap":"2px","padding":"3px","borderRadius":"100px","border":"1px solid rgba(245,245,247,.16)","background":"rgba(10,10,12,.5)","backdropFilter":"blur(12px)","WebkitBackdropFilter":"blur(12px)"}}>
+                <button type="button" onClick={v.pickEs} aria-pressed={v.isEs} lang="es" style={v.segEs}>{"ES"}</button>
+                <button type="button" onClick={v.pickEn} aria-pressed={!v.isEs} lang="en" style={v.segEn}>{"EN"}</button>
+              </div>
               {" "}
               <a href="/studio?build=1" data-ui="1" data-id="hcta" style={{"transition":"opacity .5s ease","pointerEvents":"auto","padding":"10px 20px","borderRadius":"100px","background":"#f5f5f7","color":"#040405","fontSize":"11px","fontWeight":"800","letterSpacing":".08em","textTransform":"uppercase","textDecoration":"none","whiteSpace":"nowrap"}} data-es="Empieza un proyecto">{"Start a project"}</a>
               {" "}
