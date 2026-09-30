@@ -6,6 +6,29 @@ if (typeof window !== "undefined") {
    2 = Signal Tunnel (stripes wrapped into a vortex). Reacts to cursor, scroll
    position and scroll velocity. Single rAF loop, paused off-screen. */
 (function () {
+  /* Lite mode. Every page with a stripe field samples its frame rate here; a
+     machine that can't hold ~42fps gets html[data-lite] and a 'zb:lite' event,
+     and the heavy effects (this shader, the 3D heads, smooth scrolling, big
+     glass blurs) step down so scrolling stays responsive. */
+  const G = window.__zbPerf || (window.__zbPerf = { lite: false, t0: 0, n: 0, acc: 0, low: 0, last: 0 });
+  function goLite() {
+    if (G.lite) return; G.lite = true;
+    document.documentElement.setAttribute('data-lite', '');
+    window.dispatchEvent(new Event('zb:lite'));
+  }
+  const forced = new URLSearchParams(location.search).has('lite'); // ?lite to preview it
+  function sample(now) {
+    if (G.lite) return;
+    if (forced) { goLite(); return; }
+    const d = now - G.last; G.last = now;
+    if (!G.t0) G.t0 = now;
+    if (now - G.t0 < 2000 || document.hidden || d <= 0 || d > 1000) return;
+    G.n++; G.acc += d;
+    if (G.acc < 1000) return;
+    const fps = G.n * 1000 / G.acc; G.n = G.acc = 0;
+    G.low = fps < 42 ? G.low + 1 : 0;
+    if (G.low >= 2) goLite();
+  }
   const VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   const FS = `precision highp float;
 uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uVel;uniform float uScroll;
@@ -78,7 +101,7 @@ void main(){
     const readColors = () => { const cs = getComputedStyle(canvas); ink = hex(cs.getPropertyValue('--text') || '#f5f5f7'); bg = hex(cs.getPropertyValue('--bg') || '#060608'); };
     function resize() {
       const r = canvas.getBoundingClientRect();
-      const scale = (opts.mode === 1 ? 1 : .6) * Math.min(devicePixelRatio || 1, 1.5);
+      const scale = (opts.mode === 1 ? 1 : G.lite ? .38 : .6) * Math.min(devicePixelRatio || 1, G.lite ? 1 : 1.5);
       W = Math.max(2, Math.round(r.width * scale)); H = Math.max(2, Math.round(r.height * scale));
       if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
       gl.viewport(0, 0, W, H);
@@ -89,8 +112,11 @@ void main(){
       thov = (tmx >= 0 && tmx <= 1 && tmy >= 0 && tmy <= 1) ? 1 : 0;
     }
     function onLeave() { thov = 0; }
+    let skip = 0;
     function tick(now) {
       raf = requestAnimationFrame(tick);
+      sample(now);
+      if (G.lite && (skip++ & 1)) return;
       draw(now);
     }
     function draw(now) {
@@ -115,10 +141,11 @@ void main(){
     addEventListener('pointermove', onMove, { passive: true });
     document.addEventListener('pointerleave', onLeave);
     addEventListener('resize', resize);
+    addEventListener('zb:lite', resize);
     readColors(); resize(); draw(performance.now()); raf = requestAnimationFrame(tick);
     return {
       set(o) { Object.assign(opts, o); resize(); },
-      destroy() { cancelAnimationFrame(raf); io.disconnect(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', onLeave); removeEventListener('resize', resize); }
+      destroy() { cancelAnimationFrame(raf); io.disconnect(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', onLeave); removeEventListener('resize', resize); removeEventListener('zb:lite', resize); }
     };
   }
   window.ZebraStripes = { mount };

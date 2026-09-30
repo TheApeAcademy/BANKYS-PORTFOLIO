@@ -107,6 +107,13 @@ body {
   backdrop-filter: blur(28px) saturate(1.4);
   -webkit-backdrop-filter: blur(28px) saturate(1.4);
 }
+/* Lite mode (set by the stripe field when a machine can't keep the frame
+   rate): a lighter blur costs far less to redraw on every frame. */
+html[data-lite] .glass,
+html[data-lite] .glass-rail {
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+}
 .kicker {
   font-size: 10px;
   font-weight: 700;

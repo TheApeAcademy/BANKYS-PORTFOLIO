@@ -26,6 +26,10 @@ class Component extends DCLogic {
       else if (!on && this.live) this.teardown();
     }, { rootMargin: '300px' });
     this.gate.observe(wrap);
+    // The model loads a little early (the 300px margin) but only draws while on screen.
+    this.seen = new IntersectionObserver(es => { this.onScreen = es[es.length - 1].isIntersecting; });
+    this.seen.observe(wrap);
+    this._lite = () => { if (this.r) { this.r.setPixelRatio(1); this.resize && this.resize(); } }; addEventListener('zb:lite', this._lite);
   }
   teardown() {
     this.live = false; this.token = (this.token || 0) + 1; cancelAnimationFrame(this.raf);
@@ -40,7 +44,7 @@ class Component extends DCLogic {
     if (!cv || !wrap || this.dead || tok !== this.token) return;
     const v = this.props.variant ?? 'a';
     const r = new T.WebGLRenderer({ canvas: cv, antialias: true, alpha: true, powerPreference: 'low-power' }); this.r = r;
-    r.setPixelRatio(Math.min(devicePixelRatio, 1.75)); r.outputColorSpace = T.SRGBColorSpace; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = v === 'b' ? 1.1 : .95;
+    r.setPixelRatio(window.__zbPerf?.lite ? 1 : Math.min(devicePixelRatio, 1.75)); r.outputColorSpace = T.SRGBColorSpace; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = v === 'b' ? 1.1 : .95;
     r.shadowMap.enabled = true; r.shadowMap.type = T.PCFSoftShadowMap;
     cv.addEventListener('webglcontextlost', e => { e.preventDefault(); cancelAnimationFrame(this.raf); });
     const scene = new T.Scene();
@@ -71,7 +75,7 @@ class Component extends DCLogic {
     const R = Math.max(size.x, size.y, size.z);
     cam.position.set(0, R * .12, R * 2.6); cam.lookAt(0, 0, 0);
     const resize = () => { const b = wrap.getBoundingClientRect(); if (!b.width || !this.r) return; r.setSize(b.width, b.height, false); cam.aspect = b.width / b.height; cam.updateProjectionMatrix(); };
-    resize(); this.ro = new ResizeObserver(resize); this.ro.observe(wrap);
+    this.resize = resize; resize(); this.ro = new ResizeObserver(resize); this.ro.observe(wrap);
     let rotY = -.6, velY = 0, drag = false, lx = 0, tiltX = 0, ttx = 0, reveal = 0, last = performance.now();
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!this.bound) {
@@ -82,6 +86,8 @@ class Component extends DCLogic {
     }
     const loop = now => {
       if (tok !== this.token || this.dead) return; this.raf = requestAnimationFrame(loop);
+      // Lite mode (see stripes.js) draws every other frame.
+      if (!this.onScreen || (window.__zbPerf?.lite && (this.skip = !this.skip))) return;
       const dt = Math.min(.05, (now - last) / 1000); last = now;
       if (this.dx) { rotY += this.dx; this.dx = 0; velY = this.velY || 0; }
       if (!this.drag) { velY *= .94; rotY += velY + (reduce ? 0 : dt * .25); }
@@ -92,7 +98,7 @@ class Component extends DCLogic {
     };
     this.raf = requestAnimationFrame(loop);
   }
-  componentWillUnmount() { this.dead = true; this.gate && this.gate.disconnect(); this.teardown(); }
+  componentWillUnmount() { this.dead = true; this.gate && this.gate.disconnect(); this.seen && this.seen.disconnect(); removeEventListener('zb:lite', this._lite); this.teardown(); }
   renderVals() { return { wrapRef: this.wrapRef, canvasRef: this.canvasRef }; }
 }
 

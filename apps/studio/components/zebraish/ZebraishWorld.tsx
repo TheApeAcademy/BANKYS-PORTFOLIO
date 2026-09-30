@@ -30,10 +30,14 @@ class Component extends DCLogic {
     addEventListener('scroll', this.onScroll, { passive: true });
     this.scrollFx();
     this.bindReveals();
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) import('lenis').then(m => {
-      const L = m.default || m.Lenis; this.lenis = new L({ lerp: .09, wheelMultiplier: 1, smoothWheel: true }); window.__lenis = this.lenis;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !window.__zbPerf?.lite) import('lenis').then(m => {
+      if (window.__zbPerf?.lite) return; const L = m.default || m.Lenis; this.lenis = new L({ lerp: .09, wheelMultiplier: 1, smoothWheel: true }); window.__lenis = this.lenis;
       const f = t => { this.lenis.raf(t); this._ln = requestAnimationFrame(f); }; this._ln = requestAnimationFrame(f);
     }).catch(() => {});
+    // Lite mode (a machine that can't keep the frame rate, see stripes.js):
+    // hand scrolling back to the browser, which stays smooth under load.
+    this._lite = () => { cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); this.lenis = null; } };
+    addEventListener('zb:lite', this._lite);
     this.initRadar();
   }
   runIntro() {
@@ -72,13 +76,13 @@ class Component extends DCLogic {
   }
   sfx(k) { if (!this.state.sound || !this.aud) return; const a = this.aud[k]; try { a.currentTime = 0; a.play(); } catch (e) {} }
   toggleSound() { const on = !this.state.sound; this.setState({ sound: on }); if (!this.aud) return; if (on) { this.aud.amb.play().catch(() => {}); } else this.aud.amb.pause(); }
-  componentWillUnmount() { removeEventListener('resize', this._vw); removeEventListener('zb:lang', this._fitLang); (this._it || []).forEach(clearTimeout); cancelAnimationFrame(this._rv); this.world && this.world.destroy(); this.aud && this.aud.amb.pause(); document.documentElement.style.overflow = ''; cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); }
+  componentWillUnmount() { removeEventListener('zb:lite', this._lite); removeEventListener('resize', this._vw); removeEventListener('zb:lang', this._fitLang); (this._it || []).forEach(clearTimeout); cancelAnimationFrame(this._rv); this.world && this.world.destroy(); this.aud && this.aud.amb.pause(); document.documentElement.style.overflow = ''; cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); }
   scrollFx() {
     const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
     const vel = Math.max(-1, Math.min(1, (y - (this._ly ?? y)) / 60)); this._ly = y;
     this._sk = (this._sk || 0) * .8 + vel * .2;
     if (!this._h2) this._h2 = [...this.rootRef.current.querySelectorAll('h2')];
-    this._h2.forEach(el => { el.style.transform = `skewY(${(this._sk * -2.5).toFixed(2)}deg)`; el.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'; });
+    if (!window.__zbPerf?.lite) this._h2.forEach(el => { el.style.transform = `skewY(${(this._sk * -2.5).toFixed(2)}deg)`; el.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'; });
     clearTimeout(this._skT); this._skT = setTimeout(() => { this._sk = 0; this._h2.forEach(el => el.style.transform = 'none'); }, 120);
     const bar = this.q('[data-id="bar"]'); if (bar) bar.style.width = (h > 0 ? y / h * 100 : 0) + '%';
     const t = (s, v) => { const el = this.q(s); if (el) el.style.transform = v; };

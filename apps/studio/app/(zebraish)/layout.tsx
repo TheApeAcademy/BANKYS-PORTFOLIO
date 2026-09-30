@@ -19,6 +19,11 @@ export const metadata: Metadata = {
 // the progress bar) stalls. clip hides sideways overflow without doing that.
 const BASE_CSS = "html,body{height:100%;margin:0;background:#040405}body{overflow-x:clip!important}#dc-root,#dc-root>.sc-host{height:100%}";
 
+// Lite mode (html[data-lite], set by the stripe field when a machine can't
+// keep the frame rate): the glass panels blur less, which is far cheaper to
+// redraw over the moving background.
+const LITE_CSS = 'html[data-lite] #dc-root [style*="backdrop-filter"][style*="blur("]{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}';
+
 // Phone layout. The designs were drawn for desktop with inline styles, so these
 // overrides (hence !important) narrow the side padding, stack the hero, and
 // drop wide grid minimums to one column below tablet width.
@@ -58,6 +63,7 @@ export default function ZebraishLayout({ children }: { children: React.ReactNode
       />
       <style>{BASE_CSS}</style>
       <style>{MOBILE_CSS}</style>
+      <style>{LITE_CSS}</style>
       <div id="dc-root">{children}</div>
     </>
   );
