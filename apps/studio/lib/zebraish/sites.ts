@@ -3,7 +3,7 @@
 // the section stays light): a screenshot where we have one, otherwise the cover
 // photo the old work page used. The poster in the accent colour is the
 // fallback for a site with no image. Text is English; Spanish lives in es.ts.
-export type DeviceKind = "imac" | "iphone" | "laptop" | "ipadL" | "tv" | "android" | "monitor" | "iphoneL" | "browser" | "ipadP" | "ultrawide" | "fold" | "watch" | "ipadMini";
+export type DeviceKind = "imac" | "iphone" | "laptop" | "ipadL" | "tv" | "android" | "monitor" | "iphoneL" | "browser" | "ipadP" | "ultrawide" | "fold" | "s24ultra" | "ipadMini";
 
 export type Site = {
   name: string;
@@ -21,6 +21,8 @@ export type Site = {
   fit?: "contain";
   /** Screen colour behind a contained cover. */
   screenBg?: string;
+  /** Space around a contained cover. */
+  pad?: string;
 };
 
 export const SITES: Site[] = [
@@ -28,7 +30,7 @@ export const SITES: Site[] = [
     blurb: "Minimal editorial fashion site with a hover-reveal product grid and WhatsApp ordering, built for Snapchat-native buyers." },
   { name: "DOBERMAN", tagline: "Bold Brand Experience", category: "Brand", host: "doberman-kappa.vercel.app", shot: "/zb/assets/b78ad4f230a4015d24a420fce2a7d53b.jpg", cta: "Enter", accent: "#c8102e", device: "iphone",
     blurb: "High-impact brand site. Aggressive typography, a dramatic dark palette and a conversion-focused layout." },
-  { name: "THIS OR THAT", tagline: "Decide in one tap", category: "Product", host: "this-or-that-fawn-rho.vercel.app", shot: "/zb/assets/thisorthat-icon.png", cta: "Try it", accent: "#1f7aff", device: "watch", fit: "contain", screenBg: "#07080c",
+  { name: "THIS OR THAT", tagline: "Decide in one tap", category: "Product", host: "this-or-that-fawn-rho.vercel.app", shot: "/zb/assets/thisorthat-icon.png", cta: "Try it", accent: "#1f7aff", device: "s24ultra", fit: "contain", screenBg: "#07080c", pad: "18%",
     blurb: "A quick-fire decision product: two options, one tap, and you see what everyone else picked." },
   { name: "CHRTT.PRIETO", tagline: "Fashion & Lifestyle Creator", category: "Creator", host: "christain-theapeacademys-projects.vercel.app", shot: "/zb/assets/sites/chrtt-prieto.webp", cta: "Collab", accent: "#c9a27e", device: "android",
     blurb: "Creator portfolio for a Barcelona-based fashion and lifestyle creator. Stats-forward, TikTok-native, with a brand collab flow." },

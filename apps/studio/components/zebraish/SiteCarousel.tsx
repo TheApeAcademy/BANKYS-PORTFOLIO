@@ -23,6 +23,7 @@ const SILVER = "linear-gradient(150deg,#f2f3f5 0%,#b4b7be 38%,#858890 68%,#d7d9d
 const STAND = "linear-gradient(90deg,#7d8087,#e6e8ec 42%,#c3c6cc 58%,#777a81)";
 const RIM = "inset 0 0 0 1px rgba(255,255,255,.14), inset 0 1.5px 1px rgba(255,255,255,.3), inset 0 -2px 3px rgba(0,0,0,.55)";
 const BEZEL = "#050506";
+const TI = "linear-gradient(150deg,#8b8a86 0%,#4a4946 24%,#2c2b29 50%,#4d4c49 76%,#908f8a 100%)"; // titanium
 const BTN: CSSProperties = { background: SG, borderRadius: 2, boxShadow: "inset 0 1px 0 rgba(255,255,255,.25)" };
 
 // Each device: outer aspect ratio (width / height) and its parts, positioned in % of the outer box.
@@ -110,14 +111,14 @@ const DEVICES: Record<DeviceKind, { ar: number; parts: Part[] }> = {
     { s: { left: ".5%", right: ".5%", top: "1.2%", height: "77.6%", borderRadius: ".9% / 2.4%", background: BEZEL } },
     { screen: true, s: { left: "1.4%", right: "1.4%", top: "3.2%", height: "73.6%" } },
   ] },
-  watch: { ar: 0.66, parts: [
-    { s: { left: "25%", right: "29%", top: 0, height: "24%", borderRadius: "18% 18% 0 0 / 30% 30% 0 0", background: "linear-gradient(90deg,#15161a,#2a2b31 50%,#15161a)" } },
-    { s: { left: "25%", right: "29%", top: "76%", height: "24%", borderRadius: "0 0 18% 18% / 0 0 30% 30%", background: "linear-gradient(90deg,#15161a,#2a2b31 50%,#15161a)" } },
-    { s: { ...BTN, right: "5%", width: "7%", top: "36%", height: "11%", borderRadius: "4px" } },
-    { s: { ...BTN, right: "7.5%", width: "3%", top: "52%", height: "10%" } },
-    { s: { left: "8%", right: "12%", top: "18%", height: "64%", borderRadius: "26% / 21%", background: SG, boxShadow: RIM } },
-    { s: { left: "10.5%", right: "14.5%", top: "20.5%", height: "59%", borderRadius: "23% / 18.5%", background: BEZEL } },
-    { screen: true, s: { left: "14%", right: "18%", top: "24.5%", height: "51%", borderRadius: "18% / 14.5%" } },
+  // Galaxy S24 Ultra: squared corners, titanium frame, thin even bezels, centred hole-punch.
+  s24ultra: { ar: 0.487, parts: [
+    { s: { ...BTN, background: TI, right: "-1.1%", width: "1.4%", top: "19%", height: "11%" } },
+    { s: { ...BTN, background: TI, right: "-1.1%", width: "1.4%", top: "33%", height: "6%" } },
+    { s: { inset: 0, borderRadius: "6.5% / 3.2%", background: TI, boxShadow: RIM } },
+    { s: { left: "1.6%", right: "1.6%", top: ".8%", bottom: ".8%", borderRadius: "5.4% / 2.6%", background: BEZEL } },
+    { screen: true, s: { left: "3.2%", right: "3.2%", top: "1.6%", bottom: "1.6%", borderRadius: "4% / 1.9%" } },
+    { kind: "punch", s: { left: "46.8%", width: "6.4%", top: "2.6%", aspectRatio: "1" } },
   ] },
   ipadMini: { ar: 0.68, parts: [
     { s: { ...BTN, background: SILVER, top: "-1%", height: "1.2%", right: "14%", width: "12%" } },
@@ -138,7 +139,7 @@ function Screen({ site }: { site: Site }) {
   const [failed, setFailed] = useState(false);
   if (site.shot && !failed) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={site.shot} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: site.fit ?? "cover", objectPosition: site.pos ?? (site.fit ? "center" : "top center"), display: "block", background: site.screenBg, padding: site.fit ? "3%" : undefined, boxSizing: "border-box" }} />;
+    return <img src={site.shot} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: site.fit ?? "cover", objectPosition: site.pos ?? (site.fit ? "center" : "top center"), display: "block", background: site.screenBg, padding: site.fit ? (site.pad ?? "3%") : undefined, boxSizing: "border-box" }} />;
   }
   return (
     <div style={{ position: "absolute", inset: 0, containerType: "size", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4cqmin", textAlign: "center", padding: "6cqmin",
