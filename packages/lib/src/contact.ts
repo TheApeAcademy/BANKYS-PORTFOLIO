@@ -7,7 +7,7 @@ export const CONTACT = {
   phone: "+2349051717561",
   phoneDisplay: "+234 905 171 7561",
   /** Swap for the domain inbox (e.g. hello@zebraish.com) once it's set up. */
-  email: "j0shbankole19@gmail.com",
+  email: "hola@zebraish.com",
   /** Handles without the @; left empty until the accounts are ready. */
   instagram: "zebraish_studio",
   tiktok: "",
