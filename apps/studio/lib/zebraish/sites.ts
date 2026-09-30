@@ -1,8 +1,8 @@
 // The founder's live sites, shown in the device carousel on the Home and World
 // pages. Each gets its own device and shows its cover (never the live page, so
 // the section stays light): a screenshot where we have one, otherwise the cover
-// photo the old work page used; a site with neither shows a poster in its
-// accent colour. Text is English; Spanish lives in es.ts.
+// photo the old work page used. The poster in the accent colour is the
+// fallback for a site with no image. Text is English; Spanish lives in es.ts.
 export type DeviceKind = "imac" | "iphone" | "laptop" | "ipadL" | "tv" | "android" | "monitor" | "iphoneL" | "browser" | "ipadP" | "ultrawide" | "fold";
 
 export type Site = {
@@ -22,11 +22,11 @@ export const SITES: Site[] = [
     blurb: "An online boutique for modest luxury abayas, from collection to checkout." },
   { name: "DOBERMAN", tagline: "Bold Brand Experience", category: "Brand", host: "doberman-kappa.vercel.app", shot: "/zb/assets/b78ad4f230a4015d24a420fce2a7d53b.jpg", cta: "Enter", accent: "#c8102e", device: "iphone",
     blurb: "A bold, dark brand world built to make a first impression stick." },
-  { name: "CHRTT.PRIETO", tagline: "Fashion & Lifestyle Creator", category: "Creator", host: "christain-theapeacademys-projects.vercel.app", shot: "", cta: "Collab", accent: "#c9a27e", device: "laptop",
+  { name: "CHRTT.PRIETO", tagline: "Fashion & Lifestyle Creator", category: "Creator", host: "christain-theapeacademys-projects.vercel.app", shot: "/zb/assets/sites/chrtt-prieto.webp", cta: "Collab", accent: "#c9a27e", device: "android",
     blurb: "Portfolio and collab hub for a fashion and lifestyle creator." },
   { name: "AAURA", tagline: "Arabian Luxury Perfumery", category: "Fragrance", host: "aaura-perfume.vercel.app", shot: "/zb/assets/ae7685b3f6993315e423325f7889a7f4.jpg", cta: "Order", accent: "#b8860b", device: "ipadL",
     blurb: "An Arabian perfume house presented like a luxury flagship store." },
-  { name: "HOT CHEF", tagline: "Culinary Excellence", category: "Food & Drink", host: "hot-chef.vercel.app", shot: "/zb/assets/sites/hot-chef.webp", cta: "Menu", accent: "#e8562a", device: "android",
+  { name: "HOT CHEF", tagline: "Culinary Excellence", category: "Food & Drink", host: "hot-chef.vercel.app", shot: "/zb/assets/sites/hot-chef.webp", cta: "Menu", accent: "#e8562a", device: "laptop",
     blurb: "A restaurant site where the menu and the story lead the way." },
   { name: "APE ACADEMY", tagline: "Academic Excellence", category: "Education", host: "deploy-1-p1ke.vercel.app", shot: "/zb/assets/sites/ape-academy.webp", cta: "Enrol", accent: "#1f7a4d", device: "tv",
     blurb: "An academic help platform: submit a task, pay, and get the documents delivered." },
