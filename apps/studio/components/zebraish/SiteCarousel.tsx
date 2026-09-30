@@ -110,6 +110,22 @@ const DEVICES: Record<DeviceKind, { ar: number; parts: Part[] }> = {
     { s: { left: ".5%", right: ".5%", top: "1.2%", height: "77.6%", borderRadius: ".9% / 2.4%", background: BEZEL } },
     { screen: true, s: { left: "1.4%", right: "1.4%", top: "3.2%", height: "73.6%" } },
   ] },
+  watch: { ar: 0.66, parts: [
+    { s: { left: "25%", right: "29%", top: 0, height: "24%", borderRadius: "18% 18% 0 0 / 30% 30% 0 0", background: "linear-gradient(90deg,#15161a,#2a2b31 50%,#15161a)" } },
+    { s: { left: "25%", right: "29%", top: "76%", height: "24%", borderRadius: "0 0 18% 18% / 0 0 30% 30%", background: "linear-gradient(90deg,#15161a,#2a2b31 50%,#15161a)" } },
+    { s: { ...BTN, right: "5%", width: "7%", top: "36%", height: "11%", borderRadius: "4px" } },
+    { s: { ...BTN, right: "7.5%", width: "3%", top: "52%", height: "10%" } },
+    { s: { left: "8%", right: "12%", top: "18%", height: "64%", borderRadius: "26% / 21%", background: SG, boxShadow: RIM } },
+    { s: { left: "10.5%", right: "14.5%", top: "20.5%", height: "59%", borderRadius: "23% / 18.5%", background: BEZEL } },
+    { screen: true, s: { left: "14%", right: "18%", top: "24.5%", height: "51%", borderRadius: "18% / 14.5%" } },
+  ] },
+  ipadMini: { ar: 0.68, parts: [
+    { s: { ...BTN, background: SILVER, top: "-1%", height: "1.2%", right: "14%", width: "12%" } },
+    { s: { inset: 0, borderRadius: "7.4% / 5%", background: SILVER, boxShadow: RIM } },
+    { s: { left: "1.6%", right: "1.6%", top: "1.1%", bottom: "1.1%", borderRadius: "6.4% / 4.4%", background: BEZEL } },
+    { screen: true, s: { left: "5.4%", right: "5.4%", top: "3.8%", bottom: "3.8%", borderRadius: "3% / 2%" } },
+    { kind: "punch", s: { left: "48.6%", width: "2.8%", top: "1.6%", aspectRatio: "1" } },
+  ] },
   browser: { ar: 1.5, parts: [
     { s: { inset: 0, borderRadius: "1.6% / 2.4%", background: "#161619", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.2)" } },
     { kind: "bar", s: { left: 0, right: 0, top: 0, height: "7%", borderRadius: "1.6% 1.6% 0 0 / 34% 34% 0 0", background: "linear-gradient(#2c2c32,#1f1f24)" } },
@@ -122,7 +138,7 @@ function Screen({ site }: { site: Site }) {
   const [failed, setFailed] = useState(false);
   if (site.shot && !failed) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={site.shot} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: site.pos ?? "top center", display: "block" }} />;
+    return <img src={site.shot} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: site.fit ?? "cover", objectPosition: site.pos ?? (site.fit ? "center" : "top center"), display: "block", background: site.screenBg, padding: site.fit ? "3%" : undefined, boxSizing: "border-box" }} />;
   }
   return (
     <div style={{ position: "absolute", inset: 0, containerType: "size", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4cqmin", textAlign: "center", padding: "6cqmin",

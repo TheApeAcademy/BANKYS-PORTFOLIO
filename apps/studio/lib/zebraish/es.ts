@@ -100,8 +100,8 @@ const PAGES: Record<string, string> = {
   // Home: work
   "02 · Selected Work": "02 · Trabajos seleccionados",
   "REAL WORK. REAL PROOF.": "TRABAJO REAL. PRUEBAS REALES.",
-  "Twelve live sites, twelve different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on.":
-    "Doce webs en vivo, doce mundos distintos, creadas por el fundador antes y durante la formación de Zebraish Studio. Esta es la capacidad sobre la que se construye el Studio.",
+  "Fourteen live sites, fourteen different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on.":
+    "Catorce webs en vivo, catorce mundos distintos, creadas por el fundador antes y durante la formación de Zebraish Studio. Esta es la capacidad sobre la que se construye el Studio.",
   "These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work.":
     "Estos proyectos los creó el fundador, algunos antes de que Zebraish Studio existiera como nombre. Se muestran como prueba honesta de capacidad, no como trabajos de clientes de Zebraish Studio.",
   "View All Work": "Ver todos los trabajos",
@@ -345,6 +345,8 @@ const PAGES: Record<string, string> = {
   "Case Study": "Caso de estudio",
   "Visit live site →": "Ver web en vivo →",
   Visit: "Visitar",
+  "Decide in one tap": "Decide con un toque",
+  "Try it": "Pruébalo",
   Language: "Idioma",
   "Visit site": "Visitar web",
   "Previous work": "Trabajo anterior",

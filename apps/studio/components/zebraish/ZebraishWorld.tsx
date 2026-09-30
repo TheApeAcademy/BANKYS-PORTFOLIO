@@ -621,7 +621,7 @@ function template(v) {
           <h2 data-hr="1" style={{"fontSize":"clamp(44px,6vw,88px)","fontWeight":"900","lineHeight":".94","letterSpacing":"-.03em","margin":"0 0 18px"}}>{"REAL WORK. REAL PROOF."}</h2>
           {" "}
           <p data-hr="1" style={{"fontSize":"17px","lineHeight":"1.7","color":"var(--text-muted)","maxWidth":"500px","margin":"0"}}>
-            {"Twelve live sites, twelve different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
+            {"Fourteen live sites, fourteen different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
           </p>
           {" "}
           <SiteCarousel />

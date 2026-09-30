@@ -385,7 +385,7 @@ function template(v) {
           {" "}
           <span style={{"fontSize":"clamp(28px,3.4vw,54px)","fontWeight":"900","letterSpacing":"-.03em","lineHeight":"1.05"}} data-es="Proyectos dentro del mundo.">{"Projects inside the world."}</span>
           {" "}
-          <span style={{"fontSize":"13px","fontWeight":"600","letterSpacing":".16em","textTransform":"uppercase","color":"rgba(245,245,247,.6)"}} data-es="12 webs activas · 11 sectores · Haz clic para entrar">{"12 sites live · 11 industries · Click one to enter"}</span>
+          <span style={{"fontSize":"13px","fontWeight":"600","letterSpacing":".16em","textTransform":"uppercase","color":"rgba(245,245,247,.6)"}} data-es="14 webs activas · 13 sectores · Haz clic para entrar">{"14 sites live · 13 industries · Click one to enter"}</span>
           {" "}
         </div>
         {" "}
