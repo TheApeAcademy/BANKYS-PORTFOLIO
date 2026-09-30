@@ -6,6 +6,7 @@
 import { mailtoUrl, whatsappUrl } from "@zebraish/lib/contact";
 import React from "react";
 import { getZbLang, setSiteLang, tr } from "@/lib/zebraish/i18n";
+import { track } from "@/lib/track";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 
 class Component extends DCLogic {
@@ -76,7 +77,7 @@ class Component extends DCLogic {
   fadeAmb(to, ms) { const a = this.aud.amb, from = a.volume, st = performance.now(); cancelAnimationFrame(this._af); const f = n => { const t = Math.min(1, (n - st) / ms); a.volume = Math.max(0, Math.min(1, from + (to - from) * t)); if (t < 1) this._af = requestAnimationFrame(f); }; this._af = requestAnimationFrame(f); }
   start() {
     if (this.introT >= 0) return;
-    this.introT = performance.now(); this.play('click', .6);
+    this.introT = performance.now(); this.play('click', .6); track('intro_started', { sound: !!this.state.sound });
     if (this.state.sound) { const tm = parseFloat(localStorage.getItem('zb-music-t') || '0'); if (tm) this.aud.amb.currentTime = tm; this._mt = setInterval(() => { if (!this.aud.amb.paused) try { localStorage.setItem('zb-music-t', String(this.aud.amb.currentTime)); } catch (x) {} }, 1000); this.aud.amb.play().then(() => this.fadeAmb(.32, 4000)).catch(() => this.armAudio()); }
     const pw = this.$('power'); if (pw) pw.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, easing: 'ease', fill: 'forwards' });
     setTimeout(() => this.setState({ power: false }), 950);
@@ -173,7 +174,7 @@ class Component extends DCLogic {
     const fade = ss(.4, .88, q); fl.style.visibility = fade > 0 ? 'visible' : 'hidden'; fl.style.opacity = String(fade);
     if (q > .15 && !this._pf) { this._pf = 1; const l = document.createElement('link'); l.rel = 'prefetch'; l.href = '/studio'; document.head.appendChild(l); }
     if (q > .3 && !this._xw) { this._xw = 1; this.play('whoosh', .4); } if (q < .2) this._xw = 0;
-    if (q >= .93 && !this._nav) { this._nav = 1; try { sessionStorage.setItem('zb-from-zebra', '1'); } catch (e) {} setTimeout(() => { location.href = '/studio#from-zebra'; }, 60); }
+    if (q >= .93 && !this._nav) { this._nav = 1; track('intro_completed'); try { sessionStorage.setItem('zb-from-zebra', '1'); } catch (e) {} setTimeout(() => { location.href = '/studio#from-zebra'; }, 60); }
   }
   setLang(l) { setSiteLang(l); }
   labels(list) { for (const l of list) { const el = this.lb[l.id]; if (!el) continue; const o = l.o > .02 ? l.o : 0; if (o === 0) { if (el._o !== 0) { el._o = 0; el.style.opacity = '0'; } continue; } el._o = o; el.style.opacity = o.toFixed(3); el.style.transform = `translate3d(${l.x.toFixed(1)}px,${l.y.toFixed(1)}px,0)`; } }

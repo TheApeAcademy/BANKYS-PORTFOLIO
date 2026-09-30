@@ -2,6 +2,7 @@ import { formatMoney } from "@zebraish/lib/format";
 import { getKpiSummary, getRevenueTrend } from "@/lib/actions/dashboard";
 import { getCurrentRevenueGoals, getTopServices, getActivityHeatmap, getFunnelSummary } from "@/lib/actions/analytics";
 import { SetGoalForm } from "@/components/SetGoalForm";
+import { CountUp } from "@/components/CountUp";
 
 // Analytics, redesigned from the Claude Design handoff (Analytics.dc.html,
 // glass variant) and wired to the live reporting RPCs.
@@ -17,12 +18,9 @@ const PAGE_CSS =
   ".zb-an-top{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:18px}" +
   "@media (max-width:900px){.zb-an-top{grid-template-columns:minmax(0,1fr)}}";
 
+// Surface comes from the shared studio .glass class (globals.css); this is layout only.
 const card: React.CSSProperties = {
-  borderRadius: 20,
-  background: tint(4.5),
-  border: `1px solid ${tint(9)}`,
-  backdropFilter: "blur(20px)",
-  boxShadow: "0 1px 2px rgba(0,0,0,.04)",
+  borderRadius: 22,
   padding: "24px 26px",
   display: "flex",
   flexDirection: "column",
@@ -99,8 +97,8 @@ export default async function AnalyticsPage() {
   };
 
   const minis = [
-    { k: "Active projects", v: String(summary?.active_projects ?? 0) },
-    { k: "Overdue", v: String(summary?.overdue_projects ?? 0) },
+    { k: "Active projects", v: summary?.active_projects ?? 0 },
+    { k: "Overdue", v: summary?.overdue_projects ?? 0 },
   ];
 
   return (
@@ -108,7 +106,7 @@ export default async function AnalyticsPage() {
       <style>{PAGE_CSS}</style>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
         <div>
-          <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-.02em" }}>Analytics</div>
+          <div style={{ fontSize: "clamp(30px,4vw,44px)", fontWeight: 900, letterSpacing: "-.035em", textTransform: "uppercase", lineHeight: .95 }}>Analytics</div>
           <div style={{ fontSize: 13, color: tint(50) }}>
             Goals, service demand, and funnel health. The 10-second view of the business.
           </div>
@@ -125,12 +123,12 @@ export default async function AnalyticsPage() {
       </div>
 
       <div className="zb-an-top">
-        <div style={{ ...card, gap: 6, padding: "24px 26px 18px" }}>
+        <div className="glass" style={{ ...card, gap: 6, padding: "24px 26px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
             <div>
               <div style={cardTitle}>Revenue this week</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginTop: 6, flexWrap: "wrap" }}>
-                <span style={{ fontSize: 52, fontWeight: 700, letterSpacing: "-.04em", lineHeight: 1 }}>{formatMoney(wk, currency)}</span>
+                <span style={{ fontSize: 52, fontWeight: 900, letterSpacing: "-.04em", lineHeight: 1 }}><CountUp value={wk} format="money" currency={currency} /></span>
                 {delta !== null ? (
                   <span
                     style={{
@@ -178,16 +176,17 @@ export default async function AnalyticsPage() {
           </div>
         </div>
 
-        <div style={card}>
+        <div className="glass" style={card}>
           <div style={cardTitle}>Revenue goal · this month</div>
           {goal ? (
             <>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                <span style={{ fontSize: 44, fontWeight: 700, letterSpacing: "-.04em", lineHeight: 1 }}>{formatMoney(goalHave, goal.currency)}</span>
+                <span style={{ fontSize: 44, fontWeight: 900, letterSpacing: "-.04em", lineHeight: 1 }}><CountUp value={goalHave} format="money" currency={goal.currency} /></span>
                 <span style={{ fontSize: 14, color: tint(45) }}>/ {formatMoney(goal.target_amount, goal.currency)}</span>
               </div>
               <div style={{ height: 10, borderRadius: 10, background: tint(6), overflow: "hidden" }}>
                 <div
+                  data-grow
                   style={{
                     height: "100%", width: `${goalPct}%`, borderRadius: 10,
                     backgroundImage: `repeating-linear-gradient(90deg,${GREEN} 0 8px,rgba(23,201,141,.6) 8px 11px)`,
@@ -209,7 +208,7 @@ export default async function AnalyticsPage() {
             {minis.map((m) => (
               <div key={m.k} style={{ borderRadius: 14, background: tint(3), border: `1px solid ${tint(6)}`, padding: "12px 14px" }}>
                 <div style={{ fontSize: 11, color: tint(50) }}>{m.k}</div>
-                <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-.02em", marginTop: 2 }}>{m.v}</div>
+                <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-.02em", marginTop: 2 }}><CountUp value={m.v} format="integer" /></div>
               </div>
             ))}
           </div>
@@ -217,7 +216,7 @@ export default async function AnalyticsPage() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", gap: 18 }}>
-        <div style={card}>
+        <div className="glass" style={card}>
           <div style={cardTitle}>Top services</div>
           {services.length ? (
             services.slice(0, 6).map((s, i) => {
@@ -233,6 +232,7 @@ export default async function AnalyticsPage() {
                   </div>
                   <div style={{ height: 6, borderRadius: 6, background: tint(5) }}>
                     <div
+                      data-grow
                       style={{
                         height: "100%", borderRadius: 6, background: SERVICE_COLORS[i % SERVICE_COLORS.length],
                         width: `${Math.max(2, Math.round((s.requested_count / maxRequested) * 100))}%`,
@@ -247,7 +247,7 @@ export default async function AnalyticsPage() {
           )}
         </div>
 
-        <div style={{ ...card, gap: 10 }}>
+        <div className="glass" style={{ ...card, gap: 10 }}>
           <div style={cardTitle}>Checkout funnel</div>
           {funnelStages.length ? (
             funnelStages.map((f) => (
@@ -255,13 +255,14 @@ export default async function AnalyticsPage() {
                 <span style={{ color: tint(70) }}>{f.stage_label}</span>
                 <div style={{ height: 26, borderRadius: 7, background: tint(4), overflow: "hidden" }}>
                   <div
+                    data-grow
                     style={{
                       height: "100%", borderRadius: 7, width: `${Math.round((f.event_count / funnelTop) * 100)}%`,
                       background: "linear-gradient(90deg,rgba(61,126,240,.8),rgba(61,126,240,.35))",
                     }}
                   />
                 </div>
-                <span style={{ textAlign: "right", fontWeight: 600 }}>{f.event_count}</span>
+                <span style={{ textAlign: "right", fontWeight: 600 }}><CountUp value={f.event_count} format="integer" /></span>
               </div>
             ))
           ) : (
@@ -269,7 +270,7 @@ export default async function AnalyticsPage() {
           )}
         </div>
 
-        <div style={card}>
+        <div className="glass" style={card}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <span style={cardTitle}>Activity · by day and hour</span>
             <span style={{ fontSize: 12, color: tint(40) }}>{heatTotal} events</span>
@@ -283,8 +284,9 @@ export default async function AnalyticsPage() {
                   return (
                     <span
                       key={h}
+                      data-pop
                       title={`${label} ${String(h).padStart(2, "0")}:00 · ${n} events`}
-                      style={{ aspectRatio: "1", borderRadius: 3, background: `rgba(23,201,141,${heatAlpha(n)})` }}
+                      style={{ aspectRatio: "1", borderRadius: 3, background: `rgba(23,201,141,${heatAlpha(n)})`, ["--i" as string]: dow * 24 + h } as React.CSSProperties}
                     />
                   );
                 })}

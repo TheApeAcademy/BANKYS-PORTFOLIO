@@ -14,10 +14,14 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div data-reveal className="mb-8 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="text-[22px] font-bold tracking-[-.02em]">{title}</h1>
-        {description ? <p className="mt-1 text-[13px] text-fg-muted">{description}</p> : null}
+        <p className="kicker flex items-center gap-3">
+          <span className="h-px w-7 bg-[rgba(245,245,247,.3)]" aria-hidden />
+          Zebraish Bureau
+        </p>
+        <h1 className="mt-3 text-[clamp(30px,4vw,44px)] font-black uppercase leading-[.95] tracking-[-.035em]">{title}</h1>
+        {description ? <p className="mt-2 max-w-xl text-[14px] leading-relaxed text-fg-muted">{description}</p> : null}
       </div>
       {action}
     </div>
@@ -27,8 +31,8 @@ export function PageHeader({
 export function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <Card>
-      <p className="text-xs uppercase tracking-wide text-fg-muted">{label}</p>
-      <p className="tabular-nums mt-2 text-2xl font-semibold">{value}</p>
+      <p className="kicker">{label}</p>
+      <p className="tabular-nums mt-3 text-3xl font-black tracking-[-.03em]">{value}</p>
       {sub ? <p className="mt-1 text-xs text-fg-muted">{sub}</p> : null}
     </Card>
   );
@@ -39,15 +43,15 @@ export function EmptyState({ children }: { children: React.ReactNode }) {
 }
 
 export const inputCls =
-  "rounded-lg border border-border bg-bg-raised px-3.5 py-2.5 text-fg outline-none focus:border-accent w-full";
+  "rounded-xl border border-[rgba(245,245,247,.16)] bg-[rgba(245,245,247,.05)] px-3.5 py-2.5 text-fg outline-none transition focus:border-[#17c98d] focus:shadow-[0_0_0_3px_rgba(23,201,141,.15)] w-full";
 export const buttonCls =
-  "rounded-lg bg-accent px-4 py-2.5 font-medium text-white transition hover:bg-accent-hover disabled:opacity-60";
+  "btn-primary rounded-full bg-accent px-5 py-2.5 font-semibold text-white hover:bg-accent-hover disabled:opacity-60";
 export const buttonDangerCls =
   "rounded-lg bg-excluded px-4 py-2.5 font-medium text-white transition hover:opacity-90 disabled:opacity-60";
 export const buttonGhostCls =
-  "rounded-lg border border-border px-4 py-2.5 font-medium text-fg transition hover:bg-bg-raised disabled:opacity-60";
+  "rounded-full border border-[rgba(245,245,247,.2)] px-5 py-2.5 font-semibold text-fg hover:border-[rgba(245,245,247,.4)] hover:bg-[rgba(245,245,247,.06)] disabled:opacity-60";
 
-/** The Control Center's "Live" pill (green pulse), as on Analytics. */
+/** The Bureau's "Live" pill (green pulse), as on Analytics. */
 export function LivePill() {
   return (
     <span className="glass flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-fg-muted">

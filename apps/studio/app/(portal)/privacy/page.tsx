@@ -23,7 +23,9 @@ const SECTIONS_EN: { heading: string; body: React.ReactNode }[] = [
         directly: name, email, phone/WhatsApp number, and project details (the pitch/brief you write, pricing
         selections). When you pay, our payment processor (Flutterwave) handles your card/transfer details directly.
         We never see or store your full card number or banking credentials. We keep a record of the transaction
-        (amount, currency, status, a reference ID) to confirm and track your payment.
+        (amount, currency, status, a reference ID) to confirm and track your payment. We also count how the site
+        is used (pages visited, buttons such as WhatsApp or Start a project) anonymously on our own server: no
+        cookies, no identifier stored on your device, and nothing that ties a visit to you.
       </p>
     ),
   },
@@ -113,7 +115,9 @@ const SECTIONS_ES: { heading: string; body: React.ReactNode }[] = [
         propuesta/brief que escribes, las selecciones de precio). Cuando pagas, nuestro procesador de pagos
         (Flutterwave) gestiona directamente los datos de tu tarjeta/transferencia. Nunca vemos ni almacenamos tu
         número de tarjeta completo ni tus credenciales bancarias. Guardamos un registro de la transacción (importe,
-        moneda, estado, un ID de referencia) para confirmar y hacer seguimiento de tu pago.
+        moneda, estado, un ID de referencia) para confirmar y hacer seguimiento de tu pago. También contamos de forma
+        anónima, en nuestro propio servidor, cómo se usa la web (páginas visitadas, botones como WhatsApp o Empieza un
+        proyecto): sin cookies, sin ningún identificador guardado en tu dispositivo y sin nada que vincule la visita a ti.
       </p>
     ),
   },

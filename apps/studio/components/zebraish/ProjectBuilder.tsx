@@ -5,6 +5,7 @@
 // grades the project Z1-Z5, saves it, and hands the client a pre-filled
 // message for whichever channel they want us to reply on. The estimate is a
 // starting point: the final price is confirmed by hand after review.
+import { track } from "@/lib/track";
 import { CONTACT } from "@zebraish/lib/contact";
 import { getZbLang, tr, translateTree, useZbLang } from "@/lib/zebraish/i18n";
 import { gradeNameEs } from "@/lib/zebraish/es";
@@ -165,6 +166,7 @@ export default function ProjectBuilder() {
       if (d.idea) setIdea(d.idea);
       if (d.projectType && getProjectType(d.projectType)) choose(d.projectType);
       setOpen(true);
+      track("builder_opened", d.projectType ? { project_type: d.projectType } : {});
     };
     const onClick = (e: MouseEvent) => {
       const a = (e.target as HTMLElement | null)?.closest?.("a[href='#build'],a[href='#start-a-project'],[data-open-builder]");

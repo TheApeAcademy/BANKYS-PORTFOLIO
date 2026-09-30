@@ -32,13 +32,17 @@ function SignOut() {
 /** Desktop sidebar: brand, sections, sign out. Hidden below lg (the top bar's menu takes over). */
 export function AdminSidebar() {
   return (
-    <aside className="glass-rail sticky top-0 hidden h-screen flex-col border-r px-4 py-6 lg:flex">
-      <div className="px-2">
-        <Logo href="/" label="Control Center" />
-        <p className="mt-2 text-[11px] uppercase leading-snug tracking-wide text-fg-muted">
+    <aside className="glass-rail sticky top-0 z-[2] hidden h-screen flex-col border-r px-4 py-7 lg:flex">
+      <Link href="/" className="block px-2">
+        <span className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/zebraish-mark.png" alt="" width={30} height={30} className="shrink-0" />
+          <span className="text-[17px] font-extrabold tracking-[.08em]">ZEBRAISH</span>
+        </span>
+        <span className="mt-3 block text-[10px] font-bold uppercase leading-[1.6] tracking-[.22em] text-fg-muted">
           Bureau of Statistics, Analysis &amp; Critical Motion
-        </p>
-      </div>
+        </span>
+      </Link>
       <div className="mt-8 flex-1 overflow-y-auto">
         <AdminNavLinks links={links} />
       </div>
@@ -54,7 +58,7 @@ export async function AdminTopBar() {
   const unreadCount = await getUnreadNotificationCount();
 
   return (
-    <header className="sticky top-0 z-10 border-b border-border bg-bg/95 backdrop-blur">
+    <header className="sticky top-0 z-10 border-b border-[rgba(245,245,247,.08)] bg-[rgba(5,5,6,.55)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-3">
         <AdminNavMobile links={links} footer={<SignOut />} />
         <div className="shrink-0 lg:hidden">

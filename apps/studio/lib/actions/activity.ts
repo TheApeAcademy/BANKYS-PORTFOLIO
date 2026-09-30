@@ -10,7 +10,7 @@ import { createClient } from "@zebraish/lib/supabase/server";
  */
 export async function logActivityEvent(
   eventType: string,
-  options?: { sessionId?: string; projectId?: string; metadata?: Record<string, unknown> },
+  options?: { sessionId?: string; projectId?: string; path?: string; metadata?: Record<string, unknown> },
 ) {
   try {
     const supabase = await createClient();
@@ -18,6 +18,7 @@ export async function logActivityEvent(
       p_event_type: eventType,
       p_session_id: options?.sessionId ?? null,
       p_project_id: options?.projectId ?? null,
+      p_path: options?.path ? options.path.slice(0, 200) : null,
       p_metadata: options?.metadata ?? {},
     });
   } catch {

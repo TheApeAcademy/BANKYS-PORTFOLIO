@@ -5,7 +5,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 bg-bg text-fg">
       <div className="mb-8">
-        <Logo label="Control Center" />
+        <Logo label="Bureau of Statistics, Analysis & Critical Motion" />
       </div>
       <div className="w-full max-w-sm rounded-2xl border border-border bg-bg-card p-7">
         <h1 className="mb-1 text-lg font-semibold">Set a new password</h1>

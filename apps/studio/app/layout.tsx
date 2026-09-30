@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ActivityTracker } from "@/components/ActivityTracker";
 import { CookieNotice } from "@/components/CookieNotice";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
 import { getServerLang } from "@/lib/i18n/server";
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <LanguageProvider initialLang={lang}>
           <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
           <CookieNotice />
+          <ActivityTracker />
         </LanguageProvider>
       </body>
     </html>

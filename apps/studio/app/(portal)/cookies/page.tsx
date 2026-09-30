@@ -74,8 +74,8 @@ export default async function CookiesPage() {
               <h2 className="mb-2 text-sm font-medium text-fg">{es ? "Lo esencial" : "The short version"}</h2>
               <p>
                 {es
-                  ? "No usamos cookies de publicidad ni de analítica de terceros, y no te rastreamos entre sitios. Solo guardamos en tu dispositivo lo necesario para que la web funcione y para recordar las preferencias que tú eliges, como el idioma. Por eso no te pedimos consentimiento: la ley (art. 22.2 de la LSSI) lo exime para este tipo de almacenamiento."
-                  : "We don't use advertising cookies or third-party analytics, and we don't track you across sites. We only store what the site needs to work and the preferences you choose, such as language. That's why we don't ask for consent: the law (LSSI art. 22.2) exempts this kind of storage."}
+                  ? "No usamos cookies de publicidad ni de analítica de terceros, y no te rastreamos entre sitios. Contamos las visitas y los clics de forma anónima en nuestro propio servidor, sin cookies ni identificadores. Solo guardamos en tu dispositivo lo necesario para que la web funcione y para recordar las preferencias que tú eliges, como el idioma. Por eso no te pedimos consentimiento: la ley (art. 22.2 de la LSSI) lo exime para este tipo de almacenamiento."
+                  : "We don't use advertising cookies or third-party analytics, and we don't track you across sites. We count visits and clicks anonymously on our own server, without cookies or identifiers. We only store what the site needs to work and the preferences you choose, such as language. That's why we don't ask for consent: the law (LSSI art. 22.2) exempts this kind of storage."}
               </p>
             </section>
 

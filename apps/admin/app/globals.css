@@ -14,6 +14,7 @@
   --paid: #2ea86a;
   --excluded: #b0455a;
   --font-system:
+    var(--font-inter),
     -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
 }
@@ -84,19 +85,138 @@ body {
   background: color-mix(in srgb, var(--fg-muted) 14%, transparent);
 }
 
-/* Glass surfaces, from the Claude Design Control Center (Analytics.dc.html). */
+/* ---------------------------------------------------------------------------
+   The Bureau's look: the studio's glass (GlassModal / pop-ups), over the living
+   hide, with motion on everything. Reduced-motion visitors get it all static.
+   --------------------------------------------------------------------------- */
+:root {
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --glass-edge: rgba(245, 245, 247, 0.14);
+}
+
 .glass {
-  background: color-mix(in srgb, var(--fg) 4.5%, transparent);
-  border: 1px solid color-mix(in srgb, var(--fg) 9%, transparent);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  background: linear-gradient(145deg, rgba(245, 245, 247, 0.09), rgba(245, 245, 247, 0.025) 55%, rgba(23, 201, 141, 0.06));
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 24px 70px rgba(0, 0, 0, 0.45);
 }
 .glass-rail {
-  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
-  border-color: color-mix(in srgb, var(--fg) 8%, transparent);
+  background: linear-gradient(180deg, rgba(245, 245, 247, 0.06), rgba(245, 245, 247, 0.015));
+  border-color: rgba(245, 245, 247, 0.1);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
 }
+.kicker {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 247, 0.5);
+}
+
 @keyframes livep {
   0%, 100% { box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.6); }
   50% { box-shadow: 0 0 0 5px rgba(48, 209, 88, 0); }
+}
+@keyframes sheen {
+  from { transform: translateX(-120%) skewX(-20deg); }
+  to { transform: translateX(220%) skewX(-20deg); }
+}
+
+/* Reveal: MotionRoot marks what is on screen with data-in, and takes it off
+   again when it leaves, so everything replays each time you scroll back. */
+[data-motion] .glass,
+[data-motion] [data-reveal] {
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), border-color 0.3s, box-shadow 0.3s;
+}
+[data-motion] .glass:not([data-in]),
+[data-motion] [data-reveal]:not([data-in]) {
+  opacity: 0;
+  transform: translateY(26px) scale(0.985);
+}
+a:hover > .glass,
+a.glass:hover,
+button.glass:hover {
+  transform: translateY(-3px);
+  border-color: rgba(245, 245, 247, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(23, 201, 141, 0.18);
+}
+
+/* Charts draw themselves: lines trace in, fills fade up, bars grow, dots pop. */
+[data-motion] .glass svg path[stroke]:not([stroke="none"]):not([stroke-dasharray]):not([fill^="url"]) {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  transition: stroke-dashoffset 2s var(--ease) 0.25s;
+}
+[data-motion] .glass[data-in] svg path[stroke]:not([stroke="none"]):not([stroke-dasharray]):not([fill^="url"]) {
+  stroke-dashoffset: 0;
+}
+[data-motion] .glass svg path[fill^="url"],
+[data-motion] .glass svg .recharts-area-area {
+  opacity: 0;
+  transition: opacity 1.2s ease 0.9s;
+}
+[data-motion] .glass[data-in] svg path[fill^="url"],
+[data-motion] .glass[data-in] svg .recharts-area-area {
+  opacity: 1;
+}
+[data-motion] [data-grow] {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease) 0.2s;
+}
+[data-motion] [data-in] [data-grow] {
+  transform: scaleX(1);
+}
+[data-motion] [data-pop] {
+  transform: scale(0.2);
+  opacity: 0;
+  transition: transform 0.6s var(--ease), opacity 0.6s ease;
+  transition-delay: calc(var(--i, 0) * 6ms);
+}
+[data-motion] [data-in] [data-pop] {
+  transform: none;
+  opacity: 1;
+}
+
+/* Buttons: lift on hover, press on click; primary ones catch a sheen. */
+button:not(:disabled),
+a.btn {
+  transition: transform 0.25s var(--ease), background-color 0.25s, border-color 0.25s, box-shadow 0.25s, color 0.25s;
+}
+button:not(:disabled):hover,
+a.btn:hover {
+  transform: translateY(-1px);
+}
+button:not(:disabled):active,
+a.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(61, 126, 240, 0.28);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+  pointer-events: none;
+}
+.btn-primary:hover::after {
+  animation: sheen 0.9s var(--ease);
+}
+.btn-primary:not(:disabled):hover {
+  box-shadow: 0 12px 32px rgba(61, 126, 240, 0.42);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

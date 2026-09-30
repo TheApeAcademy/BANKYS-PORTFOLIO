@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/track";
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { LANG_COOKIE, translate, type DictKey, type Lang } from "./dictionary";
 
@@ -16,6 +17,7 @@ export function LanguageProvider({ initialLang, children }: { initialLang: Lang;
 
   const setLang = useCallback((next: Lang) => {
     setLangState(next);
+    track("language_switched", { to: next });
     document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
   }, []);
 

@@ -5,6 +5,7 @@
 // builder's confirmation, or by project code + the contact they gave us.
 // Shows grade, estimate or confirmed price (Pay once confirmed), selections,
 // live progress and the message thread.
+import { track } from "@/lib/track";
 import { getZbLang, tr, translateTree, useZbLang } from "@/lib/zebraish/i18n";
 import { gradeNameEs } from "@/lib/zebraish/es";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -70,7 +71,7 @@ function Lookup({ onFound, initialError }: { onFound: (token: string) => void; i
     setBusy(true); setError("");
     const res = await findProjectAccess(code, contact).catch(() => ({ error: "Couldn't reach us. Try again." }));
     setBusy(false);
-    if ("token" in res) onFound(res.token); else setError(res.error);
+    if ("token" in res) { track("tracker_lookup_found"); onFound(res.token); } else { track("tracker_lookup_failed"); setError(res.error); }
   };
   return translateTree(
     <form onSubmit={submit}>
@@ -111,6 +112,7 @@ function Tracker({ token, view, onRefresh, onSwitch }: { token: string; view: Ex
     const res = await sendTrackerMessage(token, msg).catch(() => ({ error: "Couldn't send. Try again.", messages: undefined }));
     setSending(false);
     if (res.error) return setMsgError(res.error);
+    track("tracker_message_sent");
     setMsg("");
     if (res.messages) onRefresh({ ...view, messages: res.messages });
   };
@@ -230,6 +232,7 @@ export default function ProjectTracker() {
       setView(null);
       setToken(tk ?? null);
       setOpen(true);
+      track("tracker_opened", { with_link: !!tk });
     };
     const onClick = (e: MouseEvent) => {
       if (!(e.target as HTMLElement | null)?.closest?.("a[href='#track'],a[href='/track'],[data-open-tracker]")) return;

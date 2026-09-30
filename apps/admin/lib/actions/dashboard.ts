@@ -55,9 +55,9 @@ export async function getActivityFeed(): Promise<ActivityFeedEntry[]> {
       .limit(15),
     supabase
       .from("activity_events")
-      .select("id, occurred_at, event_type, project_id, customer_id, metadata")
+      .select("id, occurred_at, event_type, project_id, customer_id, metadata, path")
       .order("occurred_at", { ascending: false })
-      .limit(15),
+      .limit(25),
   ]);
 
   const fromAudit: ActivityFeedEntry[] = (auditRows ?? []).map((r) => ({
@@ -71,14 +71,74 @@ export async function getActivityFeed(): Promise<ActivityFeedEntry[]> {
   const fromActivity: ActivityFeedEntry[] = (activityRows ?? []).map((r) => ({
     id: `activity-${r.id}`,
     occurred_at: r.occurred_at,
-    label: r.event_type.replaceAll("_", " "),
-    detail: null,
+    label: describeActivity(r.event_type, r.metadata as Record<string, unknown> | null),
+    detail: (r as { path?: string | null }).path ?? null,
     href: r.project_id ? `/projects/${r.project_id}` : r.customer_id ? `/customers/${r.customer_id}` : null,
   }));
 
   return [...fromAudit, ...fromActivity]
     .sort((a, b) => new Date(b.occurred_at).getTime() - new Date(a.occurred_at).getTime())
-    .slice(0, 20);
+    .slice(0, 25);
+}
+
+/** Studio activity in plain words for the live feed. */
+const ACTIVITY_WORDS: Record<string, string> = {
+  page_view: "Someone opened a page",
+  intro_started: "Someone powered on the intro",
+  intro_completed: "Someone watched the intro to the end",
+  intro_skipped: "Someone skipped the intro",
+  builder_opened: "Someone opened the project builder",
+  configurator_started: "A brief was started",
+  configurator_step: "A brief moved forward a step",
+  configurator_details_reached: "A brief reached the contact step",
+  configurator_submitted: "A new brief came in",
+  checkout_initiated: "Someone started paying",
+  tracker_opened: "Someone opened the project tracker",
+  tracker_lookup_found: "A client looked up their project",
+  tracker_lookup_failed: "A tracker lookup didn't match",
+  tracker_message_sent: "A client sent you a message",
+  contact_whatsapp: "Someone tapped WhatsApp",
+  contact_email: "Someone tapped Email",
+  contact_call: "Someone tapped Call",
+  contact_instagram: "Someone opened your Instagram",
+  contact_tiktok: "Someone opened your TikTok",
+  collab_apply_opened: "Someone opened the collaborator application",
+  collab_code_opened: "A collaborator opened the code sign-in",
+  language_switched: "Someone switched language",
+  outbound_click: "Someone opened a linked site",
+  login: "A collaborator signed in",
+};
+
+function describeActivity(type: string, meta: Record<string, unknown> | null): string {
+  const base = ACTIVITY_WORDS[type] ?? type.replaceAll("_", " ");
+  if (type === "language_switched" && meta?.to) return `${base} to ${meta.to === "es" ? "Spanish" : "English"}`;
+  if (type === "outbound_click" && meta?.host) return `${base} (${meta.host})`;
+  if (type === "page_view" && meta?.device) return `${base} on ${meta.device}${meta.lang ? `, ${meta.lang === "es" ? "Spanish" : "English"}` : ""}`;
+  return base;
+}
+
+export type StudioActivity = {
+  days: number;
+  visits: number;
+  visits_prev: number;
+  visits_today: number;
+  page_views: number;
+  events: Record<string, number>;
+  top_pages: { path: string; views: number }[];
+  devices: Record<string, number>;
+  langs: Record<string, number>;
+  referrers: { host: string; visits: number }[];
+  applications: number;
+  daily: { day: string; visits: number }[];
+};
+
+/** Everything visitors did on the studio in the last `days` days (024 migration). */
+export async function getStudioActivity(days = 7): Promise<StudioActivity | null> {
+  await requireAdmin();
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("studio_activity_summary", { p_days: days });
+  if (error || !data) return null;
+  return data as StudioActivity;
 }
 
 export type SearchResult = { entity_type: string; id: string; title: string; subtitle: string | null; href: string };

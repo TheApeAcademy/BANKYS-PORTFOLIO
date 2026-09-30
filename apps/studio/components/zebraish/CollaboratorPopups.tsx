@@ -2,6 +2,7 @@
 
 // Collaborator pop-ups on Zebraish Home: "Apply to Collaborate" and "Enter Your
 // Code", in glass. Same server actions as the /collaborate and /login pages.
+import { track } from "@/lib/track";
 import { getZbLang, translateTree, useZbLang } from "@/lib/zebraish/i18n";
 import { useActionState, useCallback, useEffect, useState, type FormEvent } from "react";
 import { submitCollaboratorApplication, type ApplyState } from "@/lib/actions/collaborate";
@@ -117,7 +118,9 @@ export default function CollaboratorPopups() {
       if (!a) return;
       e.preventDefault();
       const href = a.getAttribute("href");
-      setMode(href === "#collaborator-code" || href === "/login" ? "code" : "apply");
+      const m = href === "#collaborator-code" || href === "/login" ? "code" : "apply";
+      setMode(m);
+      track(m === "code" ? "collab_code_opened" : "collab_apply_opened");
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
