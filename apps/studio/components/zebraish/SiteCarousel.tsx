@@ -171,7 +171,8 @@ export default function SiteCarousel() {
   const lang = useZbLang();
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const st = useRef({ stride: 0, raf: 0, settle: 0 as unknown as ReturnType<typeof setTimeout>, drag: null as null | { x: number; left: number; moved: boolean }, snap: () => {} });
+  const [touched, setTouched] = useState(false);
+  const st = useRef({ stride: 0, raf: 0, settle: 0 as unknown as ReturnType<typeof setTimeout>, drag: null as null | { x: number; left: number; moved: boolean }, snap: () => {}, mark: () => {} });
 
   useEffect(() => {
     const track = trackRef.current;
@@ -217,12 +218,51 @@ export default function SiteCarousel() {
     s.snap = () => { const k = nearest(); track.scrollTo({ left: slides[k].offsetLeft + slides[k].offsetWidth / 2 - track.clientWidth / 2, behavior: "smooth" }); };
     const onResize = () => { const k = N + (nearest() % N); measure(); centerOn(k); paint(); };
     measure(); centerOn(N); paint();
+
+    // A one-time peek when the row first comes into view: glide part of the way
+    // to the next device and back, then the previous one, so it's clear there
+    // are more on both sides. Any touch, drag, wheel or key stops it for good.
+    let used = false, nudging = false, nudgeRaf = 0, nudgeT = 0 as unknown as ReturnType<typeof setTimeout>;
+    s.mark = () => {
+      if (used) return;
+      used = true; setTouched(true); cancelAnimationFrame(nudgeRaf); clearTimeout(nudgeT);
+      if (nudging) { nudging = false; track.style.scrollSnapType = ""; }
+    };
+    const glide = (from: number, to: number, ms: number) => new Promise<boolean>((done) => {
+      const t0 = performance.now();
+      const f = (now: number) => {
+        if (used) return done(false);
+        const p = Math.min(1, (now - t0) / ms), e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        track.scrollLeft = from + (to - from) * e;
+        if (p < 1) nudgeRaf = requestAnimationFrame(f); else done(true);
+      };
+      nudgeRaf = requestAnimationFrame(f);
+    });
+    const pause = (ms: number) => new Promise<void>((done) => { nudgeT = setTimeout(done, ms); });
+    const peek = async () => {
+      if (used || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      nudging = true; track.style.scrollSnapType = "none";
+      const base = track.scrollLeft, d = s.stride * 0.42;
+      for (const dir of [1, -1]) {
+        if (!(await glide(base, base + dir * d, 750))) return;
+        await pause(420);
+        if (!(await glide(base + dir * d, base, 650))) return;
+        await pause(300);
+      }
+      nudging = false; track.style.scrollSnapType = "";
+    };
+    const seen = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) { seen.disconnect(); nudgeT = setTimeout(peek, 700); }
+    }, { threshold: 0.6 });
+    seen.observe(track);
+    const stop = () => s.mark();
+    for (const ev of ["pointerdown", "wheel", "touchstart", "keydown"]) track.addEventListener(ev, stop, { passive: true });
     track.addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onResize);
-    return () => { track.removeEventListener("scroll", onScroll); removeEventListener("resize", onResize); cancelAnimationFrame(s.raf); clearTimeout(s.settle); };
+    return () => { seen.disconnect(); cancelAnimationFrame(nudgeRaf); clearTimeout(nudgeT); for (const ev of ["pointerdown", "wheel", "touchstart", "keydown"]) track.removeEventListener(ev, stop); track.removeEventListener("scroll", onScroll); removeEventListener("resize", onResize); cancelAnimationFrame(s.raf); clearTimeout(s.settle); };
   }, []);
 
-  const go = (dir: number) => trackRef.current?.scrollBy({ left: dir * st.current.stride, behavior: "smooth" });
+  const go = (dir: number) => { st.current.mark(); trackRef.current?.scrollBy({ left: dir * st.current.stride, behavior: "smooth" }); };
 
   // Mouse drag (touch and trackpads already scroll natively).
   const onPointerDown = (e: React.PointerEvent) => {
@@ -293,6 +333,10 @@ export default function SiteCarousel() {
       <div className="zbc-dots" aria-hidden="true">
         {SITES.map((s, i) => <span key={s.host} style={{ width: i === active ? 22 : 6, opacity: i === active ? 1 : 0.35 }} />)}
       </div>
+      <div className="zbc-hint" aria-hidden="true" style={{ opacity: touched ? 0 : 1 }}>
+        <span className="zbc-hint-touch">← {tr("Swipe to explore", lang)} →</span>
+        <span className="zbc-hint-mouse">← {tr("Drag or use the arrows", lang)} →</span>
+      </div>
     </div>,
     lang,
   );
@@ -313,6 +357,9 @@ const CSS = `
 .zbc-arrow{position:absolute;top:calc(10px + var(--sh) / 2);transform:translateY(-50%);z-index:3;width:48px;height:48px;border-radius:50%;border:1px solid rgba(var(--tint-rgb),.2);background:rgba(var(--bg-rgb,6,6,8),.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--text);font-size:18px;cursor:pointer;transition:transform .3s cubic-bezier(.16,1,.3,1),background .3s}
 .zbc-arrow:hover{transform:translateY(-50%) scale(1.08);background:rgba(var(--tint-rgb),.12)}
 .zbc-dots{display:flex;justify-content:center;gap:6px;margin-top:26px}
+.zbc-hint{margin-top:14px;text-align:center;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-faint);transition:opacity .6s}
+.zbc-hint-touch{display:none}
+@media (pointer:coarse){.zbc-hint-touch{display:inline}.zbc-hint-mouse{display:none}}
 .zbc-dots span{height:6px;border-radius:6px;background:var(--text);transition:width .4s cubic-bezier(.16,1,.3,1),opacity .4s}
 @media (max-width:760px){.zbc{--sw:62vw;--sh:min(calc(var(--sw) * .95),50vh)}.zbc-cap{margin:0 -19vw}.zbc-arrow{display:none}}
 @media (prefers-reduced-motion:reduce){.zbc-stage{transform:none !important}}
