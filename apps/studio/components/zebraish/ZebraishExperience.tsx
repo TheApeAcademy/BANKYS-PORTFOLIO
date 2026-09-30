@@ -62,6 +62,8 @@ class Component extends DCLogic {
   async boot() {
     const [L] = await Promise.all([import('lenis').catch(() => null)]);
     if (L && !this.reduce) { const Lenis = L.default || L.Lenis; this.lenis = new Lenis({ lerp: .085, wheelMultiplier: .9, smoothWheel: true, autoRaf: false }); this.lenis.stop(); window.__lenis = this.lenis; }
+    // Lite mode (lib/zebraish/perf.js): the wheel scrolls natively instead of easing, so it never trails behind a slow frame.
+    this._lite = () => { if (this.lenis) this.lenis.options.smoothWheel = false; }; if (window.__zbPerf?.lite) this._lite(); addEventListener('zb:lite', this._lite);
     try {
       const m = await import('@/lib/zebraish/experience.js');
       this.world = await m.mount(this.$('gl'), { mobile: this.mobile, reduce: this.reduce, seed: this.seed, projects: this.PROJECTS, eco: this.ECO,
@@ -72,7 +74,7 @@ class Component extends DCLogic {
       const loop = now => { this._fb = requestAnimationFrame(loop); this.frame(.016, now); }; this._fb = requestAnimationFrame(loop);
     }
   }
-  componentWillUnmount() { ['wheel', 'touchmove', 'keydown'].forEach(ev => removeEventListener(ev, this._userScroll)); removeEventListener('pointermove', this._pm); removeEventListener('keydown', this._key); cancelAnimationFrame(this._fb); this.world && this.world.destroy(); this.lenis && this.lenis.destroy(); Object.values(this.aud || {}).forEach(a => a.pause()); document.documentElement.style.overflow = ''; }
+  componentWillUnmount() { removeEventListener('zb:lite', this._lite); ['wheel', 'touchmove', 'keydown'].forEach(ev => removeEventListener(ev, this._userScroll)); removeEventListener('pointermove', this._pm); removeEventListener('keydown', this._key); cancelAnimationFrame(this._fb); this.world && this.world.destroy(); this.lenis && this.lenis.destroy(); Object.values(this.aud || {}).forEach(a => a.pause()); document.documentElement.style.overflow = ''; }
   play(k, v) { if (!this.state.sound) return; const a = this.aud[k]; try { a.currentTime = 0; a.volume = v ?? .5; a.play()?.catch(() => {}); } catch (e) {} }
   fadeAmb(to, ms) { const a = this.aud.amb, from = a.volume, st = performance.now(); cancelAnimationFrame(this._af); const f = n => { const t = Math.min(1, (n - st) / ms); a.volume = Math.max(0, Math.min(1, from + (to - from) * t)); if (t < 1) this._af = requestAnimationFrame(f); }; this._af = requestAnimationFrame(f); }
   start() {

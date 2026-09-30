@@ -44,6 +44,12 @@ const ROWS: Row[] = [
   { name: "zb-sound, zb-music-t", kind: "localStorage", purpose: ["Recuerdan si activaste el sonido y por dónde iba la música.", "Remember whether you turned sound on and where the music was."], lasts: ["Hasta que lo borres", "Until you clear it"] },
   { name: "zb-pattern", kind: "localStorage", purpose: ["Número del patrón generado para tu visita.", "Number of the pattern generated for your visit."], lasts: ["Hasta que lo borres", "Until you clear it"] },
   { name: "zb-cookie-notice", kind: "localStorage", purpose: ["Recuerda que ya viste este aviso.", "Remembers you've seen this notice."], lasts: ["Hasta que lo borres", "Until you clear it"] },
+  {
+    name: "zb-lite",
+    kind: "sessionStorage",
+    purpose: ["Si tu equipo va justo, recuerda usar efectos más ligeros.", "If your device is struggling, remembers to use lighter effects."],
+    lasts: ["Al cerrar la pestaña", "Until you close the tab"],
+  },
   { name: "zb-from-zebra", kind: "sessionStorage", purpose: ["Enlaza la intro con la página del estudio.", "Links the intro to the studio page."], lasts: ["Al cerrar la pestaña", "Until you close the tab"] },
 ];
 

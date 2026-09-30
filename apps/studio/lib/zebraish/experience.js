@@ -5,6 +5,7 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { perf, liteWanted, goLite } from './perf.js';
 
 const NOISE = `float h1(float x){return fract(sin(x*127.1)*43758.5453);}
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -17,7 +18,8 @@ const CORE = new THREE.Vector3(0, 0, -44);
 export async function mount(canvas, opts = {}) {
   const mobile = !!opts.mobile, reduce = !!opts.reduce;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, powerPreference: 'high-performance', preserveDrawingBuffer: !!opts.capture });
-  let dprMax = Math.min(devicePixelRatio || 1, mobile ? 1.5 : 1.75), dpr = Math.min(1.25, dprMax);
+  if (liteWanted()) goLite(); const P = perf();
+  let dprMax = Math.min(devicePixelRatio || 1, mobile ? 1.5 : 1.75), dpr = Math.min(P.lite ? .75 : 1.25, dprMax);
   renderer.setPixelRatio(dpr);
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -276,8 +278,15 @@ export async function mount(canvas, opts = {}) {
   // ---------------- PERFORMANCE ----------------
   let W = 0, H = 0; function resize() { W = innerWidth; H = innerHeight; renderer.setSize(W, H, false); cam.aspect = W / H; cam.fov = W / H < .8 ? 62 : 45; cam.updateProjectionMatrix(); }
   resize(); addEventListener('resize', resize);
-  let fpsAcc = 0, fpsN = 0, fpsT = 0;
-  function adapt(dt) { fpsAcc += dt; fpsN++; fpsT += dt; if (fpsT < 1.2) return; const fps = fpsN / fpsAcc; fpsAcc = fpsN = fpsT = 0; if (fps < 46 && dpr > .6) { dpr = Math.max(.6, dpr - .15); renderer.setPixelRatio(dpr); resize(); } else if (fps > 58 && dpr < dprMax) { dpr = Math.min(dprMax, dpr + .1); renderer.setPixelRatio(dpr); resize(); } }
+  // Resolution follows the frame rate. If it is already at the floor and the
+  // machine still can't keep up, the site switches to lite mode (perf.js):
+  // lower floor, half the dust, and the next pages start light too.
+  let fpsAcc = 0, fpsN = 0, fpsT = 0, lowAtFloor = 0;
+  const onLite = () => { dustGeo.setDrawRange(0, dustN >> 1); if (dpr > .75) { dpr = .75; renderer.setPixelRatio(dpr); resize(); } };
+  if (P.lite) onLite(); addEventListener('zb:lite', onLite);
+  function adapt(dt) { fpsAcc += dt; fpsN++; fpsT += dt; if (fpsT < 1.2) return; const fps = fpsN / fpsAcc; fpsAcc = fpsN = fpsT = 0; const floor = P.lite ? .5 : .6;
+    if (!P.lite && !document.hidden) { lowAtFloor = fps < 40 && dpr <= floor ? lowAtFloor + 1 : 0; if (lowAtFloor >= 2) goLite(); }
+    if (fps < 46 && dpr > floor) { dpr = Math.max(floor, dpr - .15); renderer.setPixelRatio(dpr); resize(); } else if (fps > 58 && dpr < (P.lite ? .9 : dprMax)) { dpr = Math.min(P.lite ? .9 : dprMax, dpr + .1); renderer.setPixelRatio(dpr); resize(); } }
 
   // ---------------- MAIN LOOP ----------------
   const intro = { count: 0, solo: 0, zoom: 0, hero: -1, heroOn: false, dim: 0, streak: -1 };
@@ -377,7 +386,7 @@ export async function mount(canvas, opts = {}) {
     focus(id) { focusObj = projects.find(g => g.userData.id === id) || null; },
     unfocus() { focusObj = null; },
     nudgeSeed(d) { seedTarget += d; },
-    destroy() { cancelAnimationFrame(raf); removeEventListener('pointermove', onMove); removeEventListener('pointerdown', onDown); removeEventListener('pointerup', onUp); removeEventListener('resize', resize); renderer.dispose(); pmrem.dispose(); },
+    destroy() { cancelAnimationFrame(raf); removeEventListener('pointermove', onMove); removeEventListener('pointerdown', onDown); removeEventListener('pointerup', onUp); removeEventListener('resize', resize); removeEventListener('zb:lite', onLite); renderer.dispose(); pmrem.dispose(); },
   };
 }
 

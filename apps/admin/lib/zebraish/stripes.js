@@ -1,22 +1,14 @@
 /* eslint-disable */
 // Ported from the Claude Design handoff (stripes.js). Browser-only side-effect script.
+import { perf, liteWanted, goLite } from './perf.js';
 if (typeof window !== "undefined") {
 /* Zebraish procedural stripe field. One WebGL fragment shader, three modes:
    0 = Living Hide (organic zebra bands), 1 = Ribbed Light (fine ribs + light sweep),
    2 = Signal Tunnel (stripes wrapped into a vortex). Reacts to cursor, scroll
    position and scroll velocity. Single rAF loop, paused off-screen. */
 (function () {
-  /* Lite mode. Every page with a stripe field samples its frame rate here; a
-     machine that can't hold ~42fps gets html[data-lite] and a 'zb:lite' event,
-     and the heavy effects (this shader, the 3D heads, smooth scrolling, big
-     glass blurs) step down so scrolling stays responsive. */
-  const G = window.__zbPerf || (window.__zbPerf = { lite: false, t0: 0, n: 0, acc: 0, low: 0, last: 0 });
-  function goLite() {
-    if (G.lite) return; G.lite = true;
-    document.documentElement.setAttribute('data-lite', '');
-    window.dispatchEvent(new Event('zb:lite'));
-  }
-  const forced = new URLSearchParams(location.search).has('lite'); // ?lite to preview it
+  // Lite mode (see perf.js): this loop samples the frame rate on every page with a stripe field.
+  const G = perf(), forced = liteWanted();
   function sample(now) {
     if (G.lite) return;
     if (forced) { goLite(); return; }
