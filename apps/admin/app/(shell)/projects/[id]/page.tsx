@@ -21,7 +21,7 @@ function titleCaseType(id: string) {
 // The studio site's public origin — override via NEXT_PUBLIC_STUDIO_URL once
 // a custom domain is attached; falls back to the current deployment so this
 // works out of the box either way.
-const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
+const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://zebraish.com";
 
 export default async function ProjectDetailPage({
   params,

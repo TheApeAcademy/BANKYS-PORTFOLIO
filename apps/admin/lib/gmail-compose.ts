@@ -1,7 +1,7 @@
 // Same fallback pattern as apps/admin/lib/email.ts. NEXT_PUBLIC_ vars are
 // inlined into the client bundle at build time, so this works in client
 // components too.
-const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
+const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://zebraish.com";
 
 // The company's Gmail account. authuser pins the compose window to this
 // account instead of whichever Google account happens to be signed in on

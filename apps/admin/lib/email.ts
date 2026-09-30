@@ -4,7 +4,7 @@ import { collaboratorApprovedEmail, priceConfirmedEmail, type Rendered } from "@
 import { collaboratorLoginLink } from "./gmail-compose";
 
 // Studio's public origin: email images and client links live there.
-const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://bankys-portfolio.vercel.app";
+const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL ?? "https://zebraish.com";
 
 /**
  * No-ops silently if RESEND_API_KEY / RESEND_FROM_EMAIL aren't set, or if there's no email

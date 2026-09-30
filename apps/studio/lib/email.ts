@@ -12,7 +12,7 @@ import { adminNoticeEmail, briefReceivedEmail, paymentReceivedEmail, type Render
 // Public origin the email images and links point at.
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://bankys-portfolio.vercel.app");
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://zebraish.com");
 
 export const trackUrl = (token: string) => `${SITE_URL}/track?token=${encodeURIComponent(token)}`;
 
