@@ -79,5 +79,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // Public files (logo, 3D model) skip the auth check: next/image fetches the logo
+  // server-side, and a redirect to /login there shows up as a broken image.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpe?g|gif|svg|webp|ico|glb)$).*)"],
 };

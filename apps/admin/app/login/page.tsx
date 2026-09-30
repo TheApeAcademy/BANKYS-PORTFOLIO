@@ -1,9 +1,14 @@
 import { Logo } from "@/components/Logo";
 import { LoginForm } from "@/components/LoginForm";
+import ZebraHead from "@/components/zebraish/ZebraHead";
 
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 bg-bg text-fg">
+      {/* The studio's 3D mark: drag to turn it. */}
+      <div className="relative mb-2 h-44 w-44" aria-hidden>
+        <ZebraHead variant="a" __hostStyle={{ position: "absolute", inset: 0 }} />
+      </div>
       <div className="mb-8">
         <Logo label="Control Center" />
       </div>

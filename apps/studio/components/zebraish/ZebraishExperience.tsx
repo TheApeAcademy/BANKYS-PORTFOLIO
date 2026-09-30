@@ -54,6 +54,8 @@ class Component extends DCLogic {
     this.aud = { amb: new Audio('/zb/assets/sfx/ambient-castle.mp3'), hover: new Audio('/zb/assets/sfx/hover.mp3'), click: new Audio('/zb/assets/sfx/click.mp3'), whoosh: new Audio('/zb/assets/sfx/whoosh.mp3') };
     this.aud.amb.loop = true; this.aud.amb.volume = 0;
     this.stmt = 0; this.introT = -1; this.p = 0; this.vel = 0;
+    this._userScroll = e => { if (e.type !== 'keydown' || /^(Arrow|Page|Home|End| )/.test(e.key)) this._apPause = performance.now() + 4000; };
+    ['wheel', 'touchmove', 'keydown'].forEach(ev => addEventListener(ev, this._userScroll, { passive: true }));
     this.boot();
   }
   async boot() {
@@ -63,21 +65,29 @@ class Component extends DCLogic {
       const m = await import('@/lib/zebraish/experience.js');
       this.world = await m.mount(this.$('gl'), { mobile: this.mobile, reduce: this.reduce, seed: this.seed, projects: this.PROJECTS, eco: this.ECO,
         frame: (dt, now) => this.frame(dt, now), onLabels: L2 => this.labels(L2), onCursor: k => this.setCursor(k), onClick: (k, id) => this.click3d(k, id), onLoad: f => { this.loadF = f; } });
+      this.start();
     } catch (e) {
       console.warn('3D unavailable, running the 2D pattern', e);
       this.$('gl').style.background = '#040405 repeating-linear-gradient(124deg,rgba(245,245,247,.07) 0 2px,transparent 2px 16px)';
       const loop = now => { this._fb = requestAnimationFrame(loop); this.frame(.016, now); }; this._fb = requestAnimationFrame(loop);
+      this.start();
     }
   }
-  componentWillUnmount() { removeEventListener('pointermove', this._pm); removeEventListener('keydown', this._key); cancelAnimationFrame(this._fb); this.world && this.world.destroy(); this.lenis && this.lenis.destroy(); Object.values(this.aud || {}).forEach(a => a.pause()); document.documentElement.style.overflow = ''; }
-  play(k, v) { if (!this.state.sound) return; const a = this.aud[k]; try { a.currentTime = 0; a.volume = v ?? .5; a.play(); } catch (e) {} }
+  componentWillUnmount() { ['wheel', 'touchmove', 'keydown'].forEach(ev => removeEventListener(ev, this._userScroll)); removeEventListener('pointermove', this._pm); removeEventListener('keydown', this._key); cancelAnimationFrame(this._fb); this.world && this.world.destroy(); this.lenis && this.lenis.destroy(); Object.values(this.aud || {}).forEach(a => a.pause()); document.documentElement.style.overflow = ''; }
+  play(k, v) { if (!this.state.sound) return; const a = this.aud[k]; try { a.currentTime = 0; a.volume = v ?? .5; a.play()?.catch(() => {}); } catch (e) {} }
   fadeAmb(to, ms) { const a = this.aud.amb, from = a.volume, st = performance.now(); cancelAnimationFrame(this._af); const f = n => { const t = Math.min(1, (n - st) / ms); a.volume = Math.max(0, Math.min(1, from + (to - from) * t)); if (t < 1) this._af = requestAnimationFrame(f); }; this._af = requestAnimationFrame(f); }
   start() {
     if (this.introT >= 0) return;
     this.introT = performance.now(); this.play('click', .6);
-    if (this.state.sound) { const tm = parseFloat(localStorage.getItem('zb-music-t') || '0'); if (tm) this.aud.amb.currentTime = tm; this._mt = setInterval(() => { if (!this.aud.amb.paused) try { localStorage.setItem('zb-music-t', String(this.aud.amb.currentTime)); } catch (x) {} }, 1000); this.aud.amb.play().then(() => this.fadeAmb(.32, 4000)).catch(() => {}); }
+    if (this.state.sound) { const tm = parseFloat(localStorage.getItem('zb-music-t') || '0'); if (tm) this.aud.amb.currentTime = tm; this._mt = setInterval(() => { if (!this.aud.amb.paused) try { localStorage.setItem('zb-music-t', String(this.aud.amb.currentTime)); } catch (x) {} }, 1000); this.aud.amb.play().then(() => this.fadeAmb(.32, 4000)).catch(() => this.armAudio()); }
     const pw = this.$('power'); if (pw) pw.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, easing: 'ease', fill: 'forwards' });
     setTimeout(() => this.setState({ power: false }), 950);
+  }
+  // Autoplay blocks audio without a gesture, so start the music on the first one.
+  armAudio() {
+    if (this._armed) return; this._armed = true;
+    const go = () => { ['pointerdown', 'keydown', 'touchstart'].forEach(ev => removeEventListener(ev, go)); if (this.state.sound) this.aud.amb.play().then(() => this.fadeAmb(.32, 2500)).catch(() => {}); };
+    ['pointerdown', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, go, { passive: true }));
   }
   introStep(now) {
     if (this.introT < 0 || this.introDone) return;
@@ -102,11 +112,13 @@ class Component extends DCLogic {
       this.introDone = true; document.documentElement.style.overflow = ''; this.lenis && this.lenis.start();
       this.$('chrome').animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1200, fill: 'forwards' });
       { const hn = this.$('hint'); hn.style.transition = 'opacity 1s ease'; this._hintOn = performance.now(); }
+      this._apPause = performance.now() + 1800; // let the hint be read before the story starts moving
     }
   }
   frame(dt, now) {
     if (this.lenis) this.lenis.raf(now);
     this.introStep(now);
+    this.autoplay(now);
     const sp = this.$('spacer'), max = Math.max(1, (sp ? sp.offsetHeight : document.documentElement.scrollHeight) - innerHeight);
     const p = window.__zbP != null ? window.__zbP : this.introDone ? Math.max(0, Math.min(1, scrollY / max)) : 0;
     const zn = this.$('zone'), zH = zn ? zn.offsetHeight : innerHeight, xq = window.__zbX != null ? window.__zbX : Math.max(0, Math.min(1, (scrollY - max) / Math.max(1, zH - 4)));
@@ -121,6 +133,15 @@ class Component extends DCLogic {
     const c = this.cur; c.x += (c.tx - c.x) * .22; c.y += (c.ty - c.y) * .22; const ce = this.$('cursor'); if (ce) ce.style.transform = `translate3d(${c.x}px,${c.y}px,0)`;
     if (this.aud && this.state.sound && this.introDone) { const q = p > .9 && p < .97 ? .12 : .32; if (Math.abs(this.aud.amb.volume - q) > .02 && !this._af2) { this._af2 = 1; this.fadeAmb(q, 1500); setTimeout(() => this._af2 = 0, 1500); } }
     return { p, vel: this.vel, sv: this.lenis ? Math.sign(rawV) * this.vel : 0, xq: this.xq || 0 };
+  }
+  // Plays the story on its own, about half a screen a second (~45s to the studio).
+  // Not for reduced-motion visitors, and paused while a project is open.
+  autoplay(now) {
+    const last = this._apLast ?? now; this._apLast = now;
+    if (!this.introDone || !this.lenis || this.reduce || this._nav || this.state.pj || this.state.eco || document.hidden) return;
+    if (now < (this._apPause || 0)) return;
+    const dt = Math.min(.25, (now - last) / 1000); // slow frames on weak phones still keep pace
+    this.lenis.scrollTo(this.lenis.scroll + innerHeight * .5 * dt, { immediate: true, force: true });
   }
   choreo(p, sv) {
     const ss = (a, b, x) => { const u = Math.max(0, Math.min(1, (x - a) / (b - a))); return u * u * (3 - 2 * u); };
@@ -171,7 +192,7 @@ class Component extends DCLogic {
     return {
       rootRef: this.rootRef, homeOn: this.state.home, langLabel: getZbLang() === 'es' ? 'ES · en' : 'EN · es', toggleLang: () => this.setLang(getZbLang() === 'es' ? 'en' : 'es'),
       powerOn: this.state.power, start: () => this.start(),
-      powerLabel: touch ? 'Tap to power on' : 'Click to power on', powerSub: touch ? 'Sound off · turn it on anytime' : 'Best with sound',
+      powerLabel: 'Loading the pattern…', powerSub: touch ? 'Sound off · turn it on anytime' : 'Best with sound',
       soundLabel: this.state.sound ? 'Sound on' : 'Sound off',
       toggleSound: () => { const s = !this.state.sound; this.setState({ sound: s }); try { localStorage.setItem('zb-sound', s ? 'on' : 'off'); } catch (x) {} if (s) { this.aud.amb.play().catch(() => {}); this.fadeAmb(.32, 1200); } else this.fadeAmb(0, 600); },
       chain: ['STRIPES', 'LINES', 'NODES', 'SYSTEMS', 'PRODUCTS', 'BUSINESSES'].map((label, i) => ({ label: (i ? '↓ ' : '') + label, i })),
@@ -509,8 +530,11 @@ function template(v) {
         {" "}
         <div data-id="status" role="status" aria-live="polite" style={{"position":"absolute","left":"0","right":"0","bottom":"11%","textAlign":"center","fontFamily":"ui-monospace,Menlo,monospace","fontSize":"12px","letterSpacing":".28em","textTransform":"uppercase","color":"rgba(245,245,247,.62)","opacity":"0"}} />
         {" "}
+        {!v.powerOn ? (
+          <a href="/studio" data-ui="1" data-skip="1" style={{"position":"absolute","right":"20px","bottom":"22px","zIndex":"5","pointerEvents":"auto","padding":"9px 16px","borderRadius":"100px","background":"rgba(10,10,12,.55)","backdropFilter":"blur(14px)","WebkitBackdropFilter":"blur(14px)","border":"1px solid rgba(245,245,247,.2)","color":"#f5f5f7","fontSize":"10px","fontWeight":"700","letterSpacing":".18em","textTransform":"uppercase","textDecoration":"none"}}>{"Skip intro →"}</a>
+        ) : null}
         <div data-id="hint" style={{"position":"absolute","left":"50%","bottom":"28px","transform":"translateX(-50%)","display":"flex","flexDirection":"column","alignItems":"center","gap":"10px","opacity":"0","fontSize":"10px","fontWeight":"700","letterSpacing":".3em","textTransform":"uppercase","color":"rgba(245,245,247,.6)"}}>
-          <span data-es="Desliza para entrar">{"Scroll to enter"}</span>
+          <span data-es="Relájate o desliza para ir más rápido">{"Sit back, or scroll to go faster"}</span>
           <span style={{"width":"1px","height":"38px","background":"linear-gradient(#f5f5f7,transparent)"}} />
         </div>
         {" "}

@@ -14,7 +14,11 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-const BASE_CSS = "html,body{height:100%;margin:0;background:#040405}#dc-root,#dc-root>.sc-host{height:100%}";
+// The pages' own styles set body{overflow-x:hidden}; with the 100% height above
+// that turns <body> into its own scroll box, so the window never scrolls and
+// everything reading window scroll (the Experience story, Lenis, parallax,
+// the progress bar) stalls. clip hides sideways overflow without doing that.
+const BASE_CSS = "html,body{height:100%;margin:0;background:#040405}body{overflow-x:clip!important}#dc-root,#dc-root>.sc-host{height:100%}";
 
 // Phone layout. The designs were drawn for desktop with inline styles, so these
 // overrides (hence !important) narrow the side padding, stack the hero, and
