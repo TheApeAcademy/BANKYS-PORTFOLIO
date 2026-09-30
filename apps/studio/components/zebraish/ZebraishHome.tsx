@@ -12,6 +12,7 @@ import ZebraHead from "./ZebraHead";
 import GlassNumbers from "./GlassNumbers";
 import BuiltBy from "./BuiltBy";
 import DeviceJourney from "./DeviceJourney";
+import SiteList from "./SiteList";
 import Ecosystem from "./Ecosystem";
 import IdeaPrompt from "./IdeaPrompt";
 import HenkoGenIntro from "./HenkoGenIntro";
@@ -154,6 +155,8 @@ class Component extends DCLogic {
       isCurrentBg: stripes === 'current', isStripes: stripes !== 'current' && stripes !== 'wet',
       numbers: this.props.numbers ?? 'c', head: this.props.head ?? 'a', footer: this.props.footer ?? 'a', ecosystem: this.props.ecosystem ?? 'b',
       heroVignette: stripes === 'current' ? 'var(--bg)' : 'rgba(var(--bg-rgb),.4)',
+      // Phones get the plain site list; the Device Journey is too heavy for them.
+      phone: !!this.state.vw && this.state.vw <= 760, journey: this.state.vw > 760,
       navLinksDisplay: (this.state.vw && this.state.vw < 1160) || this.state.navCompact ? 'none' : 'flex', navCompact: !!this.state.navCompact,
       menuOpen: this.state.menu, toggleMenu: () => this.setState({ menu: !this.state.menu }), closeMenu: () => this.setState({ menu: false }),
       navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#ecosystem', 'Ecosystem'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
@@ -591,10 +594,10 @@ function template(v) {
           <h2 data-hr="1" style={{"fontSize":"clamp(44px,6vw,88px)","fontWeight":"900","lineHeight":".94","letterSpacing":"-.03em","margin":"0 0 18px"}}>{"REAL WORK. REAL PROOF."}</h2>
           {" "}
           <p data-hr="1" style={{"fontSize":"17px","lineHeight":"1.7","color":"var(--text-muted)","maxWidth":"500px","margin":"0"}}>
-            {"Nine live sites, nine different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
+            {"Twelve live sites, twelve different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
           </p>
           {" "}
-          <div data-bleed="1" style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div>
+          {v.phone ? <SiteList /> : v.journey ? <div data-bleed="1" style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div> : null}
           {" "}
           <p data-hr="1" style={{"margin":"20px 0 0","fontSize":"12px","color":"var(--text-faint)","letterSpacing":".02em","maxWidth":"560px"}}>
             {"These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work."}
