@@ -1,7 +1,8 @@
 // The founder's live sites, shown in the device carousel on the Home and World
-// pages. Each gets its own device and shows a screenshot (never the live page,
-// so the section stays light); a site without one shows a poster in its accent
-// colour. Text is English; Spanish lives in es.ts.
+// pages. Each gets its own device and shows its cover (never the live page, so
+// the section stays light): a screenshot where we have one, otherwise the cover
+// photo the old work page used; a site with neither shows a poster in its
+// accent colour. Text is English; Spanish lives in es.ts.
 export type DeviceKind = "imac" | "iphone" | "laptop" | "ipadL" | "tv" | "android" | "monitor" | "iphoneL" | "browser" | "ipadP" | "ultrawide" | "fold";
 
 export type Site = {
@@ -25,20 +26,20 @@ export const SITES: Site[] = [
     blurb: "Portfolio and collab hub for a fashion and lifestyle creator." },
   { name: "AAURA", tagline: "Arabian Luxury Perfumery", category: "Fragrance", host: "aaura-perfume.vercel.app", shot: "/zb/assets/ae7685b3f6993315e423325f7889a7f4.jpg", cta: "Order", accent: "#b8860b", device: "ipadL",
     blurb: "An Arabian perfume house presented like a luxury flagship store." },
-  { name: "HOT CHEF", tagline: "Culinary Excellence", category: "Food & Drink", host: "hot-chef.vercel.app", shot: "", cta: "Menu", accent: "#e8562a", device: "android",
+  { name: "HOT CHEF", tagline: "Culinary Excellence", category: "Food & Drink", host: "hot-chef.vercel.app", shot: "/zb/assets/sites/hot-chef.webp", cta: "Menu", accent: "#e8562a", device: "android",
     blurb: "A restaurant site where the menu and the story lead the way." },
-  { name: "APE ACADEMY", tagline: "Academic Excellence", category: "Education", host: "deploy-1-p1ke.vercel.app", shot: "/zb/assets/Screenshot_20260412-220250_Chrome.png", cta: "Enrol", accent: "#1f7a4d", device: "tv",
+  { name: "APE ACADEMY", tagline: "Academic Excellence", category: "Education", host: "deploy-1-p1ke.vercel.app", shot: "/zb/assets/sites/ape-academy.webp", cta: "Enrol", accent: "#1f7a4d", device: "tv",
     blurb: "An academic help platform: submit a task, pay, and get the documents delivered." },
   { name: "REVERIE", tagline: "Luxury Beauty Salon", category: "Beauty", host: "reverie-salon.vercel.app", shot: "/zb/assets/4c7faa2cf965371c0d8c790e9d5f61a1.jpg", cta: "Book", accent: "#d98fa6", device: "ipadP",
     blurb: "A luxury beauty salon site made for browsing services and booking." },
-  { name: "NOIR ATELIER", tagline: "Luxury Ready-to-Wear", category: "Apparel", host: "noir-atelier-clothing.vercel.app", shot: "", cta: "Shop", accent: "#8a8a8f", device: "monitor",
+  { name: "NOIR ATELIER", tagline: "Luxury Ready-to-Wear", category: "Apparel", host: "noir-atelier-clothing.vercel.app", shot: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1400&h=875&fit=crop&auto=format&q=75", cta: "Shop", accent: "#8a8a8f", device: "monitor",
     blurb: "A ready-to-wear label with a quiet, editorial storefront." },
-  { name: "EMBER & SALT", tagline: "Wood-Fired Restaurant", category: "Food & Drink", host: "ember-salt-restaurant.vercel.app", shot: "", cta: "Reserve", accent: "#d9772b", device: "iphoneL",
+  { name: "EMBER & SALT", tagline: "Wood-Fired Restaurant", category: "Food & Drink", host: "ember-salt-restaurant.vercel.app", shot: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&h=875&fit=crop&auto=format&q=75", cta: "Reserve", accent: "#d9772b", device: "iphoneL",
     blurb: "A wood-fired restaurant with its menus, atmosphere and reservations." },
-  { name: "PADI", tagline: "Stories That Talk Back", category: "Entertainment", host: "padi-three.vercel.app", shot: "", cta: "Play", accent: "#8b5cf6", device: "fold",
+  { name: "PADI", tagline: "Stories That Talk Back", category: "Entertainment", host: "padi-three.vercel.app", shot: "/zb/assets/sites/padi.webp", cta: "Play", accent: "#8b5cf6", device: "fold",
     blurb: "Interactive stories that talk back to the reader." },
-  { name: "SHADOWZ", tagline: "Urban Art Intelligence", category: "Urban Tech", host: "shadow-rho-three.vercel.app", shot: "", cta: "Explore", accent: "#17c98d", device: "ultrawide",
+  { name: "SHADOWZ", tagline: "Urban Art Intelligence", category: "Urban Tech", host: "shadow-rho-three.vercel.app", shot: "/zb/assets/sites/shadowz.webp", cta: "Explore", accent: "#17c98d", device: "ultrawide",
     blurb: "An urban art platform with a layer of intelligence on top." },
-  { name: "PM PORTFOLIO", tagline: "Product & Frontend Builder", category: "Tech", host: "pm-portfolio-steel-rho.vercel.app", shot: "", cta: "View", accent: "#3d7ef0", device: "browser",
+  { name: "PM PORTFOLIO", tagline: "Product & Frontend Builder", category: "Tech", host: "pm-portfolio-steel-rho.vercel.app", shot: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1400&h=875&fit=crop&auto=format&q=75", cta: "View", accent: "#3d7ef0", device: "browser",
     blurb: "The portfolio of a product and frontend builder." },
 ];
