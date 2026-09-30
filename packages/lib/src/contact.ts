@@ -9,7 +9,7 @@ export const CONTACT = {
   /** Swap for the domain inbox (e.g. hello@zebraish.com) once it's set up. */
   email: "j0shbankole19@gmail.com",
   /** Handles without the @; left empty until the accounts are ready. */
-  instagram: "",
+  instagram: "zebraish_studio",
   tiktok: "",
 } as const;
 

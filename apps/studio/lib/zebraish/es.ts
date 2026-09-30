@@ -344,6 +344,7 @@ const PAGES: Record<string, string> = {
   "Case study": "Caso de estudio",
   "Case Study": "Caso de estudio",
   "Visit live site →": "Ver web en vivo →",
+  Visit: "Visitar",
   "Build something like this": "Crea algo así",
   "Next project": "Siguiente proyecto",
   "A modest luxury abaya label selling mostly through Snapchat DMs, with no single place to see the collection.":

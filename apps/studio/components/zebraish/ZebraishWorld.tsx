@@ -11,7 +11,6 @@ import ZebraHead from "./ZebraHead";
 import GlassNumbers from "./GlassNumbers";
 import BuiltBy from "./BuiltBy";
 import DeviceJourney from "./DeviceJourney";
-import SiteList from "./SiteList";
 import Ecosystem from "./Ecosystem";
 import IdeaPrompt from "./IdeaPrompt";
 import HenkoGenIntro from "./HenkoGenIntro";
@@ -171,8 +170,6 @@ class Component extends DCLogic {
       introLines: Array.from({ length: 14 }, (_, i) => ({ h: [1, 2, 6, 1, 14, 2, 1, 4, 22, 1, 3, 9, 1, 2][i] + 'px', w: (60 + (i * 37) % 60) + '%', ml: ((i * 23) % 30) + '%', o: [.5, .8, 1, .4, 1, .6, .3, .9, 1, .5, .7, 1, .4, .8][i] })),
       numbers: this.props.numbers ?? 'c', head: this.props.head ?? 'a', footer: this.props.footer ?? 'a', ecosystem: this.props.ecosystem ?? 'b',
       heroVignette: stripes === 'current' ? 'var(--bg)' : 'rgba(var(--bg-rgb),.4)',
-      // Phones get the plain site list; the Device Journey is too heavy for them.
-      phone: !!this.state.vw && this.state.vw <= 760, journey: this.state.vw > 760,
       navLinksDisplay: (this.state.vw && this.state.vw < 1160) || this.state.navCompact ? 'none' : 'flex', navCompact: !!this.state.navCompact,
       menuOpen: this.state.menu, toggleMenu: () => this.setState({ menu: !this.state.menu }), closeMenu: () => this.setState({ menu: false }),
       navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#ecosystem', 'Ecosystem'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
@@ -201,7 +198,7 @@ function template(v) {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
-      <div ref={v.rootRef} data-theme={v.theme} data-stripes={v.stripes} style={{"position":"relative","minHeight":"100vh","background":"var(--bg)","color":"var(--text)","fontFamily":"Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif","lineHeight":"1.6","letterSpacing":".005em","overflowX":"hidden"}}>
+      <div ref={v.rootRef} data-theme={v.theme} data-stripes={v.stripes} style={{"position":"relative","minHeight":"100vh","background":"var(--bg)","color":"var(--text)","fontFamily":"Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif","lineHeight":"1.6","letterSpacing":".005em","overflowX":"clip"}}>
       {" "}
       <canvas data-id="world" aria-hidden="true" style={{"position":"fixed","inset":"0","width":"100vw","height":"100vh","zIndex":"0","display":"block","background":"var(--bg)"}} />
       {" "}
@@ -627,7 +624,7 @@ function template(v) {
             {"Twelve live sites, twelve different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
           </p>
           {" "}
-          {v.phone ? <SiteList /> : v.journey ? <div data-bleed="1" style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div> : null}
+          <div data-bleed="1" style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div>
           {" "}
           <p data-hr="1" style={{"margin":"20px 0 0","fontSize":"12px","color":"var(--text-faint)","letterSpacing":".02em","maxWidth":"560px"}}>
             {"These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work."}

@@ -4,7 +4,7 @@
 // Device Journey: ported from the Claude Design handoff (Device Journey.dc.html).
 // Logic is the prototype's own class; the template below mirrors its markup 1:1.
 import React from "react";
-import { tr } from "@/lib/zebraish/i18n";
+import { tr, getZbLang } from "@/lib/zebraish/i18n";
 import { SITES } from "@/lib/zebraish/sites";
 import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc";
 
@@ -15,37 +15,43 @@ class Component extends DCLogic {
   NO_FRAME = new Set(['doberman-kappa.vercel.app']);
   // w,h as fraction of viewport min-dim-aware; x offset (fraction of W); r radius; b bezel; chin; rz, ry; list alpha; site index; cursor path; stand
   keys(W, H) {
-    const m = Math.min(W, H);
+    const m = Math.min(W, H), ph = W <= 760; // phones: no side list, so the iMac sits centred and larger
+    const mx = ph ? 0 : .14 * W, mw = ph ? .9 * W : Math.min(.56 * W, 1.45 * H * .62);
     return [
-      { p: 0, x: .14 * W, w: Math.min(.56 * W, 1.45 * H * .62), ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 0, list: 1, site: 0, name: 'iMac', sub: 'Every site, on every screen', stand: 1, stop: 0 },
-      { p: .1, x: .14 * W, w: Math.min(.56 * W, 1.45 * H * .62), ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 0, list: 1, site: 0, name: 'iMac', sub: 'Every site, on every screen', stand: 1, stop: 0 },
+      { p: 0, x: mx, w: mw, ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 0, list: 1, site: 0, name: 'iMac', sub: 'Every site, on every screen', stand: 1, stop: 0 },
+      { p: .1, x: mx, w: mw, ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 0, list: 1, site: 0, name: 'iMac', sub: 'Every site, on every screen', stand: 1, stop: 0 },
       { p: .2, x: 0, w: W * 1.02, ar: H * 1.02 / (W * 1.02), r: 0, b: 0, chin: 0, rz: 0, ry: 0, list: 0, site: 0, name: 'Full screen', sub: 'Scroll inside the site', stand: 0, stop: 1 },
-      { p: .3, x: 0, w: .6 * W > 1.1 * H ? 1.1 * H : .6 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 0, ry: 0, list: 0, site: 4, name: 'iPad', sub: 'Landscape', stand: 0, stop: 2 },
-      { p: .4, x: 0, w: .6 * W > 1.1 * H ? 1.1 * H * .8 : .48 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 90, ry: 0, list: 0, site: 4, name: 'iPad', sub: 'Rolls to portrait', stand: 0, stop: 3 },
+      { p: .3, x: 0, w: ph ? .86 * W : .6 * W > 1.1 * H ? 1.1 * H : .6 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 0, ry: 0, list: 0, site: 4, name: 'iPad', sub: 'Landscape', stand: 0, stop: 2 },
+      { p: .4, x: 0, w: ph ? .8 * W : .6 * W > 1.1 * H ? 1.1 * H * .8 : .48 * W, ar: .72, r: 30, b: 18, chin: 0, rz: 90, ry: 0, list: 0, site: 4, name: 'iPad', sub: 'Rolls to portrait', stand: 0, stop: 3 },
       { p: .52, x: 0, w: .72 * m, ar: .46, r: 44, b: 10, chin: 0, rz: 90, ry: 360, list: 0, site: 3, name: 'iPhone', sub: 'Flips front to back', stand: 0, stop: 4 },
       { p: .64, x: 0, w: .95 * m, ar: .46, r: 50, b: 10, chin: 0, rz: 0, ry: 360, list: 0, site: 3, name: 'iPhone', sub: 'Landscape', stand: 0, stop: 5 },
       { p: .8, x: 0, w: Math.min(W * .94, H * .86 / .5625), ar: .5625, r: 6, b: 6, chin: 0, rz: 0, ry: 360, list: 0, site: 6, name: '100" TV', sub: 'Living-room scale', stand: 2, stop: 6 },
       { p: .92, x: 0, w: Math.min(W * .94, H * .86 / .5625), ar: .5625, r: 6, b: 6, chin: 0, rz: 0, ry: 360, list: 0, site: 5, name: '100" TV', sub: 'Living-room scale', stand: 2, stop: 7 },
-      { p: 1, x: .14 * W, w: Math.min(.56 * W, 1.45 * H * .62), ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 360, list: 1, site: 0, name: 'Back to the list', sub: 'Pick any site', stand: 1, stop: 7 },
+      { p: 1, x: mx, w: mw, ar: .64, r: 18, b: 14, chin: 30, rz: 0, ry: 360, list: 1, site: 0, name: 'Back to the list', sub: 'Pick any site', stand: 1, stop: 7 },
     ];
   }
   componentDidMount() {
     const root = this.rootRef.current;
-    if (!root || !root.querySelector('[data-live]') || !root.querySelector('[data-stop]')) { this._retry = setTimeout(() => this.componentDidMount(), 120); return; }
+    if (!root || !root.querySelector('[data-visit]') || !root.querySelector('[data-stop]')) { this._retry = setTimeout(() => this.componentDidMount(), 120); return; }
     const q = s => root.querySelector(s);
-    this.el = { dev: q('[data-dev]'), screen: q('[data-screen]'), content: q('[data-content]'), page: q('[data-page]'), cursor: q('[data-cursor]'), ripple: q('[data-ripple]'), list: q('[data-list]'), stand: q('[data-stand]'), cam: q('[data-cam]'), bar: q('[data-bar]'), host: q('[data-host]'), sname: q('[data-sname]'), stag: q('[data-stag]'), btn: q('[data-btn]'), dname: q('[data-dname]'), dsub: q('[data-dsub]'), shade: q('[data-shade]'), back: q('[data-back]'), pin: q('[data-sticky]'), grid: q('[data-grid]'), live: q('[data-live]'), front: q('[data-front]') };
+    this.el = { dev: q('[data-dev]'), screen: q('[data-screen]'), content: q('[data-content]'), page: q('[data-page]'), cursor: q('[data-cursor]'), ripple: q('[data-ripple]'), list: q('[data-list]'), stand: q('[data-stand]'), cam: q('[data-cam]'), bar: q('[data-bar]'), host: q('[data-host]'), sname: q('[data-sname]'), stag: q('[data-stag]'), btn: q('[data-btn]'), dname: q('[data-dname]'), dsub: q('[data-dsub]'), shade: q('[data-shade]'), back: q('[data-back]'), grid: q('[data-grid]'), visit: q('[data-visit]'), front: q('[data-front]') };
     this.rows = [...root.querySelectorAll('[data-row]')]; this.stops = [...root.querySelectorAll('[data-stop]')];
+    // The pin is position:sticky. Browsers without overflow:clip (the page wrappers use it) can't stick, so they pin by transform instead.
+    this.jsPin = !(window.CSS && CSS.supports('overflow', 'clip')); this.pin = q('[data-sticky]'); if (this.jsPin) this.pin.style.position = 'absolute';
     this.cur = { p: 0 }; this.lastSite = -1; this.lastClick = -1;
     const loop = () => { this.raf = requestAnimationFrame(loop); try { this.frame(); } catch (err) { window.__djErr = String(err && err.stack || err); } };
     this.raf = requestAnimationFrame(loop);
   }
-  componentWillUnmount() { clearTimeout(this._retry); clearTimeout(this._lt); cancelAnimationFrame(this.raf); }
+  componentWillUnmount() { clearTimeout(this._retry); cancelAnimationFrame(this.raf); }
   frame() {
     const root = this.rootRef.current; if (!root) return;
     const r = root.getBoundingClientRect(), W = innerWidth, H = innerHeight;
     if (r.bottom < -50 || r.top > H + 50) return;
     const target = Math.max(0, Math.min(1, -r.top / (r.height - H)));
-    this.el.pin.style.transform = `translate3d(0,${Math.max(0, Math.min(r.height - H, -r.top))}px,0)`;
+    if (this.jsPin) this.pin.style.transform = `translate3d(0,${Math.max(0, Math.min(r.height - H, -r.top))}px,0)`;
+    // Nothing moved since the last frame: skip all the style writes.
+    if (Math.abs(target - this.cur.p) < 1e-4 && W === this._W && H === this._H) return;
+    this._W = W; this._H = H;
     this.cur.p += (target - this.cur.p) * .12;
     const p = this.cur.p, K = this.keys(W, H);
     let i = 0; while (i < K.length - 2 && p > K[i + 1].p) i++;
@@ -69,19 +75,17 @@ class Component extends DCLogic {
     E.stand.style.borderRadius = st > 1 ? '0 0 4px 4px' : '0 0 14px 14px';
     const seg = (p - A.p) / (B.p - A.p || 1);
     const siteIdx = near.site, S = this.SITES[siteIdx];
-    if (siteIdx !== this.lastSite) {
-      this.lastSite = siteIdx; E.host.textContent = S[3]; E.sname.textContent = S[0]; E.stag.textContent = tr(S[1]); E.btn.textContent = tr(S[5]);
-      E.grid.style.display = S[4] ? 'none' : 'grid';
-      E.live.style.opacity = 0; E.live.onload = () => { if (E.live.src !== 'about:blank') E.live.style.opacity = 1; }; clearTimeout(this._lt);
-      const framed = !this.NO_FRAME.has(S[3]); E.live.style.display = framed ? 'block' : 'none'; E.shade.style.display = E.sname.parentElement.style.display = framed || !S[4] ? '' : 'none';
-      this._lt = setTimeout(() => { E.live.src = framed ? 'https://' + S[3] : 'about:blank'; }, 250);
-      E.page.style.backgroundImage = S[4] ? `url('${S[4]}')` : 'repeating-linear-gradient(124deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px)';
+    if (siteIdx !== this.lastSite || getZbLang() !== this._lang) {
+      this.lastSite = siteIdx; this._lang = getZbLang(); E.host.textContent = S[3]; E.sname.textContent = S[0]; E.stag.textContent = tr(S[1]); E.btn.textContent = tr(S[5]);
+      // Screenshot when there is one; otherwise a poster in the site's colour. No live page loads.
+      E.grid.style.display = S[4] ? 'none' : 'grid'; E.shade.style.display = S[4] ? 'none' : 'block'; E.sname.parentElement.style.display = S[4] ? 'none' : 'flex';
+      E.page.style.backgroundColor = '#0c0c0e';
+      E.page.style.backgroundImage = S[4] ? `url('${S[4]}')` : `radial-gradient(120% 80% at 50% 0%,${S[6]}66,transparent 70%),linear-gradient(160deg,${S[6]}33,#0c0c0e 65%)`;
+      E.visit.href = 'https://' + S[3]; E.visit.firstChild.textContent = tr('Visit') + ' ' + S[0] + ' ';
       this.rows.forEach((row, k) => { row.style.background = k === siteIdx ? 'rgba(var(--tint-rgb),.07)' : 'transparent'; row.style.color = k === siteIdx ? 'var(--text)' : 'var(--text-muted)'; });
     }
-    const lw = /iPhone/.test(near.name) && Math.abs(Math.cos(rz * Math.PI / 180)) < .5 ? 390 : /iPhone/.test(near.name) ? 844 : /iPad/.test(near.name) ? (cw > ch ? 1180 : 820) : 1440;
-    const barH = /iMac|Full|Back/.test(near.name) ? 24 : 0, ph = Math.max(1, ch - barH), sc = cw / lw;
+    const barH = /iMac|Full|Back/.test(near.name) ? 24 : 0, ph = Math.max(1, ch - barH);
     E.page.style.top = barH + 'px'; E.page.style.height = ph + 'px';
-    if (this._lw !== lw || Math.abs((this._sc || 0) - sc) > .002 || Math.abs((this._ph || 0) - ph) > 1) { this._lw = lw; this._sc = sc; this._ph = ph; E.live.style.width = lw + 'px'; E.live.style.height = (ph / sc) + 'px'; E.live.style.transform = 'scale(' + sc + ')'; }
     const cx = .3 + .4 * Math.sin(p * 17), cy = .25 + .45 * (.5 + .5 * Math.sin(p * 11 + 1));
     E.cursor.style.left = (cx * cw) + 'px'; E.cursor.style.top = (cy * ch) + 'px';
     const clickSlot = Math.floor(p * 14);
@@ -92,21 +96,21 @@ class Component extends DCLogic {
   renderVals() {
     return {
       rootRef: this.rootRef,
-      sites: this.SITES.map((s, i) => ({ i, num: String(i + 1).padStart(2, '0'), name: s[0], ind: s[2] })),
+      sites: this.SITES.map((s, i) => ({ i, num: String(i + 1).padStart(2, '0'), name: s[0], ind: s[2], href: 'https://' + s[3] })),
       stops: ['iMac', 'Full', 'iPad', 'Portrait', 'Flip', 'Phone', '100" TV', 'End'].map((label, i) => ({ i, label })),
     };
   }
 }
 
-const STYLE = ":root,[data-theme=\"dark\"]{--bg:#060608;--tint-rgb:245,245,247;--text:#f5f5f7;--text-muted:rgba(245,245,247,.55);--text-faint:rgba(245,245,247,.3);--invert-bg:#fff;--invert-fg:#000}\n[data-theme=\"light\"]{--bg:#faf9f7;--tint-rgb:20,20,24;--text:#17171a;--text-muted:rgba(20,20,24,.65);--text-faint:rgba(20,20,24,.4);--invert-bg:#141414;--invert-fg:#fff}\n@keyframes djclick{from{transform:translate(-50%,-50%) scale(.2);opacity:.9}to{transform:translate(-50%,-50%) scale(2.4);opacity:0}}";
+const STYLE = ":root,[data-theme=\"dark\"]{--bg:#060608;--tint-rgb:245,245,247;--text:#f5f5f7;--text-muted:rgba(245,245,247,.55);--text-faint:rgba(245,245,247,.3);--invert-bg:#fff;--invert-fg:#000}\n[data-theme=\"light\"]{--bg:#faf9f7;--tint-rgb:20,20,24;--text:#17171a;--text-muted:rgba(20,20,24,.65);--text-faint:rgba(20,20,24,.4);--invert-bg:#141414;--invert-fg:#fff}\n@keyframes djclick{from{transform:translate(-50%,-50%) scale(.2);opacity:.9}to{transform:translate(-50%,-50%) scale(2.4);opacity:0}}\n.zbdj-visit:hover{transform:translateY(-2px)}\n[data-row]:hover{color:var(--text) !important}\n@media (max-width:760px){[data-dj]{height:560vh !important}[data-dj] [data-list],[data-dj] [data-stops]{display:none !important}[data-dj] [data-grid]{display:none !important}[data-dj] [data-dbar]{left:20px !important;right:20px !important;bottom:96px !important}}";
 
 function template(v) {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
-      <section ref={v.rootRef} style={{"position":"relative","height":"720vh","background":"var(--bg)","fontFamily":"Inter,-apple-system,sans-serif","color":"var(--text)"}}>
+      <section ref={v.rootRef} data-dj="1" style={{"position":"relative","height":"720vh","background":"var(--bg)","fontFamily":"Inter,-apple-system,sans-serif","color":"var(--text)"}}>
       {" "}
-      <div data-sticky="1" style={{"position":"absolute","left":"0","right":"0","top":"0","height":"100vh","willChange":"transform","overflow":"hidden","perspective":"2200px"}}>
+      <div data-sticky="1" style={{"position":"sticky","top":"0","height":"100vh","overflow":"hidden","perspective":"2200px"}}>
         {" "}
         <div data-list="1" style={{"position":"absolute","left":"48px","top":"50%","transform":"translateY(-50%)","width":"300px","display":"flex","flexDirection":"column","gap":"2px","zIndex":"2"}}>
           {" "}
@@ -115,7 +119,7 @@ function template(v) {
           {each(v, v.sites, "s", (v) => (
             <>
               {" "}
-              <div data-row={v.s?.i} style={{"display":"grid","gridTemplateColumns":"28px 1fr auto","alignItems":"center","gap":"10px","padding":"8px 12px","borderRadius":"12px","transition":"background .3s,color .3s","color":"var(--text-muted)"}}>
+              <a data-row={v.s?.i} href={v.s?.href} target="_blank" rel="noopener noreferrer" style={{"textDecoration":"none","display":"grid","gridTemplateColumns":"28px 1fr auto","alignItems":"center","gap":"10px","padding":"8px 12px","borderRadius":"12px","transition":"background .3s,color .3s","color":"var(--text-muted)"}}>
                 {" "}
                 <span style={{"fontSize":"10px","fontWeight":"600","letterSpacing":".14em","color":"var(--text-faint)"}}>{I(v.s?.num)}</span>
                 {" "}
@@ -123,7 +127,7 @@ function template(v) {
                 {" "}
                 <span style={{"fontSize":"9px","fontWeight":"600","letterSpacing":".14em","textTransform":"uppercase","color":"var(--text-faint)"}}>{I(v.s?.ind)}</span>
                 {" "}
-              </div>
+              </a>
               {" "}
             </>
           ))}
@@ -147,13 +151,11 @@ function template(v) {
                 {" "}
                 <div data-page="1" style={{"position":"absolute","left":"0","right":"0","top":"24px","height":"100%","overflow":"hidden","backgroundSize":"cover","backgroundPosition":"top center","backgroundImage":"repeating-linear-gradient(124deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px)"}}>
                   {" "}
-                  <iframe data-live="1" title="Live site" loading="lazy" tabIndex="-1" scrolling="no" style={{"position":"absolute","left":"0","top":"0","border":"0","transformOrigin":"0 0","pointerEvents":"none","background":"transparent","opacity":"0","transition":"opacity .6s","zIndex":"2"}} />
-                  {" "}
                   <div data-shade="1" style={{"position":"absolute","inset":"0","background":"linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.6))"}} />
                   {" "}
                   <div style={{"position":"absolute","top":"14%","left":"0","right":"0","display":"flex","flexDirection":"column","alignItems":"center","gap":"8px","textAlign":"center","padding":"0 16px"}}>
                     {" "}
-                    <span data-sname="1" style={{"fontSize":"clamp(22px,4vw,56px)","fontWeight":"900","letterSpacing":".08em","color":"#fff"}}>{"MALAAK"}</span>
+                    <span data-sname="1" style={{"fontSize":"clamp(16px,3.4vw,56px)","fontWeight":"900","letterSpacing":".08em","color":"#fff"}}>{"MALAAK"}</span>
                     {" "}
                     <span data-stag="1" style={{"fontSize":"10px","fontWeight":"600","letterSpacing":".2em","textTransform":"uppercase","color":"rgba(255,255,255,.7)"}}>{"Modest Luxury Abayas"}</span>
                     {" "}
@@ -199,11 +201,14 @@ function template(v) {
           {" "}
         </div>
         {" "}
-        <div style={{"position":"absolute","left":"48px","right":"48px","bottom":"32px","display":"flex","justifyContent":"space-between","alignItems":"flex-end","gap":"24px","zIndex":"3","pointerEvents":"none"}}>
+        <div aria-hidden="true" style={{"position":"absolute","left":"0","right":"0","bottom":"0","height":"260px","background":"linear-gradient(transparent,rgba(var(--bg-rgb,6,6,8),.72) 55%,var(--bg))","zIndex":"2","pointerEvents":"none"}} />
+        {" "}
+        <div data-dbar="1" style={{"position":"absolute","left":"48px","right":"48px","bottom":"32px","display":"flex","justifyContent":"space-between","alignItems":"flex-end","gap":"24px","zIndex":"3","pointerEvents":"none"}}>
           {" "}
           <div>
             <div data-dname="1" style={{"fontSize":"clamp(28px,3vw,44px)","fontWeight":"900","letterSpacing":"-.02em","lineHeight":"1"}}>{"iMac"}</div>
             <div data-dsub="1" style={{"fontSize":"12px","fontWeight":"600","letterSpacing":".16em","textTransform":"uppercase","color":"var(--text-muted)","marginTop":"6px"}}>{"Every site, on every screen"}</div>
+            <a data-visit="1" href="https://malaak-abaya.vercel.app" target="_blank" rel="noopener noreferrer" className="zbdj-visit" style={{"pointerEvents":"auto","display":"inline-flex","alignItems":"center","gap":"8px","marginTop":"16px","padding":"11px 18px","borderRadius":"100px","background":"var(--invert-bg)","color":"var(--invert-fg)","fontSize":"11px","fontWeight":"800","letterSpacing":".12em","textTransform":"uppercase","textDecoration":"none","whiteSpace":"nowrap","transition":"transform .3s cubic-bezier(.16,1,.3,1)"}}>{"Visit MALAAK "}<span aria-hidden="true">↗</span></a>
           </div>
           {" "}
           <div data-stops="1" style={{"display":"flex","gap":"6px"}}>
