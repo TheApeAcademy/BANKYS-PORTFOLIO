@@ -14,82 +14,115 @@ import { translateTree, tr, useZbLang } from "@/lib/zebraish/i18n";
 const N = SITES.length;
 const COPIES = 3;
 
-type Part = { s: CSSProperties; screen?: boolean; kind?: "bar" | "island" | "punch" | "crease" };
+type Part = { s: CSSProperties; screen?: boolean; kind?: "bar" | "island" | "punch" | "crease" | "chin" };
 
-const METAL = "linear-gradient(160deg,#34343a,#141417 55%,#222227)";
-const STAND = "linear-gradient(90deg,#1a1a1e,#3a3a41 50%,#1a1a1e)";
+// Materials. Space-grey and silver aluminium catch the light on their edges;
+// bezels are black glass; screens get a glass reflection in Device().
+const SG = "linear-gradient(150deg,#686b73 0%,#303238 22%,#1b1c20 50%,#35373d 78%,#70737b 100%)";
+const SILVER = "linear-gradient(150deg,#f2f3f5 0%,#b4b7be 38%,#858890 68%,#d7d9de 100%)";
+const STAND = "linear-gradient(90deg,#7d8087,#e6e8ec 42%,#c3c6cc 58%,#777a81)";
+const RIM = "inset 0 0 0 1px rgba(255,255,255,.14), inset 0 1.5px 1px rgba(255,255,255,.3), inset 0 -2px 3px rgba(0,0,0,.55)";
+const BEZEL = "#050506";
+const BTN: CSSProperties = { background: SG, borderRadius: 2, boxShadow: "inset 0 1px 0 rgba(255,255,255,.25)" };
 
 // Each device: outer aspect ratio (width / height) and its parts, positioned in % of the outer box.
 const DEVICES: Record<DeviceKind, { ar: number; parts: Part[] }> = {
   imac: { ar: 1.2, parts: [
-    { s: { left: 0, right: 0, top: 0, height: "80%", borderRadius: "2.2% / 2.6%", background: METAL } },
-    { screen: true, s: { left: "2.4%", right: "2.4%", top: "2.8%", height: "64%", borderRadius: ".6%" } },
-    { s: { left: "43%", width: "14%", top: "80%", height: "15%", background: STAND } },
-    { s: { left: "33%", width: "34%", top: "94.5%", height: "5.5%", borderRadius: "6px", background: STAND } },
+    { s: { left: "41%", width: "18%", top: "79%", height: "16%", background: STAND } },
+    { s: { left: "31%", width: "38%", top: "94.4%", height: "4.6%", borderRadius: "3px 3px 40% 40% / 3px 3px 100% 100%", background: SILVER, boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" } },
+    { s: { left: 0, right: 0, top: 0, height: "67.5%", borderRadius: "2.4% 2.4% 0 0 / 3.4% 3.4% 0 0", background: BEZEL, boxShadow: RIM } },
+    { kind: "chin", s: { left: 0, right: 0, top: "67.5%", height: "12.5%", borderRadius: "0 0 2.4% 2.4% / 0 0 16% 16%" } },
+    { screen: true, s: { left: "2.2%", right: "2.2%", top: "2.6%", height: "62.6%" } },
   ] },
   laptop: { ar: 1.62, parts: [
-    { s: { left: "9%", right: "9%", top: 0, height: "88%", borderRadius: "2.5% / 4%", background: METAL } },
-    { screen: true, s: { left: "10.8%", right: "10.8%", top: "3.2%", height: "81%", borderRadius: ".5%" } },
-    { s: { left: 0, right: 0, top: "88%", height: "7%", borderRadius: "0 0 3% 3% / 0 0 70% 70%", background: "linear-gradient(#4a4a52,#1c1c20)" } },
-    { s: { left: "42%", width: "16%", top: "88%", height: "2.6%", borderRadius: "0 0 8px 8px", background: "#15151a" } },
+    { s: { left: "9%", right: "9%", top: 0, height: "88%", borderRadius: "3% 3% 0 0 / 4.6% 4.6% 0 0", background: SG, boxShadow: RIM } },
+    { s: { left: "9.5%", right: "9.5%", top: ".7%", height: "87%", borderRadius: "2.6% 2.6% 0 0 / 4% 4% 0 0", background: BEZEL } },
+    { screen: true, s: { left: "10.7%", right: "10.7%", top: "3%", height: "83%", borderRadius: ".4%" } },
+    { kind: "island", s: { left: "46.5%", width: "7%", top: ".7%", height: "2.8%", borderRadius: "0 0 6px 6px", background: BEZEL } },
+    { s: { left: 0, right: 0, top: "88%", height: "6%", borderRadius: "0 0 4% 4% / 0 0 80% 80%", background: "linear-gradient(#9a9da5,#4b4d54 50%,#1d1e22)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.45)" } },
+    { s: { left: "43%", width: "14%", top: "88%", height: "1.8%", borderRadius: "0 0 10px 10px", background: "rgba(0,0,0,.45)" } },
   ] },
   ipadL: { ar: 1.4, parts: [
-    { s: { inset: 0, borderRadius: "5% / 7%", background: METAL } },
-    { screen: true, s: { left: "4.2%", right: "4.2%", top: "5.8%", bottom: "5.8%", borderRadius: "2% / 2.8%" } },
+    { s: { inset: 0, borderRadius: "5.2% / 7.3%", background: SG, boxShadow: RIM } },
+    { s: { left: ".9%", right: ".9%", top: "1.2%", bottom: "1.2%", borderRadius: "4.6% / 6.5%", background: BEZEL } },
+    { screen: true, s: { left: "4.4%", right: "4.4%", top: "6%", bottom: "6%", borderRadius: "1.6% / 2.3%" } },
+    { kind: "punch", s: { left: "49.4%", width: "1.2%", top: "2.6%", aspectRatio: "1" } },
   ] },
   ipadP: { ar: 0.72, parts: [
-    { s: { inset: 0, borderRadius: "7% / 5%", background: METAL } },
+    { s: { inset: 0, borderRadius: "7.5% / 5.4%", background: SG, boxShadow: RIM } },
+    { s: { left: "1.6%", right: "1.6%", top: "1.1%", bottom: "1.1%", borderRadius: "6.6% / 4.8%", background: BEZEL } },
     { screen: true, s: { left: "6%", right: "6%", top: "4.4%", bottom: "4.4%", borderRadius: "3% / 2.2%" } },
+    { kind: "punch", s: { left: "48.8%", width: "2.4%", top: "1.9%", aspectRatio: "1" } },
   ] },
   iphone: { ar: 0.49, parts: [
-    { s: { inset: 0, borderRadius: "15% / 7.4%", background: METAL } },
-    { screen: true, s: { left: "4.5%", right: "4.5%", top: "2.2%", bottom: "2.2%", borderRadius: "12% / 5.8%" } },
-    { kind: "island", s: { left: "36%", width: "28%", top: "3.8%", height: "2.6%", borderRadius: "99px", background: "#000" } },
+    { s: { ...BTN, left: "-1.3%", width: "1.6%", top: "15%", height: "4%" } },
+    { s: { ...BTN, left: "-1.3%", width: "1.6%", top: "22%", height: "8%" } },
+    { s: { ...BTN, left: "-1.3%", width: "1.6%", top: "32%", height: "8%" } },
+    { s: { ...BTN, right: "-1.3%", width: "1.6%", top: "25%", height: "12%" } },
+    { s: { inset: 0, borderRadius: "16% / 7.8%", background: SG, boxShadow: RIM } },
+    { s: { left: "2.2%", right: "2.2%", top: "1.1%", bottom: "1.1%", borderRadius: "14.4% / 7.1%", background: BEZEL } },
+    { screen: true, s: { left: "5%", right: "5%", top: "2.4%", bottom: "2.4%", borderRadius: "12% / 5.9%" } },
+    { kind: "island", s: { left: "35%", width: "30%", top: "4%", height: "3%", borderRadius: "99px", background: "#000" } },
   ] },
   iphoneL: { ar: 2.05, parts: [
-    { s: { inset: 0, borderRadius: "7.2% / 15%", background: METAL } },
-    { screen: true, s: { left: "2.2%", right: "2.2%", top: "4.5%", bottom: "4.5%", borderRadius: "5.8% / 12%" } },
-    { kind: "island", s: { left: "3.6%", width: "2.6%", top: "36%", height: "28%", borderRadius: "99px", background: "#000" } },
+    { s: { ...BTN, top: "-1.3%", height: "1.6%", left: "15%", width: "4%" } },
+    { s: { ...BTN, top: "-1.3%", height: "1.6%", left: "22%", width: "8%" } },
+    { s: { ...BTN, top: "-1.3%", height: "1.6%", left: "32%", width: "8%" } },
+    { s: { ...BTN, bottom: "-1.3%", height: "1.6%", left: "25%", width: "12%" } },
+    { s: { inset: 0, borderRadius: "7.8% / 16%", background: SG, boxShadow: RIM } },
+    { s: { left: "1.1%", right: "1.1%", top: "2.2%", bottom: "2.2%", borderRadius: "7.1% / 14.4%", background: BEZEL } },
+    { screen: true, s: { left: "2.4%", right: "2.4%", top: "5%", bottom: "5%", borderRadius: "5.9% / 12%" } },
+    { kind: "island", s: { left: "4%", width: "3%", top: "35%", height: "30%", borderRadius: "99px", background: "#000" } },
   ] },
   android: { ar: 0.47, parts: [
-    { s: { inset: 0, borderRadius: "10% / 4.8%", background: METAL } },
-    { screen: true, s: { left: "3.8%", right: "3.8%", top: "1.8%", bottom: "1.8%", borderRadius: "8% / 3.8%" } },
-    { kind: "punch", s: { left: "46%", width: "8%", top: "3%", aspectRatio: "1", borderRadius: "50%", background: "#000" } },
+    { s: { ...BTN, right: "-1.3%", width: "1.6%", top: "20%", height: "11%" } },
+    { s: { ...BTN, right: "-1.3%", width: "1.6%", top: "34%", height: "6%" } },
+    { s: { inset: 0, borderRadius: "11% / 5.2%", background: SG, boxShadow: RIM } },
+    { s: { left: "2%", right: "2%", top: "1%", bottom: "1%", borderRadius: "10% / 4.7%", background: BEZEL } },
+    { screen: true, s: { left: "4%", right: "4%", top: "2%", bottom: "2%", borderRadius: "8% / 3.8%" } },
+    { kind: "punch", s: { left: "46%", width: "8%", top: "3.4%", aspectRatio: "1" } },
   ] },
   fold: { ar: 0.92, parts: [
-    { s: { inset: 0, borderRadius: "5%", background: METAL } },
-    { screen: true, s: { inset: "3.5%", borderRadius: "3%" } },
-    { kind: "crease", s: { left: "49.5%", width: "1%", top: "3.5%", bottom: "3.5%", background: "linear-gradient(90deg,transparent,rgba(0,0,0,.35),rgba(255,255,255,.08),transparent)" } },
+    { s: { ...BTN, right: "-1%", width: "1.2%", top: "18%", height: "10%" } },
+    { s: { inset: 0, borderRadius: "6%", background: SG, boxShadow: RIM } },
+    { s: { inset: "1.2%", borderRadius: "5.2%", background: BEZEL } },
+    { screen: true, s: { inset: "3.6%", borderRadius: "3%" } },
+    { kind: "crease", s: { left: "49.5%", width: "1%", top: "3.6%", bottom: "3.6%" } },
+    { kind: "punch", s: { left: "85%", width: "2.6%", top: "5.4%", aspectRatio: "1" } },
   ] },
   tv: { ar: 1.62, parts: [
-    { s: { left: 0, right: 0, top: 0, height: "92%", borderRadius: ".8% / 1.4%", background: "#0c0c0e", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.12)" } },
-    { screen: true, s: { left: "1%", right: "1%", top: "1.7%", height: "88.6%" } },
-    { s: { left: "14%", width: "2.4%", top: "92%", height: "7%", background: STAND, transform: "skewX(14deg)" } },
-    { s: { right: "14%", width: "2.4%", top: "92%", height: "7%", background: STAND, transform: "skewX(-14deg)" } },
+    { s: { left: "46%", width: "8%", top: "89%", height: "6.5%", background: "linear-gradient(90deg,#1b1c20,#4a4c53 50%,#1b1c20)" } },
+    { s: { left: "33%", width: "34%", top: "95%", height: "3.4%", borderRadius: "4px 4px 40% 40% / 4px 4px 100% 100%", background: SG, boxShadow: "inset 0 1px 0 rgba(255,255,255,.3)" } },
+    { s: { left: 0, right: 0, top: 0, height: "90%", borderRadius: ".6% / 1%", background: "linear-gradient(#1c1d21,#070708)", boxShadow: RIM } },
+    { screen: true, s: { left: ".8%", right: ".8%", top: "1.4%", height: "87.2%" } },
   ] },
   monitor: { ar: 1.3, parts: [
-    { s: { left: 0, right: 0, top: 0, height: "74%", borderRadius: "1.8% / 3%", background: METAL } },
-    { screen: true, s: { left: "2%", right: "2%", top: "2.6%", height: "68.8%", borderRadius: ".4%" } },
-    { s: { left: "45%", width: "10%", top: "74%", height: "20%", background: STAND } },
-    { s: { left: "35%", width: "30%", top: "93%", height: "5%", borderRadius: "6px", background: STAND } },
+    { s: { left: "44%", width: "12%", top: "73%", height: "21%", background: STAND } },
+    { s: { left: "33%", width: "34%", top: "93.4%", height: "4.8%", borderRadius: "4px 4px 40% 40% / 4px 4px 100% 100%", background: SILVER, boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" } },
+    { s: { left: 0, right: 0, top: 0, height: "74%", borderRadius: "1.6% / 2.8%", background: SILVER, boxShadow: RIM } },
+    { s: { left: ".7%", right: ".7%", top: ".9%", height: "72.2%", borderRadius: "1.2% / 2.2%", background: BEZEL } },
+    { screen: true, s: { left: "2%", right: "2%", top: "2.7%", height: "68.6%" } },
   ] },
   ultrawide: { ar: 2.2, parts: [
-    { s: { left: 0, right: 0, top: 0, height: "80%", borderRadius: "1.2% / 3%", background: METAL } },
-    { screen: true, s: { left: "1.4%", right: "1.4%", top: "3%", height: "74%", borderRadius: ".4%" } },
-    { s: { left: "46%", width: "8%", top: "80%", height: "14%", background: STAND } },
-    { s: { left: "38%", width: "24%", top: "93%", height: "5%", borderRadius: "6px", background: STAND } },
+    { s: { left: "46%", width: "8%", top: "79%", height: "15%", background: "linear-gradient(90deg,#1b1c20,#4a4c53 50%,#1b1c20)" } },
+    { s: { left: "37%", width: "26%", top: "93.4%", height: "4.8%", borderRadius: "4px 4px 40% 40% / 4px 4px 100% 100%", background: SG, boxShadow: "inset 0 1px 0 rgba(255,255,255,.3)" } },
+    { s: { left: 0, right: 0, top: 0, height: "80%", borderRadius: "1.2% / 3.2%", background: SG, boxShadow: RIM } },
+    { s: { left: ".5%", right: ".5%", top: "1.2%", height: "77.6%", borderRadius: ".9% / 2.4%", background: BEZEL } },
+    { screen: true, s: { left: "1.4%", right: "1.4%", top: "3.2%", height: "73.6%" } },
   ] },
   browser: { ar: 1.5, parts: [
-    { s: { inset: 0, borderRadius: "1.6% / 2.4%", background: "#1b1b1f", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.1)" } },
-    { kind: "bar", s: { left: 0, right: 0, top: 0, height: "7%" } },
+    { s: { inset: 0, borderRadius: "1.6% / 2.4%", background: "#161619", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.2)" } },
+    { kind: "bar", s: { left: 0, right: 0, top: 0, height: "7%", borderRadius: "1.6% 1.6% 0 0 / 34% 34% 0 0", background: "linear-gradient(#2c2c32,#1f1f24)" } },
     { screen: true, s: { left: "0.4%", right: "0.4%", top: "7%", bottom: "0.6%", borderRadius: "0 0 1.2% 1.2% / 0 0 2% 2%" } },
   ] },
 };
 
 function Screen({ site }: { site: Site }) {
-  if (site.shot) {
+  // A cover that fails to load (say the image host is down) falls back to the poster.
+  const [failed, setFailed] = useState(false);
+  if (site.shot && !failed) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={site.shot} alt="" loading="lazy" decoding="async" draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />;
+    return <img src={site.shot} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: site.pos ?? "top center", display: "block" }} />;
   }
   return (
     <div style={{ position: "absolute", inset: 0, containerType: "size", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4cqmin", textAlign: "center", padding: "6cqmin",
@@ -107,15 +140,25 @@ function Device({ site }: { site: Site }) {
     <div className="zbc-dev" style={{ "--ar": d.ar } as CSSProperties}>
       {d.parts.map((p, i) => {
         let inner: ReactNode = null;
-        if (p.screen) inner = <Screen site={site} />;
+        const extra: CSSProperties = {};
+        if (p.screen) inner = (
+          <>
+            <Screen site={site} />
+            {/* glass reflection */}
+            <span aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(118deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.05) 26%,transparent 44%)" }} />
+          </>
+        );
+        if (p.kind === "chin") { extra.background = `linear-gradient(180deg,rgba(255,255,255,.18),rgba(0,0,0,.35)),${site.accent}`; extra.boxShadow = "inset 0 1px 0 rgba(255,255,255,.35), inset 0 -2px 3px rgba(0,0,0,.35)"; }
+        if (p.kind === "punch") { extra.borderRadius = "50%"; extra.background = "radial-gradient(circle at 35% 35%,#2a3a55,#07080a 60%)"; extra.boxShadow = "0 0 0 1px rgba(255,255,255,.06)"; }
+        if (p.kind === "crease") extra.background = "linear-gradient(90deg,transparent,rgba(0,0,0,.35),rgba(255,255,255,.1),transparent)";
         if (p.kind === "bar") inner = (
           <span style={{ display: "flex", alignItems: "center", gap: "1%", height: "100%", padding: "0 2.2%" }}>
             {["#ff5f57", "#febc2e", "#28c840"].map((c) => <i key={c} style={{ width: "1.4%", aspectRatio: "1", borderRadius: "50%", background: c }} />)}
-            <span style={{ margin: "0 auto", fontSize: "clamp(7px,1.3vw,11px)", color: "rgba(255,255,255,.5)", fontFamily: "ui-monospace,Menlo,monospace" }}>{site.host}</span>
+            <span style={{ margin: "0 auto", fontSize: "clamp(7px,1.3vw,11px)", color: "rgba(255,255,255,.5)", fontFamily: "ui-monospace,Menlo,monospace", background: "rgba(255,255,255,.06)", padding: "2px 10px", borderRadius: 5 }}>{site.host}</span>
           </span>
         );
         return (
-          <div key={i} style={{ position: "absolute", overflow: p.screen ? "hidden" : undefined, background: p.screen ? "#000" : undefined, ...p.s }}>
+          <div key={i} style={{ position: "absolute", overflow: p.screen ? "hidden" : undefined, background: p.screen ? "#000" : undefined, ...p.s, ...extra }}>
             {inner}
           </div>
         );
@@ -262,7 +305,8 @@ const CSS = `
 .zbc-track:active{cursor:grabbing}
 .zbc-slide{flex:0 0 var(--sw);scroll-snap-align:center;perspective:1600px;user-select:none;-webkit-user-select:none}
 .zbc-stage{height:var(--sh);display:flex;align-items:center;justify-content:center;container-type:size;will-change:transform,opacity;transform:scale(.84);opacity:.4;padding:0 4%}
-.zbc-dev{position:relative;width:min(100cqw,calc(100cqh * var(--ar)));aspect-ratio:var(--ar);filter:drop-shadow(0 30px 50px rgba(0,0,0,.45))}
+.zbc-dev{position:relative;isolation:isolate;width:min(100cqw,calc(100cqh * var(--ar)));aspect-ratio:var(--ar)}
+.zbc-dev::after{content:"";position:absolute;left:4%;right:4%;bottom:-6%;height:9%;z-index:-1;background:radial-gradient(closest-side,rgba(0,0,0,.7),rgba(0,0,0,.25) 60%,transparent);pointer-events:none}
 .zbc-cap{text-align:center;padding:26px 20px 0;opacity:0;visibility:hidden;transition:opacity .25s}
 .zbc-visit{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:13px 22px;border-radius:100px;background:var(--invert-bg);color:var(--invert-fg);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:transform .3s cubic-bezier(.16,1,.3,1)}
 .zbc-visit:hover{transform:translateY(-2px);color:var(--invert-fg)}
