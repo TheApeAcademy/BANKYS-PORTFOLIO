@@ -39,7 +39,7 @@ class Component extends DCLogic {
     this.reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const n = (parseInt(localStorage.getItem('zb-pattern') || '0', 10) || 0) + 1; try { localStorage.setItem('zb-pattern', String(n)); } catch (e) {}
     this.patternNo = (1000 + ((n * 7919) % 9000)); this.seed = (n * .6180339) % 1;
-    this.setState({ sound: (localStorage.getItem('zb-sound') ?? (this.mobile ? 'off' : 'on')) === 'on' });
+    this.setState({ sound: (localStorage.getItem('zb-sound') ?? 'on') === 'on' }); // the power-on tap starts the music, on phones too
     scrollTo(0, 0); document.documentElement.style.overflow = 'hidden';
     this.els = [...root.querySelectorAll('[data-r]')].map(el => { const [a, b] = el.dataset.r.split(',').map(Number); return { el, a, b, fx: el.dataset.fx || 'rise', gate: el.dataset.gate, wds: [...el.querySelectorAll('[data-wd]')], cis: [...el.querySelectorAll('[data-ci]')], trk: [...el.querySelectorAll('[data-track]')], kids: [...el.children].filter(c => getComputedStyle(c).position !== 'absolute'), v: -1 }; });
     this.frags = [...root.querySelectorAll('[data-frag]')].map(el => ({ el, at: parseFloat(el.dataset.frag), on: 0 }));
@@ -65,12 +65,10 @@ class Component extends DCLogic {
       const m = await import('@/lib/zebraish/experience.js');
       this.world = await m.mount(this.$('gl'), { mobile: this.mobile, reduce: this.reduce, seed: this.seed, projects: this.PROJECTS, eco: this.ECO,
         frame: (dt, now) => this.frame(dt, now), onLabels: L2 => this.labels(L2), onCursor: k => this.setCursor(k), onClick: (k, id) => this.click3d(k, id), onLoad: f => { this.loadF = f; } });
-      this.start();
     } catch (e) {
       console.warn('3D unavailable, running the 2D pattern', e);
       this.$('gl').style.background = '#040405 repeating-linear-gradient(124deg,rgba(245,245,247,.07) 0 2px,transparent 2px 16px)';
       const loop = now => { this._fb = requestAnimationFrame(loop); this.frame(.016, now); }; this._fb = requestAnimationFrame(loop);
-      this.start();
     }
   }
   componentWillUnmount() { ['wheel', 'touchmove', 'keydown'].forEach(ev => removeEventListener(ev, this._userScroll)); removeEventListener('pointermove', this._pm); removeEventListener('keydown', this._key); cancelAnimationFrame(this._fb); this.world && this.world.destroy(); this.lenis && this.lenis.destroy(); Object.values(this.aud || {}).forEach(a => a.pause()); document.documentElement.style.overflow = ''; }
@@ -192,7 +190,7 @@ class Component extends DCLogic {
     return {
       rootRef: this.rootRef, homeOn: this.state.home, langLabel: getZbLang() === 'es' ? 'ES · en' : 'EN · es', toggleLang: () => this.setLang(getZbLang() === 'es' ? 'en' : 'es'),
       powerOn: this.state.power, start: () => this.start(),
-      powerLabel: 'Loading the pattern…', powerSub: touch ? 'Sound off · turn it on anytime' : 'Best with sound',
+      powerLabel: touch ? 'Tap to power on' : 'Click to power on', powerSub: 'Best with sound',
       soundLabel: this.state.sound ? 'Sound on' : 'Sound off',
       toggleSound: () => { const s = !this.state.sound; this.setState({ sound: s }); try { localStorage.setItem('zb-sound', s ? 'on' : 'off'); } catch (x) {} if (s) { this.aud.amb.play().catch(() => {}); this.fadeAmb(.32, 1200); } else this.fadeAmb(0, 600); },
       chain: ['STRIPES', 'LINES', 'NODES', 'SYSTEMS', 'PRODUCTS', 'BUSINESSES'].map((label, i) => ({ label: (i ? '↓ ' : '') + label, i })),

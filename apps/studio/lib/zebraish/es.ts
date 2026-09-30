@@ -280,7 +280,6 @@ const PAGES: Record<string, string> = {
   "Systems": "Sistemas",
   "World": "Mundo",
   "Tap to power on": "Toca para encender",
-  "Loading the pattern…": "Cargando el patrón…",
   "Skip intro →": "Saltar intro →",
   "Click to power on": "Haz clic para encender",
   "Power on": "Encender",
