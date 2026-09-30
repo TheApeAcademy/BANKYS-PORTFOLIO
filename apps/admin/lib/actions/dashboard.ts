@@ -113,6 +113,7 @@ function describeActivity(type: string, meta: Record<string, unknown> | null): s
   const base = ACTIVITY_WORDS[type] ?? type.replaceAll("_", " ");
   if (type === "language_switched" && meta?.to) return `${base} to ${meta.to === "es" ? "Spanish" : "English"}`;
   if (type === "outbound_click" && meta?.host) return `${base} (${meta.host})`;
+  if (type === "login" && meta?.app === "admin") return "You signed in to the Bureau";
   if (type === "page_view" && meta?.device) return `${base} on ${meta.device}${meta.lang ? `, ${meta.lang === "es" ? "Spanish" : "English"}` : ""}`;
   return base;
 }

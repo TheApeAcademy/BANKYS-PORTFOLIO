@@ -40,9 +40,8 @@ class Component extends DCLogic {
       const f = t => { this.lenis.raf(t); this._ln = requestAnimationFrame(f); }; this._ln = requestAnimationFrame(f);
     }).catch(() => {});
     this.initRadar();
-    this.initLiquid();
   }
-  componentWillUnmount() { removeEventListener('resize', this._vw); cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); cancelAnimationFrame(this._lq); }
+  componentWillUnmount() { removeEventListener('resize', this._vw); cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); }
   // Arrival from the Experience: it fades out to this page's own background, so
   // Home fades in from that same colour with a gentle settle instead of a cut.
   runReveal() {
@@ -111,25 +110,6 @@ class Component extends DCLogic {
     this.drawRadar(1);
   }
   animRadar() { if (!this.drawRadar) return; const st = performance.now(); cancelAnimationFrame(this._rd); const f = now => { const p = Math.min((now - st) / 1600, 1); this.drawRadar(1 - Math.pow(1 - p, 3)); if (p < 1) this._rd = requestAnimationFrame(f); }; this._rd = requestAnimationFrame(f); }
-  initLiquid() {
-    const canvas = this.q('[data-id="liquid"]'); if (!canvas) return;
-    const ctx = canvas.getContext('2d'), W = canvas.width, H = canvas.height; let t = 0, vis = false;
-    const cc = (b, s) => { const v = Math.min(255, Math.floor(b * 180 + 40) + Math.floor(s * 220)); return v; };
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H); const cx = W * .5, cy = H * .6, S = Math.sin, C = Math.cos;
-      const bl = [[cx, cy + 70, 100], [cx - 55 + S(t * .3) * 8, cy + 48, 72], [cx + 65 + C(t * .25) * 6, cy + 52, 68], [cx - 80 + S(t * .35) * 10, cy - 18 + C(t * .4) * 8, 58], [cx - 100 + S(t * .3) * 12, cy - 90 + C(t * .35) * 6, 46], [cx - 70 + S(t * .25) * 8, cy - 155 + C(t * .3) * 5, 35], [cx + 90 + C(t * .28) * 10, cy - 44 + S(t * .35) * 6, 52], [cx + 110 + C(t * .25) * 8, cy - 128 + S(t * .3) * 5, 38], [cx + 85 + C(t * .3) * 6, cy - 195 + S(t * .25) * 6, 28], [cx - 25 + S(t * .6) * 8, cy - 230 + C(t * .5) * 10, 24], [cx + 18 + C(t * .55) * 6, cy - 250 + S(t * .45) * 8, 18], [cx - 55 + S(t * .5) * 5, cy - 265 + C(t * .4) * 6, 13], [cx + 50 + C(t * .45) * 5, cy - 255 + S(t * .4) * 5, 11], [cx - 90 + S(t * .7) * 5, cy - 285 + C(t * .5) * 8, 8], [cx + 80 + C(t * .65) * 5, cy - 278 + S(t * .55) * 7, 7]];
-      const img = ctx.createImageData(W, H), d = img.data, st = 2;
-      for (let py = 0; py < H; py += st) for (let px = 0; px < W; px += st) {
-        let sum = 0; for (const b of bl) { const dx = px - b[0], dy = py - b[1]; sum += b[2] * b[2] / (dx * dx + dy * dy + .01); }
-        if (sum > 1) { const ang = Math.atan2(py - cy, px - cx), kL = (C(ang - .8 + t * .4) + 1) / 2, fL = (C(ang + 2.1 - t * .2) + 1) / 2, br = kL * .72 + fL * .28, sp = Math.pow(Math.max(0, C(ang - .7 + t * .5)), 7), ed = Math.min(1, (sum - 1) * 4), v = cc(br, sp);
-          for (let sy = 0; sy < st && py + sy < H; sy++) for (let sx = 0; sx < st && px + sx < W; sx++) { const i = ((py + sy) * W + px + sx) * 4; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = Math.floor(ed * 220); } }
-      }
-      ctx.putImageData(img, 0, 0); t += .011;
-      if (vis) this._lq = requestAnimationFrame(draw);
-    };
-    const io = new IntersectionObserver(es => { vis = es[0].isIntersecting; if (vis) { cancelAnimationFrame(this._lq); this._lq = requestAnimationFrame(draw); } }, { threshold: 0 });
-    io.observe(canvas); (this.ios = this.ios || []).push(io);
-  }
   renderVals() {
     const theme = this.state.themeOverride ?? this.props.theme ?? 'dark';
     const stripes = this.props.stripes ?? 'hide';
@@ -809,7 +789,6 @@ function template(v) {
         {" "}
         <section id="contact" style={{"position":"relative","overflow":"hidden","padding":"120px 48px","textAlign":"center","background":"linear-gradient(to bottom,rgba(var(--bg-rgb),calc(var(--sec-a) - .03)) 40%,rgba(var(--surface-rgb),var(--sec-a)) 100%)"}}>
           {" "}
-          <canvas data-id="liquid" width="900" height="500" style={{"position":"absolute","top":"50%","left":"50%","transform":"translate(-50%,-50%)","pointerEvents":"none","opacity":".22"}} />
           {" "}
           <div style={{"position":"relative","zIndex":"2","maxWidth":"720px","margin":"0 auto"}}>
             {" "}

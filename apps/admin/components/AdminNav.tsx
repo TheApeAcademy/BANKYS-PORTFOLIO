@@ -43,7 +43,7 @@ export function AdminSidebar() {
           Bureau of Statistics, Analysis &amp; Critical Motion
         </span>
       </Link>
-      <div className="mt-8 flex-1 overflow-y-auto">
+      <div className="mt-8 flex-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <AdminNavLinks links={links} />
       </div>
       <div className="border-t border-border px-2 pt-4">
