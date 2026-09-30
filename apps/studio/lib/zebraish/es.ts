@@ -18,6 +18,7 @@ const PAGES: Record<string, string> = {
   "Start a project": "Empieza un proyecto",
   "Start a project →": "Empieza un proyecto →",
   "Switch theme": "Cambiar tema",
+  "Light mode": "Modo claro",
   "Toggle sound": "Activar o desactivar el sonido",
   "Switch to Spanish": "Cambiar a español",
   "Switch to English": "Cambiar a inglés",

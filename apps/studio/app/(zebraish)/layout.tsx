@@ -9,7 +9,6 @@ const SITE_URL =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  icons: { icon: "/zb/assets/zebraish-mark.png" },
   openGraph: { images: ["/zb/assets/zebraish-lockup-white-on-black.png"] },
   twitter: { card: "summary_large_image" },
 };
@@ -26,6 +25,7 @@ const BASE_CSS = "html,body{height:100%;margin:0;background:#040405}body{overflo
 const MOBILE_CSS = `
 .zb-burger { display: none; }
 @media (max-width: 1159px) { .zb-burger { display: flex !important; } }
+.zb-burger-on { display: flex !important; }
 @media (max-width: 640px) { .zb-bar-extra { display: none !important; } }
 @media (max-width: 760px) {
   #dc-root section, #dc-root footer { padding-left: 20px !important; padding-right: 20px !important; }

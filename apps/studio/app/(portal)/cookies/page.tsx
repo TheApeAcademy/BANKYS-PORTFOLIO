@@ -81,7 +81,19 @@ export default async function CookiesPage() {
 
             <section>
               <h2 className="mb-2 text-sm font-medium text-fg">{es ? "Qué guardamos" : "What we store"}</h2>
-              <div className="overflow-x-auto">
+              {/* Phones: one card per item instead of a four-column table. */}
+              <ul className="flex flex-col gap-3 sm:hidden">
+                {ROWS.map((r) => (
+                  <li key={r.name} className="rounded-lg border border-border p-3 text-xs">
+                    <p className="font-mono text-fg">{r.name}</p>
+                    <p className="mt-1">{r.purpose[i]}</p>
+                    <p className="mt-1 text-fg-muted">
+                      {r.kind} · {r.lasts[i]}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              <div className="hidden overflow-x-auto sm:block">
                 <table className="w-full border-collapse text-left text-xs">
                   <thead>
                     <tr className="text-fg">

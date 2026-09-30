@@ -22,7 +22,9 @@ class Component extends DCLogic {
   q(s) { return this.rootRef.current && this.rootRef.current.querySelector(s); }
   componentDidMount() {
     const root = this.rootRef.current; if (!root) return;
-    this._vw = () => this.setState({ vw: innerWidth }); this._vw(); addEventListener('resize', this._vw);
+    this._vw = () => { this.setState({ vw: innerWidth }); this.fitNav(); }; this._vw(); addEventListener('resize', this._vw);
+    this._fitLang = () => { this._navNeed = 0; this.setState({ navCompact: false }, () => requestAnimationFrame(() => this.fitNav())); }; addEventListener('zb:lang', this._fitLang);
+    requestAnimationFrame(() => this.fitNav()); document.fonts && document.fonts.ready.then(() => this.fitNav());
     this.runIntro(); this.startWorld(); this.bindSfx();
     this.onScroll = () => { if (this._sr) return; this._sr = requestAnimationFrame(() => { this._sr = 0; this.scrollFx(); }); };
     addEventListener('scroll', this.onScroll, { passive: true });
@@ -70,7 +72,7 @@ class Component extends DCLogic {
   }
   sfx(k) { if (!this.state.sound || !this.aud) return; const a = this.aud[k]; try { a.currentTime = 0; a.play(); } catch (e) {} }
   toggleSound() { const on = !this.state.sound; this.setState({ sound: on }); if (!this.aud) return; if (on) { this.aud.amb.play().catch(() => {}); } else this.aud.amb.pause(); }
-  componentWillUnmount() { removeEventListener('resize', this._vw); (this._it || []).forEach(clearTimeout); cancelAnimationFrame(this._rv); this.world && this.world.destroy(); this.aud && this.aud.amb.pause(); document.documentElement.style.overflow = ''; cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); }
+  componentWillUnmount() { removeEventListener('resize', this._vw); removeEventListener('zb:lang', this._fitLang); (this._it || []).forEach(clearTimeout); cancelAnimationFrame(this._rv); this.world && this.world.destroy(); this.aud && this.aud.amb.pause(); document.documentElement.style.overflow = ''; cancelAnimationFrame(this._ln); if (this.lenis) { if (window.__lenis === this.lenis) window.__lenis = undefined; this.lenis.destroy(); } removeEventListener('scroll', this.onScroll); (this.ios || []).forEach(o => o.disconnect()); }
   scrollFx() {
     const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
     const vel = Math.max(-1, Math.min(1, (y - (this._ly ?? y)) / 60)); this._ly = y;
@@ -125,6 +127,20 @@ class Component extends DCLogic {
     this.drawRadar(1);
   }
   animRadar() { if (!this.drawRadar) return; const st = performance.now(); cancelAnimationFrame(this._rd); const f = now => { const p = Math.min((now - st) / 1600, 1); this.drawRadar(1 - Math.pow(1 - p, 3)); if (p < 1) this._rd = requestAnimationFrame(f); }; this._rd = requestAnimationFrame(f); }
+  // The nav shows its links only while they fit beside the logo and the buttons
+  // (Spanish labels run longer); otherwise the menu button takes over. The width
+  // they needed is remembered so they come back once the window is wide enough.
+  fitNav() {
+    const nav = this.q('[data-nav]'), links = this.q('[data-navlinks]');
+    if (!nav || !links) return;
+    if (!this.state.navCompact) {
+      if (getComputedStyle(links).display === 'none') return;
+      const over = Math.max(nav.scrollWidth - nav.clientWidth, links.scrollWidth - links.clientWidth);
+      if (over > 1) { this._navNeed = innerWidth + over + 24; this.setState({ navCompact: true }); }
+    } else if (this._navNeed && innerWidth >= this._navNeed) {
+      this._navNeed = 0; this.setState({ navCompact: false }, () => requestAnimationFrame(() => this.fitNav()));
+    }
+  }
   renderVals() {
     const theme = this.state.themeOverride ?? this.props.theme ?? 'dark';
     const stripes = this.props.stripes ?? 'hide';
@@ -144,13 +160,13 @@ class Component extends DCLogic {
       ['EMBER & SALT', 'Wood-Fired Restaurant', U('photo-1414235077428-338989a2e8c0'), 'Ember & Salt: Wood-Fired Restaurant', 'CSS animated flame, warm ember palette, seasonal menu tabs, reservation CTA. You can almost smell the smoke.', ['Restaurant', 'Animation'], 'Food & Drink', 'https://ember-salt-restaurant.vercel.app/', 6, '240px'],
       ['REVERIE', 'Luxury Beauty Salon', '/zb/assets/4c7faa2cf965371c0d8c790e9d5f61a1.jpg', 'Reverie: Luxury Beauty Salon', 'Soft marble luxury aesthetic. Services grid, team showcase, WhatsApp booking integration.', ['Beauty', 'Marble'], 'Beauty', 'https://reverie-salon.vercel.app/', 12, '240px'],
     ].map((r, i) => ({ name: r[0], tag: r[1], img: r[2], title: r[3], desc: r[4], tags: r[5], industry: r[6], url: r[7], span: r[8], h: r[9], num: String(i + 1).padStart(2, '0'), wide: i === 2, descTop: i !== 2, bodyPad: i === 2 ? '28px 32px' : '20px 22px 22px', bodyDisplay: i === 2 ? 'grid' : 'block' }));
-    return {
+    return { isLight: theme === 'light',
       rootRef: this.rootRef, theme, stripes,
       soundLabel: this.state.sound ? 'Sound on' : 'Sound off', toggleSound: () => this.toggleSound(),
       introLines: Array.from({ length: 14 }, (_, i) => ({ h: [1, 2, 6, 1, 14, 2, 1, 4, 22, 1, 3, 9, 1, 2][i] + 'px', w: (60 + (i * 37) % 60) + '%', ml: ((i * 23) % 30) + '%', o: [.5, .8, 1, .4, 1, .6, .3, .9, 1, .5, .7, 1, .4, .8][i] })),
       numbers: this.props.numbers ?? 'c', head: this.props.head ?? 'a', footer: this.props.footer ?? 'a', ecosystem: this.props.ecosystem ?? 'b',
       heroVignette: stripes === 'current' ? 'var(--bg)' : 'rgba(var(--bg-rgb),.4)',
-      navLinksDisplay: this.state.vw && this.state.vw < 1160 ? 'none' : 'flex',
+      navLinksDisplay: (this.state.vw && this.state.vw < 1160) || this.state.navCompact ? 'none' : 'flex', navCompact: !!this.state.navCompact,
       menuOpen: this.state.menu, toggleMenu: () => this.setState({ menu: !this.state.menu }), closeMenu: () => this.setState({ menu: false }),
       navLinks: [['#build', 'Build'], ['#work', 'Work'], ['#process', 'Process'], ['#ecosystem', 'Ecosystem'], ['#collaborate', 'Collaborate'], ['#partner', 'Partner']].map(([href, label]) => ({ href, label })),
       toggleTheme: () => this.setState({ themeOverride: theme === 'light' ? 'dark' : 'light' }, () => this.drawRadar && setTimeout(() => this.drawRadar(1), 50)),
@@ -228,7 +244,7 @@ function template(v) {
       <div style={{"position":"relative","zIndex":"1"}}>
         {" "}
         {" "}
-        <nav style={{"position":"fixed","top":"0","left":"0","right":"0","zIndex":"1000","display":"flex","alignItems":"center","justifyContent":"space-between","gap":"24px","padding":"16px clamp(20px,3.4vw,48px)","backdropFilter":"blur(24px) saturate(1.8)","WebkitBackdropFilter":"blur(24px) saturate(1.8)","background":"rgba(var(--bg-rgb),.55)","borderBottom":"1px solid var(--glass-b)"}}>
+        <nav data-nav="1" style={{"position":"fixed","top":"0","left":"0","right":"0","zIndex":"1000","display":"flex","alignItems":"center","justifyContent":"space-between","gap":"24px","padding":"16px clamp(20px,3.4vw,48px)","backdropFilter":"blur(24px) saturate(1.8)","WebkitBackdropFilter":"blur(24px) saturate(1.8)","background":"rgba(var(--bg-rgb),.55)","borderBottom":"1px solid var(--glass-b)"}}>
           {" "}
           <a href="#hero" style={{"fontSize":"19px","fontWeight":"800","letterSpacing":".06em","color":"var(--text)","textDecoration":"none","display":"flex","alignItems":"center","gap":"10px"}}>
             <img src="/zb/assets/zebraish-mark.png" alt="Zebraish" style={{"height":"30px","width":"auto","display":"block","filter":"invert(var(--logo-inv))"}} />
@@ -236,7 +252,7 @@ function template(v) {
             <span style={{"fontSize":"9px","fontWeight":"700","letterSpacing":".16em","color":"var(--text-faint)","border":"1px solid var(--glass-b)","padding":"3px 7px","borderRadius":"5px","textTransform":"uppercase","marginLeft":"1px"}}>{"Studio"}</span>
           </a>
           {" "}
-          <div style={css(`display:${v.navLinksDisplay ?? ""};gap:clamp(16px,2.2vw,36px);min-width:0`)}>
+          <div data-navlinks="1" style={css(`display:${v.navLinksDisplay ?? ""};gap:clamp(16px,2.2vw,36px);min-width:0;white-space:nowrap`)}>
             {" "}
             {each(v, v.navLinks, "l", (v) => (
               <>
@@ -250,10 +266,10 @@ function template(v) {
           {" "}
           <div style={{"display":"flex","gap":"14px","alignItems":"center"}}>
             {" "}
-            <button type="button" className="zb-bar-extra" onClick={v.toggleTheme} aria-label="Switch theme" style={{"display":"flex","alignItems":"center","justifyContent":"center","width":"32px","height":"32px","marginRight":"6px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","padding":"0"}}>
-              {" "}
-              <svg viewBox="0 0 24 24" fill="currentColor" style={{"width":"14px","height":"14px","display":"block"}}><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z" /></svg>
-              {" "}
+            <button type="button" role="switch" aria-checked={!!v.isLight} aria-label="Light mode" onClick={v.toggleTheme} className="zb-theme-switch zb-bar-extra" style={{"position":"relative","display":"flex","alignItems":"center","justifyContent":"space-between","width":"58px","height":"30px","padding":"0 8px","border":"1px solid var(--glass-bb)","borderRadius":"100px","background":"var(--glass)","color":"var(--text-muted)","cursor":"pointer","flexShrink":"0","boxSizing":"border-box"}}>
+              <span aria-hidden="true" style={{"position":"absolute","top":"3px","left":"3px","width":"22px","height":"22px","borderRadius":"50%","background":"var(--invert-bg)","boxShadow":"0 2px 8px rgba(0,0,0,.35)","transition":"transform .45s var(--ease)","transform":v.isLight ? "translateX(28px)" : "none"}} />
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{"position":"relative","width":"12px","height":"12px","display":"block","color":v.isLight ? "var(--text-muted)" : "var(--invert-fg)"}}><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z" /></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true" style={{"position":"relative","width":"13px","height":"13px","display":"block","color":v.isLight ? "var(--invert-fg)" : "var(--text-muted)"}}><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
             </button>
             {" "}
             <div className="zb-bar-extra" style={{"display":"flex","alignItems":"center","gap":"5px","marginRight":"4px","fontSize":"11px","fontWeight":"700","letterSpacing":".04em"}}>
@@ -262,9 +278,9 @@ function template(v) {
               <button type="button" onClick={() => setSiteLang("en")} aria-pressed={getZbLang() === "en"} aria-label="Switch to English" style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","letterSpacing":"inherit","padding":"4px 5px","color":getZbLang() === "en" ? "var(--text)" : "var(--text-muted)"}}>{"EN"}</button>
             </div>
             {" "}
-            <a href="#start-a-project" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"9px 20px","fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","borderRadius":"20px","textDecoration":"none","transition":"transform var(--t) var(--ease),box-shadow var(--t) var(--ease)"}} className="zbzw-1 zb-bar-extra">{"Start a Project"}</a>
+            <a href="#start-a-project" style={{"background":"var(--invert-bg)","color":"var(--invert-fg)","padding":"9px 20px","fontSize":"12px","fontWeight":"700","letterSpacing":".04em","textTransform":"uppercase","borderRadius":"20px","textDecoration":"none","whiteSpace":"nowrap","transition":"transform var(--t) var(--ease),box-shadow var(--t) var(--ease)"}} className="zbzw-1 zb-bar-extra">{"Start a Project"}</a>
             {" "}
-            <button type="button" className="zb-burger" onClick={v.toggleMenu} aria-label="Open menu" aria-expanded={!!v.menuOpen} style={{"alignItems":"center","justifyContent":"center","width":"38px","height":"38px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","padding":"0"}}>
+            <button type="button" className={v.navCompact ? "zb-burger zb-burger-on" : "zb-burger"} onClick={v.toggleMenu} aria-label="Open menu" aria-expanded={!!v.menuOpen} style={{"alignItems":"center","justifyContent":"center","width":"38px","height":"38px","border":"1px solid var(--glass-b)","borderRadius":"50%","background":"none","color":"var(--text)","cursor":"pointer","padding":"0"}}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{"width":"16px","height":"16px","display":"block"}}><path d="M4 7h16M4 12h16M4 17h16" /></svg>
             </button>
           </div>
@@ -289,7 +305,11 @@ function template(v) {
                 <span style={{"color":"var(--text-faint)"}}>{"|"}</span>
                 <button type="button" onClick={() => setSiteLang("en")} aria-pressed={getZbLang() === "en"} style={{"background":"none","border":"none","cursor":"pointer","fontFamily":"inherit","fontSize":"inherit","fontWeight":"inherit","padding":"6px 8px","color":getZbLang() === "en" ? "var(--text)" : "var(--text-muted)"}}>{"EN"}</button>
               </div>
-              <button type="button" onClick={v.toggleTheme} style={{"background":"none","border":"1px solid var(--glass-b)","borderRadius":"100px","color":"var(--text)","cursor":"pointer","fontFamily":"inherit","fontSize":"11px","fontWeight":"700","letterSpacing":".12em","textTransform":"uppercase","padding":"10px 16px"}}>{"Switch theme"}</button>
+              <button type="button" role="switch" aria-checked={!!v.isLight} aria-label="Light mode" onClick={v.toggleTheme} className="zb-theme-switch" style={{"position":"relative","display":"flex","alignItems":"center","justifyContent":"space-between","width":"58px","height":"30px","padding":"0 8px","border":"1px solid var(--glass-bb)","borderRadius":"100px","background":"var(--glass)","color":"var(--text-muted)","cursor":"pointer","flexShrink":"0","boxSizing":"border-box"}}>
+              <span aria-hidden="true" style={{"position":"absolute","top":"3px","left":"3px","width":"22px","height":"22px","borderRadius":"50%","background":"var(--invert-bg)","boxShadow":"0 2px 8px rgba(0,0,0,.35)","transition":"transform .45s var(--ease)","transform":v.isLight ? "translateX(28px)" : "none"}} />
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{"position":"relative","width":"12px","height":"12px","display":"block","color":v.isLight ? "var(--text-muted)" : "var(--invert-fg)"}}><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z" /></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true" style={{"position":"relative","width":"13px","height":"13px","display":"block","color":v.isLight ? "var(--invert-fg)" : "var(--text-muted)"}}><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+            </button>
             </div>
           </div>
         ) : null}
@@ -307,7 +327,7 @@ function template(v) {
           {" "}
           <div style={css(`position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 70% at 25% 50%,transparent 40%,${v.heroVignette ?? ""} 100%)`)} />
           {" "}
-          <div data-id="heroLeft" style={{"position":"relative","zIndex":"2","flex":"1","maxWidth":"680px"}}>
+          <div data-id="heroLeft" style={{"position":"relative","zIndex":"2","flex":"1","maxWidth":"680px","minWidth":"0","containerType":"inline-size"}}>
             {" "}
             <div style={{"display":"inline-flex","alignItems":"center","gap":"10px","background":"var(--glass)","border":"1px solid var(--glass-b)","padding":"7px 16px","borderRadius":"100px","fontSize":"11px","fontWeight":"500","letterSpacing":".06em","textTransform":"uppercase","color":"var(--text-muted)","marginBottom":"36px"}}>
               <span style={{"width":"7px","height":"7px","borderRadius":"50%","background":"var(--green)","flexShrink":"0","animation":"pulse-g 2s ease infinite"}} />
@@ -318,7 +338,7 @@ function template(v) {
               {" "}
               <span style={{"display":"block","fontSize":"clamp(16px,2.2vw,30px)","fontWeight":"200","letterSpacing":".08em","color":"var(--text-muted)","marginBottom":"4px","textTransform":"uppercase"}}>{"you have the idea."}</span>
               {" "}
-              <span style={{"display":"block","fontSize":"clamp(48px,8.6vw,132px)","fontWeight":"900","letterSpacing":"-.04em","lineHeight":".92","color":"var(--text)"}}>
+              <span data-hl="1" style={{"display":"block","fontSize":"min(clamp(48px,8.6vw,132px),11.2cqi)","fontWeight":"900","letterSpacing":"-.04em","lineHeight":".92","color":"var(--text)"}}>
                 {"WE BUILD "}
                 <span style={{"position":"relative","display":"inline-block","marginTop":".12em"}}>{"WHAT'S NEXT"}</span>
               </span>
