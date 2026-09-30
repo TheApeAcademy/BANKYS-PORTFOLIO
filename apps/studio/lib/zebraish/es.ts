@@ -345,6 +345,7 @@ const PAGES: Record<string, string> = {
   "Case Study": "Caso de estudio",
   "Visit live site →": "Ver web en vivo →",
   Visit: "Visitar",
+  Language: "Idioma",
   "Visit site": "Visitar web",
   "Previous work": "Trabajo anterior",
   "Next work": "Siguiente trabajo",

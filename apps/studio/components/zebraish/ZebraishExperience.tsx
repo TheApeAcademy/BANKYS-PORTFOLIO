@@ -188,12 +188,20 @@ class Component extends DCLogic {
     if (kind === 'eco') this.setState({ eco: id });
   }
   closePj() { if (!this.state.pj) return; this.world && this.world.unfocus(); this.lenis && this.lenis.start(); this.setState({ pj: null }); }
+  langChip(on) {
+    return { padding: '11px 22px', borderRadius: '100px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '11px', fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase',
+      border: '1px solid ' + (on ? 'rgba(245,245,247,.9)' : 'rgba(245,245,247,.2)'), background: on ? 'rgba(245,245,247,.92)' : 'rgba(245,245,247,.06)', color: on ? '#040405' : '#f5f5f7',
+      backdropFilter: 'blur(14px) saturate(1.3)', WebkitBackdropFilter: 'blur(14px) saturate(1.3)', boxShadow: on ? '0 0 24px rgba(245,245,247,.18)' : 'inset 0 1px 0 rgba(245,245,247,.12)', transition: 'background .35s, color .35s, border-color .35s, box-shadow .35s' };
+  }
   renderVals() {
     const pj0 = this.PROJECTS.find(x => x.id === this.state.pj) || {}, pj = Object.assign({}, pj0, { caseHref: '/work/' + (pj0.id || '') }), eco = this.ECO.find(x => x.id === this.state.eco) || {};
     const touch = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
     return {
       rootRef: this.rootRef, homeOn: this.state.home, langLabel: getZbLang() === 'es' ? 'ES · en' : 'EN · es', toggleLang: () => this.setLang(getZbLang() === 'es' ? 'en' : 'es'),
       powerOn: this.state.power, start: () => this.start(),
+      // Language picker on the power screen (the whole intro re-renders in the chosen language).
+      isEs: getZbLang() === 'es', pickEn: () => this.setLang('en'), pickEs: () => this.setLang('es'),
+      enStyle: this.langChip(getZbLang() !== 'es'), esStyle: this.langChip(getZbLang() === 'es'),
       powerLabel: touch ? 'Tap to power on' : 'Click to power on', powerSub: 'Best with sound',
       soundLabel: this.state.sound ? 'Sound on' : 'Sound off',
       toggleSound: () => { const s = !this.state.sound; this.setState({ sound: s }); try { localStorage.setItem('zb-sound', s ? 'on' : 'off'); } catch (x) {} if (s) { this.aud.amb.play().catch(() => {}); this.fadeAmb(.32, 1200); } else this.fadeAmb(0, 600); },
@@ -604,6 +612,11 @@ function template(v) {
                 {" "}
                 <span style={{"fontSize":"11px","fontWeight":"500","letterSpacing":".16em","textTransform":"uppercase","color":"rgba(245,245,247,.45)"}}>{I(v.powerSub)}</span>
                 {" "}
+              </div>
+              {" "}
+              <div role="group" aria-label="Language" style={{"display":"flex","gap":"10px","marginTop":"4px"}}>
+                <button type="button" onClick={v.pickEn} aria-pressed={!v.isEs} lang="en" data-es="English" style={v.enStyle}>{"English"}</button>
+                <button type="button" onClick={v.pickEs} aria-pressed={v.isEs} lang="es" style={v.esStyle}>{"Español"}</button>
               </div>
               {" "}
             </div>
