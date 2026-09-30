@@ -10,7 +10,7 @@ import { DCLogic, dcComponent, each, I, css, hostPositionStyle } from "@/lib/dc"
 import ZebraHead from "./ZebraHead";
 import GlassNumbers from "./GlassNumbers";
 import BuiltBy from "./BuiltBy";
-import DeviceJourney from "./DeviceJourney";
+import SiteCarousel from "./SiteCarousel";
 import Ecosystem from "./Ecosystem";
 import IdeaPrompt from "./IdeaPrompt";
 import HenkoGenIntro from "./HenkoGenIntro";
@@ -624,7 +624,7 @@ function template(v) {
             {"Twelve live sites, twelve different worlds, built by the founder before and during the formation of Zebraish Studio. This is the capability the Studio is built on."}
           </p>
           {" "}
-          <div data-bleed="1" style={{"margin":"24px -48px 0"}}><DeviceJourney  /></div>
+          <SiteCarousel />
           {" "}
           <p data-hr="1" style={{"margin":"20px 0 0","fontSize":"12px","color":"var(--text-faint)","letterSpacing":".02em","maxWidth":"560px"}}>
             {"These projects were built by the founder, some before Zebraish Studio existed as a name. They're shown here as honest proof of capability, not as claimed Zebraish Studio client work."}

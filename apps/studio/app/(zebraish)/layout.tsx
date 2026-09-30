@@ -41,6 +41,14 @@ const MOBILE_CSS = `
   #dc-root h1, #dc-root h2 { overflow-wrap: anywhere; }
   #dc-root [data-bleed] { margin-left: -20px !important; margin-right: -20px !important; }
   #dc-root [data-stops] { flex-wrap: wrap !important; }
+  /* "From idea to live" steps: a vertical timeline instead of four squeezed columns. */
+  #dc-root [data-process] > div:nth-of-type(1), #dc-root [data-process] > div:nth-of-type(2) { display: none !important; }
+  #dc-root [data-process] > div:nth-of-type(3) { grid-template-columns: 1fr !important; gap: 0 !important; }
+  #dc-root [data-step] { position: relative; display: grid !important; grid-template-columns: 56px minmax(0,1fr); column-gap: 18px; text-align: left !important; padding: 0 0 30px !important; }
+  #dc-root [data-step] > [data-dot] { grid-row: 1 / span 2; margin: 0 !important; }
+  #dc-root [data-step] > h4 { margin: 4px 0 6px !important; font-size: 18px !important; }
+  #dc-root [data-step] > p { font-size: 14px !important; }
+  #dc-root [data-step]:not(:last-child)::before { content: ""; position: absolute; left: 27.5px; top: 60px; bottom: 4px; width: 1px; background: repeating-linear-gradient(var(--glass-bb) 0 6px, transparent 6px 12px); }
 }
 @media (max-width: 560px) {
   [data-topbar] { left: 16px !important; right: 16px !important; }
