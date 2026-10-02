@@ -104,12 +104,12 @@ const DEVICES: Record<DeviceKind, { ar: number; parts: Part[] }> = {
     { s: { left: ".7%", right: ".7%", top: ".9%", height: "72.2%", borderRadius: "1.2% / 2.2%", background: BEZEL } },
     { screen: true, s: { left: "2%", right: "2%", top: "2.7%", height: "68.6%" } },
   ] },
-  ultrawide: { ar: 2.2, parts: [
-    { s: { left: "46%", width: "8%", top: "79%", height: "15%", background: "linear-gradient(90deg,#1b1c20,#4a4c53 50%,#1b1c20)" } },
-    { s: { left: "37%", width: "26%", top: "93.4%", height: "4.8%", borderRadius: "4px 4px 40% 40% / 4px 4px 100% 100%", background: SG, boxShadow: "inset 0 1px 0 rgba(255,255,255,.3)" } },
-    { s: { left: 0, right: 0, top: 0, height: "80%", borderRadius: "1.2% / 3.2%", background: SG, boxShadow: RIM } },
-    { s: { left: ".5%", right: ".5%", top: "1.2%", height: "77.6%", borderRadius: ".9% / 2.4%", background: BEZEL } },
-    { screen: true, s: { left: "1.4%", right: "1.4%", top: "3.2%", height: "73.6%" } },
+  ultrawide: { ar: 1.8, parts: [
+    { s: { left: "46%", width: "8%", top: "83%", height: "11%", background: "linear-gradient(90deg,#1b1c20,#4a4c53 50%,#1b1c20)" } },
+    { s: { left: "36%", width: "28%", top: "93.4%", height: "4.8%", borderRadius: "4px 4px 40% 40% / 4px 4px 100% 100%", background: SG, boxShadow: "inset 0 1px 0 rgba(255,255,255,.3)" } },
+    { s: { left: 0, right: 0, top: 0, height: "84%", borderRadius: "1.2% / 2.6%", background: SG, boxShadow: RIM } },
+    { s: { left: ".5%", right: ".5%", top: "1%", height: "82%", borderRadius: ".9% / 2%", background: BEZEL } },
+    { screen: true, s: { left: "1.4%", right: "1.4%", top: "2.6%", height: "78.6%" } },
   ] },
   // Galaxy S24 Ultra: squared corners, titanium frame, thin even bezels, centred hole-punch.
   s24ultra: { ar: 0.487, parts: [
