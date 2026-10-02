@@ -21,13 +21,12 @@ export async function generateMetadata({ params }: PageProps<"/p/[slug]">): Prom
   };
 }
 
-const WA = "https://wa.me/2349051717561";
+const IG = "https://www.instagram.com/zebraish_studio";
 
 export default async function PitchPage({ params }: PageProps<"/p/[slug]">) {
   const { slug } = await params;
   const p = getPitch(slug);
   if (!p) notFound();
-  const waText = encodeURIComponent(`Hola Banks, he visto la propuesta para ${p.business}.`);
 
   return (
     <main className="pp" style={{ ["--acc" as string]: p.accent }}>
@@ -112,7 +111,7 @@ export default async function PitchPage({ params }: PageProps<"/p/[slug]">) {
         <div className="pp-k">Cómo trabajamos</div>
         <h2>De la idea a la web, sin complicaciones.</h2>
         <ol className="pp-steps">
-          <li><b>Una charla de 15 minutos.</b> Por WhatsApp o llamada. Nos contáis qué necesitáis.</li>
+          <li><b>Una charla de 15 minutos.</b> Por email, Instagram o videollamada. Nos contáis qué necesitáis.</li>
           <li><b>Precio cerrado.</b> Lo sabéis antes de empezar. Sin sorpresas ni cuotas escondidas.</li>
           <li><b>Diseño y desarrollo.</b> Seguís el avance en vivo desde vuestro panel.</li>
           <li><b>Lanzamiento.</b> Con vuestro dominio, y seguimos a vuestro lado para lo que venga.</li>
@@ -121,10 +120,11 @@ export default async function PitchPage({ params }: PageProps<"/p/[slug]">) {
 
       <section className="pp-cta">
         <h2>¿Lo vemos juntos?</h2>
-        <p>Si os gusta la idea, respondedme al email o escribidme por WhatsApp. Lo leo yo mismo.</p>
+        <p>Si os gusta la idea, respondedme al email o escribidme por Instagram. Lo leo yo mismo.</p>
         <div className="pp-btns">
-          <a href={`${WA}?text=${waText}`} className="pp-btn">Escribir por WhatsApp</a>
-          <a href="mailto:hola@zebraish.com" className="pp-btn pp-ghost">hola@zebraish.com</a>
+          <a href={`mailto:hola@zebraish.com?subject=${encodeURIComponent(`Propuesta para ${p.business}`)}`} className="pp-btn">Responder por email</a>
+          <a href={IG} target="_blank" rel="noopener noreferrer" className="pp-btn pp-ghost">Instagram @zebraish_studio</a>
+          <a href="https://zebraish.com/studio?lang=es" className="pp-btn pp-ghost">Ver nuestro trabajo</a>
         </div>
         <div className="pp-sign">
           <b>Banks</b>
