@@ -177,6 +177,29 @@ export const PITCHES: Pitch[] = [
     ],
     samples: [S.reverie, S.aaura],
   },
+  {
+    slug: "delola",
+    lang: "es",
+    business: "Delola",
+    brand: "Delola",
+    city: "El Carmen, Valencia",
+    accent: "#b0683f",
+    date: "Octubre 2026",
+    greeting: "Hola, Lola",
+    today: [
+      "Hoy Delola vive en la calle Quart, en Facebook y en Instagram.",
+      "Tus piezas son únicas, pero quien no pasa por El Carmen no tiene dónde verlas todas juntas.",
+      "Una web propia enseña cada vestido, bolso y joya, y deja reservarlos antes de venir a la tienda.",
+    ],
+    promise: "Tu escaparate de piezas únicas, abierto las 24 horas.",
+    features: [
+      { t: "Catálogo de piezas únicas", d: "Cada vestido, bolso, pañuelo y joya con fotos y precio. Las novedades arriba, siempre." },
+      { t: "Reserva y recoge en tienda", d: "La clienta reserva la pieza online y la recoge en la calle Quart." },
+      { t: "Fácil de actualizar", d: "Subes una pieza nueva desde el móvil en un minuto." },
+      { t: "Aparecer en Google", d: "Preparada para búsquedas como \"tiendas en El Carmen\" y conectada con Google Maps." },
+    ],
+    samples: [S.malaak, S.noir],
+  },
 ];
 
 export const getPitch = (slug: string) => PITCHES.find((p) => p.slug === slug);
