@@ -6,6 +6,7 @@ export type Sample = { name: string; what: string; host: string; shot: string };
 
 export type Pitch = {
   slug: string;
+  lang: "es" | "en";
   business: string;
   brand: string;
   city: string;
@@ -27,11 +28,20 @@ const S = {
   malaak: { name: "Malaak", what: "Moda con pedidos por WhatsApp", host: "malaak-abaya.vercel.app", shot: "/zb/assets/sites/malaak.webp" },
   noir: { name: "Noir Atelier", what: "Tienda de ropa editorial", host: "noir-atelier-clothing.vercel.app", shot: "/zb/assets/sites/noir.webp" },
   aaura: { name: "Aaura", what: "Perfumería de lujo", host: "aaura-perfume.vercel.app", shot: "/zb/assets/sites/aaura.webp" },
+  doberman: { name: "Doberman", what: "Marca de alto impacto", host: "doberman-kappa.vercel.app", shot: "/zb/assets/b78ad4f230a4015d24a420fce2a7d53b.jpg" },
+};
+
+const S_EN = {
+  reverie: { ...S.reverie, what: "Luxury salon with online booking" },
+  hotChef: { ...S.hotChef, what: "Restaurant with menu and ordering" },
+  ember: { ...S.ember, what: "Wood-fired restaurant with reservations" },
+  aaura: { ...S.aaura, what: "Luxury perfume house" },
 };
 
 export const PITCHES: Pitch[] = [
   {
     slug: "peluqueria-maria-jesus",
+    lang: "es",
     business: "Peluquería María Jesús",
     brand: "María Jesús",
     city: "Vallecas, Madrid",
@@ -54,6 +64,7 @@ export const PITCHES: Pitch[] = [
   },
   {
     slug: "restaurante-de-triana",
+    lang: "es",
     business: "Restaurante De Triana",
     brand: "De Triana",
     city: "Triana, Sevilla",
@@ -73,6 +84,98 @@ export const PITCHES: Pitch[] = [
       { t: "Aparecer en Google", d: "Preparada para \"dónde comer en Triana\" y conectada con Google Maps." },
     ],
     samples: [S.ember, S.hotChef],
+  },
+  {
+    slug: "chef-alex-trim",
+    lang: "en",
+    business: "Chef Alex Trim",
+    brand: "Alex Trim",
+    city: "Naples, Florida",
+    accent: "#c8a165",
+    date: "October 2026",
+    greeting: "Hi Alex",
+    today: [
+      "Right now, people find you on Instagram, where hundreds of thousands follow your cooking.",
+      "But when someone in Naples wants to book you for a dinner, there's nowhere to send them: no menus to browse, no experiences to compare, just a DM or an email address.",
+      "A site of your own turns that audience into bookings, and gives brands like Mowi and Kikuichi one place to see everything you do.",
+    ],
+    promise: "A home for your private dining: menus, experiences and bookings, built to the standard of your food.",
+    features: [
+      { t: "Enquiries that convert", d: "A short form for date, guests, occasion and dietary needs. It lands in your inbox ready to quote." },
+      { t: "Experiences and menus", d: "Tasting menus, dinner parties and events, each with photos, so guests know what they're booking." },
+      { t: "Press and partners", d: "Your story from Alinea and Tru, plus your brand work, in one place for clients and sponsors." },
+      { t: "Found in Naples", d: "Built to show up when someone searches for a private chef in Naples or Southwest Florida." },
+    ],
+    samples: [S_EN.ember, S_EN.hotChef],
+  },
+  {
+    slug: "lavishleestyled",
+    lang: "en",
+    business: "Lavishleestyled",
+    brand: "Lavishleestyled",
+    city: "Downtown Atlanta",
+    accent: "#b4746a",
+    date: "October 2026",
+    greeting: "Hi there",
+    today: [
+      "Right now, clients find you on Instagram, where over 20,000 people follow your work.",
+      "Booking means a DM, a call or your Yelp page, and every new client asks the same questions about styles, prices and hair.",
+      "A site of your own answers all of that up front and lets clients book a slot straight away, under your name.",
+    ],
+    promise: "Your own booking site: every style, every price, one tap to book.",
+    features: [
+      { t: "Book in a few taps", d: "Clients pick a style and a time and they're booked. It can connect to the calendar you already use." },
+      { t: "Styles and prices up front", d: "Every style with photos, price and time, with hair included made clear, so the questions stop." },
+      { t: "Your Instagram, built in", d: "Your latest posts appear on the site automatically. No extra work." },
+      { t: "Found in Atlanta", d: "Built to show up when someone searches for a protective style braider in Downtown Atlanta." },
+    ],
+    samples: [S_EN.reverie, S_EN.aaura],
+  },
+  {
+    slug: "barbercar",
+    lang: "es",
+    business: "Barbercar",
+    brand: "Barbercar",
+    city: "Ensanche, Valencia",
+    accent: "#d4a24c",
+    date: "Octubre 2026",
+    greeting: "Hola, equipo de Barbercar",
+    today: [
+      "Más de cuarenta años en Valencia dicen mucho de vuestro oficio.",
+      "Hoy las citas se piden por teléfono, y quien os busca en Google solo encuentra fichas de directorios.",
+      "Una web propia enseña vuestro trabajo y deja reservar a cualquier hora, también mientras estáis cortando.",
+    ],
+    promise: "Una web a la altura de 40 años de oficio, con reservas online para no perder ni una cita.",
+    features: [
+      { t: "Reserva en pocos clics", d: "El cliente elige servicio y hora, y listo. Sin llamadas mientras tenéis las manos ocupadas." },
+      { t: "Servicios y precios claros", d: "Corte, barba y todo lo que hacéis, con fotos de vuestro trabajo." },
+      { t: "Galería desde Instagram", d: "Vuestras últimas fotos aparecen solas en la web. Cero trabajo extra." },
+      { t: "Aparecer en Google", d: "Preparada para búsquedas como \"barbería en el Ensanche\" y conectada con Google Maps." },
+    ],
+    samples: [S.reverie, S.doberman],
+  },
+  {
+    slug: "trenzas-africanas-madrid",
+    lang: "es",
+    business: "Trenzas Africanas Madrid",
+    brand: "Trenzas Africanas Madrid",
+    city: "Madrid",
+    accent: "#d39a5c",
+    date: "Octubre 2026",
+    greeting: "Hola, equipo de Trenzas Africanas Madrid",
+    today: [
+      "Más de 14.000 personas siguen vuestro trabajo en Instagram.",
+      "Pero para reservar hay que escribir por mensaje o llamar, y cada clienta pregunta lo mismo: estilos, precios y tiempos.",
+      "Una web propia responde a todo eso antes de que pregunten y convierte a esos seguidores en citas.",
+    ],
+    promise: "Vuestra propia web de reservas: cada estilo, cada precio y la cita en pocos clics.",
+    features: [
+      { t: "Reserva en pocos clics", d: "La clienta elige estilo y hora, y reserva. Puede conectar con vuestra agenda actual." },
+      { t: "Estilos y precios claros", d: "Box braids, knotless, trenzas de raíz: cada estilo con fotos, precio y tiempo." },
+      { t: "Galería desde Instagram", d: "Vuestras últimas fotos aparecen solas en la web. Cero trabajo extra." },
+      { t: "Aparecer en Google", d: "Preparada para búsquedas como \"trenzas africanas en Madrid\" y conectada con Google Maps." },
+    ],
+    samples: [S.reverie, S.aaura],
   },
 ];
 
