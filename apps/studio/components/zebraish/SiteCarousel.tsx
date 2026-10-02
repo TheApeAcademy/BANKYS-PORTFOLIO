@@ -284,26 +284,28 @@ export default function SiteCarousel() {
   // Mouse drag (touch and trackpads already scroll natively).
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.pointerType !== "mouse" || e.button !== 0) return;
+    // Links keep their own click; capturing here would retarget it to the track.
+    if ((e.target as HTMLElement).closest("a")) return;
     const t = trackRef.current!;
     st.current.drag = { x: e.clientX, left: t.scrollLeft, moved: false };
-    t.style.scrollSnapType = "none";
-    t.setPointerCapture(e.pointerId);
   };
   const onPointerMove = (e: React.PointerEvent) => {
     const d = st.current.drag;
     if (!d) return;
-    const dx = e.clientX - d.x;
-    if (Math.abs(dx) > 4) d.moved = true;
-    trackRef.current!.scrollLeft = d.left - dx;
+    const dx = e.clientX - d.x, t = trackRef.current!;
+    // Only take the pointer once it is a real drag, so plain clicks still land.
+    if (!d.moved && Math.abs(dx) > 6) { d.moved = true; t.style.scrollSnapType = "none"; t.setPointerCapture(e.pointerId); }
+    if (d.moved) t.scrollLeft = d.left - dx;
   };
   const onPointerUp = () => {
     const d = st.current.drag, t = trackRef.current!;
     if (!d) return;
     st.current.drag = null;
+    if (!d.moved) return;
     // Glide to the nearest device, then hand back to snapping.
     st.current.snap();
     setTimeout(() => { t.style.scrollSnapType = ""; }, 450);
-    if (d.moved) { const block = (ev: Event) => { ev.preventDefault(); ev.stopPropagation(); }; t.addEventListener("click", block, { capture: true, once: true }); setTimeout(() => t.removeEventListener("click", block, true), 0); }
+    { const block = (ev: Event) => { ev.preventDefault(); ev.stopPropagation(); }; t.addEventListener("click", block, { capture: true, once: true }); setTimeout(() => t.removeEventListener("click", block, true), 0); }
   };
 
   const items = Array.from({ length: N * COPIES }, (_, k) => k);
@@ -328,7 +330,7 @@ export default function SiteCarousel() {
           const i = k % N, site = SITES[i], on = i === active;
           return (
             <div key={k} data-slide={k} className="zbc-slide" aria-hidden={k >= N && k < 2 * N ? undefined : true}>
-              <div className="zbc-stage" onClick={(e) => { const el = e.currentTarget.parentElement!, t = trackRef.current!; const d = (el.offsetLeft + el.offsetWidth / 2 - t.scrollLeft - t.clientWidth / 2) / (st.current.stride || 1); if (Math.abs(d) > 0.5) go(Math.round(d)); }}>
+              <div className="zbc-stage" onClick={(e) => { const el = e.currentTarget.parentElement!, t = trackRef.current!; const d = (el.offsetLeft + el.offsetWidth / 2 - t.scrollLeft - t.clientWidth / 2) / (st.current.stride || 1); if (Math.abs(d) > 0.5) go(Math.round(d)); else window.open(`https://${site.host}`, "_blank", "noopener"); }}>
                 <Device site={site} />
               </div>
               <div className="zbc-cap">
@@ -365,7 +367,7 @@ const CSS = `
 .zbc-track::-webkit-scrollbar{display:none}
 .zbc-track:active{cursor:grabbing}
 .zbc-slide{flex:0 0 var(--sw);scroll-snap-align:center;perspective:1600px;user-select:none;-webkit-user-select:none}
-.zbc-stage{height:var(--sh);display:flex;align-items:center;justify-content:center;container-type:size;will-change:transform,opacity;transform:scale(.84);opacity:.4;padding:0 4%}
+.zbc-stage{cursor:pointer;height:var(--sh);display:flex;align-items:center;justify-content:center;container-type:size;will-change:transform,opacity;transform:scale(.84);opacity:.4;padding:0 4%}
 .zbc-dev{position:relative;isolation:isolate;width:min(100cqw,calc(100cqh * var(--ar)));aspect-ratio:var(--ar)}
 .zbc-dev::after{content:"";position:absolute;left:4%;right:4%;bottom:-6%;height:9%;z-index:-1;background:radial-gradient(closest-side,rgba(0,0,0,.7),rgba(0,0,0,.25) 60%,transparent);pointer-events:none}
 .zbc-cap{text-align:center;padding:26px 20px 0;opacity:0;visibility:hidden;transition:opacity .25s}
