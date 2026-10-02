@@ -45,7 +45,7 @@ export const PITCHES: Pitch[] = [
     ],
     promise: "Una web propia, rápida en el móvil, que convierte cada visita en una cita.",
     features: [
-      { t: "Reserva en 30 segundos", d: "Botón de cita en cada pantalla. Puede conectar con vuestra agenda actual, sin cambiar de sistema." },
+      { t: "Reserva en pocos clics", d: "Botón de cita en cada pantalla. Puede conectar con vuestra agenda actual, sin cambiar de sistema." },
       { t: "Servicios y precios claros", d: "Color, mechas, keratina, trenzas y cortes, con fotos reales de vuestro trabajo." },
       { t: "Galería desde Instagram", d: "Vuestras últimas fotos aparecen solas en la web. Cero trabajo extra." },
       { t: "Aparecer en Google", d: "Preparada para búsquedas como \"peluquería en Vallecas\" y con vuestra ficha de Google Maps." },
@@ -73,28 +73,6 @@ export const PITCHES: Pitch[] = [
       { t: "Aparecer en Google", d: "Preparada para \"dónde comer en Triana\" y conectada con Google Maps." },
     ],
     samples: [S.ember, S.hotChef],
-  },
-  {
-    slug: "la-bella-moda",
-    business: "La Bella Moda",
-    brand: "La Bella Moda",
-    city: "Sevilla",
-    accent: "#c9a27e",
-    date: "Octubre 2026",
-    greeting: "Hola, La Bella Moda",
-    today: [
-      "Hoy vendéis por Instagram, WhatsApp y en tienda en la calle Romana.",
-      "Es cercano y funciona, pero cada prenda se pierde en el feed a los pocos días.",
-      "Una web con vuestra colección hace que cualquier clienta vea todo lo nuevo y os escriba ya con la prenda elegida.",
-    ],
-    promise: "Vuestro escaparate abierto 24 horas, con pedidos directos por WhatsApp.",
-    features: [
-      { t: "Catálogo que vende", d: "Cada prenda con fotos, tallas y precio. Las novedades arriba, siempre." },
-      { t: "Pedido por WhatsApp", d: "Un toque y os llega el mensaje con la prenda y la talla. Sin pasarela complicada." },
-      { t: "Apartar en tienda", d: "La clienta reserva online y la recoge en la calle Romana." },
-      { t: "Fácil de actualizar", d: "Subís una prenda nueva desde el móvil en un minuto." },
-    ],
-    samples: [S.malaak, S.noir],
   },
 ];
 
