@@ -28,6 +28,7 @@ const S = {
   malaak: { name: "Malaak", what: "Moda con pedidos por WhatsApp", host: "malaak-abaya.vercel.app", shot: "/zb/assets/sites/malaak.webp" },
   noir: { name: "Noir Atelier", what: "Tienda de ropa editorial", host: "noir-atelier-clothing.vercel.app", shot: "/zb/assets/sites/noir.webp" },
   aaura: { name: "Aaura", what: "Perfumería de lujo", host: "aaura-perfume.vercel.app", shot: "/zb/assets/sites/aaura.webp" },
+  shadowz: { name: "Shadowz", what: "Plataforma de arte urbano", host: "shadow-rho-three.vercel.app", shot: "/zb/assets/sites/shadowz.webp" },
   doberman: { name: "Doberman", what: "Marca de alto impacto", host: "doberman-kappa.vercel.app", shot: "/zb/assets/b78ad4f230a4015d24a420fce2a7d53b.jpg" },
 };
 
@@ -199,6 +200,52 @@ export const PITCHES: Pitch[] = [
       { t: "Aparecer en Google", d: "Preparada para búsquedas como \"tiendas en El Carmen\" y conectada con Google Maps." },
     ],
     samples: [S.malaak, S.noir],
+  },
+  {
+    slug: "estetica-vanessa",
+    lang: "es",
+    business: "Estética Vanessa",
+    brand: "Estética Vanessa",
+    city: "Bilbao",
+    accent: "#9c7b6b",
+    date: "Octubre 2026",
+    greeting: "Hola, equipo de Estética Vanessa",
+    today: [
+      "Desde 2006 en el centro de Bilbao, con la radiofrecuencia INDIBA y la depilación integral masculina como especialidades.",
+      "Esa experiencia merece una web a su altura, que explique cada tratamiento y deje reservar sin llamar.",
+      "Así, quien os busque en Google ve vuestro trabajo, vuestros precios y un botón de cita, todo en el móvil.",
+    ],
+    promise: "Una web a la altura de 20 años de experiencia, con reservas en pocos clics.",
+    features: [
+      { t: "Reserva en pocos clics", d: "La clienta o el cliente elige tratamiento y hora, y listo. Puede conectar con vuestra agenda actual." },
+      { t: "Cada tratamiento explicado", d: "INDIBA, depilación masculina, faciales y corporales, con lo que incluye, cuánto dura y su precio." },
+      { t: "Sección para hombre", d: "Una página propia para el cliente masculino, que hoy busca estos servicios más que nunca." },
+      { t: "Aparecer en Google", d: "Preparada para búsquedas como \"INDIBA en Bilbao\" y conectada con Google Maps." },
+    ],
+    samples: [S.reverie, S.aaura],
+  },
+  {
+    slug: "jg-tattoo-studio",
+    lang: "es",
+    business: "JG Tattoo Studio",
+    brand: "JG Tattoo Studio",
+    city: "Vallecas, Madrid",
+    accent: "#e04a3a",
+    date: "Octubre 2026",
+    greeting: "Hola, Javi y Alex",
+    today: [
+      "Hoy vuestros clientes os encuentran por Instagram, Facebook y Fresha, donde tenéis un 4,9.",
+      "Pero el trabajo de cada artista queda repartido entre perfiles, y pedir presupuesto con una idea concreta no es fácil.",
+      "Una web propia reúne el portfolio de los dos, explica tatuajes, piercing y eliminación, y deja pedir presupuesto con la idea y una foto.",
+    ],
+    promise: "Vuestro portfolio en un solo sitio, con presupuestos que llegan con la idea ya clara.",
+    features: [
+      { t: "Portfolio por artista", d: "Los trabajos de Javi y de Alex, cada uno con su estilo, siempre al día." },
+      { t: "Presupuesto con tu idea", d: "El cliente sube su referencia, la zona y el tamaño. Os llega listo para responder." },
+      { t: "Piercing y eliminación", d: "Cada servicio explicado, con cuidados y preguntas frecuentes, para ahorrar mensajes." },
+      { t: "Aparecer en Google", d: "Preparada para búsquedas como \"tatuajes en Vallecas\" y conectada con Google Maps." },
+    ],
+    samples: [S.shadowz, S.doberman],
   },
 ];
 
