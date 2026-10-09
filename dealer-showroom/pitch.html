@@ -97,7 +97,7 @@ h2{margin:0;font-weight:800;font-stretch:115%;letter-spacing:-.03em}
   const code = (new URLSearchParams(location.search).get("d") || "").toLowerCase();
   const name = NAMES[code] || "";
   if (name) { document.querySelectorAll("[data-brand],[data-brand-lc]").forEach(e => e.textContent = name); document.title = "Why we built this for " + name + " · Zebraish Studio"; }
-  document.getElementById("back").href = (location.pathname.endsWith(".html") ? "index.html" : "/dealer") + (name ? "?d=" + code : "");
+  document.getElementById("back").href = (location.protocol === "file:" ? "index.html" : "./") + (name ? "?d=" + code : "");
   document.getElementById("waJosh").href = "https://wa.me/2348165320780?text=" + encodeURIComponent("Hi Joshua, this is " + (name || "a car dealer") + ". I saw the car dealer website concept. Let's talk.");
 })();
 </script>

@@ -38,8 +38,8 @@ nav.links a{padding:10px 12px;font-size:14px;font-weight:600;white-space:nowrap;
 .btn-line{min-height:46px;padding:0 16px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-weight:700;font-size:14px;color:var(--ink)}
 .btn-line:hover{background:var(--ink);color:var(--paper)}
 .hero{position:relative;overflow:hidden;background:#0E0D0A;color:var(--paper);min-height:min(88vh,860px);display:flex;align-items:flex-end}
-.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 55%}
-.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,13,10,.82) 0%,rgba(14,13,10,.45) 50%,rgba(14,13,10,0) 80%),linear-gradient(0deg,rgba(14,13,10,.7) 0%,rgba(14,13,10,0) 40%)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 60%}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,13,10,.88) 0%,rgba(14,13,10,.6) 50%,rgba(14,13,10,.15) 85%),linear-gradient(0deg,rgba(14,13,10,.75) 0%,rgba(14,13,10,0) 45%)}
 .hero .wrap{position:relative;width:100%;padding-top:clamp(96px,16vh,180px);padding-bottom:clamp(40px,6vw,72px)}
 .hero-in{display:flex;flex-direction:column;gap:24px;max-width:640px}
 .pill{font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border:1px solid rgba(246,244,239,.45);border-radius:999px;background:rgba(14,13,10,.35);white-space:nowrap}
@@ -115,8 +115,8 @@ footer .col{display:flex;flex-direction:column;gap:10px;font-size:14px}
 .linkbtn{padding:0;border:0;background:none;text-align:left;font-size:14px;color:var(--green);font-weight:700}
 .fab{position:fixed;right:18px;bottom:18px;z-index:30;width:58px;height:58px;border-radius:50%;border:0;background:var(--green);color:#fff;font-weight:800;font-size:12px;box-shadow:0 12px 30px -10px rgba(30,142,78,.7)}
 .fab:hover{background:var(--green2)}
-.concept-tag{position:fixed;left:12px;bottom:12px;z-index:29;background:rgba(22,21,15,.86);color:#F6F4EF;font-size:11px;letter-spacing:.04em;padding:7px 10px;border-radius:999px;pointer-events:none}
-@media(max-width:560px){header.top .btn-wa{display:none}header.top .wrap{gap:12px}}
+.bar .short{display:none}
+@media(max-width:560px){header.top .btn-wa{display:none}header.top .wrap{gap:12px}.bar{padding:8px 16px;font-size:12px;gap:8px}.bar .long{display:none}.bar .short{display:inline}.stats b{font-size:clamp(19px,5.6vw,28px)}}
 .ov{position:fixed;inset:0;display:none}
 .ov.open{display:flex}
 #detail{z-index:40;background:rgba(22,21,15,.6);justify-content:center;align-items:flex-start;overflow-y:auto;padding:clamp(0px,3vw,40px)}
@@ -150,9 +150,8 @@ dd{margin:4px 0 0;font-weight:700;font-size:15px}
 <body>
 <div id="top" style="min-height:100vh">
 
-<div class="bar"><span>A website concept prepared for <strong data-brand-lc>your dealership</strong> by <strong>Zebraish Studio</strong>. Sample cars and prices.</span><a id="pitchLink" href="pitch.html">See the pitch →</a></div>
-
 <header class="top">
+  <div class="bar"><span class="long">A website concept prepared for <strong data-brand-lc>your dealership</strong> by <strong>Zebraish Studio</strong>. Sample cars and prices.</span><span class="short">Concept by <strong>Zebraish</strong> · sample cars</span><a id="pitchLink" href="pitch.html">See the pitch →</a></div>
   <div class="wrap">
     <a href="#top" class="brand"><span class="mark" data-initials>AU</span><span class="brand-t"><strong data-brand>Your Autos</strong><span data-city>Lagos · Car dealer</span></span></a>
     <nav class="links" aria-label="Sections"><a href="#cars">Cars</a><a href="#swap">Swap</a><a href="#pay">Pay small small</a><a href="#visit">Book inspection</a></nav>
@@ -161,7 +160,7 @@ dd{margin:4px 0 0;font-weight:700;font-size:15px}
 </header>
 
 <section class="hero">
-  <img src="/zb/dealer/media/hero-911.webp" alt="Silver sports car on a highway at night">
+  <img src="media/hero-highlander.webp" alt="Toyota Highlander SUV">
   <div class="shade"></div>
   <div class="wrap">
     <div class="hero-in">
@@ -259,7 +258,6 @@ dd{margin:4px 0 0;font-weight:700;font-size:15px}
 </footer>
 
 <button class="fab" data-ask="general" aria-label="Chat on WhatsApp">Chat</button>
-<div class="concept-tag mono" aria-hidden="true">Concept by Zebraish · sample cars</div>
 
 <div class="ov" id="detail" role="dialog" aria-modal="true" aria-label="Car details">
   <div class="dbox">
@@ -318,18 +316,18 @@ $$("[data-city]").forEach(e => e.textContent = CITY + " · Car dealer");
 $("#footCity").textContent = CITY === "Nigeria" ? "Nigeria" : CITY + ", Nigeria";
 document.title = BRAND + " · Car Dealer Concept by Zebraish";
 const QS = D0 ? "?d=" + encodeURIComponent(new URLSearchParams(location.search).get("d").toLowerCase()) : "";
-$("#pitchLink").href = (location.pathname.endsWith(".html") ? "pitch.html" : "/dealer/pitch") + QS;
+$("#pitchLink").href = (location.protocol === "file:" ? "pitch.html" : "pitch") + QS;
 
 const CARS = [
- {id:"c300",year:2016,make:"Mercedes-Benz",model:"C300",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:23800000,km:"59,000 km",trans:"Automatic",engine:"2.0L turbo",img:"/zb/dealer/cars/c300-2016.webp",note:"Fullest option"},
- {id:"es350",year:2016,make:"Lexus",model:"ES 350",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:21500000,km:"72,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/es350-2016.webp"},
- {id:"hilux",year:2018,make:"Toyota",model:"HiLux WorkMate",body:"Pickups",label:"Pickup",cond:"Tokunbo",price:24000000,km:"68,000 km",trans:"Manual",engine:"2.7L",img:"/zb/dealer/cars/hilux-2018.webp"},
- {id:"highlander",year:2014,make:"Toyota",model:"Highlander Limited",body:"SUVs",label:"SUV",cond:"Nigerian used",price:15800000,km:"128,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/highlander-2014.webp"},
- {id:"rx350",year:2011,make:"Lexus",model:"RX 350",body:"SUVs",label:"SUV",cond:"Nigerian used",price:13200000,km:"134,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/rx350-2011.webp"},
- {id:"venza",year:2011,make:"Toyota",model:"Venza",body:"SUVs",label:"Crossover",cond:"Tokunbo",price:11500000,km:"112,000 km",trans:"Automatic",engine:"2.7L",img:"/zb/dealer/cars/venza-2011.webp"},
- {id:"accord",year:2014,make:"Honda",model:"Accord EX-L V6 Coupe",body:"Sedans",label:"Coupe",cond:"Nigerian used",price:9800000,km:"121,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/accord-coupe-2014.webp"},
- {id:"corolla",year:2014,make:"Toyota",model:"Corolla",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:9200000,km:"96,000 km",trans:"Automatic",engine:"1.8L",img:"/zb/dealer/cars/corolla-2014.webp"},
- {id:"camry",year:2012,make:"Toyota",model:"Camry",body:"Sedans",label:"Sedan",cond:"Nigerian used",price:7900000,km:"141,000 km",trans:"Automatic",engine:"2.5L",img:"/zb/dealer/cars/camry-2012.webp"}
+ {id:"c300",year:2016,make:"Mercedes-Benz",model:"C300",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:23800000,km:"59,000 km",trans:"Automatic",engine:"2.0L turbo",img:"cars/c300-2016.webp",note:"Fullest option"},
+ {id:"es350",year:2016,make:"Lexus",model:"ES 350",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:21500000,km:"72,000 km",trans:"Automatic",engine:"3.5L V6",img:"cars/es350-2016.webp"},
+ {id:"hilux",year:2018,make:"Toyota",model:"HiLux WorkMate",body:"Pickups",label:"Pickup",cond:"Tokunbo",price:24000000,km:"68,000 km",trans:"Manual",engine:"2.7L",img:"cars/hilux-2018.webp"},
+ {id:"highlander",year:2014,make:"Toyota",model:"Highlander Limited",body:"SUVs",label:"SUV",cond:"Nigerian used",price:15800000,km:"128,000 km",trans:"Automatic",engine:"3.5L V6",img:"cars/highlander-2014.webp"},
+ {id:"rx350",year:2011,make:"Lexus",model:"RX 350",body:"SUVs",label:"SUV",cond:"Nigerian used",price:13200000,km:"134,000 km",trans:"Automatic",engine:"3.5L V6",img:"cars/rx350-2011.webp"},
+ {id:"venza",year:2011,make:"Toyota",model:"Venza",body:"SUVs",label:"Crossover",cond:"Tokunbo",price:11500000,km:"112,000 km",trans:"Automatic",engine:"2.7L",img:"cars/venza-2011.webp"},
+ {id:"accord",year:2014,make:"Honda",model:"Accord EX-L V6 Coupe",body:"Sedans",label:"Coupe",cond:"Nigerian used",price:9800000,km:"121,000 km",trans:"Automatic",engine:"3.5L V6",img:"cars/accord-coupe-2014.webp"},
+ {id:"corolla",year:2014,make:"Toyota",model:"Corolla",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:9200000,km:"96,000 km",trans:"Automatic",engine:"1.8L",img:"cars/corolla-2014.webp"},
+ {id:"camry",year:2012,make:"Toyota",model:"Camry",body:"Sedans",label:"Sedan",cond:"Nigerian used",price:7900000,km:"141,000 km",trans:"Automatic",engine:"2.5L",img:"cars/camry-2012.webp"}
 ];
 const SWAP = {"Toyota Corolla":9.5e6,"Toyota Camry":13e6,"Honda Accord":12e6,"Lexus RX 350":24e6,"Toyota Highlander":18e6,"Mercedes-Benz C300":25e6};
 const COND = {"Fair":.82,"Good":1,"Very good":1.12};
