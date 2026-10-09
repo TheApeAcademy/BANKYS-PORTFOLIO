@@ -115,6 +115,7 @@ footer .col{display:flex;flex-direction:column;gap:10px;font-size:14px}
 .linkbtn{padding:0;border:0;background:none;text-align:left;font-size:14px;color:var(--green);font-weight:700}
 .fab{position:fixed;right:18px;bottom:18px;z-index:30;width:58px;height:58px;border-radius:50%;border:0;background:var(--green);color:#fff;font-weight:800;font-size:12px;box-shadow:0 12px 30px -10px rgba(30,142,78,.7)}
 .fab:hover{background:var(--green2)}
+.concept-tag{position:fixed;left:12px;bottom:12px;z-index:29;background:rgba(22,21,15,.86);color:#F6F4EF;font-size:11px;letter-spacing:.04em;padding:7px 10px;border-radius:999px;pointer-events:none}
 @media(max-width:560px){header.top .btn-wa{display:none}header.top .wrap{gap:12px}}
 .ov{position:fixed;inset:0;display:none}
 .ov.open{display:flex}
@@ -258,14 +259,15 @@ dd{margin:4px 0 0;font-weight:700;font-size:15px}
 </footer>
 
 <button class="fab" data-ask="general" aria-label="Chat on WhatsApp">Chat</button>
+<div class="concept-tag mono" aria-hidden="true">Concept by Zebraish · sample cars</div>
 
 <div class="ov" id="detail" role="dialog" aria-modal="true" aria-label="Car details">
   <div class="dbox">
-    <div class="dimg" id="dImg" role="img"><div class="dnav"><button class="round" id="dPrev" aria-label="Previous car">←</button><span class="cnt mono" id="dCount"></span><button class="round" id="dNext" aria-label="Next car">→</button></div></div>
+    <div class="dimg" id="dImg"><div id="dImgLabel" role="img" style="position:absolute;inset:0"></div><div class="dnav"><button class="round" id="dPrev" aria-label="Previous car">←</button><span class="cnt mono" id="dCount"></span><button class="round" id="dNext" aria-label="Next car">→</button></div></div>
     <div class="dbody">
       <button class="x" data-close="detail" aria-label="Close">✕</button>
       <div class="dtags" id="dTags"></div>
-      <div><h3 id="dTitle"></h3><div class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px">Sample price</div><div class="dprice" id="dPrice" style="margin-top:2px"></div><div style="font-size:14px;color:var(--body);margin-top:4px">or from <strong id="dFrom"></strong>/month with pay small small</div></div>
+      <div><h3 id="dTitle"></h3><div class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px">Sample price</div><div class="dprice" id="dPrice" style="margin-top:2px"></div><div style="font-size:14px;color:var(--body);margin-top:4px">or 40% down, then <strong id="dFrom"></strong>/month for 12 months</div></div>
       <dl id="dSpecs"></dl>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
         <button class="btn-wa big-wa" id="dAsk">Ask about this car on WhatsApp</button>
@@ -277,7 +279,7 @@ dd{margin:4px 0 0;font-weight:700;font-size:15px}
 
 <div class="ov" id="chat" role="dialog" aria-modal="true" aria-label="WhatsApp message preview">
   <div class="cbox">
-    <div class="chead"><span class="av" id="mAv">AU</span><span style="flex:1;display:flex;flex-direction:column;line-height:1.2"><strong id="mTo">Your Autos</strong><span style="font-size:12px;color:#B5B0A3">Preview of the WhatsApp message</span></span><button class="x" data-close="chat" aria-label="Close">✕</button></div>
+    <div class="chead"><span class="av" id="mAv">AU</span><span style="flex:1;display:flex;flex-direction:column;line-height:1.2"><strong id="mTo">Your Autos</strong><span style="font-size:12px;color:#B5B0A3">Concept preview of the WhatsApp message</span></span><button class="x" data-close="chat" aria-label="Close">✕</button></div>
     <div style="padding:24px 16px;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end"><div class="bubble"><span id="mMsg"></span><i>now ✓✓</i></div></div>
     <div style="padding:0 16px 16px"><a id="mLink" target="_blank" rel="noopener" class="btn-wa big-wa">Open in WhatsApp</a><p class="cnote" id="mNote"></p></div>
   </div>
@@ -289,20 +291,34 @@ dd{margin:4px 0 0;font-weight:700;font-size:15px}
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const naira = n => "₦" + Math.round(n).toLocaleString("en-US");
 
-/* Personalised by link: ?for=Banix%20Motors&city=Ikeja&wa=2348035376690 */
-const q = new URLSearchParams(location.search);
-const clean = (v, max) => (v || "").replace(/[<>"&]/g, "").trim().slice(0, max);
-const personal = !!clean(q.get("for"), 40);
-const BRAND = clean(q.get("for"), 40) || "Your Autos";
-const CITY = clean(q.get("city"), 30) || (personal ? "Nigeria" : "Lagos");
-const WA = (q.get("wa") || "").replace(/\D/g, "").slice(0, 15);
+/* Dealers we've prepared a concept for. Only these can be shown, chosen by a short
+   code (?d=banix), so nobody can put another name or WhatsApp number on this page. */
+const DEALERS = {
+  banix:{name:"Banix Motors",city:"Ikeja",wa:"2348035376690"},
+  hillz:{name:"Hillz Exquisites",city:"Lekki",wa:"2347048320783"},
+  chibest:{name:"Chibest Autos",city:"Ojodu Berger",wa:"2348073007079"},
+  ikejaluxury:{name:"Ikeja Luxury Cars",city:"Omole",wa:"2349047594006"},
+  tokunbocars:{name:"Affordable Tokunbo Cars",city:"Lagos",wa:"2347036692021"},
+  abujacarshub:{name:"Abuja Cars Hub",city:"Abuja",wa:"2348165402880"},
+  wuta:{name:"Wuta Motors",city:"Abuja",wa:"2348056139710"},
+  hexos:{name:"Hexos Autos",city:"Gwarinpa",wa:"2348149754554"},
+  mitchell:{name:"Mitchell Automobile",city:"Kubwa",wa:"2348033115578"},
+  firstcall:{name:"De First Call Autos",city:"Port Harcourt",wa:"2348148226786"}
+};
+const D0 = DEALERS[(new URLSearchParams(location.search).get("d") || "").toLowerCase()] || null;
+const clean = (v, max) => (v || "").replace(/\s+/g, " ").trim().slice(0, max);
+const personal = !!D0;
+const BRAND = D0 ? D0.name : "Your Autos";
+const CITY = D0 ? D0.city : "Lagos";
+const WA = D0 ? D0.wa : "";
 const INIT = BRAND.split(/\s+/).filter(Boolean).slice(0, 2).map(w => [...w][0].toUpperCase()).join("") || "AU";
 if (personal) { $$("[data-brand]").forEach(e => e.textContent = BRAND); $$("[data-brand-lc]").forEach(e => e.textContent = BRAND); }
 $$("[data-initials]").forEach(e => e.textContent = INIT);
 $$("[data-city]").forEach(e => e.textContent = CITY + " · Car dealer");
 $("#footCity").textContent = CITY === "Nigeria" ? "Nigeria" : CITY + ", Nigeria";
 document.title = BRAND + " · Car Dealer Concept by Zebraish";
-$("#pitchLink").href = (location.pathname.endsWith(".html") ? "pitch.html" : "/dealer/pitch") + location.search;
+const QS = D0 ? "?d=" + encodeURIComponent(new URLSearchParams(location.search).get("d").toLowerCase()) : "";
+$("#pitchLink").href = (location.pathname.endsWith(".html") ? "pitch.html" : "/dealer/pitch") + QS;
 
 const CARS = [
  {id:"c300",year:2016,make:"Mercedes-Benz",model:"C300",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:23800000,km:"59,000 km",trans:"Automatic",engine:"2.0L turbo",img:"/zb/dealer/cars/c300-2016.webp",note:"Fullest option"},
@@ -315,7 +331,7 @@ const CARS = [
  {id:"corolla",year:2014,make:"Toyota",model:"Corolla",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:9200000,km:"96,000 km",trans:"Automatic",engine:"1.8L",img:"/zb/dealer/cars/corolla-2014.webp"},
  {id:"camry",year:2012,make:"Toyota",model:"Camry",body:"Sedans",label:"Sedan",cond:"Nigerian used",price:7900000,km:"141,000 km",trans:"Automatic",engine:"2.5L",img:"/zb/dealer/cars/camry-2012.webp"}
 ];
-const SWAP = {"Toyota Corolla":9.5e6,"Toyota Camry":13e6,"Honda Accord":12e6,"Lexus RX 350":24e6,"Toyota Highlander":18e6,"Mercedes-Benz C300":12.5e6};
+const SWAP = {"Toyota Corolla":9.5e6,"Toyota Camry":13e6,"Honda Accord":12e6,"Lexus RX 350":24e6,"Toyota Highlander":18e6,"Mercedes-Benz C300":25e6};
 const COND = {"Fair":.82,"Good":1,"Very good":1.12};
 const TIMES = ["10:00","12:00","14:00","16:00"];
 const RATE = .025; // flat monthly markup on the balance, shared by every monthly figure on the page
@@ -345,7 +361,7 @@ function renderCars() {
       <button class="ph" data-open="${c.id}" aria-label="View ${title(c)}"><img src="${c.img}" alt="${title(c)}" loading="lazy"><span class="tag l">${c.cond}</span><span class="tag r">${c.label}</span></button>
       <div class="bd">
         <div><button class="ttl" data-open="${c.id}">${title(c)}</button><div class="sp mono">${c.km} · ${c.trans} · ${c.engine}</div></div>
-        <div class="pr"><small class="mono">Sample price</small><b>${naira(c.price)}</b><span>or from ${naira(monthlyOf(c.price))}/mo</span></div>
+        <div class="pr"><small class="mono">Sample price</small><b>${naira(c.price)}</b><span>40% down, then ${naira(monthlyOf(c.price))}/mo for 12 months</span></div>
         <div class="act"><button class="btn-wa" data-askcar="${c.id}">Ask on WhatsApp</button><button class="btn-line" data-bookcar="${c.id}">Inspect</button></div>
       </div>
     </article>`).join("");
@@ -423,7 +439,7 @@ document.addEventListener("click", e => {
   const t = e.target.closest("[data-ask]"); if (!t || t.disabled) return;
   const k = t.dataset.ask, c = swapCalc, p = payCalc;
   if (k === "general") openMsg("Hi " + BRAND + ", I am looking for a car. Can you help?");
-  if (k === "request") openMsg("Hi " + BRAND + ", I am looking for a " + (s.body === "All" ? "car" : s.body.replace(/s$/, "").toLowerCase()) + (s.cond !== "Any" ? " (" + s.cond + ")" : "") + (s.budget !== "Any" ? " under ₦" + s.budget + "m" : "") + ". Do you have anything coming in?");
+  if (k === "request") openMsg("Hi " + BRAND + ", I am looking for " + (s.body === "SUVs" ? "an " : "a ") + ({All:"car",Sedans:"sedan",SUVs:"SUV",Pickups:"pickup"}[s.body]) + (s.cond !== "Any" ? " (" + s.cond + ")" : "") + (s.budget !== "Any" ? " under ₦" + s.budget + "m" : "") + ". Do you have anything coming in?");
   if (k === "swap") openMsg("Hi " + BRAND + ", I want to swap my " + s.swapYear + " " + s.swapModel + " (" + s.swapCond.toLowerCase() + " condition) for the " + title(c.into) + ". Your site estimated my car at " + naira(c.value) + (c.bal >= 0 ? ", so I add " + naira(c.bal) : ", so you pay me " + naira(-c.bal)) + ". When can I bring it for inspection?");
   if (k === "pay") openMsg("Hi " + BRAND + ", I am interested in the " + title(p.pc) + " on a pay small small plan: " + s.deposit + "% deposit (" + naira(p.dep) + "), " + s.months + " months at about " + naira(p.mon) + " per month. Can we talk?");
   if (k === "book") { s.ready = true; renderBook(); openMsg("Hi " + BRAND + ", I would like to book an inspection for the " + title(byId(s.bookCar)) + " on " + s.day + " at " + s.time + ". My name is " + clean(s.name, 40) + "."); }
@@ -434,12 +450,12 @@ $("#mLink").addEventListener("click", () => chat.classList.remove("open"));
 const detail = $("#detail");
 function openDetail(id) {
   const c = byId(id), i = CARS.indexOf(c); s.detail = c.id;
-  $("#dImg").style.backgroundImage = 'url("' + c.img + '")'; $("#dImg").setAttribute("aria-label", title(c));
+  $("#dImg").style.backgroundImage = 'url("' + c.img + '")'; $("#dImgLabel").setAttribute("aria-label", title(c));
   $("#dCount").textContent = (i + 1) + " / " + CARS.length;
   $("#dTags").innerHTML = `<span class="a">${c.cond}</span>` + (c.note ? `<span class="b">${c.note}</span>` : "");
   $("#dTitle").textContent = title(c); $("#dPrice").textContent = naira(c.price); $("#dFrom").textContent = naira(monthlyOf(c.price));
   $("#dSpecs").innerHTML = [["Year",c.year],["Condition",c.cond],["Mileage",c.km],["Transmission",c.trans],["Engine",c.engine],["Body",c.label]].map(([k,v]) => `<div><dt class="mono">${k}</dt><dd>${v}</dd></div>`).join("");
-  detail.classList.add("open");
+  detail.classList.add("open"); $("#dAsk").focus();
 }
 const step = d => { const i = CARS.findIndex(c => c.id === s.detail); openDetail(CARS[(i + d + CARS.length) % CARS.length].id); };
 $("#dPrev").onclick = () => step(-1); $("#dNext").onclick = () => step(1);

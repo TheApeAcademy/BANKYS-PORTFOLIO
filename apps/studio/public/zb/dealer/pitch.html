@@ -69,7 +69,7 @@ h2{margin:0;font-weight:800;font-stretch:115%;letter-spacing:-.03em}
     </div>
   </section>
   <section class="wrap" style="padding-top:48px;padding-bottom:72px">
-    <div class="eyebrow mono" style="margin-bottom:14px">Work we've built</div>
+    <div class="eyebrow mono" style="margin-bottom:14px">Sites we've built</div>
     <h2 style="margin:0 0 12px;font-size:clamp(32px,4.5vw,52px);line-height:1">Built by Zebraish.</h2>
     <p style="margin:0 0 32px;font-size:17px;color:var(--soft);max-width:56ch">Websites, apps and custom software, each one designed around how that business actually sells.</p>
     <div class="work">
@@ -92,10 +92,12 @@ h2{margin:0;font-weight:800;font-stretch:115%;letter-spacing:-.03em}
 </main>
 <script>
 (() => {
-  const q = new URLSearchParams(location.search);
-  const name = (q.get("for") || "").replace(/[<>"&]/g, "").trim().slice(0, 40);
+  // Same short-code list as index.html: only dealers we prepared a concept for.
+  const NAMES = {banix:"Banix Motors",hillz:"Hillz Exquisites",chibest:"Chibest Autos",ikejaluxury:"Ikeja Luxury Cars",tokunbocars:"Affordable Tokunbo Cars",abujacarshub:"Abuja Cars Hub",wuta:"Wuta Motors",hexos:"Hexos Autos",mitchell:"Mitchell Automobile",firstcall:"De First Call Autos"};
+  const code = (new URLSearchParams(location.search).get("d") || "").toLowerCase();
+  const name = NAMES[code] || "";
   if (name) { document.querySelectorAll("[data-brand],[data-brand-lc]").forEach(e => e.textContent = name); document.title = "Why we built this for " + name + " · Zebraish Studio"; }
-  document.getElementById("back").href = (location.pathname.endsWith(".html") ? "index.html" : "/dealer") + location.search;
+  document.getElementById("back").href = (location.pathname.endsWith(".html") ? "index.html" : "/dealer") + (name ? "?d=" + code : "");
   document.getElementById("waJosh").href = "https://wa.me/2348165320780?text=" + encodeURIComponent("Hi Joshua, this is " + (name || "a car dealer") + ". I saw the car dealer website concept. Let's talk.");
 })();
 </script>
