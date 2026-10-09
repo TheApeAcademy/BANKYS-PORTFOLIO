@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Autos · Car Dealer Concept by Zebraish</title>
+<meta name="description" content="A car dealer website concept by Zebraish Studio: showroom, swap estimator, pay small small plans and inspection booking, all sent straight to WhatsApp.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--paper:#F6F4EF;--ink:#16150F;--line:#E3DFD5;--line2:#D9D4C8;--muted:#5E5A50;--body:#4A463D;--rust:#C2521C;--peach:#F2A57A;--green:#1E8E4E;--green2:#18773F;--pad:clamp(16px,4vw,40px)}
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+a:hover{color:var(--rust)}
+input,select,button{font-family:inherit}
+button{cursor:pointer}
+@keyframes ya-pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.bar{background:var(--ink);color:var(--paper);font-size:13px;padding:10px var(--pad);display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;text-align:center}
+.bar a{color:var(--peach);font-weight:600}
+header.top{position:sticky;top:0;z-index:20;background:rgba(246,244,239,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.top .wrap{padding-top:12px;padding-bottom:12px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.mark{width:38px;height:38px;border-radius:10px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:800;font-size:14px;font-stretch:120%;flex:none}
+.brand-t{display:flex;flex-direction:column;line-height:1.1}
+.brand-t strong{font-size:16px;font-weight:800;font-stretch:112%}
+.brand-t span{font-size:12px;color:var(--muted)}
+nav.links{display:flex;gap:4px;flex:1;overflow-x:auto;min-width:0}
+nav.links a{padding:10px 12px;font-size:14px;font-weight:600;white-space:nowrap;border-radius:8px}
+.btn-wa{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:var(--green);color:#fff;font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-wa:hover{background:var(--green2);color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;background:#B8F5CF}
+.btn-line{min-height:46px;padding:0 16px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-weight:700;font-size:14px;color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--paper)}
+.hero{position:relative;overflow:hidden;background:#0E0D0A;color:var(--paper);min-height:min(88vh,860px);display:flex;align-items:flex-end}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 55%}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,13,10,.82) 0%,rgba(14,13,10,.45) 50%,rgba(14,13,10,0) 80%),linear-gradient(0deg,rgba(14,13,10,.7) 0%,rgba(14,13,10,0) 40%)}
+.hero .wrap{position:relative;width:100%;padding-top:clamp(96px,16vh,180px);padding-bottom:clamp(40px,6vw,72px)}
+.hero-in{display:flex;flex-direction:column;gap:24px;max-width:640px}
+.pill{font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border:1px solid rgba(246,244,239,.45);border-radius:999px;background:rgba(14,13,10,.35);white-space:nowrap}
+.hero h1{margin:0;font-size:clamp(48px,8vw,104px);line-height:.92;font-weight:800;font-stretch:118%;letter-spacing:-.035em;text-wrap:balance}
+.hero h1 span{display:block;color:var(--peach)}
+.hero p{margin:0;font-size:clamp(17px,1.6vw,19px);line-height:1.55;color:#E4E0D6;max-width:52ch;text-wrap:pretty}
+.cta1{min-height:52px;padding:0 24px;border-radius:999px;background:var(--paper);color:var(--ink);font-weight:700;display:flex;align-items:center;gap:10px}
+.cta2{min-height:52px;padding:0 24px;border-radius:999px;border:1.5px solid var(--paper);color:var(--paper);font-weight:700;display:flex;align-items:center;background:rgba(14,13,10,.25)}
+.cta2:hover{color:var(--peach)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;border-top:1px solid rgba(246,244,239,.25);padding-top:20px;margin-top:8px}
+.stats b{display:block;font-size:28px;font-weight:800;font-stretch:115%}
+.stats span{font-size:13px;color:#CFCABF}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden}
+.feat a{padding:22px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--line)}
+.feat a:last-child{border-right:0}
+.feat a:hover{background:#FAF8F3;color:var(--ink)}
+.feat .n{font-size:12px;color:var(--rust)}
+.feat strong{font-size:17px}
+.feat em{font-style:normal;font-size:14px;color:var(--muted)}
+.sec{padding-top:clamp(56px,8vw,112px);padding-bottom:40px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.h2{margin:0;font-size:clamp(36px,5.5vw,64px);font-weight:800;font-stretch:115%;letter-spacing:-.03em;line-height:.95}
+.lede{margin:0;font-size:17px;line-height:1.55;color:var(--body);text-wrap:pretty}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(28px,5vw,64px);align-items:start}
+.split .side{display:flex;flex-direction:column;gap:18px;position:sticky;top:100px}
+@media(max-width:820px){.split .side{position:static}}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:12px;background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:20px}
+.chip{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line2);background:#fff;color:var(--ink);font-size:14px;font-weight:600;white-space:nowrap}
+.chip[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.chip.sq{border-radius:12px;padding:0 8px}
+.sel{min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:999px;background:var(--paper);font-size:14px;font-weight:600;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px}
+.car{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.car:hover{transform:translateY(-3px);box-shadow:0 20px 40px -24px rgba(22,21,15,.35)}
+.car .ph{display:block;padding:0;border:0;aspect-ratio:4/3;background:#E6E1D6;position:relative;overflow:hidden;cursor:zoom-in;width:100%}
+.car .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.tag{position:absolute;top:12px;font-size:12px;padding:5px 10px;border-radius:999px}
+.tag.l{left:12px;background:var(--ink);color:var(--paper);font-weight:700}
+.tag.r{right:12px;background:#fff;color:var(--ink);font-weight:600}
+.car .bd{padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px;flex:1}
+.car .ttl{padding:0;border:0;background:none;text-align:left;font-size:19px;font-weight:800;font-stretch:110%;line-height:1.15;color:var(--ink)}
+.car .ttl:hover{color:var(--rust)}
+.car .sp{font-size:12px;color:var(--muted);margin-top:6px}
+.car .pr{margin-top:auto}
+.car .pr small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.car .pr b{font-size:24px;font-weight:800;font-stretch:112%}
+.car .pr span{display:block;font-size:13px;color:var(--body);margin-top:2px}
+.car .act{display:grid;grid-template-columns:1fr auto;gap:8px}
+.empty{padding:48px 24px;text-align:center;border:1.5px dashed var(--line2);border-radius:22px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:22px}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld>span{font-size:13px;font-weight:700;display:flex;justify-content:space-between}
+.inp{min-height:50px;padding:0 14px;border:1px solid var(--line2);border-radius:12px;background:var(--paper);font-size:16px;color:var(--ink);width:100%}
+input[type=range]{width:100%;accent-color:var(--rust);height:28px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.gd{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}
+.res{background:var(--ink);color:var(--paper);border-radius:18px;padding:22px}
+.res .k{font-size:13px;color:#B5B0A3}
+.res .v{font-size:clamp(24px,3vw,32px);font-weight:800;font-stretch:112%;margin-top:4px}
+.res .big{font-size:clamp(32px,4.5vw,48px);font-stretch:115%;color:var(--peach)}
+.res .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid #34322A;padding-top:14px;margin-top:14px;font-size:13px}
+.res .row b{display:block;margin-top:2px}
+.note{margin:0;font-size:13px;line-height:1.5;color:var(--muted)}
+.big-wa{min-height:52px;font-size:15px;width:100%}
+.big-wa[disabled]{background:var(--line2);color:var(--muted);cursor:not-allowed}
+.preview{border:1.5px dashed var(--line2);border-radius:16px;padding:18px;font-size:14px;line-height:1.5;color:var(--body)}
+.preview strong{color:var(--green);display:block;margin-bottom:4px}
+footer{border-top:1px solid var(--line);background:#EFECE5}
+footer .wrap{padding-top:48px;padding-bottom:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:32px}
+footer h5{margin:0 0 4px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+footer .col{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.linkbtn{padding:0;border:0;background:none;text-align:left;font-size:14px;color:var(--green);font-weight:700}
+.fab{position:fixed;right:18px;bottom:18px;z-index:30;width:58px;height:58px;border-radius:50%;border:0;background:var(--green);color:#fff;font-weight:800;font-size:12px;box-shadow:0 12px 30px -10px rgba(30,142,78,.7)}
+.fab:hover{background:var(--green2)}
+@media(max-width:560px){header.top .btn-wa{display:none}header.top .wrap{gap:12px}}
+.ov{position:fixed;inset:0;display:none}
+.ov.open{display:flex}
+#detail{z-index:40;background:rgba(22,21,15,.6);justify-content:center;align-items:flex-start;overflow-y:auto;padding:clamp(0px,3vw,40px)}
+.dbox{width:100%;max-width:1040px;background:var(--paper);border-radius:clamp(0px,2vw,28px);overflow:hidden;animation:ya-pop .25s ease;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.dimg{position:relative;background:var(--ink);min-height:300px;background-size:cover;background-position:center}
+.dnav{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.round{width:46px;height:46px;border:0;border-radius:50%;background:rgba(246,244,239,.92);color:var(--ink);font-size:18px}
+.cnt{background:rgba(22,21,15,.75);color:var(--paper);font-size:12px;padding:6px 10px;border-radius:999px}
+.dbody{padding:clamp(20px,3vw,36px);display:flex;flex-direction:column;gap:20px;position:relative}
+.x{position:absolute;top:14px;right:14px;width:44px;height:44px;border:0;border-radius:50%;background:var(--line);color:var(--ink);font-size:16px}
+.dtags{display:flex;gap:6px;flex-wrap:wrap;padding-right:52px}
+.dtags span{font-size:12px;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.dtags .a{background:var(--ink);color:var(--paper);font-weight:700}
+.dtags .b{border:1px solid var(--line2);font-weight:600}
+.dbody h3{margin:0;font-size:clamp(28px,3.5vw,40px);font-weight:800;font-stretch:115%;letter-spacing:-.02em;line-height:1}
+.dprice{font-size:30px;font-weight:800;font-stretch:112%;color:var(--rust);margin-top:12px}
+dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
+dl div{padding:12px 0;border-bottom:1px solid var(--line)}
+dt{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+dd{margin:4px 0 0;font-weight:700;font-size:15px}
+#chat{z-index:50;background:rgba(22,21,15,.55);align-items:flex-end;justify-content:center;padding:16px}
+.cbox{width:100%;max-width:440px;background:#ECE5DD;border-radius:24px;overflow:hidden;animation:ya-pop .25s ease;margin:auto 0}
+.chead{background:var(--ink);color:var(--paper);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.av{width:38px;height:38px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.chead .x{position:static;background:#2A2820;color:var(--paper)}
+.bubble{align-self:flex-end;max-width:88%;background:#DCF8C6;padding:10px 12px 6px;border-radius:14px 14px 4px 14px;font-size:15px;line-height:1.45;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.bubble i{display:block;font-style:normal;text-align:right;font-size:11px;color:#6B7A66;margin-top:4px}
+.cnote{font-size:12px;color:#5f6b66;text-align:center;margin:10px 0 0}
+</style>
+</head>
+<body>
+<div id="top" style="min-height:100vh">
+
+<div class="bar"><span>A website concept prepared for <strong data-brand-lc>your dealership</strong> by <strong>Zebraish Studio</strong>. Sample cars and prices.</span><a id="pitchLink" href="pitch.html">See the pitch →</a></div>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" class="brand"><span class="mark" data-initials>AU</span><span class="brand-t"><strong data-brand>Your Autos</strong><span data-city>Lagos · Car dealer</span></span></a>
+    <nav class="links" aria-label="Sections"><a href="#cars">Cars</a><a href="#swap">Swap</a><a href="#pay">Pay small small</a><a href="#visit">Book inspection</a></nav>
+    <button class="btn-wa" data-ask="general"><span class="dot"></span>Chat on WhatsApp</button>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="/zb/dealer/media/hero-911.webp" alt="Silver sports car on a highway at night">
+  <div class="shade"></div>
+  <div class="wrap">
+    <div class="hero-in">
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill mono">Tokunbo</span><span class="pill mono">Nigerian used</span></div>
+      <h1><span style="display:inline;color:inherit" data-brand>Your Autos</span>.<span>Clean cars, clear prices.</span></h1>
+      <p>Browse every car in stock with clear prices, swap your old car, spread the payment, and book an inspection, all before you leave the house. Then chat with us on WhatsApp to close.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a href="#cars" class="cta1">See cars in stock <span>→</span></a><a href="#swap" class="cta2">What's my car worth?</a></div>
+      <div class="stats"><div><b id="carCount">9</b><span>cars in this demo</span></div><div><b>Swap</b><span>your old car</span></div><div><b>WhatsApp</b><span>straight to sales</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" style="padding-top:32px;padding-bottom:24px">
+  <div class="feat">
+    <a href="#cars"><span class="n mono">01</span><strong>Every car online</strong><em>Photos, price, mileage</em></a>
+    <a href="#swap"><span class="n mono">02</span><strong>Swap your car</strong><em>Instant estimate</em></a>
+    <a href="#pay"><span class="n mono">03</span><strong>Pay small small</strong><em>See the monthly cost</em></a>
+    <a href="#visit"><span class="n mono">04</span><strong>WhatsApp first</strong><em>Leads land in your chat</em></a>
+  </div>
+</section>
+
+<section id="cars" class="wrap sec">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px;align-items:end;margin-bottom:32px">
+    <div><div class="eyebrow mono" style="margin-bottom:14px">Showroom · sample cars</div><h2 class="h2">Cars in stock.</h2></div>
+    <p class="lede">Buyers filter by body type, condition and budget. One tap opens WhatsApp with the exact car already in the message, so your team never has to ask "which one?"</p>
+  </div>
+  <div class="filters">
+    <div style="display:flex;gap:6px;flex-wrap:wrap" id="bodyChips" role="group" aria-label="Body type"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto">
+      <select class="sel" id="fCond" aria-label="Condition"><option value="Any">Any condition</option><option value="Tokunbo">Tokunbo (foreign used)</option><option value="Nigerian used">Nigerian used</option></select>
+      <select class="sel" id="fBudget" aria-label="Budget"><option value="Any">Any budget</option><option value="10">Under ₦10m</option><option value="15">Under ₦15m</option><option value="20">Under ₦20m</option></select>
+    </div>
+  </div>
+  <div class="mono" style="font-size:13px;color:var(--muted);margin-bottom:16px" id="resultLabel"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>
+    <strong style="font-size:20px">No cars match those filters.</strong>
+    <span style="color:var(--muted)">Tell us what you want and we'll find it for you.</span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn-line" id="reset">Clear filters</button><button class="btn-wa" data-ask="request">Request a car</button></div>
+  </div>
+</section>
+
+<section id="swap" class="wrap sec split">
+  <div class="side"><div class="eyebrow mono">Swap estimator</div><h2 class="h2">Swap your car. See the balance.</h2><p class="lede">"How much will you give me for my car?" answered before the first message. Buyers arrive with a number in mind and a car they want.</p></div>
+  <div class="card">
+    <label class="fld"><span>Your current car</span><select class="inp" id="swapModel"></select></label>
+    <label class="fld"><span><span>Year</span><span class="mono" id="swapYearV">2012</span></span><input type="range" min="2008" max="2020" step="1" value="2012" id="swapYear"></label>
+    <div class="fld"><span id="lCond">Condition</span><div class="g3" id="condChips" role="group" aria-labelledby="lCond"></div></div>
+    <label class="fld"><span>Swap into</span><select class="inp" id="swapInto"></select></label>
+    <div class="res" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+      <div><div class="k">Estimated value of your car</div><div class="v" id="swapValue"></div></div>
+      <div><div class="k" id="swapBalLabel"></div><div class="v" style="color:var(--peach)" id="swapBal"></div></div>
+    </div>
+    <p class="note">Illustrative estimate for this concept. The live site uses your own swap prices, and your team confirms after inspection.</p>
+    <button class="btn-wa big-wa" data-ask="swap">Send my swap request</button>
+  </div>
+</section>
+
+<section id="pay" class="wrap sec split">
+  <div class="side"><div class="eyebrow mono">Pay small small</div><h2 class="h2">See the monthly cost.</h2><p class="lede">For buyers who can't pay everything at once. Show them a clear plan and they move from "I'm just looking" to "let's talk".</p></div>
+  <div class="card">
+    <label class="fld"><span>Car</span><select class="inp" id="payCar"></select></label>
+    <label class="fld"><span><span>Deposit <span id="depPct">40</span>%</span><span class="mono" id="depAmtTop"></span></span><input type="range" min="20" max="70" step="5" value="40" id="deposit"></label>
+    <div class="fld"><span id="lMon">Spread over</span><div class="g3" id="monthChips" role="group" aria-labelledby="lMon"></div></div>
+    <div class="res">
+      <div class="k">Estimated monthly payment</div><div class="v big" id="monthly"></div>
+      <div class="row"><div><span class="k">Pay today</span><b id="depAmt"></b></div><div><span class="k">Balance</span><b id="payBal"></b></div><div><span class="k">Total</span><b id="payTotal"></b></div></div>
+    </div>
+    <p class="note">Illustrative plan for this concept. Real terms come from you or your finance partner.</p>
+    <button class="btn-wa big-wa" data-ask="pay">Ask about this plan</button>
+  </div>
+</section>
+
+<section id="visit" class="wrap sec split" style="padding-bottom:clamp(56px,8vw,112px)">
+  <div class="side"><div class="eyebrow mono">Book an inspection</div><h2 class="h2">Come and see it. Pick a time.</h2><p class="lede">Buyers book a slot to inspect or test drive. You get the booking in WhatsApp with the car, the day and the time.</p></div>
+  <div class="card">
+    <label class="fld"><span>Car to inspect</span><select class="inp" id="bookCar"></select></label>
+    <div class="fld"><span id="lDay">Day</span><div class="gd" id="dayChips" role="group" aria-labelledby="lDay"></div></div>
+    <div class="fld"><span id="lTime">Time</span><div class="g4" id="timeChips" role="group" aria-labelledby="lTime"></div></div>
+    <label class="fld"><span>Your name</span><input type="text" class="inp" id="name" placeholder="e.g. Tunde Adebayo" autocomplete="off" maxlength="40"></label>
+    <button class="btn-wa big-wa" id="bookBtn" data-ask="book" disabled>Add your name to book</button>
+    <div class="preview" id="bookPreview" aria-live="polite"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="col" style="gap:12px">
+      <a href="#top" class="brand"><span class="mark" data-initials>AU</span><span class="brand-t"><strong data-brand>Your Autos</strong><span data-city>Lagos · Car dealer</span></span></a>
+      <span style="font-size:13px;color:var(--muted)">Concept by Zebraish Studio. Not an official website.</span>
+    </div>
+    <div class="col"><h5 class="mono">Explore</h5><a href="#cars">Cars in stock</a><a href="#swap">Swap</a><a href="#pay">Pay small small</a><a href="#visit">Book inspection</a></div>
+    <div class="col"><h5 class="mono">Talk to us</h5><button class="linkbtn" data-ask="general">Chat on WhatsApp</button><span id="footCity">Lagos, Nigeria</span></div>
+  </div>
+</footer>
+
+<button class="fab" data-ask="general" aria-label="Chat on WhatsApp">Chat</button>
+
+<div class="ov" id="detail" role="dialog" aria-modal="true" aria-label="Car details">
+  <div class="dbox">
+    <div class="dimg" id="dImg" role="img"><div class="dnav"><button class="round" id="dPrev" aria-label="Previous car">←</button><span class="cnt mono" id="dCount"></span><button class="round" id="dNext" aria-label="Next car">→</button></div></div>
+    <div class="dbody">
+      <button class="x" data-close="detail" aria-label="Close">✕</button>
+      <div class="dtags" id="dTags"></div>
+      <div><h3 id="dTitle"></h3><div class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px">Sample price</div><div class="dprice" id="dPrice" style="margin-top:2px"></div><div style="font-size:14px;color:var(--body);margin-top:4px">or from <strong id="dFrom"></strong>/month with pay small small</div></div>
+      <dl id="dSpecs"></dl>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
+        <button class="btn-wa big-wa" id="dAsk">Ask about this car on WhatsApp</button>
+        <div class="g3" style="gap:8px"><button class="btn-line" style="font-size:13px" id="dBook">Inspect</button><button class="btn-line" style="font-size:13px" id="dSwap">Swap for it</button><button class="btn-line" style="font-size:13px" id="dPay">Plan</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="chat" role="dialog" aria-modal="true" aria-label="WhatsApp message preview">
+  <div class="cbox">
+    <div class="chead"><span class="av" id="mAv">AU</span><span style="flex:1;display:flex;flex-direction:column;line-height:1.2"><strong id="mTo">Your Autos</strong><span style="font-size:12px;color:#B5B0A3">Preview of the WhatsApp message</span></span><button class="x" data-close="chat" aria-label="Close">✕</button></div>
+    <div style="padding:24px 16px;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end"><div class="bubble"><span id="mMsg"></span><i>now ✓✓</i></div></div>
+    <div style="padding:0 16px 16px"><a id="mLink" target="_blank" rel="noopener" class="btn-wa big-wa">Open in WhatsApp</a><p class="cnote" id="mNote"></p></div>
+  </div>
+</div>
+
+</div>
+<script>
+(() => {
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const naira = n => "₦" + Math.round(n).toLocaleString("en-US");
+
+/* Personalised by link: ?for=Banix%20Motors&city=Ikeja&wa=2348035376690 */
+const q = new URLSearchParams(location.search);
+const clean = (v, max) => (v || "").replace(/[<>"&]/g, "").trim().slice(0, max);
+const personal = !!clean(q.get("for"), 40);
+const BRAND = clean(q.get("for"), 40) || "Your Autos";
+const CITY = clean(q.get("city"), 30) || (personal ? "Nigeria" : "Lagos");
+const WA = (q.get("wa") || "").replace(/\D/g, "").slice(0, 15);
+const INIT = BRAND.split(/\s+/).filter(Boolean).slice(0, 2).map(w => [...w][0].toUpperCase()).join("") || "AU";
+if (personal) { $$("[data-brand]").forEach(e => e.textContent = BRAND); $$("[data-brand-lc]").forEach(e => e.textContent = BRAND); }
+$$("[data-initials]").forEach(e => e.textContent = INIT);
+$$("[data-city]").forEach(e => e.textContent = CITY + " · Car dealer");
+$("#footCity").textContent = CITY === "Nigeria" ? "Nigeria" : CITY + ", Nigeria";
+document.title = BRAND + " · Car Dealer Concept by Zebraish";
+$("#pitchLink").href = (location.pathname.endsWith(".html") ? "pitch.html" : "/dealer/pitch") + location.search;
+
+const CARS = [
+ {id:"c300",year:2016,make:"Mercedes-Benz",model:"C300",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:23800000,km:"59,000 km",trans:"Automatic",engine:"2.0L turbo",img:"/zb/dealer/cars/c300-2016.webp",note:"Fullest option"},
+ {id:"es350",year:2016,make:"Lexus",model:"ES 350",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:21500000,km:"72,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/es350-2016.webp"},
+ {id:"hilux",year:2018,make:"Toyota",model:"HiLux WorkMate",body:"Pickups",label:"Pickup",cond:"Tokunbo",price:24000000,km:"68,000 km",trans:"Manual",engine:"2.7L",img:"/zb/dealer/cars/hilux-2018.webp"},
+ {id:"highlander",year:2014,make:"Toyota",model:"Highlander Limited",body:"SUVs",label:"SUV",cond:"Nigerian used",price:15800000,km:"128,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/highlander-2014.webp"},
+ {id:"rx350",year:2011,make:"Lexus",model:"RX 350",body:"SUVs",label:"SUV",cond:"Nigerian used",price:13200000,km:"134,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/rx350-2011.webp"},
+ {id:"venza",year:2011,make:"Toyota",model:"Venza",body:"SUVs",label:"Crossover",cond:"Tokunbo",price:11500000,km:"112,000 km",trans:"Automatic",engine:"2.7L",img:"/zb/dealer/cars/venza-2011.webp"},
+ {id:"accord",year:2014,make:"Honda",model:"Accord EX-L V6 Coupe",body:"Sedans",label:"Coupe",cond:"Nigerian used",price:9800000,km:"121,000 km",trans:"Automatic",engine:"3.5L V6",img:"/zb/dealer/cars/accord-coupe-2014.webp"},
+ {id:"corolla",year:2014,make:"Toyota",model:"Corolla",body:"Sedans",label:"Sedan",cond:"Tokunbo",price:9200000,km:"96,000 km",trans:"Automatic",engine:"1.8L",img:"/zb/dealer/cars/corolla-2014.webp"},
+ {id:"camry",year:2012,make:"Toyota",model:"Camry",body:"Sedans",label:"Sedan",cond:"Nigerian used",price:7900000,km:"141,000 km",trans:"Automatic",engine:"2.5L",img:"/zb/dealer/cars/camry-2012.webp"}
+];
+const SWAP = {"Toyota Corolla":9.5e6,"Toyota Camry":13e6,"Honda Accord":12e6,"Lexus RX 350":24e6,"Toyota Highlander":18e6,"Mercedes-Benz C300":12.5e6};
+const COND = {"Fair":.82,"Good":1,"Very good":1.12};
+const TIMES = ["10:00","12:00","14:00","16:00"];
+const RATE = .025; // flat monthly markup on the balance, shared by every monthly figure on the page
+const title = c => c.year + " " + c.make + " " + c.model;
+const byId = id => CARS.find(c => c.id === id) || CARS[0];
+const monthlyOf = (price, dep = 40, m = 12) => price * (1 - dep / 100) * (1 + RATE * m) / m;
+const DAYS = (() => { const out = [], d = new Date(); while (out.length < 6) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0) out.push(d.toLocaleDateString("en-GB", {weekday:"short", day:"numeric", month:"short"})); } return out; })();
+const s = {body:"All", cond:"Any", budget:"Any", swapModel:"Toyota Corolla", swapYear:2012, swapCond:"Good", swapInto:"camry", payCar:"camry", deposit:40, months:12, bookCar:"camry", day:DAYS[0], time:"12:00", name:"", ready:false, detail:null};
+$("#carCount").textContent = CARS.length;
+
+/* chips: one pattern for every toggle group */
+function chips(el, items, key, cls, fn) {
+  el.innerHTML = "";
+  items.forEach(v => { const b = document.createElement("button"); b.type = "button"; b.className = "chip" + (cls ? " " + cls : ""); b.textContent = typeof v === "number" ? v + " months" : v; b.dataset.v = v;
+    b.onclick = () => { s[key] = typeof v === "number" ? v : v; if (key === "day" || key === "time") s.ready = false; sync(el, key); fn(); }; el.appendChild(b); });
+  sync(el, key);
+}
+function sync(el, key) { [...el.children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v) === String(s[key]))); }
+
+/* ---------- showroom ---------- */
+function renderCars() {
+  const list = CARS.filter(c => (s.body === "All" || c.body === s.body) && (s.cond === "Any" || c.cond === s.cond) && (s.budget === "Any" || c.price < Number(s.budget) * 1e6));
+  $("#resultLabel").textContent = list.length + (list.length === 1 ? " sample car" : " sample cars") + " match";
+  $("#empty").hidden = list.length > 0;
+  $("#grid").innerHTML = list.map(c => `
+    <article class="car">
+      <button class="ph" data-open="${c.id}" aria-label="View ${title(c)}"><img src="${c.img}" alt="${title(c)}" loading="lazy"><span class="tag l">${c.cond}</span><span class="tag r">${c.label}</span></button>
+      <div class="bd">
+        <div><button class="ttl" data-open="${c.id}">${title(c)}</button><div class="sp mono">${c.km} · ${c.trans} · ${c.engine}</div></div>
+        <div class="pr"><small class="mono">Sample price</small><b>${naira(c.price)}</b><span>or from ${naira(monthlyOf(c.price))}/mo</span></div>
+        <div class="act"><button class="btn-wa" data-askcar="${c.id}">Ask on WhatsApp</button><button class="btn-line" data-bookcar="${c.id}">Inspect</button></div>
+      </div>
+    </article>`).join("");
+}
+chips($("#bodyChips"), ["All","Sedans","SUVs","Pickups"], "body", "", renderCars);
+$("#fCond").onchange = e => { s.cond = e.target.value; renderCars(); };
+$("#fBudget").onchange = e => { s.budget = e.target.value; renderCars(); };
+$("#reset").onclick = () => { s.body = "All"; s.cond = "Any"; s.budget = "Any"; $("#fCond").value = "Any"; $("#fBudget").value = "Any"; sync($("#bodyChips"), "body"); renderCars(); };
+$("#grid").addEventListener("click", e => {
+  const o = e.target.closest("[data-open]"), a = e.target.closest("[data-askcar]"), b = e.target.closest("[data-bookcar]");
+  if (o) openDetail(o.dataset.open);
+  if (a) askCar(byId(a.dataset.askcar));
+  if (b) { s.bookCar = b.dataset.bookcar; s.ready = false; $("#bookCar").value = s.bookCar; renderBook(); go("visit"); }
+});
+
+/* ---------- selects ---------- */
+const opts = CARS.map(c => `<option value="${c.id}">${title(c)} · ${naira(c.price)}</option>`).join("");
+["#swapInto","#payCar","#bookCar"].forEach(id => $(id).innerHTML = opts);
+$("#swapInto").value = s.swapInto; $("#payCar").value = s.payCar; $("#bookCar").value = s.bookCar;
+$("#swapModel").innerHTML = Object.keys(SWAP).map(m => `<option>${m}</option>`).join("");
+
+/* ---------- swap ---------- */
+let swapCalc = {};
+function renderSwap() {
+  const age = 2018 - s.swapYear;
+  const value = Math.round(SWAP[s.swapModel] * Math.pow(age >= 0 ? .9 : 1.08, Math.abs(age)) * COND[s.swapCond] / 50000) * 50000;
+  const into = byId(s.swapInto), bal = into.price - value;
+  $("#swapYearV").textContent = s.swapYear; $("#swapValue").textContent = naira(value);
+  $("#swapBalLabel").textContent = bal >= 0 ? "You add" : "We pay you"; $("#swapBal").textContent = naira(Math.abs(bal));
+  swapCalc = {value, into, bal};
+}
+$("#swapModel").onchange = e => { s.swapModel = e.target.value; renderSwap(); };
+$("#swapYear").oninput = e => { s.swapYear = Number(e.target.value); renderSwap(); };
+$("#swapInto").onchange = e => { s.swapInto = e.target.value; renderSwap(); };
+chips($("#condChips"), Object.keys(COND), "swapCond", "sq", renderSwap);
+
+/* ---------- pay small small ---------- */
+let payCalc = {};
+function renderPay() {
+  const pc = byId(s.payCar), dep = pc.price * s.deposit / 100, rest = pc.price - dep, mon = monthlyOf(pc.price, s.deposit, s.months), total = mon * s.months;
+  $("#depPct").textContent = s.deposit; $("#depAmtTop").textContent = naira(dep); $("#depAmt").textContent = naira(dep);
+  $("#payBal").textContent = naira(rest); $("#payTotal").textContent = naira(dep + total); $("#monthly").textContent = naira(mon);
+  payCalc = {pc, dep, mon};
+}
+$("#payCar").onchange = e => { s.payCar = e.target.value; renderPay(); };
+$("#deposit").oninput = e => { s.deposit = Number(e.target.value); renderPay(); };
+chips($("#monthChips"), [6,12,18], "months", "sq", renderPay);
+
+/* ---------- booking ---------- */
+function renderBook() {
+  const bc = byId(s.bookCar), ok = s.name.trim().length > 1, btn = $("#bookBtn"), p = $("#bookPreview");
+  btn.disabled = !ok; btn.textContent = ok ? "Book inspection" : "Add your name to book";
+  p.innerHTML = "";
+  if (s.ready) { const st = document.createElement("strong"); st.textContent = "Booking request ready ✓"; p.appendChild(st); p.appendChild(document.createTextNode(title(bc) + " on " + s.day + " at " + s.time + ". Send it on WhatsApp and the team confirms there.")); }
+  else p.textContent = title(bc) + " · " + s.day + " · " + s.time + (ok ? " · " + s.name.trim() : "");
+}
+$("#bookCar").onchange = e => { s.bookCar = e.target.value; s.ready = false; renderBook(); };
+$("#name").oninput = e => { s.name = e.target.value; s.ready = false; renderBook(); };
+chips($("#dayChips"), DAYS, "day", "sq", renderBook);
+chips($("#timeChips"), TIMES, "time", "sq", renderBook);
+
+/* ---------- WhatsApp preview ---------- */
+const chat = $("#chat");
+function openMsg(msg, toJoshua) {
+  $("#mMsg").textContent = msg;
+  $("#mTo").textContent = toJoshua ? "Joshua · Zebraish" : BRAND;
+  $("#mAv").textContent = toJoshua ? "JB" : INIT;
+  const num = toJoshua ? "2348165320780" : WA;
+  $("#mLink").href = "https://wa.me/" + num + "?text=" + encodeURIComponent(msg);
+  $("#mNote").textContent = num ? "" : "On the live site this opens WhatsApp to your number. Here it lets you pick a chat.";
+  chat.classList.add("open"); $("#mLink").focus();
+}
+const askCar = c => openMsg("Hi " + BRAND + ", is the " + title(c) + " (" + c.cond + ", " + naira(c.price) + ") still available? I saw it on your website.");
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-ask]"); if (!t || t.disabled) return;
+  const k = t.dataset.ask, c = swapCalc, p = payCalc;
+  if (k === "general") openMsg("Hi " + BRAND + ", I am looking for a car. Can you help?");
+  if (k === "request") openMsg("Hi " + BRAND + ", I am looking for a " + (s.body === "All" ? "car" : s.body.replace(/s$/, "").toLowerCase()) + (s.cond !== "Any" ? " (" + s.cond + ")" : "") + (s.budget !== "Any" ? " under ₦" + s.budget + "m" : "") + ". Do you have anything coming in?");
+  if (k === "swap") openMsg("Hi " + BRAND + ", I want to swap my " + s.swapYear + " " + s.swapModel + " (" + s.swapCond.toLowerCase() + " condition) for the " + title(c.into) + ". Your site estimated my car at " + naira(c.value) + (c.bal >= 0 ? ", so I add " + naira(c.bal) : ", so you pay me " + naira(-c.bal)) + ". When can I bring it for inspection?");
+  if (k === "pay") openMsg("Hi " + BRAND + ", I am interested in the " + title(p.pc) + " on a pay small small plan: " + s.deposit + "% deposit (" + naira(p.dep) + "), " + s.months + " months at about " + naira(p.mon) + " per month. Can we talk?");
+  if (k === "book") { s.ready = true; renderBook(); openMsg("Hi " + BRAND + ", I would like to book an inspection for the " + title(byId(s.bookCar)) + " on " + s.day + " at " + s.time + ". My name is " + clean(s.name, 40) + "."); }
+});
+$("#mLink").addEventListener("click", () => chat.classList.remove("open"));
+
+/* ---------- car detail ---------- */
+const detail = $("#detail");
+function openDetail(id) {
+  const c = byId(id), i = CARS.indexOf(c); s.detail = c.id;
+  $("#dImg").style.backgroundImage = 'url("' + c.img + '")'; $("#dImg").setAttribute("aria-label", title(c));
+  $("#dCount").textContent = (i + 1) + " / " + CARS.length;
+  $("#dTags").innerHTML = `<span class="a">${c.cond}</span>` + (c.note ? `<span class="b">${c.note}</span>` : "");
+  $("#dTitle").textContent = title(c); $("#dPrice").textContent = naira(c.price); $("#dFrom").textContent = naira(monthlyOf(c.price));
+  $("#dSpecs").innerHTML = [["Year",c.year],["Condition",c.cond],["Mileage",c.km],["Transmission",c.trans],["Engine",c.engine],["Body",c.label]].map(([k,v]) => `<div><dt class="mono">${k}</dt><dd>${v}</dd></div>`).join("");
+  detail.classList.add("open");
+}
+const step = d => { const i = CARS.findIndex(c => c.id === s.detail); openDetail(CARS[(i + d + CARS.length) % CARS.length].id); };
+$("#dPrev").onclick = () => step(-1); $("#dNext").onclick = () => step(1);
+const fromDetail = (fn, sec) => () => { const c = byId(s.detail); detail.classList.remove("open"); fn(c); setTimeout(() => go(sec), 30); };
+$("#dAsk").onclick = () => { detail.classList.remove("open"); askCar(byId(s.detail)); };
+$("#dBook").onclick = fromDetail(c => { s.bookCar = c.id; s.ready = false; $("#bookCar").value = c.id; renderBook(); }, "visit");
+$("#dSwap").onclick = fromDetail(c => { s.swapInto = c.id; $("#swapInto").value = c.id; renderSwap(); }, "swap");
+$("#dPay").onclick = fromDetail(c => { s.payCar = c.id; $("#payCar").value = c.id; renderPay(); }, "pay");
+
+/* ---------- overlays ---------- */
+const go = id => { const el = document.getElementById(id); if (el) window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth"}); };
+$$("[data-close]").forEach(b => b.onclick = () => $("#" + b.dataset.close).classList.remove("open"));
+[detail, chat].forEach(o => o.addEventListener("click", e => { if (e.target === o) o.classList.remove("open"); }));
+document.addEventListener("keydown", e => { if (e.key === "Escape") { detail.classList.remove("open"); chat.classList.remove("open"); } });
+
+renderCars(); renderSwap(); renderPay(); renderBook();
+})();
+</script>
+</body>
+</html>

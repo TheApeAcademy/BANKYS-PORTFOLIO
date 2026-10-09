@@ -50,6 +50,14 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "4mb",
     },
   },
+  // The car dealer pitch concept is plain static HTML in public/zb/dealer;
+  // these give it clean links for WhatsApp outreach (/dealer?for=...).
+  async rewrites() {
+    return [
+      { source: "/dealer", destination: "/zb/dealer/index.html" },
+      { source: "/dealer/pitch", destination: "/zb/dealer/pitch.html" },
+    ];
+  },
   async headers() {
     return [
       {

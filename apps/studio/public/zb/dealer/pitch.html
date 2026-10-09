@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why we built this · Zebraish Studio</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#16150F;--paper:#F6F4EF;--peach:#F2A57A;--line:#34322A;--soft:#C9C4B8;--card:#1D1C16;--green:#1E8E4E;--pad:clamp(16px,4vw,40px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.topbar{border-bottom:1px solid var(--line)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.back{color:var(--paper);font-weight:700;font-size:14px;min-height:44px;display:flex;align-items:center;gap:8px}
+.back:hover{color:var(--peach)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--peach)}
+h2{margin:0;font-weight:800;font-stretch:115%;letter-spacing:-.03em}
+.hero{padding-top:clamp(64px,9vw,128px);padding-bottom:48px}
+.hero h2{font-size:clamp(36px,6vw,76px);line-height:.95;max-width:16ch;text-wrap:balance}
+.hero h2 span{color:var(--peach)}
+.hero p{margin:28px 0 0;font-size:18px;line-height:1.6;color:var(--soft);max-width:60ch;text-wrap:pretty}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1px;background:var(--line);border-radius:20px;overflow:hidden;padding:0;margin-top:24px;margin-bottom:72px}
+.cards>div{background:var(--card);padding:28px;display:flex;flex-direction:column;gap:12px}
+.cards h3{margin:0;font-size:22px;font-weight:800;font-stretch:110%}
+.cards p{margin:0;font-size:15px;line-height:1.55;color:var(--soft)}
+.cards ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.cards li::before{content:"· ";color:var(--peach);font-weight:800}
+.work{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px}
+.work a{color:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.work a:hover{background:var(--card);border-color:var(--peach)}
+.work strong{font-stretch:115%;letter-spacing:.04em}
+.work .d{font-size:14px;color:var(--soft)}
+.work .go{color:var(--peach);font-size:13px;white-space:nowrap}
+.end{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:24px;padding-top:24px;padding-bottom:clamp(64px,9vw,120px)}
+.me{border:1px solid var(--line);border-radius:24px;padding:28px;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.avatar{width:72px;height:72px;border-radius:50%;flex:none;background:repeating-linear-gradient(135deg,#F6F4EF 0 6px,#16150F 6px 12px);border:2px solid var(--peach)}
+.me h3{margin:0 0 10px;font-size:20px;font-weight:800;font-stretch:110%}
+.me p{margin:0;font-size:15px;line-height:1.6;color:var(--soft);text-wrap:pretty}
+.cta{background:var(--paper);color:var(--ink);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:16px;justify-content:space-between}
+.cta h2{font-size:clamp(32px,4vw,48px);line-height:1;margin-bottom:10px}
+.cta p{margin:0;font-size:16px;line-height:1.55;color:#4A463D}
+.b1{min-height:50px;padding:0 22px;border-radius:999px;background:var(--green);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center}
+.b2{min-height:50px;padding:0 22px;border-radius:999px;border:1.5px solid var(--ink);font-weight:700;display:flex;align-items:center}
+.b1:hover{background:#18773F}.b2:hover{background:var(--ink);color:var(--paper)}
+.fine{text-align:center;padding:0 16px 32px;font-size:12px;color:#8A8578}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap"><a class="back" id="back" href="index.html">← Back to the <span data-brand>Your Autos</span> concept</a><span class="mono" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#B5B0A3">Zebraish Studio</span></div></div>
+<main id="pitch">
+  <section class="wrap hero">
+    <div class="eyebrow mono" style="margin-bottom:20px">Zebraish Studio × <span data-brand-lc>you</span> · Why we built this for you</div>
+    <h2>Your cars deserve more than a feed. <span>Give buyers a showroom that's open 24/7.</span></h2>
+    <p>Instagram and WhatsApp are where the chats happen. A website is where buyers decide. The concept you just saw was built for <span data-brand-lc>you</span>, and it sends every serious buyer straight back into your WhatsApp.</p>
+  </section>
+  <section class="wrap" style="padding:0">
+    <div class="cards" style="margin-left:var(--pad);margin-right:var(--pad)">
+      <div><span class="mono eyebrow" style="letter-spacing:0">01 · SHOWROOM</span><h3>Every car, always findable</h3><p>Posts get buried in a feed within days. A showroom keeps every car in stock one search away, with price, mileage and condition clear up front.</p><ul><li>Fewer "price?" messages</li><li>Easier to find on Google</li><li>One link for your bio and status</li></ul></div>
+      <div><span class="mono eyebrow" style="letter-spacing:0">02 · SWAP</span><h3>Swaps that start warm</h3><p>The swap estimator gives buyers a number before they message, so the chat starts with a real car and a real budget.</p><ul><li>Serious buyers, not window shoppers</li><li>Your prices, your rules</li><li>Confirmed after inspection</li></ul></div>
+      <div><span class="mono eyebrow" style="letter-spacing:0">03 · PAY SMALL SMALL</span><h3>More buyers can say yes</h3><p>A clear monthly plan turns "I can't afford it right now" into a conversation, whether you finance in-house or work with a partner.</p><ul><li>Deposit and months on a slider</li><li>Plan sent straight to WhatsApp</li><li>You set the terms</li></ul></div>
+      <div><span class="mono eyebrow" style="letter-spacing:0">04 · BOOKINGS</span><h3>Inspections, organised</h3><p>Buyers pick a day and time to come and see the car. The booking lands in your WhatsApp with every detail attached.</p><ul><li>Fewer back-and-forth chats</li><li>Every booking in one place</li><li>Designed phone-first</li></ul></div>
+    </div>
+  </section>
+  <section class="wrap" style="padding-top:48px;padding-bottom:72px">
+    <div class="eyebrow mono" style="margin-bottom:14px">Work we've built</div>
+    <h2 style="margin:0 0 12px;font-size:clamp(32px,4.5vw,52px);line-height:1">Built by Zebraish.</h2>
+    <p style="margin:0 0 32px;font-size:17px;color:var(--soft);max-width:56ch">Websites, apps and custom software, each one designed around how that business actually sells.</p>
+    <div class="work">
+      <a href="https://malaak-abaya.vercel.app" target="_blank" rel="noopener"><span style="display:flex;flex-direction:column;gap:4px"><strong>MALAAK</strong><span class="d">Modest fashion store with WhatsApp ordering</span></span><span class="go">View live ↗</span></a>
+      <a href="https://aaura-perfume.vercel.app" target="_blank" rel="noopener"><span style="display:flex;flex-direction:column;gap:4px"><strong>AAURA</strong><span class="d">Luxury perfume house with a chat-to-order flow</span></span><span class="go">View live ↗</span></a>
+      <a href="https://reverie-salon.vercel.app" target="_blank" rel="noopener"><span style="display:flex;flex-direction:column;gap:4px"><strong>REVERIE</strong><span class="d">Beauty salon with online booking</span></span><span class="go">View live ↗</span></a>
+      <a href="https://ember-salt-restaurant.vercel.app" target="_blank" rel="noopener"><span style="display:flex;flex-direction:column;gap:4px"><strong>EMBER &amp; SALT</strong><span class="d">Restaurant with menu and reservations</span></span><span class="go">View live ↗</span></a>
+      <a href="https://padi-three.vercel.app" target="_blank" rel="noopener"><span style="display:flex;flex-direction:column;gap:4px"><strong>PADI</strong><span class="d">AI companion platform with a voice call experience</span></span><span class="go">View live ↗</span></a>
+      <a href="https://zebraish.com" target="_blank" rel="noopener"><span style="display:flex;flex-direction:column;gap:4px"><strong>ZEBRAISH.COM</strong><span class="d">Our own studio: configure a project, see a price, pay online</span></span><span class="go">Visit ↗</span></a>
+    </div>
+  </section>
+  <section class="wrap end">
+    <div class="me"><div class="avatar" aria-hidden="true"></div><div style="flex:1;min-width:220px"><h3>Hi, I'm Joshua Bankole, founder of Zebraish.</h3><p>I built this concept for <span data-brand-lc>you</span> to show what your cars could look like online. The real site uses your cars, your photos, your prices and your WhatsApp number, on your own domain. If you like what you see, let's talk.</p></div></div>
+    <div class="cta">
+      <div><h2>Let's get <span data-brand-lc>you</span> online.</h2><p>Fixed price, agreed before we start. You see progress live, and the site launches on your domain.</p></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="b1" id="waJosh" target="_blank" rel="noopener" href="https://wa.me/2348165320780">WhatsApp Joshua</a><a class="b2" href="mailto:hola@zebraish.com?subject=Car%20dealer%20website%20concept">Email hola@zebraish.com</a></div>
+    </div>
+  </section>
+  <div class="fine">This concept was prepared by Zebraish Studio. Cars, prices and estimates are samples.</div>
+</main>
+<script>
+(() => {
+  const q = new URLSearchParams(location.search);
+  const name = (q.get("for") || "").replace(/[<>"&]/g, "").trim().slice(0, 40);
+  if (name) { document.querySelectorAll("[data-brand],[data-brand-lc]").forEach(e => e.textContent = name); document.title = "Why we built this for " + name + " · Zebraish Studio"; }
+  document.getElementById("back").href = (location.pathname.endsWith(".html") ? "index.html" : "/dealer") + location.search;
+  document.getElementById("waJosh").href = "https://wa.me/2348165320780?text=" + encodeURIComponent("Hi Joshua, this is " + (name || "a car dealer") + ". I saw the car dealer website concept. Let's talk.");
+})();
+</script>
+</body>
+</html>
